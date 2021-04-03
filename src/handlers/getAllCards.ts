@@ -1,5 +1,5 @@
-import {getAllCards} from '../gateways/storage/index'
+import { CardRecord, getAllCards } from '../gateways/storage/index'
 
-export async function handler() {
-    return await getAllCards();
+export async function handler(): Promise<CardRecord[]> {
+  return await getAllCards()
 }

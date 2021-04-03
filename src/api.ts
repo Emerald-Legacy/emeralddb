@@ -2,8 +2,6 @@ import { AsyncRouter, AsyncRouterInstance } from 'express-async-router'
 import passport from 'passport'
 import * as express from 'express'
 import { importAllCardsInDirectory } from './handlers/importCardHandler'
-
-import { authenticate, onlyAdmin, withBearerToken } from './middlewares/authorization'
 import * as getAllCards from './handlers/getAllCards'
 
 export default (): AsyncRouterInstance => {

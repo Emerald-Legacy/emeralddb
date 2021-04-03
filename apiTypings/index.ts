@@ -36,4 +36,3 @@ export interface Card {
 export interface Cards$findAll {
   response: Card[]
 }
-

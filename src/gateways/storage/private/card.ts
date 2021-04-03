@@ -37,9 +37,8 @@ export interface CardRecord {
   political_bonus?: string
 }
 
-export async function getAllCards() {
+export async function getAllCards(): Promise<CardRecord[]> {
   return pg(TABLE).select()
-  
 }
 
 export async function getCard(cardId: string): Promise<CardRecord> {
