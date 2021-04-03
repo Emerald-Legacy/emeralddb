@@ -29,9 +29,10 @@ export function importCardFile(path: string) {
 }
 
 export async function importCardJson(card: CardInput) {
-    
     const cardRecord = mapInputToRecord(card)
-    insertOrUpdateCard(cardRecord).then(() => {}).catch((error) => console.log(`Insert failed for card ${card.id}: ${error}`)
+    insertOrUpdateCard(cardRecord)
+        .then(() => {})
+        .catch((error) => console.log(`Insert failed for card ${card.id}: ${error}`))
 }
 
 function mapInputToRecord(card: CardInput): CardRecord {
@@ -104,20 +105,15 @@ export interface CardInput {
     cost?: string
     deck_limit?: number
     influence_cost?: number
-    // Province Card Info
     element?: string[]
     strength: string
-    // Stronghold Card Info
     glory?: number
     fate?: number
     honor?: number
     influence_pool?: number
-    // Holding Card Info
     strength_bonus?: string
-    // Character Card Info
     military?: string
     political?: string
-    // Attachment Card Info
     military_bonus?: string
     political_bonus?: string
   }

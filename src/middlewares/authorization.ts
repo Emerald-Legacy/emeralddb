@@ -43,13 +43,13 @@ export async function authenticate(req: express.Request, res: express.Response):
 }
 
 export async function onlyLoggedIn(req: express.Request, res: express.Response): Promise<void> {
-  /**if (req.user?.flags != null) {
+  /** if (req.user?.flags != null) {
     res.status(403).send()
   }**/
 }
 
 export async function onlyAdmin(req: express.Request, res: express.Response): Promise<void> {
-  /**if (req.user?.flags !== 1) {
+  /** if (req.user?.flags !== 1) {
     res.status(403).send()
   }**/
 }

@@ -7,7 +7,6 @@ import path from 'path'
 import env from './env'
 import api from './api'
 
-
 export default async (): Promise<{ app: Express; run: () => void }> => {
   const app = express()
 

@@ -6,7 +6,7 @@ export interface CardRecord {
   id: string
   name: string
   name_extra?: string
-  clan: string 
+  clan: string
   side: string
   type: string
   is_unique: boolean
@@ -37,13 +37,16 @@ export interface CardRecord {
   political_bonus?: string
 }
 
+export async function getAllCards() {
+  return pg(TABLE).select()
+  
+}
+
 export async function getCard(cardId: string): Promise<CardRecord> {
   return pg(TABLE).where('id', cardId).first()
 }
 
-export async function insertOrUpdateCard(
-  card: CardRecord
-): Promise<CardRecord> {
+export async function insertOrUpdateCard(card: CardRecord): Promise<CardRecord> {
   const insert = pg(TABLE).insert({ ...card })
   const update = pg.queryBuilder().update({ ...card })
   const result = await pg.raw(`? ON CONFLICT ("id") DO ? returning *`, [insert, update])

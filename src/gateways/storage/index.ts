@@ -1,5 +1,1 @@
-export {
-    getCard,
-    insertOrUpdateCard,
-    CardRecord,
-} from './private/card'
+export { getCard, getAllCards, insertOrUpdateCard, CardRecord } from './private/card'
