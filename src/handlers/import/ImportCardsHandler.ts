@@ -1,6 +1,11 @@
 /* eslint-disable security/detect-non-literal-fs-filename */
 import fs from 'fs'
-import { CardRecord, insertOrUpdateCard } from '../../gateways/storage/index'
+import {
+  CardRecord,
+  getAllTraits,
+  insertOrUpdateCard,
+  TraitRecord,
+} from '../../gateways/storage/index'
 import { CardImport } from '../../model/importTypes'
 import { validateCardImport } from './ImportCardsValidatior'
 
@@ -20,25 +25,27 @@ export function importAllCardsInDirectory(directory: string): void {
   }
 
   const allFiles = getFilesInDirectory(directory)
-  console.log(`Importing ${allFiles.length} cards...`)
-  allFiles.forEach((file) => importCardFile(file))
+  getAllTraits().then((traits: TraitRecord[]) => {
+    console.log(`Importing ${allFiles.length} cards...`)
+    allFiles.forEach((file) => importCardFile(file, traits))
+  })
 }
 
-export function importCardFile(path: string): void {
-  const banzai = fs.readFileSync(path, 'utf-8')
-  const inputArray = JSON.parse(banzai) as CardImport[]
-  importCardJson(inputArray[0])
+export function importCardFile(path: string, traits: TraitRecord[]): void {
+  const cards = fs.readFileSync(path, 'utf-8')
+  const inputArray = JSON.parse(cards) as CardImport[]
+  importCardJson(inputArray[0], traits)
 }
 
-export function importCardJson(card: CardImport): void {
-  const cardRecord = mapInputToRecord(card)
+export function importCardJson(card: CardImport, traits: TraitRecord[]): void {
+  const cardRecord = mapInputToRecord(card, traits)
   insertOrUpdateCard(cardRecord).catch((error) =>
     console.log(`Insert failed for card ${card.id}: ${error}`)
   )
 }
 
-function mapInputToRecord(card: CardImport): CardRecord {
-  const validationErrors = validateCardImport(card)
+function mapInputToRecord(card: CardImport, traits: TraitRecord[]): CardRecord {
+  const validationErrors = validateCardImport(card, traits)
   if (validationErrors.length > 0) {
     let errorMessage = `Validation failed for card '${card.id}':\n`
     validationErrors.forEach((error: string) => {

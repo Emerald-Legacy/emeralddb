@@ -30,3 +30,8 @@ export interface CardImport {
   military_bonus?: string
   political_bonus?: string
 }
+
+export interface LabelImport {
+  id: string
+  value: string
+}

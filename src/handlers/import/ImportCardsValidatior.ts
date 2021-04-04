@@ -1,7 +1,8 @@
 import { CardImport } from '../../model/importTypes'
 import { CLANS, ELEMENTS, FACTIONS, ROLE_RESTRICTIONS, SIDES, TYPES } from '../../model/enums'
+import { TraitRecord } from 'src/gateways/storage'
 
-export function validateCardImport(card: CardImport): string[] {
+export function validateCardImport(card: CardImport, traits: TraitRecord[]): string[] {
   const errors = []
   if (!card.id) {
     errors.push("Missing required field 'id'")
@@ -34,7 +35,13 @@ export function validateCardImport(card: CardImport): string[] {
       }
     })
   }
-  // TODO: Validate Traits
+  if (card.traits?.length !== 0) {
+    card.traits?.forEach((inputTrait) => {
+      if (!traits.find((trait) => trait.id === inputTrait)) {
+        errors.push(`Unknown value in field 'traits': ${inputTrait}`)
+      }
+    })
+  }
   if (card.element?.length !== 0) {
     card.element?.forEach((inputElement) => {
       if (!ELEMENTS.find((element) => element === inputElement)) {
