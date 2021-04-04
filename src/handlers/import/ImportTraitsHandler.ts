@@ -1,10 +1,10 @@
 /* eslint-disable security/detect-non-literal-fs-filename */
 import fs from 'fs'
-import { insertOrUpdateTrait } from '../../gateways/storage/private/trait'
+import { insertOrUpdateTrait } from '../../gateways/storage'
 import { LabelImport } from '../../model/importTypes'
 
 export function readLabelFileAndImportTraits(path: string): void {
-  const labels = fs.readFileSync(path, 'utf-8')
+  const labels = fs.readFileSync(path, { flag: 'rs', encoding: 'utf8' })
   const inputArray = JSON.parse(labels) as LabelImport[]
   importTraits(inputArray)
 }

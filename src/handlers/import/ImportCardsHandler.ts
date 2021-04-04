@@ -1,11 +1,6 @@
 /* eslint-disable security/detect-non-literal-fs-filename */
 import fs from 'fs'
-import {
-  CardRecord,
-  getAllTraits,
-  insertOrUpdateCard,
-  TraitRecord,
-} from '../../gateways/storage/index'
+import { CardRecord, getAllTraits, insertOrUpdateCard, TraitRecord } from '../../gateways/storage'
 import { CardImport } from '../../model/importTypes'
 import { validateCardImport } from './ImportCardsValidatior'
 
@@ -32,7 +27,7 @@ export function importAllCardsInDirectory(directory: string): void {
 }
 
 export function importCardFile(path: string, traits: TraitRecord[]): void {
-  const cards = fs.readFileSync(path, 'utf-8')
+  const cards = fs.readFileSync(path, { flag: 'rs', encoding: 'utf8' })
   const inputArray = JSON.parse(cards) as CardImport[]
   importCardJson(inputArray[0], traits)
 }

@@ -35,3 +35,11 @@ export interface LabelImport {
   id: string
   value: string
 }
+
+export interface RulingImport {
+  id: number
+  card: { id: string }
+  text: string
+  source: string
+  link: string
+}
