@@ -1,8 +1,8 @@
 import { AsyncRouter, AsyncRouterInstance } from 'express-async-router'
 import passport from 'passport'
 import * as express from 'express'
-import { importAllCardsInDirectory } from './handlers/importCardHandler'
 import * as getAllCards from './handlers/getAllCards'
+import * as importData from './handlers/importData'
 
 export default (): AsyncRouterInstance => {
   const api = AsyncRouter()
@@ -19,7 +19,7 @@ export default (): AsyncRouterInstance => {
       // res.redirect(303, `/?token=${req.user.jwt}`)
     }
   )
-  api.get('/test', importAllCardsInDirectory)
+  api.get('/import', importData.handler)
   api.get('/cards', getAllCards.handler)
   return api
 }

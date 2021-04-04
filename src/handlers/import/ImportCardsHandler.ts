@@ -1,41 +1,10 @@
 /* eslint-disable security/detect-non-literal-fs-filename */
 import fs from 'fs'
-import { CardRecord, insertOrUpdateCard } from '../gateways/storage/index'
+import { CardRecord, insertOrUpdateCard } from '../../gateways/storage/index'
+import { CardImport } from '../../model/importTypes'
+import { validateCardImport } from './ImportCardsValidatior'
 
-export interface CardInput {
-  id: string
-  name: string
-  name_extra?: string
-  clan: string
-  side: string
-  type: string
-  unicity: boolean
-  role_restriction?: string
-  text?: string
-  is_restricted?: boolean
-  is_restricted_in_jade?: boolean
-  is_banned_in_jade?: boolean
-  is_banned_in_skirmish?: boolean
-  is_banned?: boolean
-  allowed_clans?: string[]
-  traits?: string[]
-  cost?: string
-  deck_limit?: number
-  influence_cost?: number
-  element?: string[]
-  strength: string
-  glory?: number
-  fate?: number
-  honor?: number
-  influence_pool?: number
-  strength_bonus?: string
-  military?: string
-  political?: string
-  military_bonus?: string
-  political_bonus?: string
-}
-
-export function importAllCardsInDirectory(): void {
+export function importAllCardsInDirectory(directory: string): void {
   function getFilesInDirectory(dir: string, allFiles?: string[]) {
     allFiles = allFiles || []
     const files = fs.readdirSync(dir)
@@ -50,25 +19,33 @@ export function importAllCardsInDirectory(): void {
     return allFiles
   }
 
-  const allFiles = getFilesInDirectory('C:/Projekte/5RDB_legacy/fiveringsdb-data/json/Card')
+  const allFiles = getFilesInDirectory(directory)
   console.log(`Importing ${allFiles.length} cards...`)
   allFiles.forEach((file) => importCardFile(file))
 }
 
 export function importCardFile(path: string): void {
   const banzai = fs.readFileSync(path, 'utf-8')
-  const inputArray = JSON.parse(banzai) as CardInput[]
+  const inputArray = JSON.parse(banzai) as CardImport[]
   importCardJson(inputArray[0])
 }
 
-export function importCardJson(card: CardInput): void {
+export function importCardJson(card: CardImport): void {
   const cardRecord = mapInputToRecord(card)
   insertOrUpdateCard(cardRecord).catch((error) =>
     console.log(`Insert failed for card ${card.id}: ${error}`)
   )
 }
 
-function mapInputToRecord(card: CardInput): CardRecord {
+function mapInputToRecord(card: CardImport): CardRecord {
+  const validationErrors = validateCardImport(card)
+  if (validationErrors.length > 0) {
+    let errorMessage = `Validation failed for card '${card.id}':\n`
+    validationErrors.forEach((error: string) => {
+      errorMessage += error
+    })
+    throw new Error(errorMessage)
+  }
   const restricted_in = []
   if (card.is_restricted) {
     restricted_in.push('standard')

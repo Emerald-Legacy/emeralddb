@@ -21,7 +21,7 @@ export interface CardRecord {
   influence_cost?: number
   // Province Card Info
   elements?: string[]
-  strength: string
+  strength?: string
   // Stronghold Card Info
   glory?: number
   fate?: number
