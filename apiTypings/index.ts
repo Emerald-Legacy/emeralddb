@@ -36,3 +36,11 @@ export interface Card {
 export interface Cards$findAll {
   response: Card[]
 }
+
+export interface Ruling {
+  id: number
+  card_id: string
+  text: string
+  source: string
+  link: string
+}

@@ -43,3 +43,10 @@ export interface RulingImport {
   source: string
   link: string
 }
+
+export interface CycleImport {
+  id: string
+  name: string
+  position: number
+  size: number
+}

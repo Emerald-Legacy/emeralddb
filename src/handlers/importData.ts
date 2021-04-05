@@ -2,6 +2,7 @@
 import env from '../env'
 import { importAllCardsInDirectory } from './import/ImportCardsHandler'
 import { importRulingsFile } from './import/ImportRulingsHandler'
+import { importCyclesFile } from './import/importCyclesHandler'
 import { readLabelFileAndImportTraits } from './import/ImportTraitsHandler'
 
 const dataDirectory: string = env.dataDirectory?.endsWith('/') ? env.dataDirectory : env.dataDirectory + '/'
@@ -11,5 +12,6 @@ export async function handler(): Promise<boolean> {
     readLabelFileAndImportTraits(dataDirectory + 'Label/en.json');
     importAllCardsInDirectory(dataDirectory + 'Card');
     importRulingsFile(dataDirectory + 'Ruling/rulings.json')
+    importCyclesFile(dataDirectory + 'Cycle.json')
     return true
 }

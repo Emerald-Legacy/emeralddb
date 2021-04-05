@@ -1,6 +1,6 @@
 /* eslint-disable security/detect-non-literal-fs-filename */
 import fs from 'fs'
-import { insertOrUpdateRuling } from '../../gateways/storage'
+import { insertOrUpdateRulingWithExistingId } from '../../gateways/storage'
 import { RulingImport } from '../../model/importTypes'
 
 export function importRulingsFile(path: string): void {
@@ -12,7 +12,7 @@ export function importRulingsFile(path: string): void {
 function importRulings(rulings: RulingImport[]) {
   console.log(`Importing ${rulings.length} rulings...`)
   rulings.forEach((ruling) =>
-    insertOrUpdateRuling({
+    insertOrUpdateRulingWithExistingId({
       id: ruling.id,
       card_id: ruling.card.id,
       text: ruling.text,
