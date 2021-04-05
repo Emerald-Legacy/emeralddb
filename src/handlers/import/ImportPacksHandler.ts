@@ -1,10 +1,9 @@
-/* eslint-disable security/detect-non-literal-fs-filename */
-import fs from 'fs'
 import { insertOrUpdatePack } from '../../gateways/storage'
 import { PackImport } from '../../model/importTypes'
+import { readFile } from '../../utils/FileSystemHelper'
 
 export async function importPacksFile(path: string): Promise<boolean> {
-  const packs = fs.readFileSync(path, { flag: 'rs', encoding: 'utf8' })
+  const packs = readFile(path)
   const inputArray = JSON.parse(packs) as PackImport[]
   await importPacks(inputArray)
   return true

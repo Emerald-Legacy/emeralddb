@@ -1,25 +1,10 @@
-/* eslint-disable security/detect-non-literal-fs-filename */
-import fs from 'fs'
 import { FORMAT } from '../../model/enums'
 import { CardRecord, getAllTraits, insertOrUpdateCard, TraitRecord } from '../../gateways/storage'
 import { CardImport } from '../../model/importTypes'
 import { validateCardImport } from './ImportCardsValidatior'
+import { getFilesInDirectory, readFile } from '../../utils/FileSystemHelper'
 
 export async function importAllCardsInDirectory(directory: string): Promise<boolean> {
-  function getFilesInDirectory(dir: string, allFiles?: string[]) {
-    allFiles = allFiles || []
-    const files = fs.readdirSync(dir)
-    for (const i in files) {
-      const name = dir + '/' + files[i]
-      if (fs.statSync(name).isDirectory()) {
-        getFilesInDirectory(name, allFiles)
-      } else {
-        allFiles.push(name)
-      }
-    }
-    return allFiles
-  }
-
   const allFiles = getFilesInDirectory(directory)
   const traits: TraitRecord[] = await getAllTraits()
   console.log(`Importing ${allFiles.length} cards...`)
@@ -28,7 +13,7 @@ export async function importAllCardsInDirectory(directory: string): Promise<bool
 }
 
 export function importCardFile(path: string, traits: TraitRecord[]): void {
-  const cards = fs.readFileSync(path, { flag: 'rs', encoding: 'utf8' })
+  const cards = readFile(path)
   const inputArray = JSON.parse(cards) as CardImport[]
   importCardJson(inputArray[0], traits)
 }

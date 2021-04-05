@@ -9,3 +9,9 @@ export {
 } from './private/ruling'
 export { getCycle, getAllCycles, insertOrUpdateCycle, CycleRecord } from './private/cycle'
 export { getPack, getAllPacks, insertOrUpdatePack, PackRecord } from './private/pack'
+export {
+  getAllCardVersions,
+  getAllCardsInPack,
+  insertOrUpdateCardInPack,
+  CardInPackRecord,
+} from './private/card_in_pack'

@@ -1,10 +1,9 @@
-/* eslint-disable security/detect-non-literal-fs-filename */
-import fs from 'fs'
 import { insertOrUpdateRulingWithExistingId } from '../../gateways/storage'
 import { RulingImport } from '../../model/importTypes'
+import { readFile } from '../../utils/FileSystemHelper'
 
 export async function importRulingsFile(path: string): Promise<boolean> {
-  const rulings = fs.readFileSync(path, { flag: 'rs', encoding: 'utf8' })
+  const rulings = readFile(path)
   const inputArray = JSON.parse(rulings) as RulingImport[]
   await importRulings(inputArray)
   return true

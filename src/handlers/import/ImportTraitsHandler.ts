@@ -1,10 +1,9 @@
-/* eslint-disable security/detect-non-literal-fs-filename */
-import fs from 'fs'
 import { insertOrUpdateTrait } from '../../gateways/storage'
 import { LabelImport } from '../../model/importTypes'
+import { readFile } from '../../utils/FileSystemHelper'
 
 export async function readLabelFileAndImportTraits(path: string): Promise<boolean> {
-  const labels = fs.readFileSync(path, { flag: 'rs', encoding: 'utf8' })
+  const labels = readFile(path)
   const inputArray = JSON.parse(labels) as LabelImport[]
   importTraits(inputArray)
   return true

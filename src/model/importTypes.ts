@@ -60,3 +60,12 @@ export interface PackImport {
   ffg_id: string
   cycle_id: string
 }
+
+export interface PackCardImport {
+  card_id: string
+  flavor?: string
+  illustrator?: string
+  image_url?: string
+  position?: string
+  quantity?: number
+}

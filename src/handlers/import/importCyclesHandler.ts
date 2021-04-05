@@ -1,10 +1,9 @@
-/* eslint-disable security/detect-non-literal-fs-filename */
-import fs from 'fs'
 import { insertOrUpdateCycle } from '../../gateways/storage'
 import { CycleImport } from '../../model/importTypes'
+import { readFile } from '../../utils/FileSystemHelper'
 
 export async function importCyclesFile(path: string): Promise<boolean> {
-  const cycles = fs.readFileSync(path, { flag: 'rs', encoding: 'utf8' })
+  const cycles = readFile(path)
   const inputArray = JSON.parse(cycles) as CycleImport[]
   await importCycles(inputArray)
   return true
