@@ -3,21 +3,23 @@ import fs from 'fs'
 import { insertOrUpdateRulingWithExistingId } from '../../gateways/storage'
 import { RulingImport } from '../../model/importTypes'
 
-export function importRulingsFile(path: string): void {
+export async function importRulingsFile(path: string): Promise<boolean> {
   const rulings = fs.readFileSync(path, { flag: 'rs', encoding: 'utf8' })
   const inputArray = JSON.parse(rulings) as RulingImport[]
-  importRulings(inputArray)
+  await importRulings(inputArray)
+  return true
 }
 
-function importRulings(rulings: RulingImport[]) {
+async function importRulings(rulings: RulingImport[]) {
   console.log(`Importing ${rulings.length} rulings...`)
-  rulings.forEach((ruling) =>
-    insertOrUpdateRulingWithExistingId({
-      id: ruling.id,
-      card_id: ruling.card.id,
-      text: ruling.text,
-      source: ruling.source,
-      link: ruling.link,
-    })
+  rulings.forEach(
+    async (ruling) =>
+      await insertOrUpdateRulingWithExistingId({
+        id: ruling.id,
+        card_id: ruling.card.id,
+        text: ruling.text,
+        source: ruling.source,
+        link: ruling.link,
+      })
   )
 }

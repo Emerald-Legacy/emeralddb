@@ -5,7 +5,7 @@ import { CardRecord, getAllTraits, insertOrUpdateCard, TraitRecord } from '../..
 import { CardImport } from '../../model/importTypes'
 import { validateCardImport } from './ImportCardsValidatior'
 
-export function importAllCardsInDirectory(directory: string): void {
+export async function importAllCardsInDirectory(directory: string): Promise<boolean> {
   function getFilesInDirectory(dir: string, allFiles?: string[]) {
     allFiles = allFiles || []
     const files = fs.readdirSync(dir)
@@ -21,10 +21,10 @@ export function importAllCardsInDirectory(directory: string): void {
   }
 
   const allFiles = getFilesInDirectory(directory)
-  getAllTraits().then((traits: TraitRecord[]) => {
-    console.log(`Importing ${allFiles.length} cards...`)
-    allFiles.forEach((file) => importCardFile(file, traits))
-  })
+  const traits: TraitRecord[] = await getAllTraits()
+  console.log(`Importing ${allFiles.length} cards...`)
+  allFiles.forEach((file) => importCardFile(file, traits))
+  return true
 }
 
 export function importCardFile(path: string, traits: TraitRecord[]): void {
@@ -33,11 +33,10 @@ export function importCardFile(path: string, traits: TraitRecord[]): void {
   importCardJson(inputArray[0], traits)
 }
 
-export function importCardJson(card: CardImport, traits: TraitRecord[]): void {
+export async function importCardJson(card: CardImport, traits: TraitRecord[]): Promise<boolean> {
   const cardRecord = mapInputToRecord(card, traits)
-  insertOrUpdateCard(cardRecord).catch((error) =>
-    console.log(`Insert failed for card ${card.id}: ${error}`)
-  )
+  await insertOrUpdateCard(cardRecord)
+  return true
 }
 
 function mapInputToRecord(card: CardImport, traits: TraitRecord[]): CardRecord {

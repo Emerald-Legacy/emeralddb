@@ -50,3 +50,13 @@ export interface CycleImport {
   position: number
   size: number
 }
+
+export interface PackImport {
+  id: string
+  name: string
+  position: number
+  size: number
+  released_at?: Date
+  ffg_id: string
+  cycle_id: string
+}

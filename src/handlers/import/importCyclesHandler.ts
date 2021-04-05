@@ -3,20 +3,22 @@ import fs from 'fs'
 import { insertOrUpdateCycle } from '../../gateways/storage'
 import { CycleImport } from '../../model/importTypes'
 
-export function importCyclesFile(path: string): void {
+export async function importCyclesFile(path: string): Promise<boolean> {
   const cycles = fs.readFileSync(path, { flag: 'rs', encoding: 'utf8' })
   const inputArray = JSON.parse(cycles) as CycleImport[]
-  importCycles(inputArray)
+  await importCycles(inputArray)
+  return true
 }
 
-function importCycles(cycles: CycleImport[]) {
+async function importCycles(cycles: CycleImport[]) {
   console.log(`Importing ${cycles.length} cycles...`)
-  cycles.forEach((cycle) =>
-    insertOrUpdateCycle({
-      id: cycle.id,
-      name: cycle.name,
-      position: cycle.position,
-      size: cycle.size,
-    })
+  cycles.forEach(
+    async (cycle) =>
+      await insertOrUpdateCycle({
+        id: cycle.id,
+        name: cycle.name,
+        position: cycle.position,
+        size: cycle.size,
+      })
   )
 }
