@@ -1,5 +1,6 @@
 /* eslint-disable security/detect-non-literal-fs-filename */
 import fs from 'fs'
+import { FORMAT } from '../../model/enums'
 import { CardRecord, getAllTraits, insertOrUpdateCard, TraitRecord } from '../../gateways/storage'
 import { CardImport } from '../../model/importTypes'
 import { validateCardImport } from './ImportCardsValidatior'
@@ -50,20 +51,20 @@ function mapInputToRecord(card: CardImport, traits: TraitRecord[]): CardRecord {
   }
   const restricted_in = []
   if (card.is_restricted) {
-    restricted_in.push('standard')
+    restricted_in.push(FORMAT.STRONGHOLD)
   }
   if (card.is_restricted_in_jade) {
-    restricted_in.push('jade_edict')
+    restricted_in.push(FORMAT.JADE_EDICT)
   }
   const banned_in = []
   if (card.is_banned) {
-    banned_in.push('standard')
+    banned_in.push(FORMAT.STRONGHOLD)
   }
   if (card.is_banned_in_jade) {
-    banned_in.push('jade_edict')
+    banned_in.push(FORMAT.JADE_EDICT)
   }
   if (card.is_banned_in_skirmish) {
-    banned_in.push('skirmish')
+    banned_in.push(FORMAT.SKIRMISH)
   }
 
   return {
