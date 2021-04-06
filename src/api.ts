@@ -2,6 +2,7 @@ import { AsyncRouter, AsyncRouterInstance } from 'express-async-router'
 import passport from 'passport'
 import * as express from 'express'
 import * as getAllCards from './handlers/getAllCards'
+import * as getCardDetails from './handlers/getCardDetails'
 import * as importData from './handlers/importData'
 
 export default (): AsyncRouterInstance => {
@@ -21,5 +22,6 @@ export default (): AsyncRouterInstance => {
   )
   api.get('/import', importData.handler)
   api.get('/cards', getAllCards.handler)
+  api.get('/cards/:cardId', getCardDetails.handler)
   return api
 }

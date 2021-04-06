@@ -1,17 +1,17 @@
-export { getCard, getAllCards, insertOrUpdateCard, CardRecord } from './private/card'
-export { getTrait, getAllTraits, insertOrUpdateTrait, TraitRecord } from './private/trait'
+export { getCard, getAllCards, insertOrUpdateCard } from './private/card'
+export { getTrait, getAllTraits, insertOrUpdateTrait } from './private/trait'
 export {
   getRuling,
   getAllRulings,
+  getAllRulingsForCard,
   insertOrUpdateRulingWithExistingId,
   insertNewRuling,
-  RulingRecord,
 } from './private/ruling'
-export { getCycle, getAllCycles, insertOrUpdateCycle, CycleRecord } from './private/cycle'
-export { getPack, getAllPacks, insertOrUpdatePack, PackRecord } from './private/pack'
+export { getCycle, getAllCycles, insertOrUpdateCycle } from './private/cycle'
+export { getPack, getAllPacks, insertOrUpdatePack } from './private/pack'
 export {
+  getAllCardsInPacks,
   getAllCardVersions,
   getAllCardsInPack,
   insertOrUpdateCardInPack,
-  CardInPackRecord,
 } from './private/card_in_pack'
