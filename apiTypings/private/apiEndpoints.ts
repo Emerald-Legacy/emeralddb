@@ -1,5 +1,9 @@
-import { Card } from './baseTypes'
+import { CardWithVersions, CardWithDetails } from './compositeTypes'
 
 export interface Cards$findAll {
-  response: Card[]
+  response: CardWithVersions[]
+}
+
+export interface Cards$find {
+  response: CardWithDetails
 }

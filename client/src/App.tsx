@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 
 import { captureToken } from './utils/auth'
 import { CardsView } from './views/CardsView'
+import { CardDetailView } from './views/CardDetailView'
 
 // create our material ui theme using up to date typography variables
 const theme = createMuiTheme({
@@ -32,6 +33,9 @@ export default function App(): JSX.Element {
           <Switch>
             <Route path="/cards">
               <CardsView />
+            </Route>
+            <Route path="/card/:id">
+              <CardDetailView />
             </Route>
             <Redirect from="/" exact to="/cards" />
           </Switch>

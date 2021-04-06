@@ -28,6 +28,7 @@ export const api = forge({
   resources: {
     Card: {
       findAll: { method: 'GET', path: '/cards' },
+      find: { method: 'GET', path: '/cards/{cardId}'}
     },
   },
 })
