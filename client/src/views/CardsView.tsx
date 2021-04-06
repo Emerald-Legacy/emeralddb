@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import React from 'react'
 import { EmptyState } from "../components/EmptyState";
 import { Loading } from "../components/Loading";
@@ -22,7 +23,7 @@ export function CardsView() {
     return (
         <ul>
             {cards.map(card => (
-                <li key={card.id}>{card.name} ({card.id})</li>
+                <li key={card.id}><Link to={`/card/${card.id}`}>{card.name} ({card.id})</Link></li>
             ))}
         </ul>
     )
