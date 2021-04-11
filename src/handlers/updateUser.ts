@@ -1,6 +1,4 @@
-import { updateUser } from '../gateways/storage/index'
-import { Auth0User } from '../middlewares/authorization'
-import { getDBUser } from './getCurrentUser'
+import { getOrInsertDBUser, updateUser } from '../gateways/storage/index'
 import * as Express from 'express'
 import Joi from 'joi'
 import { ValidatedRequest } from '../middlewares/validator'
@@ -17,11 +15,11 @@ export async function handler(
   req: ValidatedRequest<typeof schema>,
   res: Express.Response
 ): Promise<User> {
-  const currentUser = req.user as Auth0User
+  const currentUser = req.user as User & { sub: string }
   if (!currentUser?.sub) {
     res.status(401).send()
   }
-  const dbUser = await getDBUser(currentUser.sub)
+  const dbUser = await getOrInsertDBUser(currentUser.sub)
   if (dbUser.id !== req.body.id) {
     res.status(403).send()
   }

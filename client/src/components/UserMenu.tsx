@@ -1,14 +1,14 @@
 import { useAuth0 } from '@auth0/auth0-react'
-import { Button, IconButton, Menu, MenuItem, Typography } from '@material-ui/core'
+import { Avatar, Button, IconButton, Menu, MenuItem, Typography } from '@material-ui/core'
 import { useState } from 'react';
 import { useCurrentUser } from '../hooks/useCurrentUser';
 
 export function UserMenu(): JSX.Element {
-  const { isAuthenticated, isLoading} = useAuth0()
+  const { user, isAuthenticated, isLoading} = useAuth0()
   const { loginWithPopup } = useAuth0();
   const { logout } = useAuth0();
   const [open, setOpen] = useState(false)
-  const [user] = useCurrentUser()
+  const [currentUser] = useCurrentUser()
 
   const handleMenu = () => {
     setOpen(true)
@@ -18,7 +18,7 @@ export function UserMenu(): JSX.Element {
     setOpen(false)
   }
 
-  if (isLoading || user.loading) {
+  if (isLoading || currentUser.loading) {
     return <Typography>Loading ...</Typography>
   }
 
@@ -34,7 +34,17 @@ export function UserMenu(): JSX.Element {
   }
   return (
     <div>
-      <Typography onClick={handleMenu}>{user.data?.name}</Typography>
+      <IconButton
+        aria-label="account of current user"
+        aria-controls="menu-appbar"
+        aria-haspopup="true"
+        onClick={handleMenu}
+        color="inherit"
+      >
+        {currentUser.data && <Typography>{currentUser.data?.name}</Typography>}
+        {user && <Avatar src={user.picture} alt={currentUser.data?.name} />}
+      </IconButton>
+      
       <Menu
         id="menu-appbar"
         anchorOrigin={{

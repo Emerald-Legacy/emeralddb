@@ -18,3 +18,11 @@ export async function updateUser(user: Omit<User, 'roles'>): Promise<User> {
   const result = await pg(TABLE).where('id', user.id).update({ name: user.name }, '*')
   return result[0]
 }
+
+export async function getOrInsertDBUser(userId: string): Promise<User> {
+  let dbUser: User = await getUser(userId)
+  if (!dbUser) {
+    dbUser = await insertUser({ id: userId, name: 'Unnamed Samurai', roles: [] })
+  }
+  return dbUser
+}

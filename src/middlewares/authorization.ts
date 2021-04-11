@@ -1,7 +1,7 @@
 import * as express from 'express'
 import jwt from 'express-jwt'
 import jwks from 'jwks-rsa'
-import { getDBUser } from 'src/handlers/getCurrentUser'
+import { getOrInsertDBUser } from '../gateways/storage'
 import env from '../env'
 
 export interface Auth0User {
@@ -34,7 +34,7 @@ export async function rulesAdminOnly(req: express.Request, res: express.Response
   if (!user?.sub) {
     res.status(401).send()
   }
-  const dbUser = await getDBUser(user.sub)
+  const dbUser = await getOrInsertDBUser(user.sub)
   if (!dbUser.roles.includes(RULES_ADMIN)) {
     res.status(401).send()
   }
@@ -45,7 +45,7 @@ export async function dataAdminOnly(req: express.Request, res: express.Response)
   if (!user?.sub) {
     res.status(401).send()
   }
-  const dbUser = await getDBUser(user.sub)
+  const dbUser = await getOrInsertDBUser(user.sub)
   if (!dbUser.roles.includes(DATA_ADMIN)) {
     res.status(401).send()
   }
