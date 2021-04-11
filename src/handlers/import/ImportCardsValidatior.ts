@@ -1,8 +1,8 @@
 import { CardImport } from '../../model/importTypes'
 import { CLANS, ELEMENTS, FACTIONS, ROLE_RESTRICTIONS, SIDES, TYPES } from '../../model/enums'
-import { TraitRecord } from 'src/gateways/storage'
+import { Trait } from '@5rdb/api'
 
-export function validateCardImport(card: CardImport, traits: TraitRecord[]): string[] {
+export function validateCardImport(card: CardImport, traits: Trait[]): string[] {
   const errors = []
   if (!card.id) {
     errors.push("Missing required field 'id'")

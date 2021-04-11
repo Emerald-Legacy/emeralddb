@@ -15,3 +15,4 @@ export {
   getAllCardsInPack,
   insertOrUpdateCardInPack,
 } from './private/card_in_pack'
+export { getUser, insertUser, updateUser } from './private/user'

@@ -17,7 +17,7 @@ export interface Card {
   influence_cost?: number
   // Province Card Info
   elements?: string[]
-  strength: string
+  strength?: string
   // Stronghold Card Info
   glory?: number
   fate?: number
@@ -71,4 +71,10 @@ export interface Cycle {
 export interface Trait {
   id: string
   name: string
+}
+
+export interface User {
+  id: string
+  name?: string
+  roles: string[]
 }

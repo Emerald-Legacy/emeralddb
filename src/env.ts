@@ -9,4 +9,5 @@ export default {
   nodeEnv: String(process.env.NODE_ENV).trim(),
   serverPort: parseInt(String(process.env.PORT), 10),
   dataDirectory: String(process.env.DATA_DIRECTORY),
+  auth0Domain: String(process.env.AUTH0_DOMAIN),
 }

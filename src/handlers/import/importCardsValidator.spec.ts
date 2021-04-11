@@ -1,7 +1,7 @@
 import test from 'ava'
 import { validateCardImport } from './ImportCardsValidatior'
 import { CardImport } from '../../model/importTypes'
-import { TraitRecord } from '../../gateways/storage/index'
+import { Trait } from '@5rdb/api'
 
 test('should return errors for invalid enum values', (test) => {
   const cardInput: CardImport = {
@@ -16,7 +16,7 @@ test('should return errors for invalid enum values', (test) => {
     allowed_clans: ['INVALID'],
     element: ['INVALID_1', 'INVALID_2'],
   }
-  const traits: TraitRecord[] = [{ id: 'bushi', name: 'Bushi' }]
+  const traits: Trait[] = [{ id: 'bushi', name: 'Bushi' }]
   const validationErrors = validateCardImport(cardInput, traits)
   test.assert(validationErrors.length === 8)
   test.assert(validationErrors.includes("Unknown value for field 'clan': INVALID"))
@@ -43,7 +43,7 @@ test('should validate valid card successfully', (test) => {
     allowed_clans: ['dragon', 'phoenix'],
     element: ['air', 'void'],
   }
-  const traits: TraitRecord[] = [{ id: 'bushi', name: 'Bushi' }]
+  const traits: Trait[] = [{ id: 'bushi', name: 'Bushi' }]
   const validationErrors = validateCardImport(cardInput, traits)
   test.assert(validationErrors.length === 0)
   test.pass()

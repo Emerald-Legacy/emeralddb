@@ -1,4 +1,4 @@
-const AUTH_TOKEN = 'discordLeagueToken'
+const AUTH_TOKEN = '5RDB_Token'
 
 const bearerToken = {
   tokenFromQueryParamsRegexp: /token=([^&]+)/,

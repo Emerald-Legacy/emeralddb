@@ -1,30 +1,31 @@
 import { FORMAT } from '../../model/enums'
-import { CardRecord, getAllTraits, insertOrUpdateCard, TraitRecord } from '../../gateways/storage'
+import { getAllTraits, insertOrUpdateCard } from '../../gateways/storage'
 import { CardImport } from '../../model/importTypes'
 import { validateCardImport } from './ImportCardsValidatior'
 import { getFilesInDirectory, readFile } from '../../utils/FileSystemHelper'
+import { Card, Trait } from '@5rdb/api'
 
 export async function importAllCardsInDirectory(directory: string): Promise<boolean> {
   const allFiles = getFilesInDirectory(directory)
-  const traits: TraitRecord[] = await getAllTraits()
+  const traits: Trait[] = await getAllTraits()
   console.log(`Importing ${allFiles.length} cards...`)
   allFiles.forEach((file) => importCardFile(file, traits))
   return true
 }
 
-export function importCardFile(path: string, traits: TraitRecord[]): void {
+export function importCardFile(path: string, traits: Trait[]): void {
   const cards = readFile(path)
   const inputArray = JSON.parse(cards) as CardImport[]
   importCardJson(inputArray[0], traits)
 }
 
-export async function importCardJson(card: CardImport, traits: TraitRecord[]): Promise<boolean> {
+export async function importCardJson(card: CardImport, traits: Trait[]): Promise<boolean> {
   const cardRecord = mapInputToRecord(card, traits)
   await insertOrUpdateCard(cardRecord)
   return true
 }
 
-function mapInputToRecord(card: CardImport, traits: TraitRecord[]): CardRecord {
+function mapInputToRecord(card: CardImport, traits: Trait[]): Card {
   const validationErrors = validateCardImport(card, traits)
   if (validationErrors.length > 0) {
     let errorMessage = `Validation failed for card '${card.id}':\n`
