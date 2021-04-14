@@ -12,6 +12,9 @@ import { HeaderBar } from './components/HeaderBar'
 import { MainPage } from './views/MainPage'
 import { User } from '@5rdb/api'
 import { useCurrentUser } from './hooks/useCurrentUser'
+import { useAuth0Config } from './hooks/useAuth0Config'
+import { Typography } from '@material-ui/core'
+import { Auth0ProviderWithHistory } from './providers/Auth0ProviderWithHistory'
 
 // create our material ui theme using up to date typography variables
 const theme = createMuiTheme({
@@ -23,44 +26,31 @@ const theme = createMuiTheme({
       main: '#263238',
     },
   },
-})
-
-export const UserContext = createContext<User | undefined>(undefined)
+});
 
 export default function App(): JSX.Element {
-  captureToken()
-  const auth0Domain: string = process.env.REACT_APP_AUTH0_DOMAIN || 'undefined'
-  const auth0ClientId: string = process.env.REACT_APP_AUTH0_CLIENT_ID || 'undefined'
-  const audience = `http://fiveringsdb.com`
-  const scope = 'read:current_user'
-  const [user] = useCurrentUser()
 
+  const audience = 'http://fiveringsdb.com'
+  const scope = 'read:current_user'
+  
   return (
-    <Auth0Provider
-      domain={auth0Domain}
-      clientId={auth0ClientId}
-      redirectUri={window.location.origin}
-      audience={audience}
-      scope={scope}
-    >
-      <ThemeProvider theme={theme}>
-        <UserContext.Provider value={user.data}>
-        <BrowserRouter>
-            <HeaderBar audience={audience} scope={scope} />
-            <Switch>
-              <Route path="/cards">
-                <CardsView />
-              </Route>
-              <Route path="/card/:id">
-                <CardDetailView />
-              </Route>
-              <Route path="/">
-                <MainPage />
-              </Route>
-            </Switch>
-          </BrowserRouter>
-        </UserContext.Provider>
-      </ThemeProvider>
-    </Auth0Provider>
+    <ThemeProvider theme={theme}>
+      <BrowserRouter>
+        <Auth0ProviderWithHistory audience={audience} scope={scope} >
+          <HeaderBar audience={audience} scope={scope} />
+          <Switch>
+            <Route path="/cards">
+              <CardsView />
+            </Route>
+            <Route path="/card/:id">
+              <CardDetailView />
+            </Route>
+            <Route path="/">
+              <MainPage />
+            </Route>
+          </Switch>
+        </Auth0ProviderWithHistory>    
+      </BrowserRouter>
+    </ThemeProvider>
   )
 }

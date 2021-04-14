@@ -21,20 +21,31 @@ const BearerToken: Middleware = () => ({
   },
 })
 
-export const api = forge({
+export const publicApi = forge({
   clientId: '5rdb-client',
-  middleware: [BearerToken, EncodeJson, GlobalErrorHandler],
+  middleware: [EncodeJson, GlobalErrorHandler],
   host: '/api',
   resources: {
     Card: {
       findAll: { method: 'GET', path: '/cards' },
       find: { method: 'GET', path: '/cards/{cardId}' },
     },
+    Auth0: {
+      get: { method: 'GET', path: '/auth0' }
+    },
+  },
+})
+
+export const privateApi = forge({
+  clientId: '5rdb-client',
+  middleware: [BearerToken, EncodeJson, GlobalErrorHandler],
+  host: '/api',
+  resources: {
     Data: {
       import: {method: 'GET', path: '/import'}
     },
     User: {
       current: { method: 'GET', path: '/users/me'}
-    }
+    },
   },
 })

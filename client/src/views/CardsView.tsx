@@ -1,11 +1,11 @@
-import { Link } from 'react-router-dom'
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { EmptyState } from '../components/EmptyState'
 import { Loading } from '../components/Loading'
 import { RequestError } from '../components/RequestError'
 import { useCards } from '../hooks/useCards'
 import { Button } from '@material-ui/core'
-import { api } from '../api'
+import { privateApi } from '../api'
 
 export function CardsView() {
   const [data] = useCards()
@@ -24,7 +24,7 @@ export function CardsView() {
   console.log(cards)
   return (
     <ul>
-      <Button onClick={() => api.Data.import()}>Import Data</Button>
+      <Button onClick={() => privateApi.Data.import()}>Import Data</Button>
       {cards.map((card) => (
         <li key={card.id}>
           <Link to={`/card/${card.id}`}>
