@@ -1,0 +1,41 @@
+[
+    {
+        "allowed_clans": [
+            "unicorn"
+        ],
+        "clan": "unicorn",
+        "cost": "3",
+        "deck_limit": 3,
+        "element": [],
+        "fate": null,
+        "glory": 1,
+        "honor": null,
+        "id": "utaku-tetsuko",
+        "influence_cost": null,
+        "influence_pool": null,
+        "is_banned": false,
+        "is_banned_in_jade": false,
+        "is_banned_in_skirmish": false,
+        "is_restricted": false,
+        "is_restricted_in_jade": true,
+        "military": "3",
+        "military_bonus": null,
+        "name": "Utaku Tetsuko",
+        "name_extra": null,
+        "political": "1",
+        "political_bonus": null,
+        "role_restriction": null,
+        "side": "dynasty",
+        "strength": null,
+        "strength_bonus": null,
+        "text": "While this character is attacking, increase the cost for your opponent to play cards from his or her hand by 1.",
+        "traits": [
+            "bushi",
+            "cavalry",
+            "imperial",
+            "magistrate"
+        ],
+        "type": "character",
+        "unicity": true
+    }
+]

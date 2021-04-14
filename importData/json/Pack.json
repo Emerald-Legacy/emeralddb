@@ -1,0 +1,371 @@
+[
+    {
+        "id": "core",
+        "name": "Core Set",
+        "position": 1,
+        "size": 350,
+        "released_at": "2017-10-05",
+        "ffg_id": "L5C01",
+        "cycle_id": "core"
+    },
+    {
+        "id": "tears-of-amaterasu",
+        "name": "Tears of Amaterasu",
+        "position": 1,
+        "size": 20,
+        "released_at": "2017-11-09",
+        "ffg_id": "L5C02",
+        "cycle_id": "imperial"
+    },
+    {
+        "id": "for-honor-and-glory",
+        "name": "For Honor and Glory",
+        "position": 2,
+        "size": 20,
+        "released_at": "2017-11-16",
+        "ffg_id": "L5C03",
+        "cycle_id": "imperial"
+    },
+    {
+        "id": "into-the-forbidden-city",
+        "name": "Into the Forbidden City",
+        "position": 3,
+        "size": 20,
+        "released_at": "2017-11-24",
+        "ffg_id": "L5C04",
+        "cycle_id": "imperial"
+    },
+    {
+        "id": "the-chrysanthemum-throne",
+        "name": "The Chrysanthemum Throne",
+        "position": 4,
+        "size": 20,
+        "released_at": "2017-11-30",
+        "ffg_id": "L5C05",
+        "cycle_id": "imperial"
+    },
+    {
+        "id": "fate-has-no-secrets",
+        "name": "Fate Has No Secrets",
+        "position": 5,
+        "size": 20,
+        "released_at": "2017-12-07",
+        "ffg_id": "L5C06",
+        "cycle_id": "imperial"
+    },
+    {
+        "id": "meditations-on-the-ephemeral",
+        "name": "Meditations on the Ephemeral",
+        "position": 6,
+        "size": 20,
+        "released_at": "2017-12-14",
+        "ffg_id": "L5C07",
+        "cycle_id": "imperial"
+    },
+    {
+        "id": "disciples-of-the-void",
+        "name": "Disciples of the Void",
+        "position": 1,
+        "size": 28,
+        "released_at": "2018-04-05",
+        "ffg_id": "L5C08",
+        "cycle_id": "clan-packs"
+    },
+    {
+        "id": "breath-of-the-kami",
+        "name": "Breath of the Kami",
+        "position": 1,
+        "size": 20,
+        "released_at": "2018-06-28",
+        "ffg_id": "L5C09",
+        "cycle_id": "elemental"
+    },
+    {
+        "id": "tainted-lands",
+        "name": "Tainted Lands",
+        "position": 2,
+        "size": 20,
+        "released_at": "2018-07-05",
+        "ffg_id": "L5C10",
+        "cycle_id": "elemental"
+    },
+    {
+        "id": "the-fires-within",
+        "name": "The Fires Within",
+        "position": 3,
+        "size": 20,
+        "released_at": "2018-07-12",
+        "ffg_id": "L5C11",
+        "cycle_id": "elemental"
+    },
+    {
+        "id": "the-ebb-and-flow",
+        "name": "The Ebb and Flow",
+        "position": 4,
+        "size": 20,
+        "released_at": "2018-07-19",
+        "ffg_id": "L5C12",
+        "cycle_id": "elemental"
+    },
+    {
+        "id": "all-and-nothing",
+        "name": "All and Nothing",
+        "position": 5,
+        "size": 20,
+        "released_at": "2018-07-26",
+        "ffg_id": "L5C13",
+        "cycle_id": "elemental"
+    },
+    {
+        "id": "elements-unbound",
+        "name": "Elements Unbound",
+        "position": 6,
+        "size": 20,
+        "released_at": "2018-08-02",
+        "ffg_id": "L5C14",
+        "cycle_id": "elemental"
+    },
+    {
+        "id": "underhand-of-the-emperor",
+        "name": "Underhand of the Emperor",
+        "position": 2,
+        "size": 28,
+        "released_at": "2018-10-11",
+        "ffg_id": "L5C15",
+        "cycle_id": "clan-packs"
+    },
+    {
+        "id": "children-of-the-empire",
+        "name": "Children of the Empire",
+        "position": 1,
+        "size": 82,
+        "released_at": "2019-02-14",
+        "ffg_id": "L5C16",
+        "cycle_id": "premium-expansions"
+    },
+    {
+        "id": "warriors-of-the-wind",
+        "name": "Warriors of the Wind",
+        "position": 3,
+        "size": 28,
+        "released_at": "2019-04-11",
+        "ffg_id": "L5C17",
+        "cycle_id": "clan-packs"
+    },
+    {
+        "id": "masters-of-the-court",
+        "name": "Masters of the Court",
+        "position": 4,
+        "size": 28,
+        "released_at": "2019-04-26",
+        "ffg_id": "L5C18",
+        "cycle_id": "clan-packs"
+    },
+    {
+        "id": "for-the-empire",
+        "name": "For the Empire",
+        "position": 1,
+        "size": 22,
+        "released_at": "2019-06-22",
+        "ffg_id": "L5C19",
+        "cycle_id": "inheritance"
+    },
+    {
+        "id": "bonds-of-blood",
+        "name": "Bonds of Blood",
+        "position": 2,
+        "size": 22,
+        "released_at": "2019-07-19",
+        "ffg_id": "L5C20",
+        "cycle_id": "inheritance"
+    },
+    {
+        "id": "justice-for-satsume",
+        "name": "Justice for Satsume",
+        "position": 3,
+        "size": 22,
+        "released_at": "2019-08-23",
+        "ffg_id": "L5C21",
+        "cycle_id": "inheritance"
+    },
+    {
+        "id": "the-children-of-heaven",
+        "name": "The Children of Heaven",
+        "position": 4,
+        "size": 22,
+        "released_at": "2019-09-20",
+        "ffg_id": "L5C22",
+        "cycle_id": "inheritance"
+    },
+    {
+        "id": "a-champion-s-foresight",
+        "name": "A Champion's Foresight",
+        "position": 5,
+        "size": 22,
+        "released_at": "2019-10-25",
+        "ffg_id": "L5C23",
+        "cycle_id": "inheritance"
+    },
+    {
+        "id": "shoju-s-duty",
+        "name": "Shoju's Duty",
+        "position": 6,
+        "size": 20,
+        "released_at": "2019-11-29",
+        "ffg_id": "L5C24",
+        "cycle_id": "inheritance"
+    },
+    {
+        "id": "the-emperor-s-legion",
+        "name": "The Emperor's Legion",
+        "position": 5,
+        "size": 28,
+        "released_at": "2019-11-01",
+        "ffg_id": "L5C27",
+        "cycle_id": "clan-packs"
+    },
+    {
+        "id": "defenders-of-rokugan",
+        "name": "Defenders of Rokugan",
+        "position": 6,
+        "size": 32,
+        "released_at": "2019-11-08",
+        "ffg_id": "L5C26",
+        "cycle_id": "clan-packs"
+    },
+    {
+        "id": "seekers-of-wisdom",
+        "name": "Seekers of Wisdom",
+        "position": 7,
+        "size": 28,
+        "released_at": "2019-12-06",
+        "ffg_id": "L5C25",
+        "cycle_id": "clan-packs"
+    },
+    {
+        "id": "clan-war",
+        "name": "Clan War",
+        "position": 2,
+        "size": 94,
+        "released_at": "2020-02-07",
+        "ffg_id": "L5C28",
+        "cycle_id": "premium-expansions"
+    },
+    {
+        "id": "rokugan-at-war",
+        "name": "Rokugan at War",
+        "position": 1,
+        "size": 24,
+        "released_at": "2020-03-06",
+        "ffg_id": "L5C29",
+        "cycle_id": "dominion"
+    },
+    {
+        "id": "spreading-shadows",
+        "name": "Spreading Shadows",
+        "position": 2,
+        "size": 24,
+        "released_at": "2020-04-03",
+        "ffg_id": "L5C30",
+        "cycle_id": "dominion"
+    },
+    {
+        "id": "in-pursuit-of-truth",
+        "name": "In Pursuit of Truth",
+        "position": 3,
+        "size": 22,
+        "released_at": "2020-05-11",
+        "ffg_id": "L5C31",
+        "cycle_id": "dominion"
+    },
+    {
+        "id": "campaigns-of-conquest",
+        "name": "Campaigns of Conquest",
+        "position": 4,
+        "size": 22,
+        "released_at": "2020-07-08",
+        "ffg_id": "L5C32",
+        "cycle_id": "dominion"
+    },
+    {
+        "id": "as-honor-demands",
+        "name": "As Honor Demands",
+        "position": 5,
+        "size": 22,
+        "released_at": "2020-08-31",
+        "ffg_id": "L5C33",
+        "cycle_id": "dominion"
+    },
+    {
+        "id": "atonement",
+        "name": "Atonement",
+        "position": 6,
+        "size": 22,
+        "released_at": "2020-09-28",
+        "ffg_id": "L5C34",
+        "cycle_id": "dominion"
+    },
+    {
+        "id": "twisted-loyalties",
+        "name": "Twisted Loyalties",
+        "position": 1,
+        "size": 22,
+        "released_at": "2020-11-03",
+        "ffg_id": "L5C36",
+        "cycle_id": "temptations"
+    },
+    {
+        "id": "honor-in-flames",
+        "name": "Honor in Flames",
+        "position": 2,
+        "size": 22,
+        "released_at": "2020-12-04",
+        "ffg_id": "L5C37",
+        "cycle_id": "temptations"
+    },
+    {
+        "id": "a-crimson-offering",
+        "name": "A Crimson Offering",
+        "position": 3,
+        "size": 22,
+        "released_at": "2021-01-08",
+        "ffg_id": "L5C38",
+        "cycle_id": "temptations"
+    },
+    {
+        "id": "the-temptation-of-the-scorpion",
+        "name": "The Temptation of the Scorpion",
+        "position": 4,
+        "size": 20,
+        "released_at": "2021-02-19",
+        "ffg_id": "L5C39",
+        "cycle_id": "temptations"
+    },
+    {
+        "id": "coils-of-power",
+        "name": "Coils of Power",
+        "position": 5,
+        "size": 22,
+        "released_at": "2021-04-10",
+        "ffg_id": "L5C40",
+        "cycle_id": "temptations"
+    },
+    {
+        "id": "peace-at-any-cost",
+        "name": "Peace at Any Cost",
+        "position": 6,
+        "size": 22,
+        "released_at": "2021-04-10",
+        "ffg_id": "L5C41",
+        "cycle_id": "temptations"
+    },
+    {
+        "id": "draft-pack",
+        "name": "Draft Pack",
+        "position": 1,
+        "size": 14,
+        "released_at": null,
+        "ffg_id": "DRAFT",
+        "cycle_id": "other"
+    }
+]

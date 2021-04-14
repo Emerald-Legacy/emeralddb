@@ -1,0 +1,38 @@
+[
+    {
+        "allowed_clans": [
+            "phoenix"
+        ],
+        "clan": "phoenix",
+        "cost": "4",
+        "deck_limit": 3,
+        "element": [],
+        "fate": null,
+        "glory": 2,
+        "honor": null,
+        "id": "relentless-inquisitor",
+        "influence_cost": null,
+        "influence_pool": null,
+        "is_banned": false,
+        "is_banned_in_jade": false,
+        "is_banned_in_skirmish": false,
+        "is_restricted": false,
+        "is_restricted_in_jade": false,
+        "military": "2",
+        "military_bonus": null,
+        "name": "Relentless Inquisitor",
+        "name_extra": null,
+        "political": "4",
+        "political_bonus": null,
+        "role_restriction": "seeker",
+        "side": "dynasty",
+        "strength": null,
+        "strength_bonus": null,
+        "text": "<em>Seeker</em> role only.\n<b>Action:</b> During a conflict in which this character is participating, choose a participating character your opponent controls. They must select one - either remove 1 fate from that character or bow it.",
+        "traits": [
+            "courtier"
+        ],
+        "type": "character",
+        "unicity": true
+    }
+]

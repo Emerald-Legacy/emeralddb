@@ -1,0 +1,39 @@
+[
+    {
+        "allowed_clans": [
+            "crab"
+        ],
+        "clan": "crab",
+        "cost": "4",
+        "deck_limit": 3,
+        "element": [],
+        "fate": null,
+        "glory": 0,
+        "honor": null,
+        "id": "master-of-jade",
+        "influence_cost": null,
+        "influence_pool": null,
+        "is_banned": false,
+        "is_banned_in_jade": false,
+        "is_banned_in_skirmish": false,
+        "is_restricted": false,
+        "is_restricted_in_jade": false,
+        "military": "3",
+        "military_bonus": null,
+        "name": "Master of Jade",
+        "name_extra": null,
+        "political": "3",
+        "political_bonus": null,
+        "role_restriction": "keeper",
+        "side": "dynasty",
+        "strength": null,
+        "strength_bonus": null,
+        "text": "<em>Keeper</em> role only.\n<b>Action:</b> Lose 2 honor. Choose a character - place 1 fate on that character.",
+        "traits": [
+            "shugenja",
+            "earth"
+        ],
+        "type": "character",
+        "unicity": false
+    }
+]

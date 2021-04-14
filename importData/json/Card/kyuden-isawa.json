@@ -1,0 +1,39 @@
+[
+    {
+        "allowed_clans": [
+            "phoenix"
+        ],
+        "clan": "phoenix",
+        "cost": null,
+        "deck_limit": 1,
+        "element": [],
+        "fate": 7,
+        "glory": null,
+        "honor": 11,
+        "id": "kyuden-isawa",
+        "influence_cost": null,
+        "influence_pool": 10,
+        "is_banned": false,
+        "is_banned_in_jade": false,
+        "is_banned_in_skirmish": false,
+        "is_restricted": false,
+        "is_restricted_in_jade": false,
+        "military": null,
+        "military_bonus": null,
+        "name": "Kyūden Isawa",
+        "name_extra": null,
+        "political": null,
+        "political_bonus": null,
+        "role_restriction": null,
+        "side": "province",
+        "strength": null,
+        "strength_bonus": "+1",
+        "text": "<b>Action:</b> During a conflict, bow this stronghold and discard a <em>Spell</em> event from your hand – play a <em>Spell</em> event from your conflict discard pile as if it were in your hand. Remove that event from the game.\n<i>Errata from the Imperial Law (2020-01-06)</i>",
+        "traits": [
+            "library",
+            "palace"
+        ],
+        "type": "stronghold",
+        "unicity": true
+    }
+]

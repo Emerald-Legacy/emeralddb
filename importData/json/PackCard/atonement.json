@@ -1,0 +1,178 @@
+[
+  {
+      "card_id": "iron-mountain-castle",
+      "flavor": "",
+      "illustrator": "Nele Diel",
+      "image_url": "http://lcg-cdn.fantasyflightgames.com/l5r/L5C34_115.jpg",
+      "position": "115",
+      "quantity": 1
+  },
+  {
+      "card_id": "unbridled-ambition",
+      "flavor": "\"Sotorii would be indebted to us. Through him, you could do the things that need to be done.\" - Bayushi Kachiko",
+      "illustrator": "Leo Avero",
+      "image_url": "https://images-cdn.fantasyflightgames.com/filer_public/ce/11/ce1162ee-b543-401c-bfce-ff6e5544c5c0/l5c01_unbridled-ambition.png",
+      "position": "116",
+      "quantity": 1
+  },
+  {
+      "card_id": "weight-of-duty",
+      "flavor": "",
+      "illustrator": "Asep Ariyanto",
+      "image_url": "http://lcg-cdn.fantasyflightgames.com/l5r/L5C34_117.jpg",
+      "position": "117",
+      "quantity": 1
+  },
+  {
+      "card_id": "fire-and-oil",
+      "flavor": "",
+      "illustrator": "Apterus",
+      "image_url": "http://lcg-cdn.fantasyflightgames.com/l5r/L5C34_118.jpg",
+      "position": "118",
+      "quantity": 3
+  },
+  {
+      "card_id": "doji-diplomat",
+      "flavor": "\"Our clan needs strength of arms now, more than ever, and I think you can help my gain the allies we need.\" - Kakita Yoshi",
+      "illustrator": "Derek D. Edgell",
+      "image_url": "http://lcg-cdn.fantasyflightgames.com/l5r/L5C34_119.jpg",
+      "position": "119",
+      "quantity": 3
+  },
+  {
+      "card_id": "agasha-sumiko-2",
+      "flavor": "",
+      "illustrator": "Asep Ariyanto",
+      "image_url": "http://lcg-cdn.fantasyflightgames.com/l5r/L5C34_120.jpg",
+      "position": "120",
+      "quantity": 3
+  },
+  {
+      "card_id": "righteous-samurai",
+      "flavor": "\"Unlike you, my actions are above reproach.\"",
+      "illustrator": "Andreia Ugrai",
+      "image_url": "http://lcg-cdn.fantasyflightgames.com/l5r/L5C34_121.jpg",
+      "position": "121",
+      "quantity": 3
+  },
+  {
+      "card_id": "exposed-courtyard",
+      "flavor": "",
+      "illustrator": "Nele Diel",
+      "image_url": "http://lcg-cdn.fantasyflightgames.com/l5r/L5C34_122.jpg",
+      "position": "122",
+      "quantity": 3
+  },
+  {
+      "card_id": "shiba-pureheart",
+      "flavor": "",
+      "illustrator": "Guillaume Ducos",
+      "image_url": "http://lcg-cdn.fantasyflightgames.com/l5r/L5C34_123.jpg",
+      "position": "123",
+      "quantity": 3
+  },
+  {
+      "card_id": "bayushi-kachiko-2",
+      "flavor": "",
+      "illustrator": "Drazenka Kimpel",
+      "image_url": "http://lcg-cdn.fantasyflightgames.com/l5r/L5C34_124.jpg",
+      "position": "124",
+      "quantity": 3
+  },
+  {
+      "card_id": "ganzu-warrior",
+      "flavor": "",
+      "illustrator": "Lin Hsiang",
+      "image_url": "http://lcg-cdn.fantasyflightgames.com/l5r/L5C34_125.jpg",
+      "position": "125",
+      "quantity": 3
+  },
+  {
+      "card_id": "worldly-shiotome",
+      "flavor": "",
+      "illustrator": "Mario Wibisono",
+      "image_url": "http://lcg-cdn.fantasyflightgames.com/l5r/L5C34_126.jpg",
+      "position": "126",
+      "quantity": 3
+  },
+  {
+      "card_id": "sudden-tempest",
+      "flavor": "",
+      "illustrator": "Nele Diel",
+      "image_url": "http://lcg-cdn.fantasyflightgames.com/l5r/L5C34_127.jpg",
+      "position": "127",
+      "quantity": 3
+  },
+  {
+      "card_id": "apprentice-engineer",
+      "flavor": "",
+      "illustrator": "Lin Hsiang",
+      "image_url": "http://lcg-cdn.fantasyflightgames.com/l5r/L5C34_128.jpg",
+      "position": "128",
+      "quantity": 3
+  },
+  {
+      "card_id": "inventive-buttressing",
+      "flavor": "\"It would take several oni to break these gates.\" - Kaiu Shuichi",
+      "illustrator": "Hai Hoang",
+      "image_url": "http://lcg-cdn.fantasyflightgames.com/l5r/L5C34_129.jpg",
+      "position": "129",
+      "quantity": 3
+  },
+  {
+      "card_id": "treasured-gift",
+      "flavor": "\"What could I ever do to repay such kindness?\"",
+      "illustrator": "Carlos Palma Cruchage",
+      "image_url": "http://lcg-cdn.fantasyflightgames.com/l5r/L5C34_130.jpg",
+      "position": "130",
+      "quantity": 3
+  },
+  {
+      "card_id": "daidoji-yari",
+      "flavor": "",
+      "illustrator": "Carlos Palma Cruchaga",
+      "image_url": "http://lcg-cdn.fantasyflightgames.com/l5r/L5C34_131.jpg",
+      "position": "131",
+      "quantity": 3
+  },
+  {
+      "card_id": "in-search-of-self",
+      "flavor": "Many pilgrims set our to discover the world. Those who find wisdom discover themselves.",
+      "illustrator": "Andreia Ugrai",
+      "image_url": "http://lcg-cdn.fantasyflightgames.com/l5r/L5C34_132.jpg",
+      "position": "132",
+      "quantity": 3
+  },
+  {
+      "card_id": "spiritcaller-prodigy",
+      "flavor": "\"The souls of the last kitsu remain within each of us, that they might one day return in glory.\" - Kitsu Takeko",
+      "illustrator": "Andreia Ugrai",
+      "image_url": "http://lcg-cdn.fantasyflightgames.com/l5r/L5C34_133.jpg",
+      "position": "133",
+      "quantity": 3
+  },
+  {
+      "card_id": "magistrate-s-intervention",
+      "flavor": "",
+      "illustrator": "Carlos Palma Cruchaga",
+      "image_url": "http://lcg-cdn.fantasyflightgames.com/l5r/L5C34_134.jpg",
+      "position": "134",
+      "quantity": 3
+  },
+  {
+      "card_id": "compromised-secrets",
+      "flavor": "",
+      "illustrator": "Felipe Gaona",
+      "image_url": "http://lcg-cdn.fantasyflightgames.com/l5r/L5C34_135.jpg",
+      "position": "135",
+      "quantity": 3
+  },
+  {
+      "card_id": "flank-the-enemy",
+      "flavor": "",
+      "illustrator": "Imad Awan",
+      "image_url": "http://lcg-cdn.fantasyflightgames.com/l5r/L5C34_136.jpg",
+      "position": "136",
+      "quantity": 3
+  }
+]

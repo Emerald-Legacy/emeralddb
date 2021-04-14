@@ -1,0 +1,40 @@
+[
+    {
+        "allowed_clans": [
+            "unicorn"
+        ],
+        "clan": "unicorn",
+        "cost": "2",
+        "deck_limit": 3,
+        "element": [],
+        "fate": null,
+        "glory": 0,
+        "honor": null,
+        "id": "way-station-trader",
+        "influence_cost": null,
+        "influence_pool": null,
+        "is_banned": false,
+        "is_banned_in_jade": false,
+        "is_banned_in_skirmish": false,
+        "is_restricted": false,
+        "is_restricted_in_jade": false,
+        "military": "1",
+        "military_bonus": null,
+        "name": "Way Station Trader",
+        "name_extra": null,
+        "political": "2",
+        "political_bonus": null,
+        "role_restriction": null,
+        "side": "dynasty",
+        "strength": null,
+        "strength_bonus": null,
+        "text": "Limited. <i>(No more than one limited card can be played by each player each round.)</i>\n<b>Reaction:</b> After a province is revealed during a conflict in which this character is participating, choose an opponent - take 1 fate from that opponent.",
+        "traits": [
+            "courtier",
+            "gaijin",
+            "merchant"
+        ],
+        "type": "character",
+        "unicity": false
+    }
+]

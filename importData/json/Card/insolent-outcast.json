@@ -1,0 +1,45 @@
+[
+    {
+        "allowed_clans": [
+            "crab",
+            "crane",
+            "dragon",
+            "lion",
+            "phoenix",
+            "scorpion",
+            "unicorn"
+        ],
+        "clan": "neutral",
+        "cost": "2",
+        "deck_limit": 3,
+        "element": [],
+        "fate": null,
+        "glory": 0,
+        "honor": null,
+        "id": "insolent-outcast",
+        "influence_cost": null,
+        "influence_pool": null,
+        "is_banned": false,
+        "is_banned_in_jade": false,
+        "is_banned_in_skirmish": false,
+        "is_restricted": false,
+        "is_restricted_in_jade": false,
+        "military": "1",
+        "military_bonus": null,
+        "name": "Insolent Outcast",
+        "name_extra": null,
+        "political": "1",
+        "political_bonus": null,
+        "role_restriction": "seeker",
+        "side": "dynasty",
+        "strength": null,
+        "strength_bonus": null,
+        "text": "<em>Seeker</em> role only.\nThis character gets +1[conflict-military] and +1[conflict-political] for each honored character your opponent controls.",
+        "traits": [
+            "bushi",
+            "ronin"
+        ],
+        "type": "character",
+        "unicity": false
+    }
+]

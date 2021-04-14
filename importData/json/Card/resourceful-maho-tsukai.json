@@ -1,0 +1,45 @@
+[
+    {
+        "allowed_clans": [
+            "crab",
+            "crane",
+            "dragon",
+            "lion",
+            "phoenix",
+            "scorpion",
+            "unicorn"
+        ],
+        "clan": "neutral",
+        "cost": "2",
+        "deck_limit": 3,
+        "element": [],
+        "fate": null,
+        "glory": 0,
+        "honor": null,
+        "id": "resourceful-maho-tsukai",
+        "influence_cost": null,
+        "influence_pool": null,
+        "is_banned": false,
+        "is_banned_in_jade": false,
+        "is_banned_in_skirmish": false,
+        "is_restricted": false,
+        "is_restricted_in_jade": false,
+        "military": "2",
+        "military_bonus": null,
+        "name": "Resourceful Mahō-Tsukai",
+        "name_extra": null,
+        "political": "1",
+        "political_bonus": null,
+        "role_restriction": null,
+        "side": "dynasty",
+        "strength": null,
+        "strength_bonus": null,
+        "text": "No attachments except <em>Shadowlands</em> or <em>Spell</em>.\nWhile this character is dishonored, reduce the cost to play each <em>Mahō</em> card you play by 1 <i>(to a minimum of 0)</i>.",
+        "traits": [
+            "shugenja",
+            "shadowlands"
+        ],
+        "type": "character",
+        "unicity": false
+    }
+]

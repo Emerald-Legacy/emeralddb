@@ -1,0 +1,178 @@
+[
+  {
+      "card_id": "shiro-gisu",
+      "flavor": "",
+      "illustrator": "Daria Khlebnikova",
+      "image_url": "https://images-cdn.fantasyflightgames.com/filer_public/43/83/43835d14-705f-4d4d-9bb7-875d387219a0/l5c41_shiro-gisu.png",
+      "position": "109",
+      "quantity": 1
+  },
+  {
+      "card_id": "golden-plains",
+      "flavor": "",
+      "illustrator": "Carlos Palma Cruchaga",
+      "image_url": "https://i.ibb.co/mJwPLv5/Pack-5-6-13.png",
+      "position": "110",
+      "quantity": 1
+  },
+  {
+      "card_id": "lord-s-ascendancy",
+      "flavor": "",
+      "illustrator": "Borja Pindado",
+      "image_url": "https://i.ibb.co/Gv7ZmQT/Pack-5-6-15.png",
+      "position": "111",
+      "quantity": 1
+  },
+  {
+      "card_id": "midnight-builder",
+      "flavor": "",
+      "illustrator": "Andreia Ugrai",
+      "image_url": "https://i.ibb.co/2yMVXrF/Pack-5-6-5.png",
+      "position": "112",
+      "quantity": 3
+  },
+  {
+      "card_id": "doom-thrower",
+      "flavor": "",
+      "illustrator": "Hai Hoang",
+      "image_url": "https://i.ibb.co/BKdj31k/Pack-5-6-6.png",
+      "position": "113",
+      "quantity": 3
+  },
+  {
+      "card_id": "daidoji-iron-warrior",
+      "flavor": "\"We may be outnumbered, but we will never be outmatched.\"",
+      "illustrator": "Imad Awan",
+      "image_url": "https://i.ibb.co/rF28VFm/Pack-5-6-11.png",
+      "position": "114",
+      "quantity": 3
+  },
+  {
+      "card_id": "furtive-sympathizer",
+      "flavor": "",
+      "illustrator": "Guillaume Ducos",
+      "image_url": "https://images-cdn.fantasyflightgames.com/filer_public/a7/39/a7390df6-d0ed-4820-82e5-2802e016edbf/l5c41_furtive-sympathizer.png",
+      "position": "115",
+      "quantity": 3
+  },
+  {
+      "card_id": "adorned-temple",
+      "flavor": "",
+      "illustrator": "Nele Diel",
+      "image_url": "https://i.ibb.co/10vFr7x/Pack-5-6-8.png",
+      "position": "116",
+      "quantity": 3
+  },
+  {
+      "card_id": "ikoma-ujiaki-2",
+      "flavor": "\"Our service to the throne has never wavered.\"",
+      "illustrator": "Surya Prasetya",
+      "image_url": "https://i.ibb.co/TMRTSrd/Pack-5-6-14.png",
+      "position": "117",
+      "quantity": 3
+  },
+  {
+      "card_id": "inquisitorial-initiate",
+      "flavor": "",
+      "illustrator": "Isuardi Therianto",
+      "image_url": "https://images-cdn.fantasyflightgames.com/filer_public/02/2a/022a5e37-fa80-4118-b226-3a1c776c8474/l5c41_inquisitorial-initiate.png",
+      "position": "118",
+      "quantity": 3
+  },
+  {
+      "card_id": "relentless-inquisitor",
+      "flavor": "",
+      "illustrator": "Marius Bota",
+      "image_url": "https://images-cdn.fantasyflightgames.com/filer_public/be/fa/befa7977-785c-4d4f-b644-108187b54911/l5c41_relentless-inquisitor.png",
+      "position": "119",
+      "quantity": 3
+  },
+  {
+      "card_id": "underhanded-samurai",
+      "flavor": "\"Confront only your enemy's weaknesses, never their strengths.\" - Bayushi's Lies",
+      "illustrator": "Drew Baker",
+      "image_url": "https://i.ibb.co/jz1sypH/Pack-5-6-21.png",
+      "position": "120",
+      "quantity": 3
+  },
+  {
+      "card_id": "moto-conqueror",
+      "flavor": "On the distant Plain of Wind and Stone, Shinjo's followers learned new gaijin ways to ride, to hunt and to fight from horseback.",
+      "illustrator": "Imad Awan",
+      "image_url": "https://i.ibb.co/hFgFWFQ/Pack-5-6-16.png",
+      "position": "121",
+      "quantity": 3
+  },
+  {
+      "card_id": "at-any-cost",
+      "flavor": "",
+      "illustrator": "Francesca Baerald",
+      "image_url": "https://i.ibb.co/ZLj7gGL/Pack-5-6-9.png",
+      "position": "122",
+      "quantity": 3
+  },
+  {
+      "card_id": "dutiful-assistant",
+      "flavor": "",
+      "illustrator": "IFS",
+      "image_url": "https://i.ibb.co/hXTYNkN/Pack-5-6-26.png",
+      "position": "123",
+      "quantity": 3
+  },
+  {
+      "card_id": "setting-the-standard",
+      "flavor": "",
+      "illustrator": "Isuardi Therianto",
+      "image_url": "https://i.ibb.co/X72cBX7/Pack-5-6-18.png",
+      "position": "124",
+      "quantity": 3
+  },
+  {
+      "card_id": "belief-in-the-little-teacher",
+      "flavor": "\"The kie was given to us by Shinsei to finally be free of karma and reincarnation.\"",
+      "illustrator": "Guillaume Ducos",
+      "image_url": "https://images-cdn.fantasyflightgames.com/filer_public/4a/49/4a495a62-082d-4a70-af8c-5f0bedf19040/l5c41_belief-in-the-little-teacher.png",
+      "position": "125",
+      "quantity": 3
+  },
+  {
+      "card_id": "ujiaki-s-offer",
+      "flavor": "",
+      "illustrator": "Kanadekana",
+      "image_url": "https://i.ibb.co/5nm5MbQ/Pack-5-6-20.png",
+      "position": "126",
+      "quantity": 3
+  },
+  {
+      "card_id": "a-war-on-two-fronts",
+      "flavor": "",
+      "illustrator": "Francesca Baerald",
+      "image_url": "https://i.ibb.co/yfn6rcN/Pack-5-6-7.png",
+      "position": "127",
+      "quantity": 3
+  },
+  {
+      "card_id": "cleanse-the-empire",
+      "flavor": "",
+      "illustrator": "Imad Awan",
+      "image_url": "https://i.ibb.co/1n03rS8/Pack-5-6-10.png",
+      "position": "128",
+      "quantity": 3
+  },
+  {
+      "card_id": "subterfuge",
+      "flavor": "",
+      "illustrator": "Drazenka Kimpel",
+      "image_url": "https://i.ibb.co/7G4TJ8W/subterfuge-fixed.png",
+      "position": "129",
+      "quantity": 3
+  },
+  {
+      "card_id": "ride-on",
+      "flavor": "\"Why would we settle down like some indulgent Bayushi, when we draw strength from our unique freedom?\" - Moto Rurame",
+      "illustrator": "Carlos Palma Cruchaga",
+      "image_url": "https://i.ibb.co/2sJBxrG/Pack-5-6-17.png",
+      "position": "130",
+      "quantity": 3
+  }
+]

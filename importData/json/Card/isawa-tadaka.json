@@ -1,0 +1,40 @@
+[
+    {
+        "allowed_clans": [
+            "phoenix"
+        ],
+        "clan": "phoenix",
+        "cost": "5",
+        "deck_limit": 3,
+        "element": [],
+        "fate": null,
+        "glory": 2,
+        "honor": null,
+        "id": "isawa-tadaka",
+        "influence_cost": null,
+        "influence_pool": null,
+        "is_banned": true,
+        "is_banned_in_jade": true,
+        "is_banned_in_skirmish": false,
+        "is_restricted": false,
+        "is_restricted_in_jade": false,
+        "military": "5",
+        "military_bonus": null,
+        "name": "Isawa Tadaka",
+        "name_extra": null,
+        "political": "3",
+        "political_bonus": null,
+        "role_restriction": null,
+        "side": "dynasty",
+        "strength": null,
+        "strength_bonus": null,
+        "text": "Each opponent cannot play copies of event cards that are in his or her conflict discard pile unless the [element-earth] ring is in the player's claimed ring pool.",
+        "traits": [
+            "shugenja",
+            "earth",
+            "elemental-master"
+        ],
+        "type": "character",
+        "unicity": true
+    }
+]

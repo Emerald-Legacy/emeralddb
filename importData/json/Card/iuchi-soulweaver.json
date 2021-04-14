@@ -1,0 +1,40 @@
+[
+    {
+        "allowed_clans": [
+            "unicorn"
+        ],
+        "clan": "unicorn",
+        "cost": "1",
+        "deck_limit": 3,
+        "element": [],
+        "fate": null,
+        "glory": 0,
+        "honor": null,
+        "id": "iuchi-soulweaver",
+        "influence_cost": null,
+        "influence_pool": null,
+        "is_banned": false,
+        "is_banned_in_jade": false,
+        "is_banned_in_skirmish": false,
+        "is_restricted": false,
+        "is_restricted_in_jade": false,
+        "military": "1",
+        "military_bonus": null,
+        "name": "Iuchi Soulweaver",
+        "name_extra": null,
+        "political": "1",
+        "political_bonus": null,
+        "role_restriction": null,
+        "side": "dynasty",
+        "strength": null,
+        "strength_bonus": null,
+        "text": "Dire - This character is considered to be participating in each conflict in which you control at least 1 other participating character. It does not bow as a result of conflict resolution in conflicts in which it is at home. <i>(This character is dire when it has no fate on it.)</i>",
+        "traits": [
+            "shugenja",
+            "water",
+            "cavalry"
+        ],
+        "type": "character",
+        "unicity": false
+    }
+]
