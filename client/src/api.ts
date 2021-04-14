@@ -30,6 +30,12 @@ export const publicApi = forge({
       findAll: { method: 'GET', path: '/cards' },
       find: { method: 'GET', path: '/cards/{cardId}' },
     },
+    Pack: {
+      findAll: { method: 'GET', path: '/packs' }
+    },
+    Cycle: {
+      findAll: { method: 'GET', path: '/cycles' }
+    },
     Auth0: {
       get: { method: 'GET', path: '/auth0' }
     },

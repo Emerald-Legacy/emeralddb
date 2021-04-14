@@ -16,10 +16,12 @@ export function captureToken() {
 }
 
 export function setToken(token: string) {
+  console.log("Set token")
   window.localStorage.setItem(AUTH_TOKEN, token)
 }
 
 export function unsetToken() {
+  console.log("Unset token")
   window.localStorage.removeItem(AUTH_TOKEN)
 }
 

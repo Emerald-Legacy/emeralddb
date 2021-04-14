@@ -1,27 +1,11 @@
-import React from 'react'
+import { useContext } from 'react'
 import { Link } from 'react-router-dom'
-import { EmptyState } from '../components/EmptyState'
-import { Loading } from '../components/Loading'
-import { RequestError } from '../components/RequestError'
-import { useCards } from '../hooks/useCards'
 import { Button } from '@material-ui/core'
 import { privateApi } from '../api'
+import { UiStoreContext } from '../providers/UiStoreProvider'
 
 export function CardsView() {
-  const [data] = useCards()
-
-  if (data.loading) {
-    return <Loading />
-  }
-  if (data.error) {
-    return <RequestError requestError={data.error} />
-  }
-  if (data.data == null) {
-    return <EmptyState />
-  }
-
-  const cards = data.data
-  console.log(cards)
+  const {cards} = useContext(UiStoreContext)
   return (
     <ul>
       <Button onClick={() => privateApi.Data.import()}>Import Data</Button>
