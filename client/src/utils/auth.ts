@@ -1,27 +1,10 @@
 const AUTH_TOKEN = '5RDB_Token'
 
-const bearerToken = {
-  tokenFromQueryParamsRegexp: /token=([^&]+)/,
-  extractToken(): string | null {
-    const match = document.location.search.match(this.tokenFromQueryParamsRegexp)
-    return match ? match[1] : null
-  },
-}
-
-export function captureToken() {
-  const token = bearerToken.extractToken()
-  if (token) {
-    setToken(token)
-  }
-}
-
-export function setToken(token: string) {
-  console.log("Set token")
+export function setToken(token: string): void {
   window.localStorage.setItem(AUTH_TOKEN, token)
 }
 
-export function unsetToken() {
-  console.log("Unset token")
+export function unsetToken(): void {
   window.localStorage.removeItem(AUTH_TOKEN)
 }
 

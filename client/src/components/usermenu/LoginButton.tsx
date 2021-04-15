@@ -1,18 +1,12 @@
-import { useAuth0 } from "@auth0/auth0-react";
-import { Button } from "@material-ui/core";
-import { setToken } from "../../utils/auth";
+import { useAuth0 } from '@auth0/auth0-react'
+import { Button } from '@material-ui/core'
 
-export const LoginButton = (props: {onLogin: () => void}) => {
-  const { loginWithPopup }= useAuth0()
+export function LoginButton(props: { onLogin: () => void }): JSX.Element {
+  const { loginWithPopup } = useAuth0()
 
   return (
-    <Button
-      variant="contained"
-      onClick={() =>
-        loginWithPopup().then(props.onLogin)
-      }
-    >
+    <Button variant="contained" onClick={() => loginWithPopup().then(props.onLogin)}>
       Log In
     </Button>
-  );
-};
+  )
+}

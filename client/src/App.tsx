@@ -22,10 +22,9 @@ const theme = createMuiTheme({
       main: '#263238',
     },
   },
-});
+})
 
 export default function App(): JSX.Element {
-
   const audience = 'http://fiveringsdb.com'
   const scope = 'read:current_user'
   const queryClient = new QueryClient()
@@ -34,7 +33,7 @@ export default function App(): JSX.Element {
     <ThemeProvider theme={theme}>
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
-          <Auth0ProviderWithHistory audience={audience} scope={scope} >
+          <Auth0ProviderWithHistory audience={audience} scope={scope}>
             <UiStoreProvider>
               <HeaderBar audience={audience} scope={scope} />
               <Container>
@@ -51,7 +50,7 @@ export default function App(): JSX.Element {
                 </Switch>
               </Container>
             </UiStoreProvider>
-          </Auth0ProviderWithHistory>    
+          </Auth0ProviderWithHistory>
         </BrowserRouter>
       </QueryClientProvider>
     </ThemeProvider>

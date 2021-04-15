@@ -31,13 +31,16 @@ export const publicApi = forge({
       find: { method: 'GET', path: '/cards/{cardId}' },
     },
     Pack: {
-      findAll: { method: 'GET', path: '/packs' }
+      findAll: { method: 'GET', path: '/packs' },
     },
     Cycle: {
-      findAll: { method: 'GET', path: '/cycles' }
+      findAll: { method: 'GET', path: '/cycles' },
+    },
+    Trait: {
+      findAll: { method: 'GET', path: '/traits' },
     },
     Auth0: {
-      get: { method: 'GET', path: '/auth0' }
+      get: { method: 'GET', path: '/auth0' },
     },
   },
 })
@@ -48,11 +51,11 @@ export const privateApi = forge({
   host: '/api',
   resources: {
     Data: {
-      import: {method: 'GET', path: '/import'}
+      import: { method: 'GET', path: '/import' },
     },
     User: {
-      current: { method: 'GET', path: '/users/me'},
-      update: { method: 'PUT', path: '/users/me'}
+      current: { method: 'GET', path: '/users/me' },
+      update: { method: 'PUT', path: '/users/me' },
     },
   },
 })
