@@ -27,7 +27,7 @@ export function CardDetailView(): JSX.Element {
   return (
     <Grid container spacing={5}>
       <Grid item xs={12} md={7}>
-        <Box border="solid 1px" padding="3px">
+        <Box border="solid 1px" padding="3px" borderRadius="2px">
           <Typography variant='h5'>
             {card.name}
           </Typography>

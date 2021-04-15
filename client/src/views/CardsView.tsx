@@ -7,7 +7,7 @@ import { DataGrid, GridColumns } from '@material-ui/data-grid';
 import { useContext } from 'react'
 import { useHistory } from 'react-router-dom';
 import { CardTypeIcon } from '../components/CardTypeIcon';
-import { UiStoreContext } from '../providers/UiStoreProvider'
+import { UiStoreContext, useUiStore } from '../providers/UiStoreProvider'
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -34,7 +34,7 @@ interface TableCard {
 
 export function CardsView(): JSX.Element {
   const classes = useStyles()
-  const { cards, traits } = useContext(UiStoreContext)
+  const { cards, traits } = useUiStore()
   const history = useHistory()
 
   const capitalize = (input: string) => {

@@ -1,10 +1,8 @@
 import { AppBar, Container, makeStyles, Toolbar, Typography } from '@material-ui/core'
 import { UserMenu } from './usermenu/UserMenu'
-import { useQuery } from 'react-query'
-import { publicApi } from '../api'
 import { UiStoreContext } from '../providers/UiStoreProvider'
-import { forwardRef, useContext } from 'react'
-import { Link, useHistory } from 'react-router-dom'
+import { useContext } from 'react'
+import { useHistory } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,21 +26,7 @@ export enum Queries {
 
 export function HeaderBar(props: { audience: string; scope: string }): JSX.Element {
   const classes = useStyles()
-  const uiStore = useContext(UiStoreContext)
   const history = useHistory()
-
-  useQuery(Queries.CARDS, () =>
-    publicApi.Card.findAll().then((cards) => uiStore.setCards(cards.data()))
-  )
-  useQuery(Queries.PACKS, () =>
-    publicApi.Pack.findAll().then((packs) => uiStore.setPacks(packs.data()))
-  )
-  useQuery(Queries.CYCLES, () =>
-    publicApi.Cycle.findAll().then((cycles) => uiStore.setCycles(cycles.data()))
-  )
-  useQuery(Queries.TRAITS, () =>
-    publicApi.Trait.findAll().then((traits) => uiStore.setTraits(traits.data()))
-  )
 
   const host = window.location.host;
   const title = host.includes('localhost') ? 'LOCAL FiveRingsDB' : host.includes('beta-') ? "BETA FiveRingsDB" : "FiveRingsDB"

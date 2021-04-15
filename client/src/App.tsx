@@ -17,10 +17,10 @@ import FiveRingsFontWoff from './assets/fonts/fiveringsdb.woff';
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: '#558b2f',
+      main: '#263238',
     },
     secondary: {
-      main: '#263238',
+      main: '#da532c',
     },
   },
 })
