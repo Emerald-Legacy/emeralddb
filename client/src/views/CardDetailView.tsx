@@ -1,10 +1,11 @@
 import React from 'react'
-import { Grid, Typography } from '@material-ui/core'
+import { Box, Card, Grid, Paper, Typography } from '@material-ui/core'
 import { useParams } from 'react-router-dom'
 import { EmptyState } from '../components/EmptyState'
 import { Loading } from '../components/Loading'
 import { RequestError } from '../components/RequestError'
 import { useCard } from '../hooks/useCard'
+import { CardText } from '../components/card/CardText'
 
 export function CardDetailView(): JSX.Element {
   const params = useParams<{ id: string }>()
@@ -21,15 +22,23 @@ export function CardDetailView(): JSX.Element {
   }
 
   const card = data.data
-  console.log(card)
+  const textLines = card.text?.split('\n') || []
+
   return (
-    <Grid container>
-      <Grid item xs={12} sm={7}>
-        <Typography variant='h5'>
-          {card.name}
-        </Typography>
+    <Grid container spacing={5}>
+      <Grid item xs={12} md={7}>
+        <Box border="solid 1px" padding="3px">
+          <Typography variant='h5'>
+            {card.name}
+          </Typography>
+          <Grid container>
+            <Grid item xs={12}>
+              {textLines.map(line => <p><CardText text={line}/></p>)}
+            </Grid>
+          </Grid>
+        </Box>
       </Grid>
-      <Grid item xs={12} sm={5}>
+      <Grid item xs={12} md={5}>
         {card.versions.map((version) => (
           <img key={card.id + '_' + version.pack_id} src={version.image_url} />
         ))}
