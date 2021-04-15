@@ -10,6 +10,7 @@ import { HeaderBar } from './components/HeaderBar'
 import { MainPage } from './views/MainPage'
 import { Auth0ProviderWithHistory } from './providers/Auth0ProviderWithHistory'
 import { UiStoreProvider } from './providers/UiStoreProvider'
+import { Container } from '@material-ui/core'
 
 // create our material ui theme using up to date typography variables
 const theme = createMuiTheme({
@@ -36,17 +37,19 @@ export default function App(): JSX.Element {
           <Auth0ProviderWithHistory audience={audience} scope={scope} >
             <UiStoreProvider>
               <HeaderBar audience={audience} scope={scope} />
-              <Switch>
-                <Route path="/cards">
-                  <CardsView />
-                </Route>
-                <Route path="/card/:id">
-                  <CardDetailView />
-                </Route>
-                <Route path="/">
-                  <MainPage />
-                </Route>
-              </Switch>
+              <Container>
+                <Switch>
+                  <Route path="/cards">
+                    <CardsView />
+                  </Route>
+                  <Route path="/card/:id">
+                    <CardDetailView />
+                  </Route>
+                  <Route path="/">
+                    <MainPage />
+                  </Route>
+                </Switch>
+              </Container>
             </UiStoreProvider>
           </Auth0ProviderWithHistory>    
         </BrowserRouter>
