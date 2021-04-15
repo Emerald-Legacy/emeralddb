@@ -51,7 +51,8 @@ export const privateApi = forge({
       import: {method: 'GET', path: '/import'}
     },
     User: {
-      current: { method: 'GET', path: '/users/me'}
+      current: { method: 'GET', path: '/users/me'},
+      update: { method: 'PUT', path: '/users/me'}
     },
   },
 })

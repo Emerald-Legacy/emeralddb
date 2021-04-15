@@ -1,6 +1,6 @@
 import { User } from '@5rdb/api';
 import { useAuth0 } from '@auth0/auth0-react'
-import { Typography } from '@material-ui/core'
+import { Button, IconButton, makeStyles, Modal, Paper, TextField, Typography } from '@material-ui/core'
 import { useState } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
 import { privateApi } from '../../api';
@@ -8,10 +8,40 @@ import { getToken, setToken } from '../../utils/auth';
 import { Queries } from '../HeaderBar';
 import { LoginButton } from './LoginButton'
 import { LogoutButton } from './LogoutButton';
+import EditIcon from '@material-ui/icons/Edit';
+
+function getModalStyle() {
+  const top = 50
+  const left = 50
+
+  return {
+    top: `${top}%`,
+    left: `${left}%`,
+    transform: `translate(-${top}%, -${left}%)`,
+  };
+}
+
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    position: 'absolute',
+    width: 400,
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
+  button: {
+    marginTop: theme.spacing(2),
+  }
+}));
 
 export function UserMenu(props: {audience: string, scope: string}): JSX.Element {
+  const classes = useStyles()
+  const [modalStyle] = useState(getModalStyle);
   const { getAccessTokenSilently } = useAuth0()
   const [currentUser, setCurrentUser] = useState<User | undefined>()
+  const [modalOpen, setModalOpen] = useState(false)
+  const [modalUsername, setModalUsername] = useState<string>()
   useQuery(Queries.USER, () => privateApi.User.current().then((user) => setCurrentUser(user.data())), 
   {
     enabled: !!getToken()}
@@ -32,9 +62,27 @@ export function UserMenu(props: {audience: string, scope: string}): JSX.Element 
   }
 
   if (currentUser !== undefined) {
+    const updateUser = () => {
+      privateApi.User.update({body: {id: currentUser.id, name: modalUsername}}).then((response) => {
+        setCurrentUser(response.data)
+        setModalOpen(false)
+      })
+    }
     return <div>
-      <Typography>{currentUser.name}</Typography>
-      <LogoutButton onLogout={() => setCurrentUser(undefined)}/>
+      <Typography>{currentUser.name}<IconButton onClick={() => setModalOpen(true)}><EditIcon/></IconButton> <LogoutButton onLogout={() => setCurrentUser(undefined)}/></Typography>
+      <Modal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        <Paper style={modalStyle} className={classes.paper}>
+          <form onSubmit={updateUser}>
+            <TextField defaultValue={currentUser.name} value={modalUsername} onChange={(e) => setModalUsername(e.target.value)} label="New Username" required />
+            <Button type="submit" variant="contained" color="primary" className={classes.button}>Change Username</Button>
+          </form>
+        </Paper>
+      </Modal>
     </div>
   }
 

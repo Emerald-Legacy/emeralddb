@@ -5,6 +5,7 @@ import * as getAllCycles from './handlers/getAllCycles'
 import * as getCardDetails from './handlers/getCardDetails'
 import * as importData from './handlers/importData'
 import * as getCurrentUser from './handlers/getCurrentUser'
+import * as updateUser from './handlers/updateUser'
 import { authorizedOnly, dataAdminOnly } from './middlewares/authorization'
 import env from './env'
 
@@ -14,8 +15,8 @@ export default (): AsyncRouterInstance => {
   api.get('/cards/:cardId', getCardDetails.handler)
   api.get('/packs', getAllPacks.handler)
   api.get('/cycles', getAllCycles.handler)
-
   api.get('/users/me', authorizedOnly, getCurrentUser.handler)
+  api.put('/users/me', authorizedOnly, updateUser.handler)
   api.get('/import', authorizedOnly, dataAdminOnly, importData.handler)
   api.get('/auth0', (): {
     domain: string
