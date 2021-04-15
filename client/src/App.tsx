@@ -36,19 +36,19 @@ export default function App(): JSX.Element {
           <Auth0ProviderWithHistory audience={audience} scope={scope}>
             <UiStoreProvider>
               <HeaderBar audience={audience} scope={scope} />
-              <Container>
-                <Switch>
-                  <Route path="/cards">
-                    <CardsView />
-                  </Route>
-                  <Route path="/card/:id">
-                    <CardDetailView />
-                  </Route>
-                  <Route path="/">
-                    <MainPage />
-                  </Route>
-                </Switch>
-              </Container>
+                <Container>
+                  <Switch>
+                    <Route path="/cards">
+                      <CardsView />
+                    </Route>
+                    <Route path="/card/:id">
+                      <CardDetailView />
+                    </Route>
+                    <Route path="/">
+                      <MainPage />
+                    </Route>
+                  </Switch>
+                </Container>
             </UiStoreProvider>
           </Auth0ProviderWithHistory>
         </BrowserRouter>
