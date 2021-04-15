@@ -69,7 +69,7 @@ export function UserMenu(props: {audience: string, scope: string}): JSX.Element 
       })
     }
     return <div>
-      <Typography>{currentUser.name}<IconButton onClick={() => setModalOpen(true)}><EditIcon/></IconButton> <LogoutButton onLogout={() => setCurrentUser(undefined)}/></Typography>
+      <Typography>{currentUser.name}<IconButton color="inherit" onClick={() => setModalOpen(true)}><EditIcon/></IconButton> <LogoutButton onLogout={() => setCurrentUser(undefined)}/></Typography>
       <Modal
         open={modalOpen}
         onClose={() => setModalOpen(false)}

@@ -7,6 +7,7 @@ export const LoginButton = (props: {onLogin: () => void}) => {
 
   return (
     <Button
+      variant="contained"
       onClick={() =>
         loginWithPopup().then(props.onLogin)
       }

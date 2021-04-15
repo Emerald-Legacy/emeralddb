@@ -9,6 +9,7 @@ export const LogoutButton = (props: {onLogout: () => void}) => {
   const auth0Config = useContext(Auth0Context)
   return (
     <Button
+      variant="contained"
       onClick={() => {
         unsetToken()
         props.onLogout()
