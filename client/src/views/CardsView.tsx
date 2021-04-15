@@ -4,10 +4,9 @@ import {
   makeStyles,
 } from '@material-ui/core'
 import { DataGrid, GridColumns } from '@material-ui/data-grid';
-import { useContext } from 'react'
 import { useHistory } from 'react-router-dom';
 import { CardTypeIcon } from '../components/CardTypeIcon';
-import { UiStoreContext, useUiStore } from '../providers/UiStoreProvider'
+import { useUiStore } from '../providers/UiStoreProvider'
 
 const useStyles = makeStyles((theme) => ({
   table: {
