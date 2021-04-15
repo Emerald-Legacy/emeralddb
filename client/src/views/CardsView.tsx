@@ -2,12 +2,10 @@ import { Card } from '@5rdb/api'
 import {
   Paper,
   makeStyles,
-  colors,
 } from '@material-ui/core'
-import { red } from '@material-ui/core/colors';
 import { DataGrid, GridColumns } from '@material-ui/data-grid';
 import { useContext } from 'react'
-import { ThemeConsumer } from 'react-bootstrap/esm/ThemeProvider';
+import { useHistory } from 'react-router-dom';
 import { CardTypeIcon } from '../components/CardTypeIcon';
 import { UiStoreContext } from '../providers/UiStoreProvider'
 
@@ -37,6 +35,7 @@ interface TableCard {
 export function CardsView(): JSX.Element {
   const classes = useStyles()
   const { cards, traits } = useContext(UiStoreContext)
+  const history = useHistory()
 
   const capitalize = (input: string) => {
     return input ? input.charAt(0).toUpperCase() + input.slice(1) : ''
@@ -61,11 +60,21 @@ export function CardsView(): JSX.Element {
     value: getValue(card) 
   }})
 
+  const goToCardPage = (id: string) => {
+    history.push(`/card/${id}`)
+  }
+
   const columns: GridColumns = [
-    {field: 'name', headerName: 'Name', width: 300, renderCell: (params) => {
-      const nameProps = params.value as NameProps
-      return (<span><CardTypeIcon type={nameProps.type} faction={nameProps.faction} /> {nameProps.name}</span>)
-    }},
+    {
+      field: 'name', 
+      headerName: 'Name', 
+      width: 300, 
+      renderCell: (params) => {
+        const nameProps = params.value as NameProps
+        return (<span style={{marginLeft: -10}}><CardTypeIcon type={nameProps.type} faction={nameProps.faction} /> {nameProps.name}</span>)
+      },
+      sortComparator: (v1, v2, param1, param2) => param1.row.name.name.localeCompare(param2.row.name.name),
+    },
     {field: 'faction', headerName: 'Faction', width: 120 },
     {field: 'type', headerName: 'Type', width: 120 },
     {field: 'traits', headerName: 'Traits', width: 300, renderCell: (params) => (
@@ -77,7 +86,7 @@ export function CardsView(): JSX.Element {
 
   return (
     <Paper className={classes.table}>
-      <DataGrid columns={columns} rows={tableCards} pageSize={50} autoHeight density="compact"></DataGrid>
+      <DataGrid columns={columns} rows={tableCards} pageSize={50} autoHeight density="compact" onRowClick={(param) => {goToCardPage(param.row.id)}}></DataGrid>
     </Paper>
   )
 }

@@ -14,5 +14,5 @@ export async function handler(): Promise<CardWithVersions[]> {
       .find((card) => card.id === cardInPack.card_id)
       ?.versions.push({ ...cardInPack })
   )
-  return allCardsWithVersions
+  return allCardsWithVersions.sort((a, b) => a.name.localeCompare(b.name))
 }

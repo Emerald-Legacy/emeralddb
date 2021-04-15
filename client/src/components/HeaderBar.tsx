@@ -3,7 +3,8 @@ import { UserMenu } from './usermenu/UserMenu'
 import { useQuery } from 'react-query'
 import { publicApi } from '../api'
 import { UiStoreContext } from '../providers/UiStoreProvider'
-import { useContext } from 'react'
+import { forwardRef, useContext } from 'react'
+import { Link, useHistory } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,6 +29,8 @@ export enum Queries {
 export function HeaderBar(props: { audience: string; scope: string }): JSX.Element {
   const classes = useStyles()
   const uiStore = useContext(UiStoreContext)
+  const history = useHistory()
+
   useQuery(Queries.CARDS, () =>
     publicApi.Card.findAll().then((cards) => uiStore.setCards(cards.data()))
   )
@@ -41,16 +44,19 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
     publicApi.Trait.findAll().then((traits) => uiStore.setTraits(traits.data()))
   )
 
+  const host = window.location.host;
+  const title = host.includes('localhost') ? 'LOCAL FiveRingsDB' : host.includes('beta-') ? "BETA FiveRingsDB" : "FiveRingsDB"
+  document.title = title;
+
   return (
     <AppBar position="static">
-      <Container>
         <Toolbar>
-          <Typography variant="h6" className={classes.title}>
-            FiveRingsDB
+          <Typography variant="h6" style={{cursor: 'pointer'}} onClick={() => history.push('/cards')}>
+            {title}
           </Typography>
+          <Typography className={classes.title}></Typography>
           <UserMenu audience={props.audience} scope={props.scope} />
         </Toolbar>
-      </Container>
     </AppBar>
   )
 }

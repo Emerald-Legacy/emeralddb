@@ -3,7 +3,6 @@ import { createMuiTheme } from '@material-ui/core/styles'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import 'bootstrap/dist/css/bootstrap.min.css'
-
 import { CardsView } from './views/CardsView'
 import { CardDetailView } from './views/CardDetailView'
 import { HeaderBar } from './components/HeaderBar'
@@ -11,6 +10,21 @@ import { MainPage } from './views/MainPage'
 import { Auth0ProviderWithHistory } from './providers/Auth0ProviderWithHistory'
 import { UiStoreProvider } from './providers/UiStoreProvider'
 import { Container } from '@material-ui/core'
+import FiveRingsFontWoff from './assets/fonts/fiveringsdb.woff';
+
+const raleway = {
+  fontFamily: 'FiveRingsFont',
+  fontStyle: 'normal',
+  fontDisplay: 'swap',
+  fontWeight: 400,
+  src: `
+    local('Raleway'),
+    local('Raleway-Regular'),
+    url(${FiveRingsFontWoff}) format('woff')
+  `,
+  unicodeRange:
+    'U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF',
+};
 
 // create our material ui theme using up to date typography variables
 const theme = createMuiTheme({
@@ -36,7 +50,7 @@ export default function App(): JSX.Element {
           <Auth0ProviderWithHistory audience={audience} scope={scope}>
             <UiStoreProvider>
               <HeaderBar audience={audience} scope={scope} />
-                <Container>
+                <Container style={{paddingTop: 15}}>
                   <Switch>
                     <Route path="/cards">
                       <CardsView />

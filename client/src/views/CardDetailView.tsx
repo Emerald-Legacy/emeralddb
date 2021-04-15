@@ -1,5 +1,5 @@
 import React from 'react'
-import { Typography } from '@material-ui/core'
+import { Grid, Typography } from '@material-ui/core'
 import { useParams } from 'react-router-dom'
 import { EmptyState } from '../components/EmptyState'
 import { Loading } from '../components/Loading'
@@ -23,14 +23,17 @@ export function CardDetailView(): JSX.Element {
   const card = data.data
   console.log(card)
   return (
-    <div>
-      <Typography component="h3">
-        {card.name} ({card.id})
-      </Typography>
-      <Typography component="h4">Versions:</Typography>
-      {card.versions.map((version) => (
-        <img key={card.id + '_' + version.pack_id} src={version.image_url} />
-      ))}
-    </div>
+    <Grid container>
+      <Grid item xs={12} sm={7}>
+        <Typography variant='h5'>
+          {card.name}
+        </Typography>
+      </Grid>
+      <Grid item xs={12} sm={5}>
+        {card.versions.map((version) => (
+          <img key={card.id + '_' + version.pack_id} src={version.image_url} />
+        ))}
+      </Grid>
+    </Grid>
   )
 }
