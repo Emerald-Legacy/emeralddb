@@ -1,4 +1,4 @@
-# FiveringsDB - Node Edition
+# FiveringsDB - Node Edition (aka EmeraldDB)
 
 ## Prerequisites:
 To run the application you need:

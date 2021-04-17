@@ -49,5 +49,5 @@ jobs:
       - uses: akhileshns/heroku-deploy@v3.6.8 # This is the action
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: beta-fiveringsdb
+          heroku_app_name: beta-emeralddb
           heroku_email: martin.schro3der@gmail.com

@@ -21,7 +21,7 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
   const history = useHistory()
 
   const host = window.location.host;
-  const title = host.includes('localhost') ? 'LOCAL FiveRingsDB' : host.includes('beta-') ? "BETA FiveRingsDB" : "FiveRingsDB"
+  const title = host.includes('localhost') ? 'LOCAL EmeraldDB' : host.includes('beta-') ? "BETA EmeraldDB" : "EmeraldDB"
   document.title = title;
 
   return (
