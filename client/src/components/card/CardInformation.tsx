@@ -89,7 +89,7 @@ const ElementsElement = (props: {elements: string[]}) => {
   return <Typography className={classes.stats}>
       <b>Elements: </b>
       {props.elements.map(element => (
-        <span>
+        <span key={element}>
           <span className={`icon icon-element-${element}`} />
           <span> {capitalize(element)}. </span>
         </span>))}
@@ -171,7 +171,7 @@ export const CardInformation = (props: {cardWithVersions: CardWithVersions, curr
           borderLeft={5}
           paddingLeft='10px'
       >
-          {textLines.map(line => <p><CardText text={line}/></p>)}
+          {textLines.map((line, idx) => <p key={idx}><CardText text={line}/></p>)}
       </Box>
     </Grid>
   </Grid>
