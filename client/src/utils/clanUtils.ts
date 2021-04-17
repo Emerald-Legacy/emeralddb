@@ -6,6 +6,7 @@ export const factions: { id: string; name: string; color: string }[] = [
   { id: 'phoenix', name: 'Phoenix', color: '#de9923' },
   { id: 'scorpion', name: 'Scorpion', color: '#ab1916' },
   { id: 'unicorn', name: 'Unicorn', color: '#90119e' },
+  { id: 'neutral', name: 'Neutral', color: '#b1b1b1' },
 ]
 
 export function getColorForFactionId(id: string): string | undefined {

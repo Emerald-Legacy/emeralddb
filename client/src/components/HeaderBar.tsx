@@ -1,16 +1,8 @@
-import { AppBar, Container, makeStyles, Toolbar, Typography } from '@material-ui/core'
+import { AppBar, makeStyles, Toolbar, Typography } from '@material-ui/core'
 import { UserMenu } from './usermenu/UserMenu'
-import { UiStoreContext } from '../providers/UiStoreProvider'
-import { useContext } from 'react'
 import { useHistory } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
   title: {
     flexGrow: 1,
   },

@@ -7,6 +7,8 @@ import { DataGrid, GridColumns } from '@material-ui/data-grid';
 import { useHistory } from 'react-router-dom';
 import { CardTypeIcon } from '../components/CardTypeIcon';
 import { useUiStore } from '../providers/UiStoreProvider'
+import { convertTraitList } from '../utils/cardTextUtils';
+import { capitalize } from '../utils/stringUtils';
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -36,14 +38,6 @@ export function CardsView(): JSX.Element {
   const { cards, traits } = useUiStore()
   const history = useHistory()
 
-  const capitalize = (input: string) => {
-    return input ? input.charAt(0).toUpperCase() + input.slice(1) : ''
-  }
-
-  const convertTraitList = (stringTraits: string[]) => {
-    return stringTraits.map(stringTrait => (traits.find(trait => stringTrait === trait.id)?.name || stringTrait) + '.').join(' ');
-  }
-
   const getValue = (card: Card) => {
     return ''
   }
@@ -53,7 +47,7 @@ export function CardsView(): JSX.Element {
     name: {name: card.name, faction: card.clan, type: card.type},
     faction: capitalize(card.clan),
     type: capitalize(card.type),
-    traits: convertTraitList(card.traits || []),
+    traits: convertTraitList(card.traits || [], traits),
     deck: capitalize(card.side),
     cost: card.cost || '',
     value: getValue(card) 

@@ -1,15 +1,18 @@
-import React from 'react'
-import { Box, Card, Grid, Paper, Typography } from '@material-ui/core'
+import React, { useState } from 'react'
+import { Grid} from '@material-ui/core'
 import { useParams } from 'react-router-dom'
 import { EmptyState } from '../components/EmptyState'
 import { Loading } from '../components/Loading'
 import { RequestError } from '../components/RequestError'
 import { useCard } from '../hooks/useCard'
-import { CardText } from '../components/card/CardText'
+import { CardInformation } from '../components/card/CardInformation'
+
+
 
 export function CardDetailView(): JSX.Element {
   const params = useParams<{ id: string }>()
   const [data] = useCard(params.id)
+  const [chosenVersion, setChosenVersion] = useState<string>()
 
   if (data.loading) {
     return <Loading />
@@ -22,21 +25,15 @@ export function CardDetailView(): JSX.Element {
   }
 
   const card = data.data
-  const textLines = card.text?.split('\n') || []
+
+  if (!chosenVersion && card.versions.length > 0) {
+    setChosenVersion(card.versions[0].pack_id)
+  }
 
   return (
     <Grid container spacing={5}>
       <Grid item xs={12} md={7}>
-        <Box border="solid 1px" padding="3px" borderRadius="2px">
-          <Typography variant='h5'>
-            {card.name}
-          </Typography>
-          <Grid container>
-            <Grid item xs={12}>
-              {textLines.map(line => <p><CardText text={line}/></p>)}
-            </Grid>
-          </Grid>
-        </Box>
+        <CardInformation cardWithVersions={card} currentVersionPackId={chosenVersion} />
       </Grid>
       <Grid item xs={12} md={5}>
         {card.versions.map((version) => (
