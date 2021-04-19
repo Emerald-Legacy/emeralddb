@@ -11,6 +11,7 @@ import { Auth0ProviderWithHistory } from './providers/Auth0ProviderWithHistory'
 import { UiStoreProvider } from './providers/UiStoreProvider'
 import { Container } from '@material-ui/core'
 import FiveRingsFontWoff from './assets/fonts/fiveringsdb.woff';
+import { UserProvider } from './providers/UserProvider'
 
 
 // create our material ui theme using up to date typography variables
@@ -36,7 +37,8 @@ export default function App(): JSX.Element {
         <BrowserRouter>
           <Auth0ProviderWithHistory audience={audience} scope={scope}>
             <UiStoreProvider>
-              <HeaderBar audience={audience} scope={scope} />
+              <UserProvider>
+                <HeaderBar audience={audience} scope={scope} />
                 <Container style={{paddingTop: 15}}>
                   <Switch>
                     <Route path="/cards">
@@ -50,6 +52,7 @@ export default function App(): JSX.Element {
                     </Route>
                   </Switch>
                 </Container>
+              </UserProvider>
             </UiStoreProvider>
           </Auth0ProviderWithHistory>
         </BrowserRouter>

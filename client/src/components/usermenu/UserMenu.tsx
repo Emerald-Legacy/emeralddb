@@ -10,13 +10,14 @@ import {
   Typography,
 } from '@material-ui/core'
 import { useState } from 'react'
-import { useQuery, useQueryClient } from 'react-query'
+import { useQueryClient } from 'react-query'
 import { privateApi } from '../../api'
-import { getToken, setToken } from '../../utils/auth'
+import { setToken } from '../../utils/auth'
 import { Queries } from '../HeaderBar'
 import { LoginButton } from './LoginButton'
 import { LogoutButton } from './LogoutButton'
 import EditIcon from '@material-ui/icons/Edit'
+import { useCurrentUser } from '../../providers/UserProvider'
 
 function getModalStyle() {
   const top = 50
@@ -45,20 +46,15 @@ const useStyles = makeStyles((theme) => ({
 
 export function UserMenu(props: { audience: string; scope: string }): JSX.Element {
   const classes = useStyles()
+
   const [modalStyle] = useState(getModalStyle)
-  const { getAccessTokenSilently } = useAuth0()
-  const [currentUser, setCurrentUser] = useState<User | undefined>()
   const [modalOpen, setModalOpen] = useState(false)
   const [modalUsername, setModalUsername] = useState<string>()
-  useQuery(
-    Queries.USER,
-    () => privateApi.User.current().then((user) => setCurrentUser(user.data())),
-    {
-      enabled: !!getToken(),
-    }
-  )
-  const queryClient = useQueryClient()
 
+  const { getAccessTokenSilently } = useAuth0()
+  const { currentUser, setCurrentUser } = useCurrentUser() 
+  
+  const queryClient = useQueryClient()
   const fetchToken = async () => {
     try {
       const accessToken = await getAccessTokenSilently({
@@ -76,7 +72,7 @@ export function UserMenu(props: { audience: string; scope: string }): JSX.Elemen
     const updateUser = () => {
       privateApi.User.update({ body: { id: currentUser.id, name: modalUsername } }).then(
         (response) => {
-          setCurrentUser(response.data)
+          setCurrentUser(response.data as unknown as User)
           setModalOpen(false)
         }
       )
