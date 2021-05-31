@@ -10,8 +10,8 @@ import { MainPage } from './views/MainPage'
 import { Auth0ProviderWithHistory } from './providers/Auth0ProviderWithHistory'
 import { UiStoreProvider } from './providers/UiStoreProvider'
 import { Container } from '@material-ui/core'
-import FiveRingsFontWoff from './assets/fonts/fiveringsdb.woff';
 import { UserProvider } from './providers/UserProvider'
+import { EditCardView } from './views/EditCardView'
 
 
 // create our material ui theme using up to date typography variables
@@ -43,6 +43,9 @@ export default function App(): JSX.Element {
                   <Switch>
                     <Route path="/cards">
                       <CardsView />
+                    </Route>
+                    <Route path="/card/:id/edit">
+                      <EditCardView />
                     </Route>
                     <Route path="/card/:id">
                       <CardDetailView />

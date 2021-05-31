@@ -1,4 +1,4 @@
-import { getColorForFactionId } from "../utils/clanUtils";
+import { getColorForFactionId } from "../utils/factionUtils";
 import AttachFileIcon from '@material-ui/icons/AttachFile';
 import PersonIcon from '@material-ui/icons/Person';
 import FlashOnIcon from '@material-ui/icons/FlashOn';

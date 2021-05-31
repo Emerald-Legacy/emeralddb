@@ -2,7 +2,7 @@ import { Card, CardWithVersions } from "@5rdb/api"
 import { Box, Typography, Grid, makeStyles } from "@material-ui/core"
 import { useUiStore } from "../../providers/UiStoreProvider"
 import { convertTraitList } from "../../utils/cardTextUtils"
-import { getColorForFactionId } from "../../utils/clanUtils"
+import { getColorForFactionId } from "../../utils/factionUtils"
 import { capitalize } from "../../utils/stringUtils"
 import { CardText } from "./CardText"
 
