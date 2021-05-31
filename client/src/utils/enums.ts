@@ -7,6 +7,7 @@ export const types: {id: string, name: string}[] = [
       { id: 'province', name: 'Province' },
       { id: 'treaty', name: 'Treaty' },
       { id: 'role', name: 'Role' },
+      { id: 'warlord', name: 'Warlord' },
 ]
 
 export const sides: {id: string, name: string}[] = [
@@ -65,7 +66,7 @@ export const typesInSide = (side: string) => {
             return ['role'];
       }
       if (side === 'province') {
-            return ['stronghold', 'province'];
+            return ['stronghold', 'province', 'warlord'];
       }
       if (side === 'dynasty') {
             return ['character', 'holding', 'event'];
@@ -100,6 +101,9 @@ export const sidesForType = (type: string) => {
       }
       if (type === 'attachment') {
             return ['conflict'];
+      }
+      if (type === 'warlord') {
+            return ['province'];
       }
       return []
 }

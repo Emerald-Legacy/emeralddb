@@ -3,6 +3,7 @@ import { FormControlLabel, Grid, MenuItem, Radio, RadioGroup, Select, Switch, Te
 import React, { useState } from "react";
 import { sides, types, factions, typesInSide, sidesForType } from "../utils/enums";
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import { CardTextEditor } from "../components/card/CardTextEditor";
 
 
 export function CardForm(props: {existingCard?: CardWithVersions, editMode?: boolean}): JSX.Element {
@@ -76,9 +77,18 @@ export function CardForm(props: {existingCard?: CardWithVersions, editMode?: boo
       </Grid>
       <Grid item xs={12}>
         <Grid container spacing={2}>
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={12} sm={6} md={3}>
+            <Typography>
+              <b>Is Unique:</b>
+              <Switch
+                checked={is_unique}
+                onChange={(e) => setIsUnique(e.target.checked)}
+              />
+            </Typography>
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
             <Autocomplete
-                id="combo-box-demo"
+                id="combo-box-faction"
                 options={factions}
                 getOptionLabel={(option) => option.name}
                 value={factions.find(item => item.id === faction) || null}
@@ -86,9 +96,9 @@ export function CardForm(props: {existingCard?: CardWithVersions, editMode?: boo
                 onChange={(e, value) => setFaction(value?.id)}
               />
           </Grid>
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={12} sm={6} md={3}>
             <Autocomplete
-                id="combo-box-demo"
+                id="combo-box-type"
                 options={types}
                 getOptionLabel={(option) => option.name}
                 value={types.find(item => item.id === type) || null}
@@ -97,9 +107,9 @@ export function CardForm(props: {existingCard?: CardWithVersions, editMode?: boo
                 onChange={(e, value) => setType(value?.id)}
               />
           </Grid>
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={12} sm={6} md={3}>
             <Autocomplete 
-                id="combo-box-demo"
+                id="combo-box-side"
                 options={sides}
                 getOptionLabel={(option) => option.name}
                 value={sides.find(item => item.id === side) || null}
@@ -108,23 +118,8 @@ export function CardForm(props: {existingCard?: CardWithVersions, editMode?: boo
                 onChange={(e, value) => setSide(value?.id)}
               />
           </Grid>
-          <Grid item xs={12} sm={6} md={4}>
-            <Typography>
-              <b>Is Unique:</b>
-              <Switch
-                checked={is_unique}
-                onChange={(e) => setIsUnique(e.target.checked)}
-              />
-            </Typography>
-          </Grid>
-          <Grid item xs={12} sm={6} md={4}>
-            <Typography>
-              <b>Is Unique:</b>
-              <Switch
-                checked={is_unique}
-                onChange={(e) => setIsUnique(e.target.checked)}
-              />
-            </Typography>
+          <Grid item xs={12}>
+            <CardTextEditor text={text} onChange={(text: string) => setText(text)} faction={faction} />
           </Grid>
         </Grid>
       </Grid>

@@ -8,6 +8,7 @@ import MapIcon from '@material-ui/icons/Map';
 import FlareIcon from '@material-ui/icons/Flare';
 import GavelIcon from '@material-ui/icons/Gavel';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
+import FlagIcon from '@material-ui/icons/Flag';
 
 const icons = [
   {type: 'attachment', icon: AttachFileIcon },
@@ -18,6 +19,7 @@ const icons = [
   {type: 'province', icon: MapIcon },
   {type: 'role', icon: FlareIcon },
   {type: 'treaty', icon: GavelIcon },
+  {type: 'warlord', icon: FlagIcon }
 ]
 
 export function CardTypeIcon(props: {type: string, faction: string}): JSX.Element {

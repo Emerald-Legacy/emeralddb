@@ -61,6 +61,7 @@ export enum TYPE {
   ROLE = 'role',
   STRONGHOLD = 'stronghold',
   TREATY = 'treaty',
+  WARLORD = 'warlord',
 }
 
 export const TYPES: TYPE[] = [
@@ -72,6 +73,7 @@ export const TYPES: TYPE[] = [
   TYPE.ROLE,
   TYPE.STRONGHOLD,
   TYPE.TREATY,
+  TYPE.WARLORD,
 ]
 
 export enum ELEMENT {

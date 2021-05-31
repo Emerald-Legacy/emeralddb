@@ -76,8 +76,8 @@ const HonorElement = (props: {honor: number | undefined}) => {
   return <FormattedValueOrCrossedOut value={props.honor?.toString()} label="Honor"/>
 }
 
-const FateElement = (props: {fate: number | undefined}) => {
-  return <FormattedValueOrCrossedOut value={props.fate?.toString()} label="Fate"/>
+const FateElement = (props: {fate: string | undefined}) => {
+  return <FormattedValueOrCrossedOut value={'+' + props.fate?.toString()} label="Fate"/>
 }
 
 const InfluenceElement = (props: {influence: number | undefined}) => {
@@ -118,6 +118,14 @@ export const CardInformation = (props: {cardWithVersions: CardWithVersions, curr
         <GloryElement glory={card.glory} />
       </span>
     }
+    if (card.type === 'warlord') {
+      return <span>
+        <FateElement fate={card.fate + ' / Player'} />
+        <MilitaryElement military={card.military} />
+        <PoliticalElement political={card.political} />
+        <GloryElement glory={card.glory} />
+      </span>
+    }
     if (card.type === 'attachment') {
       return <span>
         <CostElement cost={card.cost} />
@@ -135,7 +143,7 @@ export const CardInformation = (props: {cardWithVersions: CardWithVersions, curr
       return <span>
         <StrengthBonusElement strengthBonus={card.strength_bonus} />
         <HonorElement honor={card.honor} />
-        <FateElement fate={card.fate} />
+        <FateElement fate={card.fate?.toString()} />
         <InfluenceElement influence={card.influence_pool} />
       </span>
     }

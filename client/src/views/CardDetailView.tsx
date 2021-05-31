@@ -35,7 +35,7 @@ export function CardDetailView(): JSX.Element {
         <CardInformation cardWithVersions={card} currentVersionPackId={chosenVersion?.pack_id} />
       </Grid>
       <Grid item xs={12} md={5}>
-        {chosenVersion && (<img src={chosenVersion.image_url} />)}
+        {chosenVersion && (<img src={chosenVersion.image_url} width="300px"/>)}
       </Grid>
     </Grid>
   )

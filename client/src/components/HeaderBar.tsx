@@ -26,7 +26,7 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
 
   return (
     <AppBar position="static">
-        <Toolbar>
+        <Toolbar variant='dense' >
           <Typography variant="h6" style={{cursor: 'pointer'}} onClick={() => history.push('/cards')}>
             {title}
           </Typography>
