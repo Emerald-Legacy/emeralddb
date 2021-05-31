@@ -1,0 +1,39 @@
+[
+    {
+        "allowed_clans": [
+            "scorpion"
+        ],
+        "clan": "scorpion",
+        "cost": "2",
+        "deck_limit": 3,
+        "element": [],
+        "fate": null,
+        "glory": 1,
+        "honor": null,
+        "id": "disciple-of-deception",
+        "influence_cost": null,
+        "influence_pool": null,
+        "is_banned": false,
+        "is_banned_in_jade": false,
+        "is_banned_in_skirmish": false,
+        "is_restricted": false,
+        "is_restricted_in_jade": false,
+        "military": "1",
+        "military_bonus": null,
+        "name": "Disciple of Deception",
+        "name_extra": null,
+        "political": "2",
+        "political_bonus": null,
+        "role_restriction": null,
+        "side": "dynasty",
+        "strength": null,
+        "strength_bonus": null,
+        "text": "Support. <i>(Another player may help pay this card's fate cost.)</i>\n<b>Action:</b> During a conflict, choose 2 different status tokens on 2 different characters - treat one of the chosen status tokens as if it were the other until the end of the conflict.",
+        "traits": [
+            "shugenja",
+            "air"
+        ],
+        "type": "character",
+        "unicity": false
+    }
+]

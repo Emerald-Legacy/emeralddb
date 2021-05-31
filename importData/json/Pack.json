@@ -360,6 +360,15 @@
         "cycle_id": "temptations"
     },
     {
+        "id": "under-fu-leng-s-shadow",
+        "name": "Under Fu Leng's Shadow",
+        "position": 3,
+        "size": 124,
+        "released_at": "2021-05-20",
+        "ffg_id": "L5C42",
+        "cycle_id": "premium-expansions"
+    },
+    {
         "id": "draft-pack",
         "name": "Draft Pack",
         "position": 1,

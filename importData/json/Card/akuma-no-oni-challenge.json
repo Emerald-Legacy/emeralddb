@@ -1,0 +1,38 @@
+[
+    {
+        "allowed_clans": [
+        ],
+        "clan": "shadowlands",
+        "cost": "5",
+        "deck_limit": 1,
+        "element": [],
+        "fate": 5,
+        "glory": 0,
+        "honor": null,
+        "id": "akuma-no-oni-challenge",
+        "influence_cost": null,
+        "influence_pool": null,
+        "is_banned": false,
+        "is_banned_in_jade": false,
+        "is_banned_in_skirmish": false,
+        "is_restricted": false,
+        "is_restricted_in_jade": false,
+        "military": "7",
+        "military_bonus": null,
+        "name": "Akuma no Oni",
+        "name_extra": "Challenge",
+        "political": "2",
+        "political_bonus": null,
+        "role_restriction": null,
+        "side": "province",
+        "strength": null,
+        "strength_bonus": null,
+        "text": "Corrupted. No non-[clan-shadowlands] attachments.\n<b>Action:</b> Choose a character. Its controller selects one - either remove all fate from that character or you may declare an additional [conflict-military] conflict this phase.",
+        "traits": [
+            "oni",
+            "champion"
+        ],
+        "type": "warlord",
+        "unicity": true
+    }
+]

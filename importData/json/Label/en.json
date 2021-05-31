@@ -32,6 +32,10 @@
         "value": "Unicorn"
     },
     {
+        "id": "clan.shadowlands",
+        "value": "Shadowlands"
+    },
+    {
         "id": "conflict.military",
         "value": "Military"
     },
@@ -368,6 +372,14 @@
         "value": "Nezumi"
     },
     {
+        "id": "trait.obsidian",
+        "value": "Obsidian"
+    },
+    {
+        "id": "trait.ogre",
+        "value": "Ogre"
+    },
+    {
         "id": "trait.omen",
         "value": "Omen"
     },
@@ -402,6 +414,10 @@
     {
         "id": "trait.quest",
         "value": "Quest"
+    },
+    {
+        "id": "trait.rakshasa",
+        "value": "Rakshasa"
     },
     {
         "id": "trait.ritual",
@@ -508,6 +524,10 @@
         "value": "Trap"
     },
 	{
+        "id": "trait.undead",
+        "value": "Undead"
+    },
+	{
         "id": "trait.unicorn",
         "value": "Unicorn"
     },
@@ -570,5 +590,9 @@
     {
         "id": "type.treaty",
         "value": "Treaty"
+    },
+    {
+        "id": "type.warlord",
+        "value": "Warlord"
     }
 ]

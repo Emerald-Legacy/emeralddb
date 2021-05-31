@@ -1,0 +1,39 @@
+[
+    {
+        "allowed_clans": [
+            "scorpion"
+        ],
+        "clan": "scorpion",
+        "cost": "3",
+        "deck_limit": 3,
+        "element": [],
+        "fate": null,
+        "glory": 0,
+        "honor": null,
+        "id": "silent-enforcer",
+        "influence_cost": null,
+        "influence_pool": null,
+        "is_banned": false,
+        "is_banned_in_jade": false,
+        "is_banned_in_skirmish": false,
+        "is_restricted": false,
+        "is_restricted_in_jade": false,
+        "military": "3",
+        "military_bonus": null,
+        "name": "Silent Enforcer",
+        "name_extra": null,
+        "political": "2",
+        "political_bonus": null,
+        "role_restriction": null,
+        "side": "dynasty",
+        "strength": null,
+        "strength_bonus": null,
+        "text": "<b>Reaction:</b> After you play an event during a conflict in which this character is participating, choose a participating character with printed cost 3 or lower. Its controller selects one - either bow that character or move it home.",
+        "traits": [
+            "bushi",
+            "shinobi"
+        ],
+        "type": "character",
+        "unicity": false
+    }
+]

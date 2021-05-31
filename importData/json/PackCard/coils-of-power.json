@@ -10,16 +10,16 @@
   {
       "card_id": "offerings-to-the-kami",
       "flavor": "",
-      "illustrator": "TODO",
-      "image_url": "https://i.ibb.co/ZfXd4gb/Pack-5-6-3.png",
+      "illustrator": "Carlos Palma Cruchaga",
+      "image_url": "https://i.imgur.com/GxXGreL.png",
       "position": "88",
       "quantity": 1
   },
   {
       "card_id": "deserted-shrine",
-      "flavor": "",
-      "illustrator": "TODO",
-      "image_url": "https://i.ibb.co/F4KV4P2/Pack-5-6-4.png",
+      "flavor": "\"In emptiness, despair lurks.\" - Tao of Shinsei",
+      "illustrator": "Logan Feliciano",
+      "image_url": "https://i.imgur.com/1kFBxLl.png",
       "position": "89",
       "quantity": 1
   },
@@ -34,40 +34,40 @@
   {
       "card_id": "asahina-peacekeeper",
       "flavor": "",
-      "illustrator": "TODO",
-      "image_url": "https://i.ibb.co/1KCVypk/Pack-5-6-22.png",
+      "illustrator": "Guillaume Ducos",
+      "image_url": "https://i.imgur.com/iWWiA5n.png",
       "position": "91",
       "quantity": 3
   },
   {
       "card_id": "fu-sui-temple",
-      "flavor": "",
-      "illustrator": "TODO",
-      "image_url": "https://i.ibb.co/J2nmWtn/Pack-5-6-23.png",
+      "flavor": "\"With temperance and grace, you can achieve greatness.\" - Asahina Takako",
+      "illustrator": "Nele Diel",
+      "image_url": "https://i.imgur.com/im3RoYp.png",
       "position": "92",
       "quantity": 3
   },
   {
       "card_id": "militant-faithful",
       "flavor": "",
-      "illustrator": "TODO",
-      "image_url": "https://i.ibb.co/DfcJQvT/Pack-5-6-27.png",
+      "illustrator": "Piotr Arendzikowski",
+      "image_url": "https://i.imgur.com/q02rvai.png",
       "position": "93",
       "quantity": 3
   },
   {
       "card_id": "conduit-of-heroes",
       "flavor": "",
-      "illustrator": "TODO",
-      "image_url": "https://i.ibb.co/Jyvs6pb/Pack-5-6-28.png",
+      "illustrator": "Stormbrush",
+      "image_url": "https://i.imgur.com/7MweTw4.png",
       "position": "94",
       "quantity": 3
   },
   {
       "card_id": "kami-of-ancient-wisdom",
       "flavor": "",
-      "illustrator": "TODO",
-      "image_url": "https://i.ibb.co/bRD1vkY/Pack-5-6-31.png",
+      "illustrator": "Carlos Barquet",
+      "image_url": "https://i.imgur.com/bWeuiH2.png",
       "position": "95",
       "quantity": 3
   },
@@ -75,31 +75,31 @@
       "card_id": "shosuro-deceiver",
       "flavor": "\"When you are but one face in a crowd of many, you are everywhere.\"",
       "illustrator": "Drazenka Kimpel",
-      "image_url": "https://i.ibb.co/8dtD7jH/Pack-5-6.png",
+      "image_url": "https://i.imgur.com/oXHXyKy.png",
       "position": "96",
       "quantity": 3
   },
   {
       "card_id": "display-of-loyalty",
-      "flavor": "",
-      "illustrator": "TODO",
-      "image_url": "https://i.ibb.co/qCKmzdQ/Pack-5-6-33.png",
-      "position": "99",
+      "flavor": "\"You shall suffer no dishonor, my lord.\"",
+      "illustrator": "Isuardi Therianto",
+      "image_url": "https://i.imgur.com/W0cZ3X8.png",
+      "position": "97",
       "quantity": 3
   },
   {
       "card_id": "open-field-skirmisher",
       "flavor": "",
-      "illustrator": "TODO",
-      "image_url": "https://i.ibb.co/nmWVzZv/Pack-5-6-2.png",
+      "illustrator": "Conceptopolis",
+      "image_url": "https://i.imgur.com/aoH8QG1.png",
       "position": "98",
       "quantity": 3
   },
   {
       "card_id": "higashi-kaze-company",
       "flavor": "",
-      "illustrator": "TODO",
-      "image_url": "https://i.ibb.co/Kq4dHKC/Pack-5-6-35.png",
+      "illustrator": "Imad Awan",
+      "image_url": "https://i.imgur.com/THVIS1Z.png",
       "position": "99",
       "quantity": 3
   },
@@ -113,9 +113,9 @@
   },
   {
       "card_id": "tsangusuri-ward",
-      "flavor": "",
-      "illustrator": "TODO",
-      "image_url": "https://i.ibb.co/CQgXvh6/Pack-5-6-24.png",
+      "flavor": "The spirits awoken in Asahina art mirror the artisan's harmonious intent.",
+      "illustrator": "Eli Ring",
+      "image_url": "https://i.imgur.com/2RlVbk9.png",
       "position": "101",
       "quantity": 3
   },
@@ -123,55 +123,55 @@
       "card_id": "phoenix-tattoo",
       "flavor": "",
       "illustrator": "Borja Pindado",
-      "image_url": "https://i.ibb.co/6sK8vh9/Pack-5-6-1.png",
+      "image_url": "https://i.imgur.com/knWVoAM.png",
       "position": "102",
       "quantity": 3
   },
   {
       "card_id": "betrayal-of-truth",
-      "flavor": "",
-      "illustrator": "TODO",
-      "image_url": "https://i.ibb.co/rtZQ8T4/Pack-5-6-25.png",
+      "flavor": "\"What have you done, my son...\" - Mirumoto Masashige",
+      "illustrator": "Joshua Cairos",
+      "image_url": "https://i.imgur.com/Sm5VNCC.png",
       "position": "103",
       "quantity": 3
   },
   {
       "card_id": "ancestral-sight",
       "flavor": "",
-      "illustrator": "TODO",
-      "image_url": "https://i.ibb.co/XFsQXGZ/Pack-5-6-29.png",
+      "illustrator": "Lukas Banas",
+      "image_url": "https://i.imgur.com/KsmZUH0.png",
       "position": "104",
       "quantity": 3
   },
   {
       "card_id": "battlefield-orders",
       "flavor": "",
-      "illustrator": "TODO",
-      "image_url": "https://i.ibb.co/LrK3kHM/Pack-5-6-30.png",
+      "illustrator": "Calvin Chua",
+      "image_url": "https://i.imgur.com/k8nXquo.png",
       "position": "105",
       "quantity": 3
   },
   {
       "card_id": "calling-the-storm",
-      "flavor": "",
-      "illustrator": "TODO",
-      "image_url": "https://i.ibb.co/XyZBfFg/Pack-5-6-32.png",
+      "flavor": "\"You would be a fool to ignore the limitless wisdom of the kami.\"",
+      "illustrator": "Pavel Kolomeyets",
+      "image_url": "https://i.imgur.com/YQZpfjZ.png",
       "position": "106",
       "quantity": 3
   },
   {
       "card_id": "final-whisper",
       "flavor": "",
-      "illustrator": "TODO",
-      "image_url": "https://i.ibb.co/T8MJpxs/Pack-5-6-34.png",
+      "illustrator": "Logan Feliciano",
+      "image_url": "https://i.imgur.com/50Idgdc.png",
       "position": "107",
       "quantity": 3
   },
   {
       "card_id": "overrun",
       "flavor": "",
-      "illustrator": "TODO",
-      "image_url": "https://i.ibb.co/ykR8j4q/Pack-5-6-36.png",
+      "illustrator": "Aurelien Hubert",
+      "image_url": "https://i.imgur.com/fgHS2Rw.png",
       "position": "108",
       "quantity": 3
   }

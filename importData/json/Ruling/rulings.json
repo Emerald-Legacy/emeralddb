@@ -6804,7 +6804,7 @@
       "id": 838,
       "link": "https://courtgamespod.com/topic/ruling-iuchi-rimei/",
       "source": "Developer ruling",
-      "text": "Iuchi Rimei can be used to move an attachment to a character who would an ineligible character to have the attachment (eg. [Tactical Ingenuity](https://fiveringsdb.com/card/tactical-ingenuity) to a non-Commander), which would discard it."
+      "text": "Iuchi Rimei can be used to move an attachment to a character who would be an ineligible character to have the attachment (eg. [Tactical Ingenuity](https://fiveringsdb.com/card/tactical-ingenuity) to a non-Commander), which would discard it."
   },
   {
       "card": {
@@ -9015,5 +9015,74 @@
       "link": "https://courtgamespod.com/topic/ruling-skin-of-fu-leng/",
       "source": "Developer ruling",
       "text": "You can use Skin of Fu Leng to trigger the ability of a unique character even if you already control a copy of that unique character."
+  },
+  {
+      "card": {
+          "id": "ancestral-sight"
+      },
+      "id": 1090,
+      "link": "https://fiveringsdb.com/rules/reference#copy",
+      "source": "RRG \"Copy\"",
+      "text": "A copy is another card with the same title, even if it is not the same card, e.g. [Akodo Toturi (core)](https://fiveringsdb.com/card/akodo-toturi) is a copy of [Akodo Toturi (Children of the Empire)](https://fiveringsdb.com/card/akodo-toturi-2)."
+  },
+  {
+      "card": {
+          "id": "asahina-peacekeeper"
+      },
+      "id": 1091,
+      "source": "Card",
+      "text": "You must discard 1 card for each character declared as an attacker."
+  },
+  {
+      "card": {
+          "id": "asahina-peacekeeper"
+      },
+      "id": 1092,
+      "link": "https://courtgamespod.com/topic/ruling-conflict-declaration-timings/",
+      "source": "Developer ruling",
+      "text": "See the timing chart [here](https://courtgamespod.com/topic/ruling-conflict-declaration-timings/) for full details of when the additional cost must be paid."
+  },
+  {
+      "card": {
+          "id": "battlefield-orders"
+      },
+      "id": 1093,
+      "link": "https://fiveringsdb.com/rules/reference#triggered-abilities",
+      "source": "RRG \"Triggered Abilities\"",
+      "text": "Resolving an ability is not the same as triggering an ability. (Triggering the ability of Battlefield Orders results in two abilities being resolved: this, and the ability on the chosen character).\n\nThe limit on how many time per [period] an ability can be used refers to the number of times it can be triggered, not resolved.\n\nTherefore, Battlefield Orders can choose a character's action ability that has already been triggered, and choosing a character's action ability does not \"use up\" its limit."
+  },
+  {
+      "card": {
+          "id": "countryside-trader"
+      },
+      "id": 1094,
+      "link": "https://fiveringsdb.com/rules/reference#triggered-abilities",
+      "source": "RRG \"Triggered Abilities\"",
+      "text": "Resolving an ability is not the same as triggering an ability. (Triggering the ability on Countryside Trader results in two abilities being resolved: hers, and the ability on the chosen province).\n\nThe limit on how many time per [period] an ability can be used refers to the number of times it can be triggered, not resolved.\n\nTherefore, Countryside Trader can choose a province's action ability that has already been triggered, and choosing a province's action ability does not \"use up\" its limit."
+  },
+  {
+      "card": {
+          "id": "fu-sui-temple"
+      },
+      "id": 1095,
+      "link": "https://fiveringsdb.com/rules/reference#keywords",
+      "source": "RRG \"Keywords\"",
+      "text": "A card can have multiple instances of the same keyword, but functions as if it has one instance of that keyword."
+  },
+  {
+      "card": {
+          "id": "militant-faithful"
+      },
+      "id": 1096,
+      "source": "Card",
+      "text": "Militant Faithful checks the honor status of characters during the bow and move home step of conflict resolution ([3.2.8](https://fiveringsdb.com/rules/reference#3-2-8-return-home)), which means abilities like *Pride* will have resolved first."
+  },
+  {
+      "card": {
+          "id": "tsangusuri-ward"
+      },
+      "id": 1097,
+      "source": "Card",
+      "text": "Existing attachments are not removed and attachments may be [moved](https://fiveringsdb.com/card/iuchi-rimei) to the character as normal. Tsangusuri Ward only prevents new attachments being played on the attached character."
   }
 ]

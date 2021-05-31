@@ -1,0 +1,39 @@
+[
+    {
+        "allowed_clans": [
+            "phoenix"
+        ],
+        "clan": "phoenix",
+        "cost": "2",
+        "deck_limit": 3,
+        "element": [],
+        "fate": null,
+        "glory": 1,
+        "honor": null,
+        "id": "void-wielder",
+        "influence_cost": null,
+        "influence_pool": null,
+        "is_banned": false,
+        "is_banned_in_jade": false,
+        "is_banned_in_skirmish": false,
+        "is_restricted": false,
+        "is_restricted_in_jade": false,
+        "military": "1",
+        "military_bonus": null,
+        "name": "Void Wielder",
+        "name_extra": null,
+        "political": "2",
+        "political_bonus": null,
+        "role_restriction": null,
+        "side": "dynasty",
+        "strength": null,
+        "strength_bonus": null,
+        "text": "Support. <i>(Another player may help pay this card's fate cost.)</i>\n<b>Action:</b> During a [element-void] conflict, choose a participating character. That character's controller selects one - either discard a status token from it, move it home or discard an attachment on it.",
+        "traits": [
+            "shugenja",
+            "void"
+        ],
+        "type": "character",
+        "unicity": false
+    }
+]
