@@ -10,6 +10,15 @@ export const types: {id: string, name: string}[] = [
       { id: 'warlord', name: 'Warlord' },
 ]
 
+export const formats: {id: string, name: string}[] = [
+      { id: 'standard', name: 'Imperial Law' },
+      { id: 'jade-edict', name: 'Jade Edict'},
+      { id: 'emerald', name: 'Emerald Legacy'},
+      { id: 'skirmish', name: 'Skirmish'},
+      { id: 'enlightenment', name: 'Enlightenment'}
+]
+
+
 export const sides: {id: string, name: string}[] = [
       { id: 'role', name: 'Role' },
       { id: 'province', name: 'Province' },

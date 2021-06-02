@@ -1,9 +1,10 @@
 import { CardWithVersions } from "@5rdb/api";
-import { FormControlLabel, Grid, MenuItem, Radio, RadioGroup, Select, Switch, TextField, Typography } from "@material-ui/core";
+import { Divider, FormControlLabel, Grid, MenuItem, Radio, RadioGroup, Select, Switch, TextField, Typography } from "@material-ui/core";
 import React, { useState } from "react";
-import { sides, types, factions, typesInSide, sidesForType } from "../utils/enums";
+import { sides, types, factions, typesInSide, sidesForType, formats, clans } from "../utils/enums";
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { CardTextEditor } from "../components/card/CardTextEditor";
+import { MultiCheckbox } from "../components/card/FormatCheckbox";
 
 
 export function CardForm(props: {existingCard?: CardWithVersions, editMode?: boolean}): JSX.Element {
@@ -120,6 +121,15 @@ export function CardForm(props: {existingCard?: CardWithVersions, editMode?: boo
           </Grid>
           <Grid item xs={12}>
             <CardTextEditor text={text} onChange={(text: string) => setText(text)} faction={faction} />
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <MultiCheckbox label='Restricted In' items={formats} onChange={(formats: string[]) => setRestrictedIn(formats)} defaultItems={restricted_in}/>
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <MultiCheckbox label='Banned In' items={formats} onChange={(formats: string[]) => setBannedIn(formats)} defaultItems={banned_in}/>
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <MultiCheckbox label='Allowed By' items={clans} onChange={(clans: string[]) => setAllowedClans(clans)} defaultItems={allowed_clans}/>
           </Grid>
         </Grid>
       </Grid>
