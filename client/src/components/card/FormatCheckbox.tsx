@@ -3,7 +3,7 @@ import { useState } from "react";
 
 export function MultiCheckbox(props: {label: string, items: {id: string, name: string}[], onChange: (formats: string[]) => void, defaultItems?: string[]}): JSX.Element {
   
-  const [chosenItems, setChosenItems] = useState<string[]>(props.defaultItems || []);
+  let chosenItems = props.defaultItems || [];
 
   const isChecked = (id: string) => {
     return chosenItems.includes(id)
@@ -17,7 +17,7 @@ export function MultiCheckbox(props: {label: string, items: {id: string, name: s
     } else {
       newItems.push(id);
     }
-    setChosenItems(newItems);
+    chosenItems = newItems;
     props.onChange(newItems);
   }
 

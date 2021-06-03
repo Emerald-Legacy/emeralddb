@@ -12,6 +12,7 @@ import { UiStoreProvider } from './providers/UiStoreProvider'
 import { Container } from '@material-ui/core'
 import { UserProvider } from './providers/UserProvider'
 import { EditCardView } from './views/EditCardView'
+import { ConfirmProvider } from 'material-ui-confirm';
 
 
 // create our material ui theme using up to date typography variables
@@ -37,25 +38,34 @@ export default function App(): JSX.Element {
         <BrowserRouter>
           <Auth0ProviderWithHistory audience={audience} scope={scope}>
             <UiStoreProvider>
-              <UserProvider>
-                <HeaderBar audience={audience} scope={scope} />
-                <Container style={{paddingTop: 15}}>
-                  <Switch>
-                    <Route path="/cards">
-                      <CardsView />
-                    </Route>
-                    <Route path="/card/:id/edit">
-                      <EditCardView />
-                    </Route>
-                    <Route path="/card/:id">
-                      <CardDetailView />
-                    </Route>
-                    <Route path="/">
-                      <MainPage />
-                    </Route>
-                  </Switch>
-                </Container>
-              </UserProvider>
+              <ConfirmProvider
+                defaultOptions={{
+                  dialogProps: {
+                    open: true,
+                    maxWidth: 'md'
+                  }
+                }}
+              >
+                <UserProvider>
+                  <HeaderBar audience={audience} scope={scope} />
+                  <Container style={{paddingTop: 15}}>
+                    <Switch>
+                      <Route path="/cards">
+                        <CardsView />
+                      </Route>
+                      <Route path="/card/:id/edit">
+                        <EditCardView />
+                      </Route>
+                      <Route path="/card/:id">
+                        <CardDetailView />
+                      </Route>
+                      <Route path="/">
+                        <MainPage />
+                      </Route>
+                    </Switch>
+                  </Container>
+                </UserProvider>
+              </ConfirmProvider>
             </UiStoreProvider>
           </Auth0ProviderWithHistory>
         </BrowserRouter>

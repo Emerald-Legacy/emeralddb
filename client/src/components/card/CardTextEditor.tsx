@@ -11,6 +11,11 @@ export function CardTextEditor(props: {onChange: (text: string) => void, text?: 
   const [selectionEnd, setSelectionEnd] = useState(0);
   const color = getColorForFactionId(props.faction || '')
 
+  const setTextAndTriggerEvent = (newText: string) => {
+    setText(newText)
+    props.onChange(newText)
+  }
+
   const addTagOrIconAroundText = (tagOrIconName: string, isIcon: boolean) => {
     let textCopy = text;
     const textBeforeSelection = textCopy.substr(0, selectionStart);
@@ -25,7 +30,7 @@ export function CardTextEditor(props: {onChange: (text: string) => void, text?: 
       const textAfterSelection = rest.substr(selectedText.length);
       result = `${textBeforeSelection}<${tagOrIconName}>${selectedText}</${tagOrIconName}>${textAfterSelection}`
     }
-    setText(result);
+    setTextAndTriggerEvent(result);
   }
 
   const updateSelectionStart = () => {
@@ -36,7 +41,7 @@ export function CardTextEditor(props: {onChange: (text: string) => void, text?: 
   }
 
   return <Grid container spacing={2}>
-    <Grid item xs={12} sm={6}>
+    <Grid item xs={12}>
     <Typography>HTML-Input:</Typography>
       <CardTextEditorButtons onClick={addTagOrIconAroundText}/>
       <TextField 
@@ -44,13 +49,13 @@ export function CardTextEditor(props: {onChange: (text: string) => void, text?: 
         value={text} 
         fullWidth 
         variant='outlined' 
-        onChange={(e) => setText(e.target.value)} 
+        onChange={(e) => setTextAndTriggerEvent(e.target.value)} 
         multiline 
         inputRef={inputRef}
         onSelect={updateSelectionStart}
         />
     </Grid>
-    <Grid item xs={12} sm={6}>
+    <Grid item xs={12}>
       <Typography>Preview:</Typography>
       <Box
           borderColor={color}
