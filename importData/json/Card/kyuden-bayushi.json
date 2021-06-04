@@ -33,6 +33,6 @@
             "palace"
         ],
         "type": "stronghold",
-        "unicity": false
+        "unicity": true
     }
 ]

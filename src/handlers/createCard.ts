@@ -44,7 +44,6 @@ export async function handler(
 ): Promise<Card | undefined> {
   console.log('Create card ' + req.body.id)
   const existingCard = await getCard(req.body.id)
-  console.log('existing id: ' + existingCard?.id)
   if (existingCard?.id === req.body.id) {
     res.status(400).send(`Card with id ${req.body.id} already exists!`)
     return

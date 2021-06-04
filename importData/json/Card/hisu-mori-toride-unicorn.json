@@ -33,6 +33,6 @@
             "fort"
         ],
         "type": "stronghold",
-        "unicity": false
+        "unicity": true
     }
 ]
