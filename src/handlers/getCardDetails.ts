@@ -6,10 +6,11 @@ import { CardWithDetails } from '@5rdb/api'
 export async function handler(
   req: Request<{ cardId: string }>,
   res: Response
-): Promise<CardWithDetails> {
+): Promise<CardWithDetails | undefined> {
   const card = await getCard(req.params.cardId)
   if (!card) {
     res.sendStatus(404)
+    return
   }
   const cardVersions = await getAllCardVersions(card.id)
   const rulings = await getAllRulingsForCard(card.id)

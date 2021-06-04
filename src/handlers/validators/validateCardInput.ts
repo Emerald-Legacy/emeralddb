@@ -74,11 +74,19 @@ export async function validateCardInput(card: Card): Promise<string[]> {
     }
   }
 
-  if (card.side !== 'conflict' && card.faction !== 'neutral' && card.faction !== 'shadowlands') {
-    if (card.allowed_clans !== [card.faction]) {
-      errors.push(
-        `The field 'allowed_clans' can only contain the card's faction on non-conflict cards`
-      )
+  if (card.faction === 'shadowlands') {
+    if (card.allowed_clans && card.allowed_clans.length > 0) {
+      errors.push(`The field 'allowed_clans' cannot be set on shadowlands cards`)
+    }
+  } else {
+    if (!card.allowed_clans) {
+      errors.push(`The field 'allowed_clans' must be set on non-shadowlands cards`)
+    } else if (card.side !== 'conflict') {
+      if (card.allowed_clans.length > 1 || card.allowed_clans[0] !== card.faction) {
+        errors.push(
+          `The field 'allowed_clans' can only contain the card's faction on non-conflict cards`
+        )
+      }
     }
   }
 

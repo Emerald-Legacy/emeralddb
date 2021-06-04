@@ -30,7 +30,6 @@ interface TableCard {
   traits: string,
   deck: string,
   cost: string,
-  value: string,
 }
 
 export function CardsView(): JSX.Element {
@@ -38,19 +37,16 @@ export function CardsView(): JSX.Element {
   const { cards, traits } = useUiStore()
   const history = useHistory()
 
-  const getValue = (card: Card) => {
-    return ''
-  }
+  const filteredCards = cards;
 
-  const tableCards: TableCard[] = cards.map(card => { return {
+  const tableCards: TableCard[] = filteredCards.map(card => { return {
     id: card.id,
     name: {name: card.name, faction: card.faction, type: card.type},
     faction: capitalize(card.faction),
     type: capitalize(card.type),
     traits: convertTraitList(card.traits || [], traits),
     deck: capitalize(card.side),
-    cost: card.cost || '',
-    value: getValue(card) 
+    cost: card.cost || ''
   }})
 
   const goToCardPage = (id: string) => {
@@ -61,7 +57,7 @@ export function CardsView(): JSX.Element {
     {
       field: 'name', 
       headerName: 'Name',
-      width: 300,
+      flex: 3,
       disableColumnMenu: true,
       renderCell: (params) => {
         const nameProps = params.value as NameProps
@@ -69,12 +65,12 @@ export function CardsView(): JSX.Element {
       },
       sortComparator: (v1, v2, param1, param2) => param1.row.name.name.localeCompare(param2.row.name.name),
     },
-    {field: 'faction', headerName: 'Faction', disableColumnMenu: true, width: 120 },
-    {field: 'type', headerName: 'Type', disableColumnMenu: true, width: 120 },
-    {field: 'traits', headerName: 'Traits', disableColumnMenu: true, width: 300, renderCell: (params) => (
+    {field: 'faction', headerName: 'Faction', disableColumnMenu: true, flex: 1 },
+    {field: 'type', headerName: 'Type', disableColumnMenu: true, flex: 1 },
+    {field: 'traits', headerName: 'Traits', disableColumnMenu: true, flex: 3, renderCell: (params) => (
       <em><b>{params.value}</b></em>)},
-    {field: 'deck', headerName: 'Deck', disableColumnMenu: true, width: 100 },
-    {field: 'cost', headerName: 'Cost', disableColumnMenu: true, width: 90 }
+    {field: 'deck', headerName: 'Deck', disableColumnMenu: true,flex: 1 },
+    {field: 'cost', headerName: 'Cost', disableColumnMenu: true, flex: 1 }
   ]
 
   return (

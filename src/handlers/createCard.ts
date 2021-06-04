@@ -41,16 +41,20 @@ export const schema = {
 export async function handler(
   req: ValidatedRequest<typeof schema>,
   res: Express.Response
-): Promise<Card> {
-  console.log('Update card ' + req.body.id)
+): Promise<Card | undefined> {
+  console.log('Create card ' + req.body.id)
   const existingCard = await getCard(req.body.id)
-  if (existingCard) {
+  console.log('existing id: ' + existingCard?.id)
+  if (existingCard?.id === req.body.id) {
     res.status(400).send(`Card with id ${req.body.id} already exists!`)
+    return
   }
   const validationErrors = await validateCardInput(req.body)
+  console.log(validationErrors)
+  console.log(validationErrors.length)
   if (validationErrors.length > 0) {
     res.status(400).send(validationErrors)
+    return
   }
-
   return insertOrUpdateCard(req.body)
 }

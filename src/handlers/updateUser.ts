@@ -14,14 +14,16 @@ export const schema = {
 export async function handler(
   req: ValidatedRequest<typeof schema>,
   res: Express.Response
-): Promise<User> {
+): Promise<User | undefined> {
   const currentUser = req.user as User & { sub: string }
   if (!currentUser?.sub) {
     res.status(401).send()
+    return
   }
   const dbUser = await getOrInsertDBUser(currentUser.sub)
   if (dbUser.id !== req.body.id) {
     res.status(403).send()
+    return
   }
   return updateUser(req.body)
 }
