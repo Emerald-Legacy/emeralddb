@@ -9,11 +9,11 @@ import { EditCardView } from "./views/EditCardView"
 import { MainPage } from "./views/MainPage"
 
 const AuthenticatedRoute = (props: {children: JSX.Element, path: string}) => {
-  const { currentUser } = useCurrentUser()
+  const { isLoggedIn } = useCurrentUser()
   return <Route
             path={props.path}
             render={({ location }) =>
-              currentUser ? (
+              isLoggedIn() ? (
                 props.children
               ) : (
                 <Redirect
@@ -28,11 +28,11 @@ const AuthenticatedRoute = (props: {children: JSX.Element, path: string}) => {
 }
 
 const DataAdminRoute = (props: {children: JSX.Element, path: string}) => {
-  const { currentUser } = useCurrentUser()
+  const { isDataAdmin } = useCurrentUser()
   return <Route
             path={props.path}
             render={({ location }) =>
-              currentUser?.roles.includes('data_admin') ? (
+              isDataAdmin() ? (
                 props.children
               ) : (
                 <Redirect
