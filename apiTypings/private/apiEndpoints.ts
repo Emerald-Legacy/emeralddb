@@ -1,4 +1,4 @@
-import { Cycle, Pack, User } from './baseTypes'
+import { Card, Cycle, Pack, User } from './baseTypes'
 import { CardWithVersions, CardWithDetails } from './compositeTypes'
 
 export interface Cards$findAll {
@@ -7,6 +7,16 @@ export interface Cards$findAll {
 
 export interface Cards$find {
   response: CardWithDetails
+}
+
+export interface Cards$update {
+  request: { body: Card }
+  response: Card
+}
+
+export interface Cards$create {
+  request: { body: Card }
+  response: Card
 }
 
 export interface Packs$findAll {

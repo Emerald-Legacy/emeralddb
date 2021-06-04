@@ -3,7 +3,7 @@
 
 
 "@5rdb/api@file:../apiTypings":
-  version "1.0.1"
+  version "1.0.7"
 
 "@auth0/auth0-react@^1.4.0":
   version "1.4.0"

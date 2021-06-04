@@ -18,7 +18,6 @@ export const formats: {id: string, name: string}[] = [
       { id: 'enlightenment', name: 'Enlightenment'}
 ]
 
-
 export const sides: {id: string, name: string}[] = [
       { id: 'role', name: 'Role' },
       { id: 'province', name: 'Province' },

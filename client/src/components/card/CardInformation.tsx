@@ -104,7 +104,7 @@ export const CardInformation = (props: {cardWithVersions: CardWithVersions, curr
   const packName = props.currentVersionPackId && packs.find(pack => pack.id === props.currentVersionPackId)?.name
 
   const textLines = card.text?.split('\n') || []
-  const color = getColorForFactionId(card.clan)
+  const color = getColorForFactionId(card.faction)
   
   const getCardStatInfo = (card: Card) => {
     if (card.type === 'event') {
@@ -160,11 +160,11 @@ export const CardInformation = (props: {cardWithVersions: CardWithVersions, curr
         {card.is_unique && (<span className="icon icon-unique"/>)}{card.name}
       </Typography>
       <Typography variant='subtitle1'>
-          <em><b>{capitalize(card.clan)} {capitalize(card.type)}. {convertTraitList(card.traits || [], traits)}</b></em>
+          <em><b>{capitalize(card.faction)} {capitalize(card.type)}. {convertTraitList(card.traits || [], traits)}</b></em>
       </Typography>
     </Grid>
     <Grid item xs={2}>
-      <img src={`/static/svg/clan/${card.clan}.svg`} className={classes.clanMon}/>
+      <img src={`/static/svg/clan/${card.faction}.svg`} className={classes.clanMon}/>
     </Grid>
   </Grid>
   <Grid container className={classes.block}>

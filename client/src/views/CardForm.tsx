@@ -1,5 +1,5 @@
-import { Card, CardWithVersions, Trait } from "@5rdb/api";
-import { Divider, Fab, FormControlLabel, Grid, makeStyles, MenuItem, Radio, RadioGroup, Select, Switch, TextField, Typography } from "@material-ui/core";
+import { Card, Trait } from "@5rdb/api";
+import { Fab, Grid, makeStyles, Switch, TextField, Typography } from "@material-ui/core";
 import React, { useState } from "react";
 import { sides, types, factions, typesInSide, sidesForType, formats, clans, roleRestrictions, elements as allElements } from "../utils/enums";
 import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -8,6 +8,8 @@ import { MultiCheckbox } from "../components/card/FormatCheckbox";
 import { useUiStore } from "../providers/UiStoreProvider";
 import SaveIcon from '@material-ui/icons/Save';
 import { useConfirm } from "material-ui-confirm";
+import { privateApi } from "../api";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   fab: {
@@ -17,32 +19,34 @@ const useStyles = makeStyles((theme) => ({
     bottom: theme.spacing(2),
     left: 'auto',
     position: 'fixed',
+    zIndex: 100
   },
 }))
 
 
 export function CardForm(props: {existingCard?: Card, editMode?: boolean}): JSX.Element {
+  const history = useHistory()
   const existingCard = props.existingCard
   const allTraits = useUiStore().traits
   
-  const [id, setId] = useState(existingCard?.id)
-  const [name, setName] = useState(existingCard?.name)
+  const [id, setId] = useState(existingCard?.id || '')
+  const [name, setName] = useState(existingCard?.name || '')
   const [name_extra, setNameExtra] = useState(existingCard?.name_extra)
-  const [faction, setFaction] = useState(existingCard?.clan) 
-  const [side, setSide] = useState(existingCard?.side) 
-  const [type, setType] = useState(existingCard?.type) 
-  const [is_unique, setIsUnique] = useState(existingCard?.is_unique) 
+  const [faction, setFaction] = useState(existingCard?.faction || '') 
+  const [side, setSide] = useState(existingCard?.side || '') 
+  const [type, setType] = useState(existingCard?.type || '') 
+  const [is_unique, setIsUnique] = useState(existingCard?.is_unique || false) 
   const [role_restriction, setRoleRestiction] = useState(existingCard?.role_restriction) 
   const [text, setText] = useState(existingCard?.text) 
-  const [restricted_in, setRestrictedIn] = useState(existingCard?.restricted_in) 
-  const [banned_in, setBannedIn] = useState(existingCard?.banned_in) 
-  const [splash_banned_in, setSplashBannedIn] = useState<string[]>([]) // TODO: Add once implemented in backend
-  const [allowed_clans, setAllowedClans] = useState(existingCard?.allowed_clans) 
+  const [restricted_in, setRestrictedIn] = useState(existingCard?.restricted_in || []) 
+  const [banned_in, setBannedIn] = useState(existingCard?.banned_in || []) 
+  const [splash_banned_in, setSplashBannedIn] = useState(existingCard?.splash_banned_in || [])
+  const [allowed_clans, setAllowedClans] = useState(existingCard?.allowed_clans || []) 
   const [deck_limit, setDeckLimit] = useState(existingCard?.deck_limit) 
   const [traits, setTraits] = useState(existingCard?.traits) 
   const [cost, setCost] = useState(existingCard?.cost) 
   const [influence_cost, setInfluenceCost] = useState(existingCard?.influence_cost) 
-  const [elements, setElements] = useState(existingCard?.elements) 
+  const [elements, setElements] = useState(existingCard?.elements || []) 
   const [strength, setStrength] = useState(existingCard?.strength) 
   const [glory, setGlory] = useState(existingCard?.glory) 
   const [fate, setFate] = useState(existingCard?.fate) 
@@ -60,10 +64,16 @@ export function CardForm(props: {existingCard?: Card, editMode?: boolean}): JSX.
   const confirm = useConfirm()
 
   const setIdFromNameAndExtra = (name: string | undefined, name_extra: string | undefined) => {
-    // TODO: Correct slug ID
-    const baseName = name || ''
-    const extra = name_extra || ''
-    setId(name + (extra.length > 0 ? (' ' + extra) : ''))
+    let baseName = name || '' // Daimyō's Gunbai
+    let extra = name_extra || '' // (2)
+    let newId = baseName + (extra.length > 0 ? (' ' + extra) : '') //Daimyō's Gunbai (2)
+    newId = newId
+    .toLowerCase() //daimyō's gunbai (2)
+    .replaceAll('ā', 'a').replaceAll('ō', 'o').replaceAll('ū', 'u') //daimyo's gunbai (2)
+    .replaceAll('(', '').replaceAll(')', '') //daimyo's gunbai 2
+    .replaceAll(/\W/g, ' ') //daimyo s gunbai 2
+    .replaceAll(' ', '-') //daimyo-s-gunbai-2
+    setId(newId)
   }
 
   const setNameAndGenerateId = (newName: string) => {
@@ -99,8 +109,8 @@ export function CardForm(props: {existingCard?: Card, editMode?: boolean}): JSX.
     if (side !== 'conflict') {
       return true
     }
-    if (faction === 'neutral' && influenceCost !== 0) {
-      return true
+    if (faction === 'neutral' && influenceCost === 0) {
+      return false
     }
     if (influenceCost < 1) {
       return true
@@ -191,22 +201,27 @@ export function CardForm(props: {existingCard?: Card, editMode?: boolean}): JSX.
     }
   }
 
-  function compareValue(fieldId: string, originalValue: any, newValue: any): {fieldId: string, changes: string}[] {
+  function compareValue(fieldId: string, originalValue: any, newValue: any): {fieldId: string, changes: { old: string, new: string }}[] {
     if (originalValue !== newValue) {
+
+      const changes = {
+        old: originalValue?.toString() ?? '{null}',
+        new: newValue?.toString() ?? '{null}'
+      }
       return [{
         fieldId: fieldId,
-        changes: `${originalValue.toString()} --> ${newValue.toString()}`
+        changes: changes
       }]
     }
     return []
   }
 
-  function getChangedFields(originalCard: Card): {fieldId: string, changes: string}[] {
-    const changes: {fieldId: string, changes: string}[] = []
+  function getChangedFields(originalCard: Card): {fieldId: string, changes: { old: string, new: string }}[] {
+    const changes: {fieldId: string, changes: {old: string, new: string}}[] = []
     changes.push(...compareValue('id', originalCard.id, id))
     changes.push(...compareValue('name', originalCard.name, name))
     changes.push(...compareValue('name_extra', originalCard.name_extra, name_extra))
-    changes.push(...compareValue('faction', originalCard.clan, faction))
+    changes.push(...compareValue('faction', originalCard.faction, faction))
     changes.push(...compareValue('side', originalCard.side, side))
     changes.push(...compareValue('type', originalCard.type, type))
     changes.push(...compareValue('is_unique', originalCard.is_unique, is_unique))
@@ -214,7 +229,7 @@ export function CardForm(props: {existingCard?: Card, editMode?: boolean}): JSX.
     changes.push(...compareValue('text', originalCard.text, text))
     changes.push(...compareValue('restricted_in', originalCard.restricted_in, restricted_in))
     changes.push(...compareValue('banned_in', originalCard.banned_in, banned_in))
-    //changes.push(...compareValue('splash_banned_in', [], splash_banned_in))
+    changes.push(...compareValue('splash_banned_in', [], splash_banned_in))
     changes.push(...compareValue('allowed_clans', originalCard.allowed_clans, allowed_clans))
     changes.push(...compareValue('deck_limit', originalCard.deck_limit, deck_limit))
     changes.push(...compareValue('traits', originalCard.traits, traits))
@@ -234,24 +249,84 @@ export function CardForm(props: {existingCard?: Card, editMode?: boolean}): JSX.
     return changes
   }
 
+  function assembleCard(): Card {
+    const card: Card = {
+      id: id,
+      name: name,
+      name_extra: name_extra,
+      faction: faction,
+      side: side,
+      type: type,
+      is_unique: is_unique,
+      role_restriction: role_restriction,
+      text: text,
+      restricted_in: restricted_in,
+      banned_in: banned_in,
+      splash_banned_in: splash_banned_in,
+      allowed_clans: allowed_clans,
+      deck_limit: deck_limit,
+      traits: traits,
+      cost: cost,
+      influence_cost: influence_cost,
+      elements: elements,
+      strength: strength,
+      glory: glory,
+      fate: fate,
+      honor: honor,
+      influence_pool: influence_pool,
+      strength_bonus: strength_bonus,
+      military: military,
+      political: political,
+      military_bonus: military_bonus, 
+      political_bonus: political_bonus,
+    }
+    console.log(card)
+    return card
+  }
+
   const handleSubmit = () => {
-    console.log("Submit!")
     const originalCard = props.existingCard
     if (originalCard) {
+      // Update on existing card
       const changedFields = getChangedFields(originalCard)
       if (changedFields.length === 0) {
         confirm({description: 'No changes were made.', title: ''})
       } else {
-        let confirmationMessage = (<span>The following changes will be submitted:
+        const confirmationMessage = (<span>The following changes will be submitted:<br/>
           {changedFields.map(changedField => 
-            <p><b>{changedField.fieldId}</b>: {changedField.changes}</p>
+            <span><b>{changedField.fieldId}</b>: {changedField.changes.old} {'-->'} {changedField.changes.new}<br/></span>
           )}
         </span>)
-        
-        confirm({description: confirmationMessage}).then(() => console.log("Call Api -> Edit card"))
+
+        confirm({description: confirmationMessage})
+          .then(() => {
+            const newCard = assembleCard()
+            privateApi.Card.update({ cardId: newCard.id, body: newCard })
+            .then((response) => {
+              history.push(`/card/${newCard.id}`)
+            })
+            .catch((error) => {
+              console.log(error)
+              //TODO: Show error
+            })
+          })
+          .catch(() => {})
       }
     } else {
-      confirm({title: `Create card ${name} (${id})`, description: 'Do you want to create this card?'}).then(() => console.log("Call Api -> Create new Card"))
+      // New card
+      confirm({title: `Create card ${name} (${id})`, description: 'Do you want to create this card?'})
+        .then(() => {
+          const newCard = assembleCard();
+          privateApi.Card.create({ body: newCard })
+            .then((response) => {
+              history.push(`/card/${newCard.id}`)
+            })
+            .catch((error) => {
+              console.log(error)
+              //TODO: Show error
+            })
+        })
+        .catch(() => {})
     }
   }
 
@@ -267,13 +342,13 @@ export function CardForm(props: {existingCard?: Card, editMode?: boolean}): JSX.
       <Grid item xs={12}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
-            <TextField disabled={props.editMode} required id='name' label="Name" defaultValue={name} onChange={(e) => setNameAndGenerateId(e.target.value)}/>
+            <TextField disabled={props.editMode} required id='name' label="Name" value={name} onChange={(e) => setNameAndGenerateId(e.target.value)}/>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <TextField disabled={props.editMode} id='name_extra' label="Name Extra" defaultValue={name_extra} onChange={(e) => setNameExtraAndGenerateId(e.target.value)}/>
+            <TextField disabled={props.editMode} id='name_extra' label="Name Extra" value={name_extra} onChange={(e) => setNameExtraAndGenerateId(e.target.value)}/>
           </Grid>
           <Grid item xs={12}>
-            <TextField disabled required id='id' label="Card ID (generated from Name + Name Extra)" defaultValue={id} fullWidth />
+            <TextField disabled InputLabelProps={{ shrink: true }} required id='id' label="Card ID (generated from Name + Name Extra)" value={id} fullWidth />
           </Grid>
         </Grid>
       </Grid>
@@ -292,7 +367,13 @@ export function CardForm(props: {existingCard?: Card, editMode?: boolean}): JSX.
                     getOptionLabel={(option) => option.name}
                     value={factions.find(item => item.id === faction) || null}
                     renderInput={(params) => <TextField required {...params} label="Faction" variant="outlined" />}
-                    onChange={(e, value) => setFaction(value?.id)}
+                    onChange={(e, value) => {
+                      const newFaction = value?.id || ''
+                      if (newFaction === 'neutral') {
+                        setAllowedClans(clans.map(clan => clan.id))
+                      }
+                      setFaction(newFaction)
+                    }}
                   />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -303,7 +384,7 @@ export function CardForm(props: {existingCard?: Card, editMode?: boolean}): JSX.
                     value={types.find(item => item.id === type) || null}
                     getOptionDisabled={(option) => !!side && !typesInSide(side).includes(option.id)}
                     renderInput={(params) => <TextField required {...params} label="Card Type" variant="outlined" />}
-                    onChange={(e, value) => setType(value?.id)}
+                    onChange={(e, value) => setType(value?.id || '')}
                   />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -314,7 +395,13 @@ export function CardForm(props: {existingCard?: Card, editMode?: boolean}): JSX.
                     value={sides.find(item => item.id === side) || null}
                     getOptionDisabled={(option) => !!type && !sidesForType(type).includes(option.id)}
                     renderInput={(params) => <TextField required {...params} label="Deck/Side" variant="outlined" />}
-                    onChange={(e, value) => setSide(value?.id)}
+                    onChange={(e, value) => {
+                      const newSide = value?.id || '';
+                      if (newSide !== 'conflict' && faction && faction !=='shadowlands' && faction !== 'neutal') {
+                        setAllowedClans([faction])
+                      }
+                      setSide(newSide)
+                    }}
                   />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -362,7 +449,7 @@ export function CardForm(props: {existingCard?: Card, editMode?: boolean}): JSX.
             </Grid>
           </Grid>
           <Grid item xs={12} md={6}>
-            <CardTextEditor text={text} onChange={(text: string) => setText(text)} faction={faction} />
+            <CardTextEditor text={text || ''} onChange={(text: string) => setText(text)} faction={faction} />
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
             <MultiCheckbox label='Restricted In' items={formats} onChange={(formats: string[]) => setRestrictedIn(formats)} defaultItems={restricted_in}/>

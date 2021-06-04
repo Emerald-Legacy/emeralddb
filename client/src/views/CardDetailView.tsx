@@ -1,17 +1,20 @@
 import React, { useState } from 'react'
-import { Grid} from '@material-ui/core'
-import { useParams } from 'react-router-dom'
+import { Button, Grid} from '@material-ui/core'
+import { useHistory, useParams } from 'react-router-dom'
 import { EmptyState } from '../components/EmptyState'
 import { Loading } from '../components/Loading'
 import { RequestError } from '../components/RequestError'
 import { useCard } from '../hooks/useCard'
 import { CardInformation } from '../components/card/CardInformation'
 import { CardInPack } from '@5rdb/api'
+import { useCurrentUser } from '../providers/UserProvider'
 
 export function CardDetailView(): JSX.Element {
   const params = useParams<{ id: string }>()
   const [data] = useCard(params.id)
   const [chosenVersion, setChosenVersion] = useState<Omit<CardInPack, 'card_id'>>()
+  const { isDataAdmin } = useCurrentUser()
+  const history = useHistory()
 
   if (data.loading) {
     return <Loading />
@@ -32,6 +35,12 @@ export function CardDetailView(): JSX.Element {
   return (
     <Grid container spacing={5}>
       <Grid item xs={12} md={7}>
+        {isDataAdmin() && <Button 
+        variant='contained' 
+        color='secondary'
+        onClick={() => history.push(`/card/${card.id}/edit`)}>
+          Edit this Card
+        </Button>}
         <CardInformation cardWithVersions={card} currentVersionPackId={chosenVersion?.pack_id} />
       </Grid>
       <Grid item xs={12} md={5}>

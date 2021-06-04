@@ -17,3 +17,10 @@ export async function insertOrUpdateCard(card: Card): Promise<Card> {
   const result = await pg.raw(`? ON CONFLICT ("id") DO ? returning *`, [insert, update])
   return result.rows[0]
 }
+
+export async function updateCard(card: Card): Promise<Card> {
+  const result = await pg(TABLE)
+    .where('id', card.id)
+    .update({ ...card }, '*')
+  return result[0]
+}

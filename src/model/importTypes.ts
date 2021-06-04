@@ -13,12 +13,12 @@ export interface CardImport {
   is_banned_in_jade?: boolean
   is_banned_in_skirmish?: boolean
   is_banned?: boolean
-  allowed_clans?: string[]
-  traits?: string[]
+  allowed_clans: string[]
+  traits: string[]
   cost?: string
   deck_limit?: number
   influence_cost?: number
-  element?: string[]
+  element: string[]
   strength?: string
   glory?: number
   fate?: number

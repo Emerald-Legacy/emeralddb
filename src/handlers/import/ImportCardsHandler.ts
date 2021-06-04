@@ -56,7 +56,7 @@ function mapInputToRecord(card: CardImport, traits: Trait[]): Card {
     id: card.id,
     name: card.name,
     name_extra: card.name_extra,
-    clan: card.clan,
+    faction: card.clan,
     side: card.side,
     type: card.type,
     is_unique: card.unicity,

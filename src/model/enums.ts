@@ -116,6 +116,7 @@ export enum FORMAT {
   STRONGHOLD = 'standard',
   SINGLE_CORE = 'single-core',
   SKIRMISH = 'skirmish',
+  EMERALD = 'emerald',
   JADE_EDICT = 'jade-edict',
   ENLIGHTENMENT = 'enlightenment',
 }
@@ -125,5 +126,6 @@ export const FORMATS: FORMAT[] = [
   FORMAT.SINGLE_CORE,
   FORMAT.SKIRMISH,
   FORMAT.JADE_EDICT,
+  FORMAT.EMERALD,
   FORMAT.ENLIGHTENMENT,
 ]

@@ -3,7 +3,7 @@
 
 
 "@5rdb/api@file:./apiTypings":
-  version "1.0.1"
+  version "1.0.7"
 
 "@babel/code-frame@7.12.11":
   version "7.12.11"

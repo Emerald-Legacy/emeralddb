@@ -1,5 +1,4 @@
 import { FormControl, FormLabel, FormGroup, FormControlLabel, Checkbox } from "@material-ui/core";
-import { useState } from "react";
 
 export function MultiCheckbox(props: {label: string, items: {id: string, name: string}[], onChange: (formats: string[]) => void, defaultItems?: string[]}): JSX.Element {
   

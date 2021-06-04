@@ -13,6 +13,8 @@ import { Container } from '@material-ui/core'
 import { UserProvider } from './providers/UserProvider'
 import { EditCardView } from './views/EditCardView'
 import { ConfirmProvider } from 'material-ui-confirm';
+import { CreateCardView } from './views/CreateCardView'
+import { Routes } from './Routes'
 
 
 // create our material ui theme using up to date typography variables
@@ -49,20 +51,7 @@ export default function App(): JSX.Element {
                 <UserProvider>
                   <HeaderBar audience={audience} scope={scope} />
                   <Container style={{paddingTop: 15}}>
-                    <Switch>
-                      <Route path="/cards">
-                        <CardsView />
-                      </Route>
-                      <Route path="/card/:id/edit">
-                        <EditCardView />
-                      </Route>
-                      <Route path="/card/:id">
-                        <CardDetailView />
-                      </Route>
-                      <Route path="/">
-                        <MainPage />
-                      </Route>
-                    </Switch>
+                    <Routes />
                   </Container>
                 </UserProvider>
               </ConfirmProvider>
