@@ -2,6 +2,9 @@ import { Card } from '@5rdb/api'
 import {
   Paper,
   makeStyles,
+  TextField,
+  ButtonGroup,
+  Button
 } from '@material-ui/core'
 import { DataGrid, GridColumns } from '@material-ui/data-grid';
 import { useHistory } from 'react-router-dom';
@@ -9,15 +12,18 @@ import { CardTypeIcon } from '../components/CardTypeIcon';
 import { useUiStore } from '../providers/UiStoreProvider'
 import { convertTraitList } from '../utils/cardTextUtils';
 import { capitalize } from '../utils/stringUtils';
+import { useState } from 'react';
+import { factions } from '../utils/enums';
+import { applyFilters, CardFilter, Filter } from '../components/CardFilter';
 
 const useStyles = makeStyles((theme) => ({
   table: {
-    marginTop: theme.spacing(2)
-  },
+    marginTop: theme.spacing(1)
+  }
 }))
 
 interface NameProps {
-  name: string, 
+  name: string,
   faction: string,
   type: string,
 }
@@ -36,8 +42,13 @@ export function CardsView(): JSX.Element {
   const classes = useStyles()
   const { cards, traits } = useUiStore()
   const history = useHistory()
+  const [ filter, setFilter ] = useState<Filter | undefined>(undefined)
 
-  const filteredCards = cards;
+  let filteredCards = cards;
+
+  if (filter) {
+    filteredCards = applyFilters(cards, filter);
+  }
 
   const tableCards: TableCard[] = filteredCards.map(card => { return {
     id: card.id,
@@ -55,7 +66,7 @@ export function CardsView(): JSX.Element {
 
   const columns: GridColumns = [
     {
-      field: 'name', 
+      field: 'name',
       headerName: 'Name',
       flex: 3,
       disableColumnMenu: true,
@@ -74,8 +85,11 @@ export function CardsView(): JSX.Element {
   ]
 
   return (
-    <Paper className={classes.table}>
-      <DataGrid disableColumnResize columns={columns} rows={tableCards} pageSize={50} autoHeight density="compact" onRowClick={(param) => {goToCardPage(param.row.id)}}></DataGrid>
-    </Paper>
+    <>
+      <CardFilter onFilterChanged={setFilter} />
+      <Paper className={classes.table}>
+        <DataGrid disableColumnResize columns={columns} rows={tableCards} pageSize={50} autoHeight density="compact" onRowClick={(param) => {goToCardPage(param.row.id)}} />
+      </Paper>
+    </>
   )
 }
