@@ -1,21 +1,15 @@
 import { ThemeProvider } from '@material-ui/styles'
 import { createMuiTheme } from '@material-ui/core/styles'
-import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { CardsView } from './views/CardsView'
-import { CardDetailView } from './views/CardDetailView'
 import { HeaderBar } from './components/HeaderBar'
-import { MainPage } from './views/MainPage'
 import { Auth0ProviderWithHistory } from './providers/Auth0ProviderWithHistory'
 import { UiStoreProvider } from './providers/UiStoreProvider'
 import { Container } from '@material-ui/core'
 import { UserProvider } from './providers/UserProvider'
-import { EditCardView } from './views/EditCardView'
-import { ConfirmProvider } from 'material-ui-confirm';
-import { CreateCardView } from './views/CreateCardView'
+import { ConfirmProvider } from 'material-ui-confirm'
 import { Routes } from './Routes'
-
 
 // create our material ui theme using up to date typography variables
 const theme = createMuiTheme({
@@ -44,13 +38,13 @@ export default function App(): JSX.Element {
                 defaultOptions={{
                   dialogProps: {
                     open: true,
-                    maxWidth: 'md'
-                  }
+                    maxWidth: 'md',
+                  },
                 }}
               >
                 <UserProvider>
                   <HeaderBar audience={audience} scope={scope} />
-                  <Container style={{paddingTop: 15}}>
+                  <Container style={{ paddingTop: 15 }}>
                     <Routes />
                   </Container>
                 </UserProvider>

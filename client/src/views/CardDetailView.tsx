@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Grid} from '@material-ui/core'
+import { Button, Grid } from '@material-ui/core'
 import { useHistory, useParams } from 'react-router-dom'
 import { EmptyState } from '../components/EmptyState'
 import { Loading } from '../components/Loading'
@@ -35,16 +35,21 @@ export function CardDetailView(): JSX.Element {
   return (
     <Grid container spacing={5}>
       <Grid item xs={12} md={7}>
-        {isDataAdmin() && <Button 
-        variant='contained' 
-        color='secondary'
-        onClick={() => history.push(`/card/${card.id}/edit`)}>
-          Edit this Card
-        </Button>}
+        {isDataAdmin() && (
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => history.push(`/card/${card.id}/edit`)}
+          >
+            Edit this Card
+          </Button>
+        )}
         <CardInformation cardWithVersions={card} currentVersionPackId={chosenVersion?.pack_id} />
       </Grid>
       <Grid item xs={12} md={5}>
-        {chosenVersion && (<img src={chosenVersion.image_url} width={card.type === 'treaty' ? '450px' : '300px'}/>)}
+        {chosenVersion && (
+          <img src={chosenVersion.image_url} width={card.type === 'treaty' ? '450px' : '300px'} />
+        )}
       </Grid>
     </Grid>
   )

@@ -52,8 +52,8 @@ export function UserMenu(props: { audience: string; scope: string }): JSX.Elemen
   const [modalUsername, setModalUsername] = useState<string>()
 
   const { getAccessTokenSilently } = useAuth0()
-  const { currentUser, setCurrentUser } = useCurrentUser() 
-  
+  const { currentUser, setCurrentUser } = useCurrentUser()
+
   const queryClient = useQueryClient()
   const fetchToken = async () => {
     try {
@@ -72,7 +72,7 @@ export function UserMenu(props: { audience: string; scope: string }): JSX.Elemen
     const updateUser = () => {
       privateApi.User.update({ body: { id: currentUser.id, name: modalUsername } }).then(
         (response) => {
-          setCurrentUser(response.data as unknown as User)
+          setCurrentUser((response.data as unknown) as User)
           setModalOpen(false)
         }
       )

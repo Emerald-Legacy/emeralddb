@@ -13,7 +13,7 @@ export const UiStoreContext = createContext<UiStore>({
   cards: [],
   packs: [],
   cycles: [],
-  traits: []
+  traits: [],
 })
 
 export function UiStoreProvider(props: { children: ReactNode }): JSX.Element {
@@ -43,10 +43,10 @@ export function UiStoreProvider(props: { children: ReactNode }): JSX.Element {
   )
 }
 
-export function useUiStore() {
-  const uiStore = useContext(UiStoreContext);
+export function useUiStore(): UiStore {
+  const uiStore = useContext(UiStoreContext)
   if (uiStore === undefined) {
-    throw new Error("Context must be used within a Provider");
+    throw new Error('Context must be used within a Provider')
   }
-  return uiStore;
+  return uiStore
 }

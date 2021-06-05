@@ -1,15 +1,16 @@
-import { Trait } from "@5rdb/api";
+import { Trait } from '@5rdb/api'
 
-export const formatText = (unformattedText: string) => {
+export function formatText(unformattedText: string): string {
   return unformattedText
-    .replace(
-      /\[([\w-]+)\]/g,
-      (match, p1) => `<span class="icon icon-${p1}"></span>`,
-    )
+    .replace(/\[([\w-]+)\]/g, (match, p1) => `<span class="icon icon-${p1}"></span>`)
     .replaceAll('<em>', '<em><b>')
-    .replaceAll('</em>', '</b></em>');
+    .replaceAll('</em>', '</b></em>')
 }
 
-export const convertTraitList = (stringTraits: string[], traits: Trait[]) => {
-  return stringTraits.map(stringTrait => (traits.find(trait => stringTrait === trait.id)?.name || stringTrait) + '.').join(' ');
+export function convertTraitList(stringTraits: string[], traits: Trait[]): string {
+  return stringTraits
+    .map(
+      (stringTrait) => (traits.find((trait) => stringTrait === trait.id)?.name || stringTrait) + '.'
+    )
+    .join(' ')
 }

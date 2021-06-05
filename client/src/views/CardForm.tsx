@@ -1,15 +1,25 @@
-import { Card, Trait } from "@5rdb/api";
-import { Fab, Grid, makeStyles, Switch, TextField, Typography } from "@material-ui/core";
-import React, { useState } from "react";
-import { sides, types, factions, typesInSide, sidesForType, formats, clans, roleRestrictions, elements as allElements } from "../utils/enums";
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import { CardTextEditor } from "../components/card/CardTextEditor";
-import { MultiCheckbox } from "../components/card/FormatCheckbox";
-import { useUiStore } from "../providers/UiStoreProvider";
-import SaveIcon from '@material-ui/icons/Save';
-import { useConfirm } from "material-ui-confirm";
-import { privateApi } from "../api";
-import { useHistory } from "react-router-dom";
+import { Card, Trait } from '@5rdb/api'
+import { Fab, Grid, makeStyles, Switch, TextField, Typography } from '@material-ui/core'
+import React, { useState } from 'react'
+import {
+  sides,
+  cardTypes,
+  factions,
+  typesInSide,
+  sidesForType,
+  formats,
+  clans,
+  roleRestrictions,
+  elements as allElements,
+} from '../utils/enums'
+import Autocomplete from '@material-ui/lab/Autocomplete'
+import { CardTextEditor } from '../components/card/CardTextEditor'
+import { MultiCheckbox } from '../components/card/FormatCheckbox'
+import { useUiStore } from '../providers/UiStoreProvider'
+import SaveIcon from '@material-ui/icons/Save'
+import { useConfirm } from 'material-ui-confirm'
+import { privateApi } from '../api'
+import { useHistory } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
   fab: {
@@ -19,44 +29,43 @@ const useStyles = makeStyles((theme) => ({
     bottom: theme.spacing(2),
     left: 'auto',
     position: 'fixed',
-    zIndex: 100
+    zIndex: 100,
   },
 }))
 
-
-export function CardForm(props: {existingCard?: Card, editMode?: boolean}): JSX.Element {
+export function CardForm(props: { existingCard?: Card; editMode?: boolean }): JSX.Element {
   const history = useHistory()
   const existingCard = props.existingCard
   const allTraits = useUiStore().traits
-  
+
   const [id, setId] = useState(existingCard?.id || '')
   const [name, setName] = useState(existingCard?.name || '')
   const [name_extra, setNameExtra] = useState(existingCard?.name_extra)
-  const [faction, setFaction] = useState(existingCard?.faction || '') 
-  const [side, setSide] = useState(existingCard?.side || '') 
-  const [type, setType] = useState(existingCard?.type || '') 
-  const [is_unique, setIsUnique] = useState(existingCard?.is_unique || false) 
-  const [role_restriction, setRoleRestiction] = useState(existingCard?.role_restriction) 
-  const [text, setText] = useState(existingCard?.text) 
-  const [restricted_in, setRestrictedIn] = useState(existingCard?.restricted_in || []) 
-  const [banned_in, setBannedIn] = useState(existingCard?.banned_in || []) 
+  const [faction, setFaction] = useState(existingCard?.faction || '')
+  const [side, setSide] = useState(existingCard?.side || '')
+  const [type, setType] = useState(existingCard?.type || '')
+  const [is_unique, setIsUnique] = useState(existingCard?.is_unique || false)
+  const [role_restriction, setRoleRestiction] = useState(existingCard?.role_restriction)
+  const [text, setText] = useState(existingCard?.text)
+  const [restricted_in, setRestrictedIn] = useState(existingCard?.restricted_in || [])
+  const [banned_in, setBannedIn] = useState(existingCard?.banned_in || [])
   const [splash_banned_in, setSplashBannedIn] = useState(existingCard?.splash_banned_in || [])
-  const [allowed_clans, setAllowedClans] = useState(existingCard?.allowed_clans || []) 
-  const [deck_limit, setDeckLimit] = useState(existingCard?.deck_limit) 
-  const [traits, setTraits] = useState(existingCard?.traits) 
-  const [cost, setCost] = useState(existingCard?.cost) 
-  const [influence_cost, setInfluenceCost] = useState(existingCard?.influence_cost) 
-  const [elements, setElements] = useState(existingCard?.elements || []) 
-  const [strength, setStrength] = useState(existingCard?.strength) 
-  const [glory, setGlory] = useState(existingCard?.glory) 
-  const [fate, setFate] = useState(existingCard?.fate) 
-  const [honor, setHonor] = useState(existingCard?.honor) 
-  const [influence_pool, setInfluencePool] = useState(existingCard?.influence_pool) 
-  const [strength_bonus, setStrengthBonus] = useState(existingCard?.strength_bonus) 
-  const [military, setMilitary] = useState(existingCard?.military) 
-  const [political, setPolitical] = useState(existingCard?.political) 
-  const [military_bonus, setMilitaryBonus] = useState(existingCard?.military_bonus) 
-  const [political_bonus, setPoliticalBonus] = useState(existingCard?.political_bonus) 
+  const [allowed_clans, setAllowedClans] = useState(existingCard?.allowed_clans || [])
+  const [deck_limit, setDeckLimit] = useState(existingCard?.deck_limit)
+  const [traits, setTraits] = useState(existingCard?.traits)
+  const [cost, setCost] = useState(existingCard?.cost)
+  const [influence_cost, setInfluenceCost] = useState(existingCard?.influence_cost)
+  const [elements, setElements] = useState(existingCard?.elements || [])
+  const [strength, setStrength] = useState(existingCard?.strength)
+  const [glory, setGlory] = useState(existingCard?.glory)
+  const [fate, setFate] = useState(existingCard?.fate)
+  const [honor, setHonor] = useState(existingCard?.honor)
+  const [influence_pool, setInfluencePool] = useState(existingCard?.influence_pool)
+  const [strength_bonus, setStrengthBonus] = useState(existingCard?.strength_bonus)
+  const [military, setMilitary] = useState(existingCard?.military)
+  const [political, setPolitical] = useState(existingCard?.political)
+  const [military_bonus, setMilitaryBonus] = useState(existingCard?.military_bonus)
+  const [political_bonus, setPoliticalBonus] = useState(existingCard?.political_bonus)
 
   const [isSplashable, setIsSplashable] = useState(influence_cost !== null)
   const [influenceRequired, setInfluenceRequired] = useState(isSplashable)
@@ -64,15 +73,18 @@ export function CardForm(props: {existingCard?: Card, editMode?: boolean}): JSX.
   const confirm = useConfirm()
 
   const setIdFromNameAndExtra = (name: string | undefined, name_extra: string | undefined) => {
-    let baseName = name || '' // Daimyō's Gunbai
-    let extra = name_extra || '' // (2)
-    let newId = baseName + (extra.length > 0 ? (' ' + extra) : '') //Daimyō's Gunbai (2)
+    const baseName = name || '' // Daimyō's Gunbai
+    const extra = name_extra || '' // (2)
+    let newId = baseName + (extra.length > 0 ? ' ' + extra : '') // Daimyō's Gunbai (2)
     newId = newId
-    .toLowerCase() //daimyō's gunbai (2)
-    .replaceAll('ā', 'a').replaceAll('ō', 'o').replaceAll('ū', 'u') //daimyo's gunbai (2)
-    .replaceAll('(', '').replaceAll(')', '') //daimyo's gunbai 2
-    .replaceAll(/\W/g, ' ') //daimyo s gunbai 2
-    .replaceAll(' ', '-') //daimyo-s-gunbai-2
+      .toLowerCase() // daimyō's gunbai (2)
+      .replaceAll('ā', 'a')
+      .replaceAll('ō', 'o')
+      .replaceAll('ū', 'u') // daimyo's gunbai (2)
+      .replaceAll('(', '')
+      .replaceAll(')', '') // daimyo's gunbai 2
+      .replaceAll(/\W/g, ' ') // daimyo s gunbai 2
+      .replaceAll(' ', '-') // daimyo-s-gunbai-2
     setId(newId)
   }
 
@@ -87,10 +99,10 @@ export function CardForm(props: {existingCard?: Card, editMode?: boolean}): JSX.
   }
 
   const isDeckLimitInvalid = (deckLimit?: number) => {
-    if (!deckLimit || (deckLimit > 3 || deckLimit < 1)) {
-      return true;
+    if (!deckLimit || deckLimit > 3 || deckLimit < 1) {
+      return true
     }
-    return false;
+    return false
   }
 
   const isInfluenceCostInvalid = (influenceCost?: number) => {
@@ -118,14 +130,14 @@ export function CardForm(props: {existingCard?: Card, editMode?: boolean}): JSX.
     if (!isSplashable) {
       return true
     }
-    return false;
+    return false
   }
 
   const isXOrNumberGreater0 = (input: string) => {
     if (input === 'X') {
       return true
     }
-    const skillNumber = Number.parseInt(input);
+    const skillNumber = Number.parseInt(input)
     if (Number.isNaN(skillNumber)) {
       return false
     }
@@ -137,7 +149,7 @@ export function CardForm(props: {existingCard?: Card, editMode?: boolean}): JSX.
 
   const isCostInvalid = (cost?: string) => {
     if (cost === undefined || cost === null) {
-      //Daimyo's Gunbai
+      // Daimyo's Gunbai
       return false
     }
     if (cost === 'X') {
@@ -178,8 +190,8 @@ export function CardForm(props: {existingCard?: Card, editMode?: boolean}): JSX.
   const findTraits = (stringTraits?: string[]) => {
     const result: Trait[] = []
     if (stringTraits) {
-      stringTraits.forEach(stringTrait => {
-        const traitItem = allTraits.find(item => item.id === stringTrait)
+      stringTraits.forEach((stringTrait) => {
+        const traitItem = allTraits.find((item) => item.id === stringTrait)
         if (traitItem) {
           result.push(traitItem)
         }
@@ -195,29 +207,38 @@ export function CardForm(props: {existingCard?: Card, editMode?: boolean}): JSX.
       setIsSplashable(false)
       setInfluenceRequired(false)
     } else {
-      setAllowedClans(clans.map(clan => clan.id))
+      setAllowedClans(clans.map((clan) => clan.id))
       setIsSplashable(true)
       setInfluenceRequired(true)
     }
   }
 
-  function compareValue(fieldId: string, originalValue: any, newValue: any): {fieldId: string, changes: { old: string, new: string }}[] {
+  function compareValue(
+    fieldId: string,
+    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+    originalValue: any,
+    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+    newValue: any
+  ): { fieldId: string; changes: { old: string; new: string } }[] {
     if (originalValue !== newValue) {
-
       const changes = {
         old: originalValue?.toString() ?? '{null}',
-        new: newValue?.toString() ?? '{null}'
+        new: newValue?.toString() ?? '{null}',
       }
-      return [{
-        fieldId: fieldId,
-        changes: changes
-      }]
+      return [
+        {
+          fieldId: fieldId,
+          changes: changes,
+        },
+      ]
     }
     return []
   }
 
-  function getChangedFields(originalCard: Card): {fieldId: string, changes: { old: string, new: string }}[] {
-    const changes: {fieldId: string, changes: {old: string, new: string}}[] = []
+  function getChangedFields(
+    originalCard: Card
+  ): { fieldId: string; changes: { old: string; new: string } }[] {
+    const changes: { fieldId: string; changes: { old: string; new: string } }[] = []
     changes.push(...compareValue('id', originalCard.id, id))
     changes.push(...compareValue('name', originalCard.name, name))
     changes.push(...compareValue('name_extra', originalCard.name_extra, name_extra))
@@ -225,7 +246,9 @@ export function CardForm(props: {existingCard?: Card, editMode?: boolean}): JSX.
     changes.push(...compareValue('side', originalCard.side, side))
     changes.push(...compareValue('type', originalCard.type, type))
     changes.push(...compareValue('is_unique', originalCard.is_unique, is_unique))
-    changes.push(...compareValue('role_restriction', originalCard.role_restriction, role_restriction))
+    changes.push(
+      ...compareValue('role_restriction', originalCard.role_restriction, role_restriction)
+    )
     changes.push(...compareValue('text', originalCard.text, text))
     changes.push(...compareValue('restricted_in', originalCard.restricted_in, restricted_in))
     changes.push(...compareValue('banned_in', originalCard.banned_in, banned_in))
@@ -245,7 +268,7 @@ export function CardForm(props: {existingCard?: Card, editMode?: boolean}): JSX.
     changes.push(...compareValue('political', originalCard.political, political))
     changes.push(...compareValue('military_bonus', originalCard.military_bonus, military_bonus))
     changes.push(...compareValue('political_bonus', originalCard.political_bonus, political_bonus))
-    
+
     return changes
   }
 
@@ -277,7 +300,7 @@ export function CardForm(props: {existingCard?: Card, editMode?: boolean}): JSX.
       strength_bonus: strength_bonus,
       military: military,
       political: political,
-      military_bonus: military_bonus, 
+      military_bonus: military_bonus,
       political_bonus: political_bonus,
     }
     console.log(card)
@@ -290,460 +313,594 @@ export function CardForm(props: {existingCard?: Card, editMode?: boolean}): JSX.
       // Update on existing card
       const changedFields = getChangedFields(originalCard)
       if (changedFields.length === 0) {
-        confirm({description: 'No changes were made.', title: ''})
+        confirm({ description: 'No changes were made.', title: '' })
       } else {
-        const confirmationMessage = (<span>The following changes will be submitted:<br/>
-          {changedFields.map(changedField => 
-            <span><b>{changedField.fieldId}</b>: {changedField.changes.old} {'-->'} {changedField.changes.new}<br/></span>
-          )}
-        </span>)
+        const confirmationMessage = (
+          <span>
+            The following changes will be submitted:
+            <br />
+            {changedFields.map((changedField) => (
+              <span>
+                <b>{changedField.fieldId}</b>: {changedField.changes.old} {'-->'}{' '}
+                {changedField.changes.new}
+                <br />
+              </span>
+            ))}
+          </span>
+        )
 
-        confirm({description: confirmationMessage})
+        confirm({ description: confirmationMessage })
           .then(() => {
             const newCard = assembleCard()
             privateApi.Card.update({ cardId: newCard.id, body: newCard })
-            .then((response) => {
-              history.push(`/card/${newCard.id}`)
-            })
-            .catch((error) => {
-              console.log(error)
-              //TODO: Show error
-            })
+              .then(() => {
+                history.push(`/card/${newCard.id}`)
+              })
+              .catch((error) => {
+                console.log(error)
+                // TODO: Show error
+              })
           })
-          .catch(() => {})
+          .catch(() => {
+            // Cancel confirmation dialog => do nothing
+          })
       }
     } else {
       // New card
-      confirm({title: `Create card ${name} (${id})`, description: 'Do you want to create this card?'})
+      confirm({
+        title: `Create card ${name} (${id})`,
+        description: 'Do you want to create this card?',
+      })
         .then(() => {
-          const newCard = assembleCard();
+          const newCard = assembleCard()
           privateApi.Card.create({ body: newCard })
-            .then((response) => {
+            .then(() => {
               history.push(`/card/${newCard.id}`)
             })
             .catch((error) => {
               console.log(error)
-              //TODO: Show error
+              // TODO: Show error
             })
         })
-        .catch(() => {})
+        .catch(() => {
+          // Cancel confirmation dialog => do nothing
+        })
     }
   }
 
-  return (<form>
-    <Grid container spacing={3}>
-      <Fab variant="extended" color='primary' className={classes.fab} onClick={() => handleSubmit()} >
-        <SaveIcon  />
-        Save Changes
-      </Fab>
-      <Grid item xs={12}>
-        <Typography variant='h6'>Name and ID</Typography>
-      </Grid>
-      <Grid item xs={12}>
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={6}>
-            <TextField disabled={props.editMode} required id='name' label="Name" value={name} onChange={(e) => setNameAndGenerateId(e.target.value)}/>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField disabled={props.editMode} id='name_extra' label="Name Extra" value={name_extra} onChange={(e) => setNameExtraAndGenerateId(e.target.value)}/>
-          </Grid>
-          <Grid item xs={12}>
-            <TextField disabled InputLabelProps={{ shrink: true }} required id='id' label="Card ID (generated from Name + Name Extra)" value={id} fullWidth />
+  return (
+    <form>
+      <Grid container spacing={3}>
+        <Fab
+          variant="extended"
+          color="primary"
+          className={classes.fab}
+          onClick={() => handleSubmit()}
+        >
+          <SaveIcon />
+          Save Changes
+        </Fab>
+        <Grid item xs={12}>
+          <Typography variant="h6">Name and ID</Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                disabled={props.editMode}
+                required
+                id="name"
+                label="Name"
+                value={name}
+                onChange={(e) => setNameAndGenerateId(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                disabled={props.editMode}
+                id="name_extra"
+                label="Name Extra"
+                value={name_extra}
+                onChange={(e) => setNameExtraAndGenerateId(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                disabled
+                InputLabelProps={{ shrink: true }}
+                required
+                id="id"
+                label="Card ID (generated from Name + Name Extra)"
+                value={id}
+                fullWidth
+              />
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>
 
-      <Grid item xs={12}>
-        <Typography variant='h6'>General Card Information</Typography>
-      </Grid>
-      <Grid item xs={12}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={6}>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <Autocomplete
+        <Grid item xs={12}>
+          <Typography variant="h6">General Card Information</Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={6}>
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
+                  <Autocomplete
                     id="combo-box-faction"
                     options={factions}
                     getOptionLabel={(option) => option.name}
-                    value={factions.find(item => item.id === faction) || null}
-                    renderInput={(params) => <TextField required {...params} label="Faction" variant="outlined" />}
+                    value={factions.find((item) => item.id === faction) || null}
+                    renderInput={(params) => (
+                      <TextField required {...params} label="Faction" variant="outlined" />
+                    )}
                     onChange={(e, value) => {
                       const newFaction = value?.id || ''
                       if (newFaction === 'neutral') {
-                        setAllowedClans(clans.map(clan => clan.id))
+                        setAllowedClans(clans.map((clan) => clan.id))
                       }
                       setFaction(newFaction)
                     }}
                   />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <Autocomplete
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Autocomplete
                     id="combo-box-type"
-                    options={types}
+                    options={cardTypes}
                     getOptionLabel={(option) => option.name}
-                    value={types.find(item => item.id === type) || null}
+                    value={cardTypes.find((item) => item.id === type) || null}
                     getOptionDisabled={(option) => !!side && !typesInSide(side).includes(option.id)}
-                    renderInput={(params) => <TextField required {...params} label="Card Type" variant="outlined" />}
+                    renderInput={(params) => (
+                      <TextField required {...params} label="Card Type" variant="outlined" />
+                    )}
                     onChange={(e, value) => setType(value?.id || '')}
                   />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <Autocomplete 
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Autocomplete
                     id="combo-box-side"
                     options={sides}
                     getOptionLabel={(option) => option.name}
-                    value={sides.find(item => item.id === side) || null}
-                    getOptionDisabled={(option) => !!type && !sidesForType(type).includes(option.id)}
-                    renderInput={(params) => <TextField required {...params} label="Deck/Side" variant="outlined" />}
+                    value={sides.find((item) => item.id === side) || null}
+                    getOptionDisabled={(option) =>
+                      !!type && !sidesForType(type).includes(option.id)
+                    }
+                    renderInput={(params) => (
+                      <TextField required {...params} label="Deck/Side" variant="outlined" />
+                    )}
                     onChange={(e, value) => {
-                      const newSide = value?.id || '';
-                      if (newSide !== 'conflict' && faction && faction !=='shadowlands' && faction !== 'neutal') {
+                      const newSide = value?.id || ''
+                      if (
+                        newSide !== 'conflict' &&
+                        faction &&
+                        faction !== 'shadowlands' &&
+                        faction !== 'neutal'
+                      ) {
                         setAllowedClans([faction])
                       }
                       setSide(newSide)
                     }}
                   />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Autocomplete
+                    id="combo-box-role-restrictions"
+                    options={roleRestrictions}
+                    getOptionLabel={(option) => option.name}
+                    value={roleRestrictions.find((item) => item.id === role_restriction) || null}
+                    renderInput={(params) => (
+                      <TextField {...params} label="Role Restiction" variant="outlined" />
+                    )}
+                    onChange={(e, value) => setRoleRestiction(value?.id)}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Typography>
+                    <b>Is Unique:</b>
+                    <Switch checked={is_unique} onChange={(e) => setIsUnique(e.target.checked)} />
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    required
+                    id="deck_limit"
+                    label="Deck Limit"
+                    defaultValue={deck_limit}
+                    error={isDeckLimitInvalid(deck_limit)}
+                    helperText="Must be between 1 and 3"
+                    type="number"
+                    fullWidth
+                    onChange={(e) => setDeckLimit(Number.parseInt(e.target.value))}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Autocomplete
+                    id="combo-box-traits"
+                    multiple
+                    options={allTraits}
+                    getOptionLabel={(option) => option.name}
+                    value={findTraits(traits)}
+                    renderInput={(params) => (
+                      <TextField {...params} label="Traits" variant="outlined" />
+                    )}
+                    onChange={(e, value) => setTraits(value.map((item) => item.id))}
+                  />
+                </Grid>
               </Grid>
-              <Grid item xs={12} sm={6}>
-                <Autocomplete 
-                      id="combo-box-role-restrictions"
-                      options={roleRestrictions}
-                      getOptionLabel={(option) => option.name}
-                      value={roleRestrictions.find(item => item.id === role_restriction) || null}
-                      renderInput={(params) => <TextField {...params} label="Role Restiction" variant="outlined" />}
-                      onChange={(e, value) => setRoleRestiction(value?.id)}
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <CardTextEditor
+                text={text || ''}
+                onChange={(text: string) => setText(text)}
+                faction={faction}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <MultiCheckbox
+                label="Restricted In"
+                items={formats}
+                onChange={(formats: string[]) => setRestrictedIn(formats)}
+                defaultItems={restricted_in}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <MultiCheckbox
+                label="Banned In"
+                items={formats}
+                onChange={(formats: string[]) => setBannedIn(formats)}
+                defaultItems={banned_in}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <MultiCheckbox
+                label="Playable In"
+                items={clans}
+                onChange={(clans: string[]) => setAllowedClans(clans)}
+                defaultItems={allowed_clans}
+              />
+            </Grid>
+          </Grid>
+        </Grid>
+        {side === 'conflict' && (
+          <Grid item xs={12}>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <Typography variant="h6">Conflict Card Information</Typography>
+              </Grid>
+              <Grid item xs={12} sm={4}>
+                <MultiCheckbox
+                  label="Splash Banned In"
+                  items={formats}
+                  onChange={(formats: string[]) => setSplashBannedIn(formats)}
+                  defaultItems={splash_banned_in}
                 />
               </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} sm={4}>
                 <Typography>
-                  <b>Is Unique:</b>
+                  <b>Is Splashable:</b>
                   <Switch
-                    checked={is_unique}
-                    onChange={(e) => setIsUnique(e.target.checked)}
+                    checked={isSplashable}
+                    disabled={faction === 'shadowlands' || faction === 'neutral'}
+                    onChange={(e) => toggleSplashable(e.target.checked)}
                   />
                 </Typography>
               </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField 
-                  required 
-                  id='deck_limit' 
-                  label="Deck Limit" 
-                  defaultValue={deck_limit} 
-                  error={isDeckLimitInvalid(deck_limit)} 
-                  helperText='Must be between 1 and 3'
-                  type='number' 
+              <Grid item xs={12} sm={4}>
+                <TextField
+                  required={influenceRequired}
+                  disabled={faction === 'shadowlands' || !isSplashable}
+                  id="influence_cost"
+                  label="Influence Cost"
+                  value={
+                    influence_cost === undefined || influence_cost === null
+                      ? undefined
+                      : influence_cost
+                  }
+                  error={isInfluenceCostInvalid(influence_cost)}
+                  helperText="Neutral card = 0, Clan card >= 1"
+                  type="number"
                   fullWidth
-                  onChange={(e) => setDeckLimit(Number.parseInt(e.target.value))}/>
-              </Grid>
-              <Grid item xs={12}>
-                <Autocomplete 
-                      id="combo-box-traits"
-                      multiple
-                      options={allTraits}
-                      getOptionLabel={(option) => option.name}
-                      value={findTraits(traits)}
-                      renderInput={(params) => <TextField {...params} label="Traits" variant="outlined" />}
-                      onChange={(e, value) => setTraits(value.map(item => item.id))}
-                    />
-              </Grid>
-            </Grid>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <CardTextEditor text={text || ''} onChange={(text: string) => setText(text)} faction={faction} />
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <MultiCheckbox label='Restricted In' items={formats} onChange={(formats: string[]) => setRestrictedIn(formats)} defaultItems={restricted_in}/>
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <MultiCheckbox label='Banned In' items={formats} onChange={(formats: string[]) => setBannedIn(formats)} defaultItems={banned_in}/>
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <MultiCheckbox label='Playable In' items={clans} onChange={(clans: string[]) => setAllowedClans(clans)} defaultItems={allowed_clans}/>
-          </Grid>
-        </Grid>
-      </Grid>
-      {side === 'conflict' && (<Grid item xs={12}>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <Typography variant='h6'>Conflict Card Information</Typography>
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <MultiCheckbox label='Splash Banned In' items={formats} onChange={(formats: string[]) => setSplashBannedIn(formats)} defaultItems={splash_banned_in}/>
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <Typography>
-                <b>Is Splashable:</b>
-                <Switch
-                  checked={isSplashable}
-                  disabled={faction === 'shadowlands' || faction === 'neutral'}
-                  onChange={(e) => toggleSplashable(e.target.checked)}
+                  onChange={(e) =>
+                    setInfluenceCost(
+                      !Number.isNaN(Number.parseInt(e.target.value))
+                        ? Number.parseInt(e.target.value)
+                        : undefined
+                    )
+                  }
                 />
-              </Typography>
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <TextField 
-                required={influenceRequired}
-                disabled={faction === 'shadowlands' || !isSplashable}
-                id='influence_cost' 
-                label="Influence Cost" 
-                value={influence_cost === undefined || influence_cost === null ? undefined : influence_cost}
-                error={isInfluenceCostInvalid(influence_cost)} 
-                helperText='Neutral card = 0, Clan card >= 1'
-                type='number' 
-                fullWidth
-                onChange={(e) => setInfluenceCost(!Number.isNaN(Number.parseInt(e.target.value)) ? Number.parseInt(e.target.value) : undefined)}/>
+              </Grid>
             </Grid>
           </Grid>
-      </Grid>)}
-      {type === 'event' && (<Grid item xs={12}>
-        <Grid container spacing={2}>
+        )}
+        {type === 'event' && (
           <Grid item xs={12}>
-            <Typography variant='h6'>Event Card Information</Typography>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <Typography variant="h6">Event Card Information</Typography>
+              </Grid>
+              <Grid item xs={12} sm={3}>
+                <TextField
+                  id="cost"
+                  label="Cost"
+                  value={cost}
+                  error={isCostInvalid(cost)}
+                  helperText='Must be "X" or a number >= 0 (leaving this empty is allowed for cards like Daimyos Gunbai)'
+                  fullWidth
+                  onChange={(e) => setCost(e.target.value)}
+                />
+              </Grid>
+            </Grid>
           </Grid>
-          <Grid item xs={12} sm={3}>
-            <TextField 
-              id='cost' 
-              label="Cost" 
-              value={cost}
-              error={isCostInvalid(cost)} 
-              helperText='Must be "X" or a number >= 0 (leaving this empty is allowed for cards like Daimyos Gunbai)'
-              fullWidth
-              onChange={(e) => setCost(e.target.value)}/>
-          </Grid>
-        </Grid>
-      </Grid>)}
-      {type === 'attachment' && (<Grid item xs={12}>
-        <Grid container spacing={2}>
+        )}
+        {type === 'attachment' && (
           <Grid item xs={12}>
-            <Typography variant='h6'>Attachment Card Information</Typography>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <Typography variant="h6">Attachment Card Information</Typography>
+              </Grid>
+              <Grid item xs={12} sm={3}>
+                <TextField
+                  id="cost"
+                  label="Cost"
+                  value={cost}
+                  error={isCostInvalid(cost)}
+                  helperText='Must be "X" or a number >= 0 (leaving this empty is allowed for cards like Daimyos Gunbai)'
+                  fullWidth
+                  onChange={(e) => setCost(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12} sm={3}>
+                <TextField
+                  id="military_bonus"
+                  label="Military Bonus"
+                  value={military_bonus}
+                  error={isAttachmentBonusInvalid(military_bonus)}
+                  helperText='Must be "-" or start with a - or + followed by a number or "X"'
+                  fullWidth
+                  onChange={(e) => setMilitaryBonus(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12} sm={3}>
+                <TextField
+                  id="political_bonus"
+                  label="Political Bonus"
+                  value={political_bonus}
+                  error={isAttachmentBonusInvalid(political_bonus)}
+                  helperText='Must be "-" or start with a - or + followed by a number or "X"'
+                  fullWidth
+                  onChange={(e) => setPoliticalBonus(e.target.value)}
+                />
+              </Grid>
+            </Grid>
           </Grid>
-          <Grid item xs={12} sm={3}>
-            <TextField 
-              id='cost' 
-              label="Cost" 
-              value={cost}
-              error={isCostInvalid(cost)} 
-              helperText='Must be "X" or a number >= 0 (leaving this empty is allowed for cards like Daimyos Gunbai)'
-              fullWidth
-              onChange={(e) => setCost(e.target.value)}/>
-          </Grid>
-          <Grid item xs={12} sm={3}>
-              <TextField 
-                id='military_bonus' 
-                label="Military Bonus" 
-                value={military_bonus}
-                error={isAttachmentBonusInvalid(military_bonus)} 
-                helperText='Must be "-" or start with a - or + followed by a number or "X"'
-                fullWidth
-                onChange={(e) => setMilitaryBonus(e.target.value)}/>
-          </Grid>
-          <Grid item xs={12} sm={3}>
-              <TextField 
-                id='political_bonus' 
-                label="Political Bonus" 
-                value={political_bonus}
-                error={isAttachmentBonusInvalid(political_bonus)} 
-                helperText='Must be "-" or start with a - or + followed by a number or "X"'
-                fullWidth
-                onChange={(e) => setPoliticalBonus(e.target.value)}/>
-          </Grid>
-        </Grid>
-      </Grid>)}
-      {type === 'character' && (<Grid item xs={12}>
-        <Grid container spacing={2}>
+        )}
+        {type === 'character' && (
           <Grid item xs={12}>
-            <Typography variant='h6'>Character Card Information</Typography>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <Typography variant="h6">Character Card Information</Typography>
+              </Grid>
+              <Grid item xs={12} sm={3}>
+                <TextField
+                  id="cost"
+                  label="Cost"
+                  value={cost}
+                  error={isCostInvalid(cost)}
+                  helperText='Must be "X" or a number >= 0 (leaving this empty is allowed for cards like Daimyos Gunbai)'
+                  fullWidth
+                  onChange={(e) => setCost(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12} sm={3}>
+                <TextField
+                  id="military"
+                  label="Military Skill"
+                  value={military}
+                  error={isSkillInvalid(military)}
+                  helperText='Must be empty (for dashes), "X", or a number >= 0'
+                  fullWidth
+                  onChange={(e) => setMilitary(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12} sm={3}>
+                <TextField
+                  id="political"
+                  label="Political Skill"
+                  value={political}
+                  error={isSkillInvalid(political)}
+                  helperText='Must be empty (for dashes), "X", or a number >= 0'
+                  fullWidth
+                  onChange={(e) => setPolitical(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12} sm={3}>
+                <TextField
+                  required
+                  id="glory"
+                  label="Glory"
+                  defaultValue={glory}
+                  error={glory === undefined || glory === null || glory < 0}
+                  helperText="Must be a number >= 0"
+                  type="number"
+                  fullWidth
+                  onChange={(e) => setGlory(Number.parseInt(e.target.value))}
+                />
+              </Grid>
+            </Grid>
           </Grid>
-          <Grid item xs={12} sm={3}>
-            <TextField 
-              id='cost' 
-              label="Cost" 
-              value={cost}
-              error={isCostInvalid(cost)} 
-              helperText='Must be "X" or a number >= 0 (leaving this empty is allowed for cards like Daimyos Gunbai)'
-              fullWidth
-              onChange={(e) => setCost(e.target.value)}/>
-          </Grid>
-          <Grid item xs={12} sm={3}>
-            <TextField 
-              id='military' 
-              label="Military Skill" 
-              value={military}
-              error={isSkillInvalid(military)} 
-              helperText='Must be empty (for dashes), "X", or a number >= 0'
-              fullWidth
-              onChange={(e) => setMilitary(e.target.value)}/>
-          </Grid>
-          <Grid item xs={12} sm={3}>
-            <TextField 
-              id='political' 
-              label="Political Skill" 
-              value={political}
-              error={isSkillInvalid(political)} 
-              helperText='Must be empty (for dashes), "X", or a number >= 0'
-              fullWidth
-              onChange={(e) => setPolitical(e.target.value)}/>
-          </Grid>
-          <Grid item xs={12} sm={3}>
-            <TextField 
-              required 
-              id='glory' 
-              label="Glory" 
-              defaultValue={glory} 
-              error={glory === undefined || glory === null || glory < 0} 
-              helperText='Must be a number >= 0'
-              type='number' 
-              fullWidth
-              onChange={(e) => setGlory(Number.parseInt(e.target.value))}/>
-          </Grid>
-        </Grid>
-      </Grid>)}
-      {type === 'province' && (<Grid item xs={12}>
-        <Grid container spacing={2}>
+        )}
+        {type === 'province' && (
           <Grid item xs={12}>
-            <Typography variant='h6'>Province Card Information</Typography>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <Typography variant="h6">Province Card Information</Typography>
+              </Grid>
+              <Grid item xs={12} sm={4}>
+                <TextField
+                  id="strength"
+                  label="Strength"
+                  value={strength}
+                  error={!isXOrNumberGreater0(strength || '')}
+                  helperText='Must be "X" or a number >= 0'
+                  fullWidth
+                  onChange={(e) => setStrength(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12} sm={4}>
+                <MultiCheckbox
+                  label="Elements"
+                  items={allElements}
+                  onChange={(elements: string[]) => setElements(elements)}
+                  defaultItems={elements}
+                />
+              </Grid>
+            </Grid>
           </Grid>
-          <Grid item xs={12} sm={4}>
-            <TextField 
-              id='strength' 
-              label="Strength" 
-              value={strength}
-              error={!isXOrNumberGreater0(strength || '')} 
-              helperText='Must be "X" or a number >= 0'
-              fullWidth
-              onChange={(e) => setStrength(e.target.value)}/>
-          </Grid>
-          <Grid item xs={12} sm={4}>
-            <MultiCheckbox label='Elements' items={allElements} onChange={(elements: string[]) => setElements(elements)} defaultItems={elements}/>
-          </Grid>
-        </Grid>
-      </Grid>)}
-      {type === 'holding' && (<Grid item xs={12}>
-        <Grid container spacing={2}>
+        )}
+        {type === 'holding' && (
           <Grid item xs={12}>
-            <Typography variant='h6'>Holding Card Information</Typography>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <Typography variant="h6">Holding Card Information</Typography>
+              </Grid>
+              <Grid item xs={12} sm={3}>
+                <TextField
+                  required
+                  id="strength_bonus"
+                  label="Strength Bonus"
+                  value={strength_bonus}
+                  error={!isValidNumberBonus(strength_bonus)}
+                  helperText="Must be a - or a +, followed by a number"
+                  fullWidth
+                  onChange={(e) => setStrengthBonus(e.target.value)}
+                />
+              </Grid>
+            </Grid>
           </Grid>
-          <Grid item xs={12} sm={3}>
-            <TextField 
-              required
-              id='strength_bonus' 
-              label="Strength Bonus" 
-              value={strength_bonus}
-              error={!isValidNumberBonus(strength_bonus)} 
-              helperText='Must be a - or a +, followed by a number'
-              fullWidth
-              onChange={(e) => setStrengthBonus(e.target.value)}/>
-          </Grid>
-        </Grid>
-      </Grid>)}
-      {type === 'stronghold' && (<Grid item xs={12}>
-        <Grid container spacing={2}>
+        )}
+        {type === 'stronghold' && (
           <Grid item xs={12}>
-            <Typography variant='h6'>Stronghold Card Information</Typography>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <Typography variant="h6">Stronghold Card Information</Typography>
+              </Grid>
+              <Grid item xs={12} sm={3}>
+                <TextField
+                  required
+                  id="strength_bonus"
+                  label="Strength Bonus"
+                  value={strength_bonus}
+                  error={!isValidNumberBonus(strength_bonus)}
+                  helperText="Must be a - or a +, followed by a number"
+                  fullWidth
+                  onChange={(e) => setStrengthBonus(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12} sm={3}>
+                <TextField
+                  required
+                  id="fate"
+                  label="Fate per Turn"
+                  defaultValue={fate}
+                  error={fate === undefined || fate === null || fate < 0}
+                  helperText="Must be a number >= 0"
+                  type="number"
+                  fullWidth
+                  onChange={(e) => setFate(Number.parseInt(e.target.value))}
+                />
+              </Grid>
+              <Grid item xs={12} sm={3}>
+                <TextField
+                  required
+                  id="influence_pool"
+                  label="Influence Pool"
+                  defaultValue={influence_pool}
+                  error={
+                    influence_pool === undefined || influence_pool === null || influence_pool < 0
+                  }
+                  helperText="Must be a number >= 0"
+                  type="number"
+                  fullWidth
+                  onChange={(e) => setInfluencePool(Number.parseInt(e.target.value))}
+                />
+              </Grid>
+              <Grid item xs={12} sm={3}>
+                <TextField
+                  required
+                  id="honor"
+                  label="Starting Honor"
+                  defaultValue={honor}
+                  error={honor === undefined || honor === null || honor < 0}
+                  helperText="Must be a number >= 0"
+                  type="number"
+                  fullWidth
+                  onChange={(e) => setHonor(Number.parseInt(e.target.value))}
+                />
+              </Grid>
+            </Grid>
           </Grid>
-          <Grid item xs={12} sm={3}>
-            <TextField 
-              required
-              id='strength_bonus' 
-              label="Strength Bonus" 
-              value={strength_bonus}
-              error={!isValidNumberBonus(strength_bonus)} 
-              helperText='Must be a - or a +, followed by a number'
-              fullWidth
-              onChange={(e) => setStrengthBonus(e.target.value)}/>
-          </Grid>
-          <Grid item xs={12} sm={3}>
-            <TextField 
-              required 
-              id='fate' 
-              label="Fate per Turn" 
-              defaultValue={fate} 
-              error={fate === undefined || fate === null || fate < 0} 
-              helperText='Must be a number >= 0'
-              type='number' 
-              fullWidth
-              onChange={(e) => setFate(Number.parseInt(e.target.value))}/>
-          </Grid>
-          <Grid item xs={12} sm={3}>
-            <TextField 
-              required 
-              id='influence_pool' 
-              label="Influence Pool" 
-              defaultValue={influence_pool} 
-              error={influence_pool === undefined || influence_pool === null || influence_pool < 0} 
-              helperText='Must be a number >= 0'
-              type='number' 
-              fullWidth
-              onChange={(e) => setInfluencePool(Number.parseInt(e.target.value))}/>
-          </Grid>
-          <Grid item xs={12} sm={3}>
-            <TextField 
-              required 
-              id='honor' 
-              label="Starting Honor" 
-              defaultValue={honor} 
-              error={honor === undefined || honor === null || honor < 0} 
-              helperText='Must be a number >= 0'
-              type='number' 
-              fullWidth
-              onChange={(e) => setHonor(Number.parseInt(e.target.value))}/>
-          </Grid>
-        </Grid>
-      </Grid>)}
-      {type === 'warlord' && (<Grid item xs={12}>
-        <Grid container spacing={2}>
+        )}
+        {type === 'warlord' && (
           <Grid item xs={12}>
-            <Typography variant='h6'>Warlord Card Information</Typography>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <Typography variant="h6">Warlord Card Information</Typography>
+              </Grid>
+              <Grid item xs={12} sm={3}>
+                <TextField
+                  required
+                  id="fate_and_cost"
+                  label="Cost and Fate per Player per Turn"
+                  defaultValue={fate}
+                  error={fate === undefined || fate === null || fate < 0}
+                  helperText="Must be a number >= 0"
+                  type="number"
+                  fullWidth
+                  onChange={(e) => {
+                    setFate(Number.parseInt(e.target.value))
+                    setCost(e.target.value)
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12} sm={3}>
+                <TextField
+                  id="military"
+                  label="Military Skill"
+                  value={military}
+                  error={isSkillInvalid(military)}
+                  helperText='Must be empty (for dashes), "X", or a number >= 0'
+                  fullWidth
+                  onChange={(e) => setMilitary(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12} sm={3}>
+                <TextField
+                  id="political"
+                  label="Political Skill"
+                  value={political}
+                  error={isSkillInvalid(political)}
+                  helperText='Must be empty (for dashes), "X", or a number >= 0'
+                  fullWidth
+                  onChange={(e) => setPolitical(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12} sm={3}>
+                <TextField
+                  required
+                  id="glory"
+                  label="Glory"
+                  defaultValue={glory}
+                  error={glory === undefined || glory === null || glory < 0}
+                  helperText="Must be a number >= 0"
+                  type="number"
+                  fullWidth
+                  onChange={(e) => setGlory(Number.parseInt(e.target.value))}
+                />
+              </Grid>
+            </Grid>
           </Grid>
-          <Grid item xs={12} sm={3}>
-            <TextField 
-              required 
-              id='fate_and_cost' 
-              label="Cost and Fate per Player per Turn" 
-              defaultValue={fate} 
-              error={fate === undefined || fate === null || fate < 0} 
-              helperText='Must be a number >= 0'
-              type='number' 
-              fullWidth
-              onChange={(e) => {
-                setFate(Number.parseInt(e.target.value))
-                setCost(e.target.value)
-              }}/>
-          </Grid>
-          <Grid item xs={12} sm={3}>
-            <TextField 
-              id='military' 
-              label="Military Skill" 
-              value={military}
-              error={isSkillInvalid(military)} 
-              helperText='Must be empty (for dashes), "X", or a number >= 0'
-              fullWidth
-              onChange={(e) => setMilitary(e.target.value)}/>
-          </Grid>
-          <Grid item xs={12} sm={3}>
-            <TextField 
-              id='political' 
-              label="Political Skill" 
-              value={political}
-              error={isSkillInvalid(political)} 
-              helperText='Must be empty (for dashes), "X", or a number >= 0'
-              fullWidth
-              onChange={(e) => setPolitical(e.target.value)}/>
-          </Grid>
-          <Grid item xs={12} sm={3}>
-            <TextField 
-              required 
-              id='glory' 
-              label="Glory" 
-              defaultValue={glory} 
-              error={glory === undefined || glory === null || glory < 0} 
-              helperText='Must be a number >= 0'
-              type='number' 
-              fullWidth
-              onChange={(e) => setGlory(Number.parseInt(e.target.value))}/>
-          </Grid>
-        </Grid>
-      </Grid>)}
-    </Grid>
-  </form>)
+        )}
+      </Grid>
+    </form>
+  )
 }
