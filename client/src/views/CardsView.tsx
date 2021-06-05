@@ -1,4 +1,12 @@
-import { Paper, makeStyles, isWidthUp, useMediaQuery } from '@material-ui/core'
+import {
+  Paper,
+  makeStyles,
+  useMediaQuery,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+} from '@material-ui/core'
 import { DataGrid, GridColumns } from '@material-ui/data-grid'
 import { useHistory } from 'react-router-dom'
 import { CardTypeIcon } from '../components/CardTypeIcon'
@@ -7,6 +15,8 @@ import { convertTraitList } from '../utils/cardTextUtils'
 import { capitalize } from '../utils/stringUtils'
 import { useState } from 'react'
 import { applyFilters, CardFilter, Filter } from '../components/CardFilter'
+import { CardWithVersions } from '@5rdb/api'
+import { CardInformation } from '../components/card/CardInformation'
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -35,7 +45,9 @@ export function CardsView(): JSX.Element {
   const { cards, traits } = useUiStore()
   const history = useHistory()
   const [filter, setFilter] = useState<Filter | undefined>(undefined)
-  const isMdOrBigger = useMediaQuery('(min-width:600px)');
+  const [modalCard, setModalCard] = useState<CardWithVersions | undefined>(undefined)
+  const [cardModalOpen, setCardModalOpen] = useState(false)
+  const isMdOrBigger = useMediaQuery('(min-width:600px)')
 
   let filteredCards = cards
 
@@ -59,7 +71,7 @@ export function CardsView(): JSX.Element {
     history.push(`/card/${id}`)
   }
 
-  let columns: GridColumns = [
+  const columns: GridColumns = [
     {
       field: 'name',
       headerName: 'Name',
@@ -68,7 +80,7 @@ export function CardsView(): JSX.Element {
       renderCell: (params) => {
         const nameProps = params.value as NameProps
         return (
-          <span style={{ marginLeft: -10 }}>
+          <span style={{ marginLeft: -10, cursor: 'pointer' }}>
             <CardTypeIcon type={nameProps.type} faction={nameProps.faction} /> {nameProps.name}
           </span>
         )
@@ -88,27 +100,54 @@ export function CardsView(): JSX.Element {
       ),
     },
     { field: 'type', headerName: 'Type', disableColumnMenu: true, flex: 2, hide: !isMdOrBigger },
-    { field: 'faction', headerName: 'Faction', disableColumnMenu: true, flex: 1, hide: !isMdOrBigger },
-    { field: 'deck', headerName: 'Deck', disableColumnMenu: true, flex: 1, hide: !isMdOrBigger},
+    {
+      field: 'faction',
+      headerName: 'Faction',
+      disableColumnMenu: true,
+      flex: 1,
+      hide: !isMdOrBigger,
+    },
+    { field: 'deck', headerName: 'Deck', disableColumnMenu: true, flex: 1, hide: !isMdOrBigger },
     { field: 'cost', headerName: 'Cost', disableColumnMenu: true, flex: 1, hide: !isMdOrBigger },
   ]
-  
+
   return (
     <>
       <CardFilter onFilterChanged={setFilter} fullWidth />
       <Paper className={classes.table}>
         <DataGrid
           disableColumnResize
+          disableSelectionOnClick
           columns={columns}
           rows={tableCards}
           pageSize={50}
           autoHeight
           density="compact"
           onRowClick={(param) => {
-            goToCardPage(param.row.id)
+            setModalCard(cards.find((card) => card.id === param.row.id))
+            setCardModalOpen(true)
           }}
         />
       </Paper>
+      {modalCard && (
+        <Dialog open={cardModalOpen} onClose={() => setCardModalOpen(false)}>
+          <DialogContent>
+            <CardInformation cardWithVersions={modalCard} />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setCardModalOpen(false)} variant="contained">
+              Close
+            </Button>
+            <Button
+              onClick={() => goToCardPage(modalCard.id)}
+              color="secondary"
+              variant="contained"
+            >
+              Go To Card Page
+            </Button>
+          </DialogActions>
+        </Dialog>
+      )}
     </>
   )
 }
