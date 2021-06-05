@@ -10,6 +10,7 @@ export function LogoutButton(props: { onLogout: () => void }): JSX.Element {
   return (
     <Button
       variant="contained"
+      color="secondary"
       onClick={() => {
         unsetToken()
         props.onLogout()

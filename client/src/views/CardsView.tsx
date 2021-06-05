@@ -1,4 +1,4 @@
-import { Paper, makeStyles } from '@material-ui/core'
+import { Paper, makeStyles, isWidthUp, useMediaQuery } from '@material-ui/core'
 import { DataGrid, GridColumns } from '@material-ui/data-grid'
 import { useHistory } from 'react-router-dom'
 import { CardTypeIcon } from '../components/CardTypeIcon'
@@ -35,6 +35,7 @@ export function CardsView(): JSX.Element {
   const { cards, traits } = useUiStore()
   const history = useHistory()
   const [filter, setFilter] = useState<Filter | undefined>(undefined)
+  const isMdOrBigger = useMediaQuery('(min-width:600px)');
 
   let filteredCards = cards
 
@@ -58,7 +59,7 @@ export function CardsView(): JSX.Element {
     history.push(`/card/${id}`)
   }
 
-  const columns: GridColumns = [
+  let columns: GridColumns = [
     {
       field: 'name',
       headerName: 'Name',
@@ -75,23 +76,23 @@ export function CardsView(): JSX.Element {
       sortComparator: (v1, v2, param1, param2) =>
         param1.row.name.name.localeCompare(param2.row.name.name),
     },
-    { field: 'faction', headerName: 'Faction', disableColumnMenu: true, flex: 1 },
-    { field: 'type', headerName: 'Type', disableColumnMenu: true, flex: 1 },
     {
       field: 'traits',
       headerName: 'Traits',
       disableColumnMenu: true,
-      flex: 3,
+      flex: 2,
       renderCell: (params) => (
         <em>
           <b>{params.value}</b>
         </em>
       ),
     },
-    { field: 'deck', headerName: 'Deck', disableColumnMenu: true, flex: 1 },
-    { field: 'cost', headerName: 'Cost', disableColumnMenu: true, flex: 1 },
+    { field: 'type', headerName: 'Type', disableColumnMenu: true, flex: 2, hide: !isMdOrBigger },
+    { field: 'faction', headerName: 'Faction', disableColumnMenu: true, flex: 1, hide: !isMdOrBigger },
+    { field: 'deck', headerName: 'Deck', disableColumnMenu: true, flex: 1, hide: !isMdOrBigger},
+    { field: 'cost', headerName: 'Cost', disableColumnMenu: true, flex: 1, hide: !isMdOrBigger },
   ]
-
+  
   return (
     <>
       <CardFilter onFilterChanged={setFilter} fullWidth />

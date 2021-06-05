@@ -15,10 +15,10 @@ import { Routes } from './Routes'
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: '#263238',
+      main: '#212121',
     },
     secondary: {
-      main: '#da532c',
+      main: '#1b5e20',
     },
   },
 })

@@ -1,9 +1,9 @@
-import { Card, Pack, Cycle, Trait } from '@5rdb/api'
+import { Card, Pack, Cycle, Trait, CardWithVersions } from '@5rdb/api'
 import { createContext, ReactNode, useEffect, useState, useContext } from 'react'
 import { publicApi } from '../api'
 
 export interface UiStore {
-  cards: Card[]
+  cards: CardWithVersions[]
   packs: Pack[]
   cycles: Cycle[]
   traits: Trait[]
@@ -17,7 +17,7 @@ export const UiStoreContext = createContext<UiStore>({
 })
 
 export function UiStoreProvider(props: { children: ReactNode }): JSX.Element {
-  const [cards, setCards] = useState<Card[]>([])
+  const [cards, setCards] = useState<CardWithVersions[]>([])
   const [packs, setPacks] = useState<Pack[]>([])
   const [cycles, setCycles] = useState<Cycle[]>([])
   const [traits, setTraits] = useState<Trait[]>([])

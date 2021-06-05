@@ -10,6 +10,10 @@ const useStyles = makeStyles(() => ({
   adminButton: {
     marginRight: 10,
   },
+  logo: {
+    height: 45,
+    marginRight: 5,
+  }
 }))
 
 export enum Queries {
@@ -26,11 +30,12 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
   const { isDataAdmin } = useCurrentUser()
 
   const host = window.location.host
-  const title = host.includes('localhost')
-    ? 'LOCAL EmeraldDB'
-    : host.includes('beta-')
-    ? 'BETA EmeraldDB'
-    : 'EmeraldDB'
+  const prefix = host.includes('localhost')
+  ? 'LOCAL'
+  : host.includes('beta-')
+  ? 'BETA'
+  : ''
+  const title = `${prefix} EmeraldDB`
   document.title = title
 
   return (
@@ -41,7 +46,7 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
           style={{ cursor: 'pointer' }}
           onClick={() => history.push('/cards')}
         >
-          {title}
+          {prefix}<img src='/static/logo.png' className={classes.logo}/>
         </Typography>
         <Typography className={classes.title}></Typography>
         {isDataAdmin() && (

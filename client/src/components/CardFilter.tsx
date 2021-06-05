@@ -1,10 +1,16 @@
 import { useState } from 'react'
-import { Card, Trait } from '@5rdb/api/index'
+import { Card, CardWithVersions, Trait } from '@5rdb/api/index'
 import {
   Button,
   ButtonGroup,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Grid,
   makeStyles,
+  Modal,
   Paper,
   TextField,
   Tooltip,
@@ -15,18 +21,22 @@ import { CardTypeIcon } from './CardTypeIcon'
 import ClearIcon from '@material-ui/icons/Clear'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import { useUiStore } from '../providers/UiStoreProvider'
+import { CycleList } from './CycleList'
 
 const useStyles = makeStyles((theme) => ({
   filter: {
     padding: theme.spacing(1),
   },
   clearIcon: {
-    color: 'dimgrey',
+    color: 'black',
     fontSize: 16,
   },
+  clearButton: {
+    backgroundColor: theme.palette.error.light,
+  },
   button: {
-    width: 40,
-    height: 40,
+    height: 32,
+    minWidth: 16,
   },
   filterGridItem: {
     height: 40,
@@ -35,6 +45,9 @@ const useStyles = makeStyles((theme) => ({
   traitTextField: {
     maxHeight: 32,
   },
+  packDialog: {
+    padding: theme.spacing(2),
+  }
 }))
 
 export interface Filter {
@@ -43,9 +56,10 @@ export interface Filter {
   cardTypes?: string[]
   sides?: string[]
   traits?: string[]
+  packs?: string[]
 }
 
-export function applyFilters(cards: Card[], filter: Filter): Card[] {
+export function applyFilters(cards: CardWithVersions[], filter: Filter): CardWithVersions[] {
   let filteredCards = cards
   if (filter.factions && filter.factions.length > 0) {
     filteredCards = filteredCards.filter((c) => filter.factions?.includes(c.faction))
@@ -59,6 +73,11 @@ export function applyFilters(cards: Card[], filter: Filter): Card[] {
   if (filter.traits && filter.traits.length > 0) {
     filteredCards = filteredCards.filter((c) =>
       filter.traits?.every((trait) => c.traits?.includes(trait))
+    )
+  }
+  if (filter.packs && filter.packs.length > 0) {
+    filteredCards = filteredCards.filter((c) => 
+      c.versions && c.versions.some(version => filter.packs?.includes(version.pack_id))
     )
   }
   if (filter.text) {
@@ -76,6 +95,7 @@ export function applyFilters(cards: Card[], filter: Filter): Card[] {
 export function CardFilter(props: {
   onFilterChanged: (filter: Filter) => void
   fullWidth?: boolean
+  deckbuilder?: boolean
 }): JSX.Element {
   const classes = useStyles()
   const { traits } = useUiStore()
@@ -84,7 +104,15 @@ export function CardFilter(props: {
   const [filteredCardTypes, setFilteredCardTypes] = useState<string[]>([])
   const [filteredSides, setFilteredSides] = useState<string[]>([])
   const [filteredTraits, setFilteredTraits] = useState<string[]>([])
+  const [filteredPacks, setFilteredPacks] = useState<string[]>([])
+  const [filteredCycles, setFilteresCycles] = useState<string[]>([])
   const [filter, setFilter] = useState<Filter>()
+
+  const [packModalOpen, setPackModalOpen] = useState(false)
+
+  const visibleFactions = props.deckbuilder ? factions.filter(faction => faction.id !== 'shadowlands') : factions
+  const visibleCardtypes = props.deckbuilder ? cardTypes.filter(cardType => cardType.id !== 'treaty' && cardType.id !== 'warlord') : cardTypes
+  const visibleSides = props.deckbuilder ? sides.filter(side => side.id !== 'treaty') : sides.filter(side => side.id !== 'treaty' && side.id !== 'role')
 
   function setFilterAndEmitChangeEvent(filter: Filter) {
     setFilter(filter)
@@ -128,6 +156,15 @@ export function CardFilter(props: {
     setFilterAndEmitChangeEvent({
       ...filter,
       text: newText,
+    })
+  }
+
+  function updateFilteredPacksAndCycles(newPackIds: string[], newCycleIds: string[]) {
+    setFilteredPacks(newPackIds)
+    setFilteresCycles(newCycleIds)
+    setFilterAndEmitChangeEvent({
+      ...filter,
+      packs: newPackIds,
     })
   }
 
@@ -175,8 +212,7 @@ export function CardFilter(props: {
             fullWidth
             variant="outlined"
             size="small"
-            label="Seach for card name, ability text... (Press Enter to submit)"
-            placeholder="Seach for card name, ability text..."
+            label="Seach for card name, ability text..."
             value={filterText}
             onChange={(e) => setFilterText(e.target.value)}
             onBlur={(e) => updateFilterText(e.target.value)}
@@ -186,8 +222,8 @@ export function CardFilter(props: {
         <Grid item xs={12} md={props.fullWidth ? 6 : 12}>
           <Grid container spacing={1}>
             <Grid item xs={12} className={classes.filterGridItem}>
-              <ButtonGroup>
-                {factions.map((faction) => (
+              <ButtonGroup fullWidth>
+                {visibleFactions.map((faction) => (
                   <Tooltip key={faction.id} title={faction.name}>
                     <Button
                       disableTouchRipple
@@ -207,15 +243,15 @@ export function CardFilter(props: {
                   </Tooltip>
                 ))}
                 <Tooltip title="Clear Clan Filters">
-                  <Button className={classes.button} onClick={() => updateFilteredFactions([])}>
+                  <Button className={`${classes.button} ${classes.clearButton}`} onClick={() => updateFilteredFactions([])}>
                     <ClearIcon className={classes.clearIcon} />
                   </Button>
                 </Tooltip>
               </ButtonGroup>
             </Grid>
             <Grid item xs={12} className={classes.filterGridItem}>
-              <ButtonGroup>
-                {cardTypes.map((type) => (
+              <ButtonGroup fullWidth>
+                {visibleCardtypes.map((type) => (
                   <Tooltip key={type.id} title={type.name}>
                     <Button
                       disableTouchRipple
@@ -233,15 +269,15 @@ export function CardFilter(props: {
                   </Tooltip>
                 ))}
                 <Tooltip title="Clear Type Filters">
-                  <Button className={classes.button} onClick={() => updateFilteredCardTypes([])}>
+                  <Button className={`${classes.button} ${classes.clearButton}`} onClick={() => updateFilteredCardTypes([])}>
                     <ClearIcon className={classes.clearIcon} />
                   </Button>
                 </Tooltip>
               </ButtonGroup>
             </Grid>
             <Grid item xs={12} className={classes.filterGridItem}>
-              <ButtonGroup size="small">
-                {sides.map((side) => (
+              <ButtonGroup size="small" fullWidth>
+                {visibleSides.map((side) => (
                   <Tooltip key={side.id} title={side.name}>
                     <Button
                       disableTouchRipple
@@ -260,7 +296,7 @@ export function CardFilter(props: {
                   </Tooltip>
                 ))}
                 <Tooltip title="Clear Deck Filters">
-                  <Button className={classes.button} onClick={() => updateFilteredSides([])}>
+                  <Button className={`${classes.button} ${classes.clearButton}`} onClick={() => updateFilteredSides([])}>
                     <ClearIcon className={classes.clearIcon} />
                   </Button>
                 </Tooltip>
@@ -270,7 +306,7 @@ export function CardFilter(props: {
         </Grid>
         <Grid item xs={12} md={props.fullWidth ? 6 : 12}>
           <Grid container spacing={1}>
-            <Grid item xs={12} className={classes.filterGridItem}>
+            <Grid item xs={12}>
               <Autocomplete
                 id="combo-box-traits"
                 multiple
@@ -283,9 +319,23 @@ export function CardFilter(props: {
                 onChange={(e, value) => updateFilteredTraits(value.map((item) => item.id))}
               />
             </Grid>
+            <Grid item xs={12}>
+              <Button variant='contained' color='secondary' onClick={() => setPackModalOpen(true)}>Filter Packs{filteredPacks.length > 0 && ` (Selected: ${filteredPacks.length})`}</Button>
+            </Grid>
           </Grid>
         </Grid>
       </Grid>
+      <Dialog open={packModalOpen} onClose={() => setPackModalOpen(false)} className={classes.packDialog}>
+        <DialogTitle id="form-dialog-title">Filter Packs</DialogTitle>
+        <DialogContent>
+          <CycleList withCheckbox rootLabel='All Packs' onSelection={updateFilteredPacksAndCycles} selectedPacks={filteredPacks} selectedCycles={filteredCycles} />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setPackModalOpen(false)} color="primary" variant='contained'>
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Paper>
   )
 }
