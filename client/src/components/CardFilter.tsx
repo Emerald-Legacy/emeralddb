@@ -344,11 +344,6 @@ export function CardFilter(props: {
                   dispatchFilter({ type: FilterType.FILTER_TRAITS, traits: value.map((item) => item.id) })}
               />
             </Grid>
-            <Grid item xs={12}>
-              <Button fullWidth variant="contained" color="secondary" onClick={() => setPackModalOpen(true)}>
-                Filter Packs{ filterState.packs.length > 0 && ` (Selected: ${filterState.packs.length})`}
-              </Button>
-            </Grid>
             <Grid item xs={6}>
               <Autocomplete
                 id="combo-box-restricted-in"
@@ -374,6 +369,11 @@ export function CardFilter(props: {
                 onChange={(e, value) =>
                   dispatchFilter({ type: FilterType.FILTER_BANNED, format: value?.id || '' })}
               />
+            </Grid>
+            <Grid item xs={12}>
+              <Button fullWidth variant="contained" color="secondary" onClick={() => setPackModalOpen(true)}>
+                Filter Packs{ filterState.packs.length > 0 && ` (Selected: ${filterState.packs.length})`}
+              </Button>
             </Grid>
           </Grid>
         </Grid>
