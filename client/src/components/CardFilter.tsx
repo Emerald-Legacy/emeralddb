@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { Card, CardWithVersions, Trait } from '@5rdb/api/index'
+import { useEffect, useReducer, useState } from 'react'
+import { CardWithVersions, Trait } from '@5rdb/api/index'
 import {
   Button,
   ButtonGroup,
@@ -16,10 +16,10 @@ import {
 } from '@material-ui/core'
 import { factions, cardTypes, sides } from '../utils/enums'
 import { CardTypeIcon } from './CardTypeIcon'
-import ClearIcon from '@material-ui/icons/Clear'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import { useUiStore } from '../providers/UiStoreProvider'
 import { CycleList } from './CycleList'
+import useDebounce from '../hooks/useDebounce';
 
 const useStyles = makeStyles((theme) => ({
   filter: {
@@ -48,16 +48,41 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export interface Filter {
-  text?: string
-  factions?: string[]
-  cardTypes?: string[]
-  sides?: string[]
-  traits?: string[]
-  packs?: string[]
+export interface FilterState {
+  text: string
+  factions: string[]
+  cardTypes: string[]
+  sides: string[]
+  traits: string[]
+  packs: string[]
+  cycles: string[]
 }
 
-export function applyFilters(cards: CardWithVersions[], filter: Filter): CardWithVersions[] {
+enum FilterType {
+  FILTER_TEXT,
+  FILTER_FACTIONS,
+  FILTER_CARD_TYPES,
+  FILTER_SIDES,
+  FILTER_TRAITS,
+  FILTER_PACKS,
+  FILTER_CYCLES,
+  FILTER_PACKS_AND_CYCLES,
+  FILTER_RESET
+}
+
+type FilterAction =
+  | { type: FilterType.FILTER_TEXT, text: string }
+  | { type: FilterType.FILTER_FACTIONS, factions: string[] }
+  | { type: FilterType.FILTER_CARD_TYPES, cardTypes: string[] }
+  | { type: FilterType.FILTER_SIDES, sides: string[] }
+  | { type: FilterType.FILTER_TRAITS, traits: string[] }
+  | { type: FilterType.FILTER_PACKS, packs: string[] }
+  | { type: FilterType.FILTER_CYCLES, cycles: string[] }
+  | { type: FilterType.FILTER_PACKS_AND_CYCLES, packs: string[], cycles: string[] }
+  | { type: FilterType.FILTER_RESET };
+
+
+export function applyFilters(cards: CardWithVersions[], filter: FilterState): CardWithVersions[] {
   let filteredCards = cards
   if (filter.factions && filter.factions.length > 0) {
     filteredCards = filteredCards.filter((c) => filter.factions?.includes(c.faction))
@@ -75,7 +100,7 @@ export function applyFilters(cards: CardWithVersions[], filter: Filter): CardWit
   }
   if (filter.packs && filter.packs.length > 0) {
     filteredCards = filteredCards.filter(
-      (c) => c.versions && c.versions.some((version) => filter.packs?.includes(version.pack_id))
+      (c) => c.versions?.some((version) => filter.packs?.includes(version.pack_id))
     )
   }
   if (filter.text) {
@@ -90,21 +115,54 @@ export function applyFilters(cards: CardWithVersions[], filter: Filter): CardWit
   return filteredCards
 }
 
+const initialState: FilterState = {
+  cardTypes: [],
+  factions: [],
+  packs: [],
+  sides: [],
+  text: '',
+  traits: [],
+  cycles: []
+};
+
+function filterReducer(state: FilterState, action: FilterAction): FilterState {
+  switch(action.type) {
+    case FilterType.FILTER_TEXT:
+      return { ...state, text: action.text };
+    case FilterType.FILTER_FACTIONS:
+      return { ...state, factions: action.factions };
+    case FilterType.FILTER_CARD_TYPES:
+      return { ...state, cardTypes: action.cardTypes };
+    case FilterType.FILTER_SIDES:
+      return { ...state, sides: action.sides };
+    case FilterType.FILTER_TRAITS:
+      return { ...state, traits: action.traits };
+    case FilterType.FILTER_PACKS:
+      return { ...state, packs: action.packs };
+    case FilterType.FILTER_CYCLES:
+      return { ...state, cycles: action.cycles };
+    case FilterType.FILTER_PACKS_AND_CYCLES:
+      return { ...state, packs: action.packs, cycles: action.cycles };
+    case FilterType.FILTER_RESET:
+      return initialState;
+  }
+}
+
 export function CardFilter(props: {
-  onFilterChanged: (filter: Filter) => void
+  onFilterChanged: (filter: FilterState) => void
   fullWidth?: boolean
   deckbuilder?: boolean
 }): JSX.Element {
   const classes = useStyles()
   const { traits } = useUiStore()
-  const [filterText, setFilterText] = useState('')
-  const [filteredFactions, setFilteredFactions] = useState<string[]>([])
-  const [filteredCardTypes, setFilteredCardTypes] = useState<string[]>([])
-  const [filteredSides, setFilteredSides] = useState<string[]>([])
-  const [filteredTraits, setFilteredTraits] = useState<string[]>([])
-  const [filteredPacks, setFilteredPacks] = useState<string[]>([])
-  const [filteredCycles, setFilteresCycles] = useState<string[]>([])
-  const [filter, setFilter] = useState<Filter>()
+  const [ filterState, dispatchFilter ] = useReducer(filterReducer, initialState);
+  useEffect(() => props.onFilterChanged(filterState), [filterState]);
+
+  const [ searchTerm, setSearchTerm ] = useState('');
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
+  useEffect(() => {
+    dispatchFilter({ type: FilterType.FILTER_TEXT, text: debouncedSearchTerm });
+  }, [debouncedSearchTerm]);
 
   const [packModalOpen, setPackModalOpen] = useState(false)
 
@@ -118,58 +176,12 @@ export function CardFilter(props: {
     ? sides.filter((side) => side.id !== 'treaty')
     : sides.filter((side) => side.id !== 'treaty' && side.id !== 'role')
 
-  function setFilterAndEmitChangeEvent(filter: Filter) {
-    setFilter(filter)
-    props.onFilterChanged(filter)
-  }
-
-  function updateFilteredFactions(newItems: string[]) {
-    setFilteredFactions(newItems)
-    setFilterAndEmitChangeEvent({
-      ...filter,
-      factions: newItems,
-    })
-  }
-
-  function updateFilteredCardTypes(newItems: string[]) {
-    setFilteredCardTypes(newItems)
-    setFilterAndEmitChangeEvent({
-      ...filter,
-      cardTypes: newItems,
-    })
-  }
-
-  function updateFilteredSides(newItems: string[]) {
-    setFilteredSides(newItems)
-    setFilterAndEmitChangeEvent({
-      ...filter,
-      sides: newItems,
-    })
-  }
-
-  function updateFilteredTraits(newItems: string[]) {
-    setFilteredTraits(newItems)
-    setFilterAndEmitChangeEvent({
-      ...filter,
-      traits: newItems,
-    })
-  }
-
-  function updateFilterText(newText: string) {
-    setFilterText(newText)
-    setFilterAndEmitChangeEvent({
-      ...filter,
-      text: newText,
-    })
-  }
-
   function updateFilteredPacksAndCycles(newPackIds: string[], newCycleIds: string[]) {
-    setFilteredPacks(newPackIds)
-    setFilteresCycles(newCycleIds)
-    setFilterAndEmitChangeEvent({
-      ...filter,
+    dispatchFilter({
+      type: FilterType.FILTER_PACKS_AND_CYCLES,
       packs: newPackIds,
-    })
+      cycles: newCycleIds
+    });
   }
 
   function toggleItemInArray(items: string[], id: string): string[] {
@@ -184,15 +196,18 @@ export function CardFilter(props: {
   }
 
   function toggleFactionFilter(id: string) {
-    updateFilteredFactions(toggleItemInArray(filteredFactions, id))
+    const newFactions = toggleItemInArray(filterState.factions, id);
+    dispatchFilter({ type: FilterType.FILTER_FACTIONS, factions: newFactions });
   }
 
   function toggleCardTypeFilter(id: string) {
-    updateFilteredCardTypes(toggleItemInArray(filteredCardTypes, id))
+    const newCardTypes = toggleItemInArray(filterState.cardTypes, id);
+    dispatchFilter({ type: FilterType.FILTER_CARD_TYPES, cardTypes: newCardTypes });
   }
 
   function toggleSideFilter(id: string) {
-    updateFilteredSides(toggleItemInArray(filteredSides, id))
+    const newSides = toggleItemInArray(filterState.sides, id);
+    dispatchFilter({ type: FilterType.FILTER_SIDES, sides: newSides });
   }
 
   const findTraits = (stringTraits?: string[]) => {
@@ -217,10 +232,8 @@ export function CardFilter(props: {
             variant="outlined"
             size="small"
             label="Seach for card name, ability text..."
-            value={filterText}
-            onChange={(e) => setFilterText(e.target.value)}
-            onBlur={(e) => updateFilterText(e.target.value)}
-            onKeyPress={(e) => e.key === 'Enter' && updateFilterText(filterText)}
+            value={ searchTerm }
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
         </Grid>
         <Grid item xs={12} md={props.fullWidth ? 6 : 12}>
@@ -233,27 +246,19 @@ export function CardFilter(props: {
                       disableTouchRipple
                       onClick={() => toggleFactionFilter(faction.id)}
                       style={{
-                        backgroundColor: filteredFactions.includes(faction.id) ? faction.color : '',
+                        backgroundColor: filterState.factions.includes(faction.id) ? faction.color : '',
                       }}
                       className={classes.button}
                     >
                       <span
                         className={`icon icon-clan-${faction.id}`}
                         style={{
-                          color: filteredFactions.includes(faction.id) ? 'white' : faction.color,
+                          color: filterState.factions.includes(faction.id) ? 'white' : faction.color,
                         }}
                       />
                     </Button>
                   </Tooltip>
                 ))}
-                <Tooltip title="Clear Clan Filters">
-                  <Button
-                    className={`${classes.button} ${classes.clearButton}`}
-                    onClick={() => updateFilteredFactions([])}
-                  >
-                    <ClearIcon className={classes.clearIcon} />
-                  </Button>
-                </Tooltip>
               </ButtonGroup>
             </Grid>
             <Grid item xs={12} className={classes.filterGridItem}>
@@ -264,25 +269,17 @@ export function CardFilter(props: {
                       disableTouchRipple
                       onClick={() => toggleCardTypeFilter(type.id)}
                       style={{
-                        backgroundColor: filteredCardTypes.includes(type.id) ? 'dimgrey' : 'white',
+                        backgroundColor: filterState.cardTypes.includes(type.id) ? 'dimgrey' : 'white',
                       }}
                       className={classes.button}
                     >
                       <CardTypeIcon
                         type={type.id}
-                        defaultColor={filteredCardTypes.includes(type.id) ? 'white' : 'black'}
+                        defaultColor={ filterState.cardTypes.includes(type.id) ? 'white' : 'black' }
                       />
                     </Button>
                   </Tooltip>
                 ))}
-                <Tooltip title="Clear Type Filters">
-                  <Button
-                    className={`${classes.button} ${classes.clearButton}`}
-                    onClick={() => updateFilteredCardTypes([])}
-                  >
-                    <ClearIcon className={classes.clearIcon} />
-                  </Button>
-                </Tooltip>
               </ButtonGroup>
             </Grid>
             <Grid item xs={12} className={classes.filterGridItem}>
@@ -293,26 +290,18 @@ export function CardFilter(props: {
                       disableTouchRipple
                       onClick={() => toggleSideFilter(side.id)}
                       style={{
-                        backgroundColor: filteredSides.includes(side.id) ? 'dimgrey' : 'white',
+                        backgroundColor: filterState.sides.includes(side.id) ? 'dimgrey' : 'white',
                       }}
                     >
                       <Typography
                         variant="inherit"
-                        style={{ color: filteredSides.includes(side.id) ? 'white' : 'black' }}
+                        style={{ color: filterState.sides.includes(side.id) ? 'white' : 'black' }}
                       >
                         {side.name}
                       </Typography>
                     </Button>
                   </Tooltip>
                 ))}
-                <Tooltip title="Clear Deck Filters">
-                  <Button
-                    className={`${classes.button} ${classes.clearButton}`}
-                    onClick={() => updateFilteredSides([])}
-                  >
-                    <ClearIcon className={classes.clearIcon} />
-                  </Button>
-                </Tooltip>
               </ButtonGroup>
             </Grid>
           </Grid>
@@ -325,16 +314,17 @@ export function CardFilter(props: {
                 multiple
                 options={traits}
                 getOptionLabel={(option) => option.name}
-                value={findTraits(filteredTraits)}
+                value={findTraits(filterState.traits)}
                 renderInput={(params) => (
                   <TextField {...params} size="small" label="Traits" variant="outlined" />
                 )}
-                onChange={(e, value) => updateFilteredTraits(value.map((item) => item.id))}
+                onChange={(e, value) =>
+                  dispatchFilter({ type: FilterType.FILTER_TRAITS, traits: value.map((item) => item.id) })}
               />
             </Grid>
             <Grid item xs={12}>
-              <Button variant="contained" color="secondary" onClick={() => setPackModalOpen(true)}>
-                Filter Packs{filteredPacks.length > 0 && ` (Selected: ${filteredPacks.length})`}
+              <Button fullWidth variant="contained" color="secondary" onClick={() => setPackModalOpen(true)}>
+                Filter Packs{ filterState.packs.length > 0 && ` (Selected: ${filterState.packs.length})`}
               </Button>
             </Grid>
           </Grid>
@@ -351,8 +341,8 @@ export function CardFilter(props: {
             withCheckbox
             rootLabel="All Packs"
             onSelection={updateFilteredPacksAndCycles}
-            selectedPacks={filteredPacks}
-            selectedCycles={filteredCycles}
+            selectedPacks={filterState.packs}
+            selectedCycles={filterState.cycles}
           />
         </DialogContent>
         <DialogActions>

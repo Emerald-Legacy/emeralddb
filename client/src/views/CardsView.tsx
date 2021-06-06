@@ -14,7 +14,7 @@ import { useUiStore } from '../providers/UiStoreProvider'
 import { convertTraitList } from '../utils/cardTextUtils'
 import { capitalize } from '../utils/stringUtils'
 import { useState } from 'react'
-import { applyFilters, CardFilter, Filter } from '../components/CardFilter'
+import { applyFilters, CardFilter, FilterState } from '../components/CardFilter'
 import { CardWithVersions } from '@5rdb/api'
 import { CardInformation } from '../components/card/CardInformation'
 
@@ -44,7 +44,7 @@ export function CardsView(): JSX.Element {
   const classes = useStyles()
   const { cards, traits } = useUiStore()
   const history = useHistory()
-  const [filter, setFilter] = useState<Filter | undefined>(undefined)
+  const [filter, setFilter] = useState<FilterState | undefined>(undefined)
   const [modalCard, setModalCard] = useState<CardWithVersions | undefined>(undefined)
   const [cardModalOpen, setCardModalOpen] = useState(false)
   const isMdOrBigger = useMediaQuery('(min-width:600px)')
