@@ -171,13 +171,14 @@ function filterReducer(state: FilterState, action: FilterAction): FilterState {
 }
 
 export function CardFilter(props: {
+  initialFilterState?: FilterState | undefined,
   onFilterChanged: (filter: FilterState) => void
   fullWidth?: boolean
   deckbuilder?: boolean
 }): JSX.Element {
   const classes = useStyles()
   const { traits } = useUiStore()
-  const [ filterState, dispatchFilter ] = useReducer(filterReducer, initialState);
+  const [ filterState, dispatchFilter ] = useReducer(filterReducer, props.initialFilterState || initialState);
   useEffect(() => props.onFilterChanged(filterState), [filterState]);
 
   const [ searchTerm, setSearchTerm ] = useState('');

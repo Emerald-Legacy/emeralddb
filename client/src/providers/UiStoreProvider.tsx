@@ -23,8 +23,8 @@ export function UiStoreProvider(props: { children: ReactNode }): JSX.Element {
   const [traits, setTraits] = useState<Trait[]>([])
 
   useEffect(() => {
-    publicApi.Card.findAll().then((cards) => setCards(cards.data()))
     publicApi.Pack.findAll().then((packs) => setPacks(packs.data()))
+    publicApi.Card.findAll().then((cards) => setCards(cards.data()))
     publicApi.Cycle.findAll().then((cycles) => setCycles(cycles.data()))
     publicApi.Trait.findAll().then((traits) => setTraits(traits.data()))
   }, [])
