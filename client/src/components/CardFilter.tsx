@@ -14,7 +14,7 @@ import {
   Tooltip,
   Typography,
 } from '@material-ui/core'
-import { factions, cardTypes, sides } from '../utils/enums'
+import { factions, cardTypes, sides, formats } from '../utils/enums'
 import { CardTypeIcon } from './CardTypeIcon'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import { useUiStore } from '../providers/UiStoreProvider'
@@ -56,6 +56,8 @@ export interface FilterState {
   traits: string[]
   packs: string[]
   cycles: string[]
+  restricted: string
+  banned: string
 }
 
 enum FilterType {
@@ -67,6 +69,8 @@ enum FilterType {
   FILTER_PACKS,
   FILTER_CYCLES,
   FILTER_PACKS_AND_CYCLES,
+  FILTER_RESTRICTED,
+  FILTER_BANNED,
   FILTER_RESET
 }
 
@@ -79,6 +83,8 @@ type FilterAction =
   | { type: FilterType.FILTER_PACKS, packs: string[] }
   | { type: FilterType.FILTER_CYCLES, cycles: string[] }
   | { type: FilterType.FILTER_PACKS_AND_CYCLES, packs: string[], cycles: string[] }
+  | { type: FilterType.FILTER_RESTRICTED, format: string }
+  | { type: FilterType.FILTER_BANNED, format: string }
   | { type: FilterType.FILTER_RESET };
 
 
@@ -103,6 +109,16 @@ export function applyFilters(cards: CardWithVersions[], filter: FilterState): Ca
       (c) => c.versions?.some((version) => filter.packs?.includes(version.pack_id))
     )
   }
+  if (filter.restricted) {
+    filteredCards = filteredCards.filter(
+      (c) => c.restricted_in?.includes(filter.restricted)
+    )
+  }
+  if (filter.banned) {
+    filteredCards = filteredCards.filter(
+      (c) => c.banned_in?.includes(filter.banned)
+    )
+  }
   if (filter.text) {
     const query = filter.text.toLocaleLowerCase().trim()
     filteredCards = filteredCards.filter(
@@ -122,7 +138,9 @@ const initialState: FilterState = {
   sides: [],
   text: '',
   traits: [],
-  cycles: []
+  cycles: [],
+  restricted: '',
+  banned: ''
 };
 
 function filterReducer(state: FilterState, action: FilterAction): FilterState {
@@ -143,19 +161,24 @@ function filterReducer(state: FilterState, action: FilterAction): FilterState {
       return { ...state, cycles: action.cycles };
     case FilterType.FILTER_PACKS_AND_CYCLES:
       return { ...state, packs: action.packs, cycles: action.cycles };
+    case FilterType.FILTER_RESTRICTED:
+      return { ...state, restricted: action.format };
+    case FilterType.FILTER_BANNED:
+      return { ...state, banned: action.format };
     case FilterType.FILTER_RESET:
       return initialState;
   }
 }
 
 export function CardFilter(props: {
+  initialFilterState?: FilterState | undefined,
   onFilterChanged: (filter: FilterState) => void
   fullWidth?: boolean
   deckbuilder?: boolean
 }): JSX.Element {
   const classes = useStyles()
   const { traits } = useUiStore()
-  const [ filterState, dispatchFilter ] = useReducer(filterReducer, initialState);
+  const [ filterState, dispatchFilter ] = useReducer(filterReducer, props.initialFilterState || initialState);
   useEffect(() => props.onFilterChanged(filterState), [filterState]);
 
   const [ searchTerm, setSearchTerm ] = useState('');
@@ -320,6 +343,32 @@ export function CardFilter(props: {
                 )}
                 onChange={(e, value) =>
                   dispatchFilter({ type: FilterType.FILTER_TRAITS, traits: value.map((item) => item.id) })}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <Autocomplete
+                id="combo-box-restricted-in"
+                options={formats}
+                getOptionLabel={(option) => option?.name || ''}
+                value={formats.find(format => format.id === filterState.restricted)}
+                renderInput={(params) => (
+                  <TextField {...params} size="small" label="Restricted In" variant="outlined" />
+                )}
+                onChange={(e, value) =>
+                  dispatchFilter({ type: FilterType.FILTER_RESTRICTED, format: value?.id || '' })}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <Autocomplete
+                id="combo-box-banned-in"
+                options={formats}
+                getOptionLabel={(option) => option?.name || ''}
+                value={formats.find(format => format.id === filterState.banned)}
+                renderInput={(params) => (
+                  <TextField {...params} size="small" label="Banned In" variant="outlined" />
+                )}
+                onChange={(e, value) =>
+                  dispatchFilter({ type: FilterType.FILTER_BANNED, format: value?.id || '' })}
               />
             </Grid>
             <Grid item xs={12}>

@@ -8,15 +8,16 @@ import {
   DialogContent,
 } from '@material-ui/core'
 import { DataGrid, GridColumns } from '@material-ui/data-grid'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import { CardTypeIcon } from '../components/CardTypeIcon'
 import { useUiStore } from '../providers/UiStoreProvider'
 import { convertTraitList } from '../utils/cardTextUtils'
 import { capitalize } from '../utils/stringUtils'
 import { useState } from 'react'
 import { applyFilters, CardFilter, FilterState } from '../components/CardFilter'
-import { CardWithVersions } from '@5rdb/api'
+import { CardWithVersions, Pack } from '@5rdb/api'
 import { CardInformation } from '../components/card/CardInformation'
+import { Loading } from '../components/Loading'
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -40,17 +41,47 @@ interface TableCard {
   cost: string
 }
 
+function createFilterFromUrlSearchParams(params: URLSearchParams, allPacks: Pack[]): FilterState {
+  const cycle = params.get('cycle')
+  const pack = params.get('pack')
+  const packs = cycle 
+    ? allPacks.filter(p => p.cycle_id === cycle).map(p => p.id)
+    : pack 
+      ? [pack]
+      : []
+
+  return {
+    text: '',
+    factions: [],
+    cardTypes: [],
+    sides: [],
+    traits: [],
+    packs: packs,
+    cycles: cycle ? [cycle] : [],
+    restricted: '',
+    banned: ''
+  }
+}
+
 export function CardsView(): JSX.Element {
   const classes = useStyles()
-  const { cards, traits } = useUiStore()
+  const { cards, packs, traits } = useUiStore()
   const history = useHistory()
+  const location = useLocation()
   const [filter, setFilter] = useState<FilterState | undefined>(undefined)
   const [modalCard, setModalCard] = useState<CardWithVersions | undefined>(undefined)
   const [cardModalOpen, setCardModalOpen] = useState(false)
   const isMdOrBigger = useMediaQuery('(min-width:600px)')
-
+  
+  if (packs.length === 0) {
+    return <Loading />
+  }
   let filteredCards = cards
-
+  
+  const urlSearchParams = new URLSearchParams(location.search)
+  if (filter === undefined) {
+    setFilter(createFilterFromUrlSearchParams(urlSearchParams, packs))
+  }
   if (filter) {
     filteredCards = applyFilters(cards, filter)
   }
@@ -113,7 +144,7 @@ export function CardsView(): JSX.Element {
 
   return (
     <>
-      <CardFilter onFilterChanged={setFilter} fullWidth />
+      <CardFilter onFilterChanged={setFilter} fullWidth initialFilterState={filter} />
       <Paper className={classes.table}>
         <DataGrid
           disableColumnResize
