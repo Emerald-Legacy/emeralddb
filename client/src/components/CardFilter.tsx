@@ -6,11 +6,9 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   Grid,
   makeStyles,
-  Modal,
   Paper,
   TextField,
   Tooltip,
@@ -47,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
   },
   packDialog: {
     padding: theme.spacing(2),
-  }
+  },
 }))
 
 export interface Filter {
@@ -76,8 +74,8 @@ export function applyFilters(cards: CardWithVersions[], filter: Filter): CardWit
     )
   }
   if (filter.packs && filter.packs.length > 0) {
-    filteredCards = filteredCards.filter((c) => 
-      c.versions && c.versions.some(version => filter.packs?.includes(version.pack_id))
+    filteredCards = filteredCards.filter(
+      (c) => c.versions && c.versions.some((version) => filter.packs?.includes(version.pack_id))
     )
   }
   if (filter.text) {
@@ -110,9 +108,15 @@ export function CardFilter(props: {
 
   const [packModalOpen, setPackModalOpen] = useState(false)
 
-  const visibleFactions = props.deckbuilder ? factions.filter(faction => faction.id !== 'shadowlands') : factions
-  const visibleCardtypes = props.deckbuilder ? cardTypes.filter(cardType => cardType.id !== 'treaty' && cardType.id !== 'warlord') : cardTypes
-  const visibleSides = props.deckbuilder ? sides.filter(side => side.id !== 'treaty') : sides.filter(side => side.id !== 'treaty' && side.id !== 'role')
+  const visibleFactions = props.deckbuilder
+    ? factions.filter((faction) => faction.id !== 'shadowlands')
+    : factions
+  const visibleCardtypes = props.deckbuilder
+    ? cardTypes.filter((cardType) => cardType.id !== 'treaty' && cardType.id !== 'warlord')
+    : cardTypes
+  const visibleSides = props.deckbuilder
+    ? sides.filter((side) => side.id !== 'treaty')
+    : sides.filter((side) => side.id !== 'treaty' && side.id !== 'role')
 
   function setFilterAndEmitChangeEvent(filter: Filter) {
     setFilter(filter)
@@ -243,7 +247,10 @@ export function CardFilter(props: {
                   </Tooltip>
                 ))}
                 <Tooltip title="Clear Clan Filters">
-                  <Button className={`${classes.button} ${classes.clearButton}`} onClick={() => updateFilteredFactions([])}>
+                  <Button
+                    className={`${classes.button} ${classes.clearButton}`}
+                    onClick={() => updateFilteredFactions([])}
+                  >
                     <ClearIcon className={classes.clearIcon} />
                   </Button>
                 </Tooltip>
@@ -269,7 +276,10 @@ export function CardFilter(props: {
                   </Tooltip>
                 ))}
                 <Tooltip title="Clear Type Filters">
-                  <Button className={`${classes.button} ${classes.clearButton}`} onClick={() => updateFilteredCardTypes([])}>
+                  <Button
+                    className={`${classes.button} ${classes.clearButton}`}
+                    onClick={() => updateFilteredCardTypes([])}
+                  >
                     <ClearIcon className={classes.clearIcon} />
                   </Button>
                 </Tooltip>
@@ -296,7 +306,10 @@ export function CardFilter(props: {
                   </Tooltip>
                 ))}
                 <Tooltip title="Clear Deck Filters">
-                  <Button className={`${classes.button} ${classes.clearButton}`} onClick={() => updateFilteredSides([])}>
+                  <Button
+                    className={`${classes.button} ${classes.clearButton}`}
+                    onClick={() => updateFilteredSides([])}
+                  >
                     <ClearIcon className={classes.clearIcon} />
                   </Button>
                 </Tooltip>
@@ -320,18 +333,30 @@ export function CardFilter(props: {
               />
             </Grid>
             <Grid item xs={12}>
-              <Button variant='contained' color='secondary' onClick={() => setPackModalOpen(true)}>Filter Packs{filteredPacks.length > 0 && ` (Selected: ${filteredPacks.length})`}</Button>
+              <Button variant="contained" color="secondary" onClick={() => setPackModalOpen(true)}>
+                Filter Packs{filteredPacks.length > 0 && ` (Selected: ${filteredPacks.length})`}
+              </Button>
             </Grid>
           </Grid>
         </Grid>
       </Grid>
-      <Dialog open={packModalOpen} onClose={() => setPackModalOpen(false)} className={classes.packDialog}>
+      <Dialog
+        open={packModalOpen}
+        onClose={() => setPackModalOpen(false)}
+        className={classes.packDialog}
+      >
         <DialogTitle id="form-dialog-title">Filter Packs</DialogTitle>
         <DialogContent>
-          <CycleList withCheckbox rootLabel='All Packs' onSelection={updateFilteredPacksAndCycles} selectedPacks={filteredPacks} selectedCycles={filteredCycles} />
+          <CycleList
+            withCheckbox
+            rootLabel="All Packs"
+            onSelection={updateFilteredPacksAndCycles}
+            selectedPacks={filteredPacks}
+            selectedCycles={filteredCycles}
+          />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setPackModalOpen(false)} color="primary" variant='contained'>
+          <Button onClick={() => setPackModalOpen(false)} variant="contained">
             Close
           </Button>
         </DialogActions>

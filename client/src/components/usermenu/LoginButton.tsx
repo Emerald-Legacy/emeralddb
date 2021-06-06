@@ -5,7 +5,11 @@ export function LoginButton(props: { onLogin: () => void }): JSX.Element {
   const { loginWithPopup } = useAuth0()
 
   return (
-    <Button variant="contained" color='secondary' onClick={() => loginWithPopup().then(props.onLogin)}>
+    <Button
+      variant="contained"
+      color="secondary"
+      onClick={() => loginWithPopup().then(props.onLogin)}
+    >
       Log In
     </Button>
   )

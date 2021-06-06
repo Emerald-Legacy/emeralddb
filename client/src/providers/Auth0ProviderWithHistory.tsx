@@ -28,18 +28,20 @@ export function Auth0ProviderWithHistory(props: {
 
   return (
     <Paper>
-      <Auth0Context.Provider value={{ domain: auth0Domain, clientId: auth0ClientId }}>
-        <Auth0Provider
-          domain={auth0Domain}
-          clientId={auth0ClientId}
-          redirectUri={window.location.origin}
-          onRedirectCallback={onRedirectCallback}
-          audience={props.audience}
-          scope={props.scope}
-        >
-          {props.children}
-        </Auth0Provider>
-      </Auth0Context.Provider>
+      {auth0Domain && auth0ClientId && (
+        <Auth0Context.Provider value={{ domain: auth0Domain, clientId: auth0ClientId }}>
+          <Auth0Provider
+            domain={auth0Domain}
+            clientId={auth0ClientId}
+            redirectUri={window.location.origin}
+            onRedirectCallback={onRedirectCallback}
+            audience={props.audience}
+            scope={props.scope}
+          >
+            {props.children}
+          </Auth0Provider>
+        </Auth0Context.Provider>
+      )}
     </Paper>
   )
 }
