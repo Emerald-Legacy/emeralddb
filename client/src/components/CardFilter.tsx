@@ -3,6 +3,7 @@ import { CardWithVersions, Trait } from '@5rdb/api/index'
 import {
   Button,
   ButtonGroup,
+  lighten,
   Dialog,
   DialogActions,
   DialogContent,
@@ -31,6 +32,9 @@ const useStyles = makeStyles((theme) => ({
   },
   clearButton: {
     backgroundColor: theme.palette.error.light,
+    "&:hover": {
+      backgroundColor: lighten(theme.palette.error.light, 0.1)
+    }
   },
   button: {
     height: 32,
@@ -377,6 +381,13 @@ export function CardFilter(props: {
               </Button>
             </Grid>
           </Grid>
+        </Grid>
+        <Grid item xs={12} md={12}>
+          <Button
+            fullWidth
+            variant="contained"
+            className={`${classes.button} ${classes.clearButton}`}
+            onClick={() => dispatchFilter({ type: FilterType.FILTER_RESET })}>Reset filters</Button>
         </Grid>
       </Grid>
       <Dialog
