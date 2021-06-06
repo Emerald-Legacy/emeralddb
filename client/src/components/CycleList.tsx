@@ -112,12 +112,29 @@ export function CycleList(props: {
     updateCheckedPacksAndCycles(checkedPacks, checkedCycles)
   }
 
+  function somePackForCycleChecked(cycle: CycleWithPacks): boolean {
+    const checkedCyclePacks = cycle.packs.filter(pack => checkedPackIds.includes(pack.id))
+    if (checkedCyclePacks.length > 0) {
+      return true
+    }
+    return false
+  }
+
+  function notAllPacksForCycleChecked(cycle: CycleWithPacks): boolean {
+    const checkedCyclePacks = cycle.packs.filter(pack => checkedPackIds.includes(pack.id))
+    if (checkedCyclePacks.length > 0 && checkedCyclePacks.length !== cycle.packs.length) {
+      return true
+    }
+    return false
+  }
+
   function createCycleLabel(cycle: CycleWithPacks): JSX.Element {
     return (
       <FormControlLabel
         control={
           <Checkbox
-            checked={checkedCycleIds.some((item) => item === cycle.id)}
+            checked={checkedCycleIds.some((item) => item === cycle.id) || somePackForCycleChecked(cycle)}
+            indeterminate={notAllPacksForCycleChecked(cycle)}
             onChange={(event) => checkCycle(event.currentTarget.checked, cycle)}
             onClick={(e) => e.stopPropagation()}
           />
