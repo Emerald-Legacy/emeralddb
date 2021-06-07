@@ -1,12 +1,8 @@
 import { Ruling } from "@5rdb/api";
-import { Grid, makeStyles, Box } from "@material-ui/core";
+import { Grid, Box } from "@material-ui/core";
 import ReactMarkdown from 'react-markdown'
 
-const useStyles = makeStyles(() => ({
-}))
-
-export function RulingList(props: {rulings: Pick<Ruling, "link" | "source" | "text" | "id">[]}): JSX.Element {
-  const classes = useStyles()
+export function RulingList(props: {rulings: Omit<Ruling, "card_id">[]}): JSX.Element {
 
   return <Grid container spacing={1}>
     {props.rulings.map(ruling => (
