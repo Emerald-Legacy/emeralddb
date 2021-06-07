@@ -8,6 +8,7 @@ import { useCard } from '../hooks/useCard'
 import { CardInformation } from '../components/card/CardInformation'
 import { CardInPack } from '@5rdb/api'
 import { useCurrentUser } from '../providers/UserProvider'
+import { RulingList } from '../components/RulingList'
 
 export function CardDetailView(): JSX.Element {
   const params = useParams<{ id: string }>()
@@ -45,6 +46,7 @@ export function CardDetailView(): JSX.Element {
           </Button>
         )}
         <CardInformation cardWithVersions={card} currentVersionPackId={chosenVersion?.pack_id} />
+        <RulingList rulings={card.rulings} />
       </Grid>
       <Grid item xs={12} md={5}>
         {chosenVersion && (
