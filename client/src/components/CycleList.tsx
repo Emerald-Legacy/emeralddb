@@ -148,7 +148,7 @@ export function CycleList(props: {
 
   function createPackElement(pack: Pack): JSX.Element {
     return (
-      <ListItem className={classes.pack} key={pack.id}>
+      <ListItem button className={classes.pack} key={pack.id}>
         {props.withCheckbox && (
           <ListItemIcon>
             <Checkbox

@@ -87,7 +87,7 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
             <Typography
               variant="h6"
               style={{ cursor: 'pointer' }}
-              onClick={() => history.push('/cards')}
+              onClick={() => goTo('/cards')}
             >
               <span>{prefix}</span>
               <img src="/static/logo.png" className={classes.logo} />
@@ -113,19 +113,11 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
                   <ListItem button onClick={handleCardMenuClick} dense={isMdOrSmaller}>
                     <ListItemText
                       primary="Cards"
-                      onClick={(e) => {
-                        goTo('/cards')
-                        e.stopPropagation()
-                      }}
                     />
                     {anchorEl ? <ExpandLessIcon /> : <ExpandMoreIcon />}
                   </ListItem>
                   <Menu
                     anchorEl={anchorEl}
-                    anchorOrigin={{
-                      vertical: 'bottom',
-                      horizontal: 'left',
-                    }}
                     transformOrigin={{
                       vertical: 'top',
                       horizontal: 'center',
@@ -134,21 +126,23 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
                     open={Boolean(anchorEl)}
                     onClose={() => setAnchorEl(null)}
                   >
-                    <CycleList
-                      onRootClick={() => {
-                        goTo('/cards')
-                        setAnchorEl(null)
-                      }}
-                      onCycleClick={(cycleId: string) => {
-                        goTo(`/cards?cycle=${cycleId}`)
-                        setAnchorEl(null)
-                      }}
-                      onPackClick={(packId: string) => {
-                        goTo(`/cards?pack=${packId}`)
-                        setAnchorEl(null)
-                      }}
-                      rootLabel="View All Cards"
-                    />
+                    <div>
+                      <CycleList
+                        onRootClick={() => {
+                          goTo('/cards')
+                          setAnchorEl(null)
+                        }}
+                        onCycleClick={(cycleId: string) => {
+                          goTo(`/cards?cycle=${cycleId}`)
+                          setAnchorEl(null)
+                        }}
+                        onPackClick={(packId: string) => {
+                          goTo(`/cards?pack=${packId}`)
+                          setAnchorEl(null)
+                        }}
+                        rootLabel="View All Cards"
+                      />
+                    </div>
                   </Menu>
                 </Grid>
                 <Grid item>

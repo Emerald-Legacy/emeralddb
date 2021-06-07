@@ -189,7 +189,7 @@ export function CardFilter(props: {
     props.filterState || initialState
   )
   const [filterState, dispatchFilter] = useReducer(filterReducer, initialFilterState)
-  const [searchTerm, setSearchTerm] = useState('')
+  const [searchTerm, setSearchTerm] = useState(props.filterState?.text || '')
 
   const debouncedSearchTerm = useDebounce(searchTerm, 500)
   useEffect(() => {

@@ -75,17 +75,23 @@ export function CardsView(): JSX.Element {
   const [cardModalOpen, setCardModalOpen] = useState(false)
   const isMdOrBigger = useMediaQuery('(min-width:600px)')
 
-  if (packs.length === 0) {
+  if (cards.length === 0) {
     return <Loading />
   }
   let filteredCards = cards
 
+  const urlSearchParams = new URLSearchParams(location.search)
+  let urlParamFilter = undefined
   if (location.search !== urlParams) {
-    const urlSearchParams = new URLSearchParams(location.search)
-    setFilter(createFilterFromUrlSearchParams(urlSearchParams, packs))
+    urlParamFilter = createFilterFromUrlSearchParams(urlSearchParams, packs)
+    setFilter(urlParamFilter)
     setUrlParams(location.search)
+    // Only 1 result => Go to card page
+    let urlFilteredCards = applyFilters(cards, urlParamFilter)
+    if (urlFilteredCards.length === 1) {
+      history.push(`/card/${urlFilteredCards[0].id}`)
+    }
   }
-  console.log(filter)
   if (filter) {
     filteredCards = applyFilters(cards, filter)
   }
@@ -145,10 +151,10 @@ export function CardsView(): JSX.Element {
     { field: 'deck', headerName: 'Deck', disableColumnMenu: true, flex: 1, hide: !isMdOrBigger },
     { field: 'cost', headerName: 'Cost', disableColumnMenu: true, flex: 1, hide: !isMdOrBigger },
   ]
-
+  
   return (
     <>
-      <CardFilter onFilterChanged={setFilter} fullWidth filterState={filter} />
+      <CardFilter onFilterChanged={setFilter} fullWidth filterState={urlParamFilter || filter} />
       <Paper className={classes.table}>
         <DataGrid
           disableColumnResize
