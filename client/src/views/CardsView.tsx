@@ -29,6 +29,7 @@ interface NameProps {
   name: string
   faction: string
   type: string
+  isUnique: boolean
 }
 
 interface TableCard {
@@ -121,7 +122,7 @@ export function CardsView(): JSX.Element {
 
     return {
       id: card.id,
-      name: { name: card.name, faction: card.faction, type: card.type },
+      name: { name: card.name, faction: card.faction, type: card.type, isUnique: card.is_unique },
       faction: capitalize(card.faction),
       type: capitalize(card.type),
       traits: convertTraitList(card.traits || [], traits),
@@ -148,7 +149,9 @@ export function CardsView(): JSX.Element {
         const nameProps = params.value as NameProps
         return (
           <span style={{ marginLeft: -10, cursor: 'pointer' }}>
-            <CardTypeIcon type={nameProps.type} faction={nameProps.faction} /> {nameProps.name}
+            <CardTypeIcon type={nameProps.type} faction={nameProps.faction} />{' '}
+            {nameProps.isUnique && <span className={`icon icon-unique`} style={{ fontSize: 12 }} />}{' '}
+            {nameProps.name}
           </span>
         )
       },
