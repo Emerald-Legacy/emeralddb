@@ -20,7 +20,8 @@ import { CardTypeIcon } from './CardTypeIcon'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import { useUiStore } from '../providers/UiStoreProvider'
 import { CycleList } from './CycleList'
-import useDebounce from '../hooks/useDebounce';
+import useDebounce from '../hooks/useDebounce'
+import { isEqual } from 'lodash'
 
 const useStyles = makeStyles((theme) => ({
   filter: {
@@ -32,9 +33,9 @@ const useStyles = makeStyles((theme) => ({
   },
   clearButton: {
     backgroundColor: theme.palette.error.light,
-    "&:hover": {
-      backgroundColor: lighten(theme.palette.error.light, 0.1)
-    }
+    '&:hover': {
+      backgroundColor: lighten(theme.palette.error.light, 0.1),
+    },
   },
   button: {
     height: 32,
@@ -49,6 +50,9 @@ const useStyles = makeStyles((theme) => ({
   },
   packDialog: {
     padding: theme.spacing(2),
+  },
+  packFilter: {
+    minWidth: '60%',
   },
 }))
 
@@ -65,6 +69,7 @@ export interface FilterState {
 }
 
 enum FilterType {
+  FILTER_ALL,
   FILTER_TEXT,
   FILTER_FACTIONS,
   FILTER_CARD_TYPES,
@@ -75,22 +80,22 @@ enum FilterType {
   FILTER_PACKS_AND_CYCLES,
   FILTER_RESTRICTED,
   FILTER_BANNED,
-  FILTER_RESET
+  FILTER_RESET,
 }
 
 type FilterAction =
-  | { type: FilterType.FILTER_TEXT, text: string }
-  | { type: FilterType.FILTER_FACTIONS, factions: string[] }
-  | { type: FilterType.FILTER_CARD_TYPES, cardTypes: string[] }
-  | { type: FilterType.FILTER_SIDES, sides: string[] }
-  | { type: FilterType.FILTER_TRAITS, traits: string[] }
-  | { type: FilterType.FILTER_PACKS, packs: string[] }
-  | { type: FilterType.FILTER_CYCLES, cycles: string[] }
-  | { type: FilterType.FILTER_PACKS_AND_CYCLES, packs: string[], cycles: string[] }
-  | { type: FilterType.FILTER_RESTRICTED, format: string }
-  | { type: FilterType.FILTER_BANNED, format: string }
-  | { type: FilterType.FILTER_RESET };
-
+  | { type: FilterType.FILTER_ALL; filter: FilterState }
+  | { type: FilterType.FILTER_TEXT; text: string }
+  | { type: FilterType.FILTER_FACTIONS; factions: string[] }
+  | { type: FilterType.FILTER_CARD_TYPES; cardTypes: string[] }
+  | { type: FilterType.FILTER_SIDES; sides: string[] }
+  | { type: FilterType.FILTER_TRAITS; traits: string[] }
+  | { type: FilterType.FILTER_PACKS; packs: string[] }
+  | { type: FilterType.FILTER_CYCLES; cycles: string[] }
+  | { type: FilterType.FILTER_PACKS_AND_CYCLES; packs: string[]; cycles: string[] }
+  | { type: FilterType.FILTER_RESTRICTED; format: string }
+  | { type: FilterType.FILTER_BANNED; format: string }
+  | { type: FilterType.FILTER_RESET }
 
 export function applyFilters(cards: CardWithVersions[], filter: FilterState): CardWithVersions[] {
   let filteredCards = cards
@@ -109,19 +114,15 @@ export function applyFilters(cards: CardWithVersions[], filter: FilterState): Ca
     )
   }
   if (filter.packs && filter.packs.length > 0) {
-    filteredCards = filteredCards.filter(
-      (c) => c.versions?.some((version) => filter.packs?.includes(version.pack_id))
+    filteredCards = filteredCards.filter((c) =>
+      c.versions?.some((version) => filter.packs?.includes(version.pack_id))
     )
   }
   if (filter.restricted) {
-    filteredCards = filteredCards.filter(
-      (c) => c.restricted_in?.includes(filter.restricted)
-    )
+    filteredCards = filteredCards.filter((c) => c.restricted_in?.includes(filter.restricted))
   }
   if (filter.banned) {
-    filteredCards = filteredCards.filter(
-      (c) => c.banned_in?.includes(filter.banned)
-    )
+    filteredCards = filteredCards.filter((c) => c.banned_in?.includes(filter.banned))
   }
   if (filter.text) {
     const query = filter.text.toLocaleLowerCase().trim()
@@ -144,54 +145,68 @@ const initialState: FilterState = {
   traits: [],
   cycles: [],
   restricted: '',
-  banned: ''
-};
+  banned: '',
+}
 
 function filterReducer(state: FilterState, action: FilterAction): FilterState {
-  switch(action.type) {
+  switch (action.type) {
+    case FilterType.FILTER_ALL:
+      return { ...action.filter }
     case FilterType.FILTER_TEXT:
-      return { ...state, text: action.text };
+      return { ...state, text: action.text }
     case FilterType.FILTER_FACTIONS:
-      return { ...state, factions: action.factions };
+      return { ...state, factions: action.factions }
     case FilterType.FILTER_CARD_TYPES:
-      return { ...state, cardTypes: action.cardTypes };
+      return { ...state, cardTypes: action.cardTypes }
     case FilterType.FILTER_SIDES:
-      return { ...state, sides: action.sides };
+      return { ...state, sides: action.sides }
     case FilterType.FILTER_TRAITS:
-      return { ...state, traits: action.traits };
+      return { ...state, traits: action.traits }
     case FilterType.FILTER_PACKS:
-      return { ...state, packs: action.packs };
+      return { ...state, packs: action.packs }
     case FilterType.FILTER_CYCLES:
-      return { ...state, cycles: action.cycles };
+      return { ...state, cycles: action.cycles }
     case FilterType.FILTER_PACKS_AND_CYCLES:
-      return { ...state, packs: action.packs, cycles: action.cycles };
+      return { ...state, packs: action.packs, cycles: action.cycles }
     case FilterType.FILTER_RESTRICTED:
-      return { ...state, restricted: action.format };
+      return { ...state, restricted: action.format }
     case FilterType.FILTER_BANNED:
-      return { ...state, banned: action.format };
+      return { ...state, banned: action.format }
     case FilterType.FILTER_RESET:
-      return initialState;
+      return initialState
   }
 }
 
 export function CardFilter(props: {
-  initialFilterState?: FilterState | undefined,
+  filterState: FilterState | undefined
   onFilterChanged: (filter: FilterState) => void
   fullWidth?: boolean
   deckbuilder?: boolean
 }): JSX.Element {
   const classes = useStyles()
   const { traits } = useUiStore()
-  const [ filterState, dispatchFilter ] = useReducer(filterReducer, props.initialFilterState || initialState);
-  useEffect(() => props.onFilterChanged(filterState), [filterState]);
+  const [initialFilterState, setInitialFilterState] = useState<FilterState>(
+    props.filterState || initialState
+  )
+  const [filterState, dispatchFilter] = useReducer(filterReducer, initialFilterState)
+  const [searchTerm, setSearchTerm] = useState('')
 
-  const [ searchTerm, setSearchTerm ] = useState('');
-  const debouncedSearchTerm = useDebounce(searchTerm, 500);
+  const debouncedSearchTerm = useDebounce(searchTerm, 500)
   useEffect(() => {
-    dispatchFilter({ type: FilterType.FILTER_TEXT, text: debouncedSearchTerm });
-  }, [debouncedSearchTerm]);
+    dispatchFilter({ type: FilterType.FILTER_TEXT, text: debouncedSearchTerm })
+  }, [debouncedSearchTerm])
 
   const [packModalOpen, setPackModalOpen] = useState(false)
+
+  if (props.filterState && !isEqual(initialFilterState, props.filterState)) {
+    if (props.filterState.text) {
+      setSearchTerm(props.filterState.text)
+    }
+    dispatchFilter({ type: FilterType.FILTER_ALL, filter: props.filterState })
+    setInitialFilterState(props.filterState)
+  }
+
+  useEffect(() => props.onFilterChanged(filterState), [filterState])
 
   const visibleFactions = props.deckbuilder
     ? factions.filter((faction) => faction.id !== 'shadowlands')
@@ -207,8 +222,8 @@ export function CardFilter(props: {
     dispatchFilter({
       type: FilterType.FILTER_PACKS_AND_CYCLES,
       packs: newPackIds,
-      cycles: newCycleIds
-    });
+      cycles: newCycleIds,
+    })
   }
 
   function toggleItemInArray(items: string[], id: string): string[] {
@@ -223,18 +238,18 @@ export function CardFilter(props: {
   }
 
   function toggleFactionFilter(id: string) {
-    const newFactions = toggleItemInArray(filterState.factions, id);
-    dispatchFilter({ type: FilterType.FILTER_FACTIONS, factions: newFactions });
+    const newFactions = toggleItemInArray(filterState.factions, id)
+    dispatchFilter({ type: FilterType.FILTER_FACTIONS, factions: newFactions })
   }
 
   function toggleCardTypeFilter(id: string) {
-    const newCardTypes = toggleItemInArray(filterState.cardTypes, id);
-    dispatchFilter({ type: FilterType.FILTER_CARD_TYPES, cardTypes: newCardTypes });
+    const newCardTypes = toggleItemInArray(filterState.cardTypes, id)
+    dispatchFilter({ type: FilterType.FILTER_CARD_TYPES, cardTypes: newCardTypes })
   }
 
   function toggleSideFilter(id: string) {
-    const newSides = toggleItemInArray(filterState.sides, id);
-    dispatchFilter({ type: FilterType.FILTER_SIDES, sides: newSides });
+    const newSides = toggleItemInArray(filterState.sides, id)
+    dispatchFilter({ type: FilterType.FILTER_SIDES, sides: newSides })
   }
 
   const findTraits = (stringTraits?: string[]) => {
@@ -259,7 +274,7 @@ export function CardFilter(props: {
             variant="outlined"
             size="small"
             label="Seach for card name, ability text..."
-            value={ searchTerm }
+            value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </Grid>
@@ -273,14 +288,18 @@ export function CardFilter(props: {
                       disableTouchRipple
                       onClick={() => toggleFactionFilter(faction.id)}
                       style={{
-                        backgroundColor: filterState.factions.includes(faction.id) ? faction.color : '',
+                        backgroundColor: filterState.factions.includes(faction.id)
+                          ? faction.color
+                          : '',
                       }}
                       className={classes.button}
                     >
                       <span
                         className={`icon icon-clan-${faction.id}`}
                         style={{
-                          color: filterState.factions.includes(faction.id) ? 'white' : faction.color,
+                          color: filterState.factions.includes(faction.id)
+                            ? 'white'
+                            : faction.color,
                         }}
                       />
                     </Button>
@@ -296,13 +315,15 @@ export function CardFilter(props: {
                       disableTouchRipple
                       onClick={() => toggleCardTypeFilter(type.id)}
                       style={{
-                        backgroundColor: filterState.cardTypes.includes(type.id) ? 'dimgrey' : 'white',
+                        backgroundColor: filterState.cardTypes.includes(type.id)
+                          ? 'dimgrey'
+                          : 'white',
                       }}
                       className={classes.button}
                     >
                       <CardTypeIcon
                         type={type.id}
-                        defaultColor={ filterState.cardTypes.includes(type.id) ? 'white' : 'black' }
+                        defaultColor={filterState.cardTypes.includes(type.id) ? 'white' : 'black'}
                       />
                     </Button>
                   </Tooltip>
@@ -346,7 +367,11 @@ export function CardFilter(props: {
                   <TextField {...params} size="small" label="Traits" variant="outlined" />
                 )}
                 onChange={(e, value) =>
-                  dispatchFilter({ type: FilterType.FILTER_TRAITS, traits: value.map((item) => item.id) })}
+                  dispatchFilter({
+                    type: FilterType.FILTER_TRAITS,
+                    traits: value.map((item) => item.id),
+                  })
+                }
               />
             </Grid>
             <Grid item xs={6}>
@@ -354,12 +379,13 @@ export function CardFilter(props: {
                 id="combo-box-restricted-in"
                 options={formats}
                 getOptionLabel={(option) => option?.name || ''}
-                value={formats.find(format => format.id === filterState.restricted)}
+                value={formats.find((format) => format.id === filterState.restricted)}
                 renderInput={(params) => (
                   <TextField {...params} size="small" label="Restricted In" variant="outlined" />
                 )}
                 onChange={(e, value) =>
-                  dispatchFilter({ type: FilterType.FILTER_RESTRICTED, format: value?.id || '' })}
+                  dispatchFilter({ type: FilterType.FILTER_RESTRICTED, format: value?.id || '' })
+                }
               />
             </Grid>
             <Grid item xs={6}>
@@ -367,17 +393,24 @@ export function CardFilter(props: {
                 id="combo-box-banned-in"
                 options={formats}
                 getOptionLabel={(option) => option?.name || ''}
-                value={formats.find(format => format.id === filterState.banned)}
+                value={formats.find((format) => format.id === filterState.banned)}
                 renderInput={(params) => (
                   <TextField {...params} size="small" label="Banned In" variant="outlined" />
                 )}
                 onChange={(e, value) =>
-                  dispatchFilter({ type: FilterType.FILTER_BANNED, format: value?.id || '' })}
+                  dispatchFilter({ type: FilterType.FILTER_BANNED, format: value?.id || '' })
+                }
               />
             </Grid>
             <Grid item xs={12}>
-              <Button fullWidth variant="contained" color="secondary" onClick={() => setPackModalOpen(true)}>
-                Filter Packs{ filterState.packs.length > 0 && ` (Selected: ${filterState.packs.length})`}
+              <Button
+                fullWidth
+                variant="contained"
+                color="secondary"
+                onClick={() => setPackModalOpen(true)}
+              >
+                Filter Packs
+                {filterState.packs.length > 0 && ` (Selected: ${filterState.packs.length})`}
               </Button>
             </Grid>
           </Grid>
@@ -387,7 +420,10 @@ export function CardFilter(props: {
             fullWidth
             variant="contained"
             className={`${classes.button} ${classes.clearButton}`}
-            onClick={() => dispatchFilter({ type: FilterType.FILTER_RESET })}>Reset filters</Button>
+            onClick={() => dispatchFilter({ type: FilterType.FILTER_RESET })}
+          >
+            Reset filters
+          </Button>
         </Grid>
       </Grid>
       <Dialog
@@ -397,16 +433,18 @@ export function CardFilter(props: {
       >
         <DialogTitle id="form-dialog-title">Filter Packs</DialogTitle>
         <DialogContent>
-          <CycleList
-            withCheckbox
-            rootLabel="All Packs"
-            onSelection={updateFilteredPacksAndCycles}
-            selectedPacks={filterState.packs}
-            selectedCycles={filterState.cycles}
-          />
+          <div className={classes.packFilter}>
+            <CycleList
+              withCheckbox
+              rootLabel="All Packs"
+              onSelection={updateFilteredPacksAndCycles}
+              selectedPacks={filterState.packs}
+              selectedCycles={filterState.cycles}
+            />
+          </div>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setPackModalOpen(false)} variant="contained">
+          <Button onClick={() => setPackModalOpen(false)} variant="contained" fullWidth>
             Close
           </Button>
         </DialogActions>

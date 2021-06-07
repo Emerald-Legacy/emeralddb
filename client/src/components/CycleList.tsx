@@ -1,9 +1,15 @@
-import { Checkbox, FormControlLabel } from '@material-ui/core'
+import {
+  Checkbox,
+  Collapse,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  makeStyles,
+} from '@material-ui/core'
 import { useUiStore } from '../providers/UiStoreProvider'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import ChevronRightIcon from '@material-ui/icons/ChevronRight'
-import TreeView from '@material-ui/lab/TreeView'
-import TreeItem from '@material-ui/lab/TreeItem'
+import ExpandLessIcon from '@material-ui/icons/ExpandLess'
 import { useState } from 'react'
 import { Cycle, Pack } from '@5rdb/api'
 
@@ -11,9 +17,19 @@ type CycleWithPacks = Cycle & {
   packs: Pack[]
 }
 
+const useStyles = makeStyles((theme) => ({
+  cycle: {
+    paddingLeft: theme.spacing(4),
+  },
+  pack: {
+    paddingLeft: theme.spacing(6),
+  },
+}))
+
 export function CycleList(props: {
   withCheckbox?: boolean
   onSelection?: (checkedPackIds: string[], checkedCycleIds: string[]) => void
+  onRootClick?: () => void
   onPackClick?: (packId: string) => void
   onCycleClick?: (cycleId: string) => void
   selectedPacks?: string[]
@@ -24,6 +40,8 @@ export function CycleList(props: {
   const [checkedCycleIds, setCheckedCycleIds] = useState<string[]>(props.selectedCycles || [])
   const [checkedPackIds, setCheckedPackIds] = useState<string[]>(props.selectedPacks || [])
   const [allChecked, setAllChecked] = useState(false)
+  const [expandedElements, setExpandedElements] = useState(['root'])
+  const classes = useStyles()
 
   if (
     !allChecked &&
@@ -113,7 +131,7 @@ export function CycleList(props: {
   }
 
   function somePackForCycleChecked(cycle: CycleWithPacks): boolean {
-    const checkedCyclePacks = cycle.packs.filter(pack => checkedPackIds.includes(pack.id))
+    const checkedCyclePacks = cycle.packs.filter((pack) => checkedPackIds.includes(pack.id))
     if (checkedCyclePacks.length > 0) {
       return true
     }
@@ -121,87 +139,118 @@ export function CycleList(props: {
   }
 
   function notAllPacksForCycleChecked(cycle: CycleWithPacks): boolean {
-    const checkedCyclePacks = cycle.packs.filter(pack => checkedPackIds.includes(pack.id))
+    const checkedCyclePacks = cycle.packs.filter((pack) => checkedPackIds.includes(pack.id))
     if (checkedCyclePacks.length > 0 && checkedCyclePacks.length !== cycle.packs.length) {
       return true
     }
     return false
   }
 
-  function createCycleLabel(cycle: CycleWithPacks): JSX.Element {
+  function createPackElement(pack: Pack): JSX.Element {
     return (
-      <FormControlLabel
-        control={
-          <Checkbox
-            checked={checkedCycleIds.some((item) => item === cycle.id) || somePackForCycleChecked(cycle)}
-            indeterminate={notAllPacksForCycleChecked(cycle)}
-            onChange={(event) => checkCycle(event.currentTarget.checked, cycle)}
-            onClick={(e) => e.stopPropagation()}
-          />
-        }
-        label={<>{cycle.name}</>}
-        key={cycle.id}
-      />
+      <ListItem className={classes.pack} key={pack.id}>
+        {props.withCheckbox && (
+          <ListItemIcon>
+            <Checkbox
+              checked={checkedPackIds.includes(pack.id)}
+              onChange={(event) => checkPack(event.currentTarget.checked, pack)}
+              onClick={(e) => e.stopPropagation()}
+            />
+          </ListItemIcon>
+        )}
+        <ListItemText
+          primary={pack.name}
+          onClick={(e) => {
+            if (props.onPackClick) {
+              props.onPackClick(pack.id)
+              e.stopPropagation()
+            }
+          }}
+        />
+      </ListItem>
     )
   }
 
-  function createPackLabel(pack: Pack): JSX.Element {
+  function toggleElementExpanded(element: string) {
+    const expanded = [...expandedElements]
+    if (expanded.includes(element)) {
+      const index = expanded.indexOf(element)
+      expanded.splice(index, 1)
+    } else {
+      expanded.push(element)
+    }
+    setExpandedElements(expanded)
+  }
+
+  function createCycleElement(cycle: CycleWithPacks): JSX.Element {
     return (
-      <FormControlLabel
-        control={
-          <Checkbox
-            checked={checkedPackIds.some((item) => item === pack.id)}
-            onChange={(event) => checkPack(event.currentTarget.checked, pack)}
-            onClick={(e) => e.stopPropagation()}
+      <div key={cycle.id}>
+        <ListItem button onClick={() => toggleElementExpanded(cycle.id)} className={classes.cycle}>
+          {props.withCheckbox && (
+            <ListItemIcon>
+              <Checkbox
+                checked={
+                  checkedCycleIds.some((item) => item === cycle.id) ||
+                  somePackForCycleChecked(cycle)
+                }
+                indeterminate={notAllPacksForCycleChecked(cycle)}
+                onChange={(event) => checkCycle(event.currentTarget.checked, cycle)}
+                onClick={(e) => e.stopPropagation()}
+              />
+            </ListItemIcon>
+          )}
+          <ListItemText
+            primary={cycle.name}
+            onClick={(e) => {
+              if (props.onCycleClick) {
+                props.onCycleClick(cycle.id)
+                e.stopPropagation()
+              }
+            }}
           />
-        }
-        label={<>{pack.name}</>}
-        key={pack.id}
-      />
+          {expandedElements.includes(cycle.id) ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+        </ListItem>
+        <Collapse in={expandedElements.includes(cycle.id)} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding dense>
+            {cycle.packs.map((pack) => createPackElement(pack))}
+          </List>
+        </Collapse>
+      </div>
     )
   }
 
-  function createRootLabel(): JSX.Element {
+  function createRootElement(): JSX.Element {
     return (
-      <FormControlLabel
-        control={
-          <Checkbox
-            checked={allChecked}
-            onChange={(event) => checkAll(event.currentTarget.checked)}
-            onClick={(e) => e.stopPropagation()}
+      <List dense>
+        <ListItem button onClick={() => toggleElementExpanded('root')}>
+          {props.withCheckbox && (
+            <ListItemIcon>
+              <Checkbox
+                checked={allChecked}
+                onChange={(event) => checkAll(event.currentTarget.checked)}
+                onClick={(e) => e.stopPropagation()}
+              />
+            </ListItemIcon>
+          )}
+          <ListItemText
+            primary={props.rootLabel}
+            onClick={(e) => {
+              if (props.onRootClick) {
+                props.onRootClick()
+                e.stopPropagation()
+              }
+            }}
           />
-        }
-        label={<>{props.rootLabel}</>}
-        key="root"
-      />
+          {expandedElements.includes('root') ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+        </ListItem>
+        <Collapse in={expandedElements.includes('root')} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding dense>
+            {cyclesWithPacks.map((cycle) => createCycleElement(cycle))}
+          </List>
+        </Collapse>
+      </List>
     )
   }
 
-  return (
-    <div>
-      <TreeView
-        defaultCollapseIcon={<ExpandMoreIcon />}
-        defaultExpandIcon={<ChevronRightIcon />}
-        defaultExpanded={['root']}
-      >
-        <TreeItem nodeId="root" label={props.withCheckbox ? createRootLabel() : props.rootLabel}>
-          {cyclesWithPacks.map((cycle) => (
-            <TreeItem
-              key={cycle.id}
-              nodeId={cycle.id + '_cycle'}
-              label={props.withCheckbox ? createCycleLabel(cycle) : cycle.name}
-            >
-              {cycle.packs.map((pack) => (
-                <TreeItem
-                  key={pack.id}
-                  nodeId={pack.id + '_pack'}
-                  label={props.withCheckbox ? createPackLabel(pack) : pack.name}
-                />
-              ))}
-            </TreeItem>
-          ))}
-        </TreeItem>
-      </TreeView>
-    </div>
-  )
+  return createRootElement()
 }

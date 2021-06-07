@@ -44,14 +44,15 @@ interface TableCard {
 function createFilterFromUrlSearchParams(params: URLSearchParams, allPacks: Pack[]): FilterState {
   const cycle = params.get('cycle')
   const pack = params.get('pack')
-  const packs = cycle 
-    ? allPacks.filter(p => p.cycle_id === cycle).map(p => p.id)
-    : pack 
-      ? [pack]
-      : []
+  const query = params.get('query') || ''
+  const packs = cycle
+    ? allPacks.filter((p) => p.cycle_id === cycle).map((p) => p.id)
+    : pack
+    ? [pack]
+    : []
 
   return {
-    text: '',
+    text: decodeURIComponent(query),
     factions: [],
     cardTypes: [],
     sides: [],
@@ -59,7 +60,7 @@ function createFilterFromUrlSearchParams(params: URLSearchParams, allPacks: Pack
     packs: packs,
     cycles: cycle ? [cycle] : [],
     restricted: '',
-    banned: ''
+    banned: '',
   }
 }
 
@@ -70,18 +71,21 @@ export function CardsView(): JSX.Element {
   const location = useLocation()
   const [filter, setFilter] = useState<FilterState | undefined>(undefined)
   const [modalCard, setModalCard] = useState<CardWithVersions | undefined>(undefined)
+  const [urlParams, setUrlParams] = useState<string>('')
   const [cardModalOpen, setCardModalOpen] = useState(false)
   const isMdOrBigger = useMediaQuery('(min-width:600px)')
-  
+
   if (packs.length === 0) {
     return <Loading />
   }
   let filteredCards = cards
-  
-  const urlSearchParams = new URLSearchParams(location.search)
-  if (filter === undefined) {
+
+  if (location.search !== urlParams) {
+    const urlSearchParams = new URLSearchParams(location.search)
     setFilter(createFilterFromUrlSearchParams(urlSearchParams, packs))
+    setUrlParams(location.search)
   }
+  console.log(filter)
   if (filter) {
     filteredCards = applyFilters(cards, filter)
   }
@@ -144,7 +148,7 @@ export function CardsView(): JSX.Element {
 
   return (
     <>
-      <CardFilter onFilterChanged={setFilter} fullWidth initialFilterState={filter} />
+      <CardFilter onFilterChanged={setFilter} fullWidth filterState={filter} />
       <Paper className={classes.table}>
         <DataGrid
           disableColumnResize

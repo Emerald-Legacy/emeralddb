@@ -7,7 +7,6 @@ import {
   DialogContent,
   DialogTitle,
   IconButton,
-  makeStyles,
   Menu,
   MenuItem,
   TextField,
@@ -65,7 +64,7 @@ export function UserMenu(props: { audience: string; scope: string }): JSX.Elemen
       )
     }
     return (
-      <div>
+      <div style={{ float: 'right' }}>
         <IconButton
           aria-controls="menu-appbar"
           aria-haspopup="true"
