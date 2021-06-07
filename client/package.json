@@ -33,6 +33,7 @@
     "react": "^17.0.1",
     "react-bootstrap": "^1.0.0-beta.16",
     "react-dom": "^17.0.1",
+    "react-markdown": "^6.0.2",
     "react-minimal-pie-chart": "^6.0.1",
     "react-query": "^3.13.8",
     "react-router-dom": "^5.1.2",
