@@ -9,4 +9,7 @@ export {
   Users$update,
   Packs$findAll,
   Cycles$findAll,
+  Ruling$create,
+  Ruling$delete,
+  Ruling$update,
 } from './private/apiEndpoints'

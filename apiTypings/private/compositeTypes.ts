@@ -5,5 +5,5 @@ export type CardWithVersions = Card & {
 }
 
 export type CardWithDetails = CardWithVersions & {
-  rulings: Omit<Ruling, 'card_id'>[]
+  rulings: Ruling[]
 }

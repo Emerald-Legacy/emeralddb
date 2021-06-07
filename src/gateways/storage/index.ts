@@ -6,6 +6,7 @@ export {
   getAllRulingsForCard,
   insertOrUpdateRulingWithExistingId,
   insertNewRuling,
+  deleteRuling,
 } from './private/ruling'
 export { getCycle, getAllCycles, insertOrUpdateCycle } from './private/cycle'
 export { getPack, getAllPacks, insertOrUpdatePack } from './private/pack'

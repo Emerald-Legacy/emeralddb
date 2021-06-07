@@ -58,8 +58,13 @@ export const privateApi = forge({
       update: { method: 'PUT', path: '/users/me' },
     },
     Card: {
-      update: { method: 'POST', path: 'cards/{cardId}/update' },
-      create: { method: 'PUT', path: 'cards/create/new' },
+      update: { method: 'POST', path: '/cards/{cardId}' },
+      create: { method: 'PUT', path: '/cards' },
     },
+    Ruling: {
+      create: { method: 'PUT', path: '/rulings'},
+      update: { method: 'POST', path: '/rulings/{rulingId}'},
+      delete: { method: 'DELETE', path: '/rulings/{rulingId}'},
+    }
   },
 })

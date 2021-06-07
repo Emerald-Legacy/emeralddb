@@ -1,4 +1,4 @@
-import { Card, Cycle, Pack, User } from './baseTypes'
+import { Card, Cycle, Pack, Ruling, User } from './baseTypes'
 import { CardWithVersions, CardWithDetails } from './compositeTypes'
 
 export interface Cards$findAll {
@@ -34,4 +34,18 @@ export interface Users$me {
 export interface Users$update {
   request: { body: { id: string; name: string } }
   response: User
+}
+
+export interface Ruling$create {
+  request: { body: Omit<Ruling, 'id'> }
+  response: Ruling
+}
+
+export interface Ruling$update {
+  request: { body: Ruling }
+  response: Ruling
+}
+
+export interface Ruling$delete {
+  response: Ruling
 }
