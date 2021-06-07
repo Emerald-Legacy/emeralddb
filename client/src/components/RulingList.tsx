@@ -153,14 +153,16 @@ export function RulingList(props: { cardId: string, rulings: Ruling[] }): JSX.El
           )}
         </Grid>
       ))}
-      <Button 
-        variant='contained' 
-        className={classes.createButton}
-        color='secondary'
-        onClick={() => createRuling()}
-      >
-        Create New Ruling
-      </Button>
+      {isRulesAdmin() && (
+        <Button 
+          variant='contained' 
+          className={classes.createButton}
+          color='secondary'
+          onClick={() => createRuling()}
+        >
+          Create New Ruling
+        </Button>
+      )}
       <Dialog open={rulingModalOpen} onClose={() => setRulingModalOpen(false)}>
           <DialogTitle>{rulingId === -1 ? 'Create New Ruling' : 'Edit Ruling'}</DialogTitle>
           <DialogContent>
