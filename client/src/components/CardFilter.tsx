@@ -175,6 +175,8 @@ function filterNumericCardValues(card: CardWithVersions, filters: NumericValueFi
           return checkMultipleValues([card.strength, card.strength_bonus], filter.typeAndValue)
       }
     }
+    // Needed for eslint /shrug
+    return true
   })
 }
 
