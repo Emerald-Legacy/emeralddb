@@ -33,24 +33,28 @@ export function CardDetailView(): JSX.Element {
     setChosenVersion(card.versions[0])
   }
 
+  const imageWidth = card.type === 'treaty' ? 450 : 300
+
   return (
     <Grid container spacing={5}>
       <Grid item xs={12} md={7}>
+        <CardInformation cardWithVersions={card} currentVersionPackId={chosenVersion?.pack_id} />
+        <RulingList cardId={card.id} rulings={card.rulings} />
+      </Grid>
+      <Grid item xs={12} md={5}>
         {isDataAdmin() && (
           <Button
             variant="contained"
             color="secondary"
+            fullWidth
             onClick={() => history.push(`/card/${card.id}/edit`)}
+            style={{marginBottom: 10, maxWidth: imageWidth}}
           >
             Edit this Card
           </Button>
         )}
-        <CardInformation cardWithVersions={card} currentVersionPackId={chosenVersion?.pack_id} />
-        <RulingList rulings={card.rulings} />
-      </Grid>
-      <Grid item xs={12} md={5}>
         {chosenVersion && (
-          <img src={chosenVersion.image_url} width={card.type === 'treaty' ? '450px' : '300px'} />
+          <div><img src={chosenVersion.image_url} style={{maxWidth: imageWidth}}/></div>
         )}
       </Grid>
     </Grid>
