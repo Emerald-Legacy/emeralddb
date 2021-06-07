@@ -84,11 +84,7 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
       <Toolbar variant="dense">
         <Grid container>
           <Grid item xs={11} sm={11} md={2} lg={3} xl={2}>
-            <Typography
-              variant="h6"
-              style={{ cursor: 'pointer' }}
-              onClick={() => goTo('/cards')}
-            >
+            <Typography variant="h6" style={{ cursor: 'pointer' }} onClick={() => goTo('/cards')}>
               <span>{prefix}</span>
               <img src="/static/logo.png" className={classes.logo} />
             </Typography>
@@ -111,9 +107,7 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
               >
                 <Grid item>
                   <ListItem button onClick={handleCardMenuClick} dense={isMdOrSmaller}>
-                    <ListItemText
-                      primary="Cards"
-                    />
+                    <ListItemText primary="Cards" />
                     {anchorEl ? <ExpandLessIcon /> : <ExpandMoreIcon />}
                   </ListItem>
                   <Menu

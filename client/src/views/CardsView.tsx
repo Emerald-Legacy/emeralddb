@@ -39,6 +39,10 @@ interface TableCard {
   traits: string
   deck: string
   cost: string
+  military: string
+  political: string
+  glory: string
+  strength: string
 }
 
 function createFilterFromUrlSearchParams(params: URLSearchParams, allPacks: Pack[]): FilterState {
@@ -59,6 +63,7 @@ function createFilterFromUrlSearchParams(params: URLSearchParams, allPacks: Pack
     traits: [],
     packs: packs,
     cycles: cycle ? [cycle] : [],
+    numericValues: [],
     restricted: '',
     banned: '',
   }
@@ -81,13 +86,13 @@ export function CardsView(): JSX.Element {
   let filteredCards = cards
 
   const urlSearchParams = new URLSearchParams(location.search)
-  let urlParamFilter = undefined
+  let urlParamFilter
   if (location.search !== urlParams) {
     urlParamFilter = createFilterFromUrlSearchParams(urlSearchParams, packs)
     setFilter(urlParamFilter)
     setUrlParams(location.search)
     // Only 1 result => Go to card page
-    let urlFilteredCards = applyFilters(cards, urlParamFilter)
+    const urlFilteredCards = applyFilters(cards, urlParamFilter)
     if (urlFilteredCards.length === 1) {
       history.push(`/card/${urlFilteredCards[0].id}`)
     }
@@ -97,6 +102,23 @@ export function CardsView(): JSX.Element {
   }
 
   const tableCards: TableCard[] = filteredCards.map((card) => {
+    const mil =
+      card.military !== null && card.military !== undefined
+        ? card.military
+        : card.military_bonus !== null && card.military_bonus !== undefined
+        ? card.military_bonus
+        : card.type === 'character' || card.type === 'attachment'
+        ? '-'
+        : ''
+    const pol =
+      card.political !== null && card.political !== undefined
+        ? card.political
+        : card.political_bonus !== null && card.political_bonus !== undefined
+        ? card.political_bonus
+        : card.type === 'character' || card.type === 'attachment'
+        ? '-'
+        : ''
+
     return {
       id: card.id,
       name: { name: card.name, faction: card.faction, type: card.type },
@@ -105,6 +127,10 @@ export function CardsView(): JSX.Element {
       traits: convertTraitList(card.traits || [], traits),
       deck: capitalize(card.side),
       cost: card.cost || '',
+      military: mil,
+      political: pol,
+      glory: card.glory !== null ? '' + card.glory : '',
+      strength: card.strength || card.strength_bonus || '',
     }
   })
 
@@ -116,7 +142,7 @@ export function CardsView(): JSX.Element {
     {
       field: 'name',
       headerName: 'Name',
-      flex: 3,
+      flex: isMdOrBigger ? 5 : 10,
       disableColumnMenu: true,
       renderCell: (params) => {
         const nameProps = params.value as NameProps
@@ -133,7 +159,7 @@ export function CardsView(): JSX.Element {
       field: 'traits',
       headerName: 'Traits',
       disableColumnMenu: true,
-      flex: 2,
+      flex: isMdOrBigger ? 3 : 5,
       renderCell: (params) => (
         <em>
           <b>{params.value}</b>
@@ -145,13 +171,23 @@ export function CardsView(): JSX.Element {
       field: 'faction',
       headerName: 'Faction',
       disableColumnMenu: true,
-      flex: 1,
+      flex: 2,
       hide: !isMdOrBigger,
     },
     { field: 'deck', headerName: 'Deck', disableColumnMenu: true, flex: 1, hide: !isMdOrBigger },
     { field: 'cost', headerName: 'Cost', disableColumnMenu: true, flex: 1, hide: !isMdOrBigger },
+    { field: 'military', headerName: 'Mil', disableColumnMenu: true, flex: 1, hide: !isMdOrBigger },
+    {
+      field: 'political',
+      headerName: 'Pol',
+      disableColumnMenu: true,
+      flex: 1,
+      hide: !isMdOrBigger,
+    },
+    { field: 'glory', headerName: 'Glory', disableColumnMenu: true, flex: 1, hide: !isMdOrBigger },
+    { field: 'strength', headerName: 'Str', disableColumnMenu: true, flex: 1, hide: !isMdOrBigger },
   ]
-  
+
   return (
     <>
       <CardFilter onFilterChanged={setFilter} fullWidth filterState={urlParamFilter || filter} />
