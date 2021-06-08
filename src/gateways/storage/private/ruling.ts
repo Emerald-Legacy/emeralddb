@@ -23,7 +23,7 @@ export async function insertOrUpdateRulingWithExistingId(ruling: Ruling): Promis
 }
 
 export async function insertNewRuling(ruling: Omit<Ruling, 'id'>): Promise<Ruling> {
-  // Ugly, but Auto increment doesn't seem to work
+  // TODO: Ugly, but Auto increment doesn't seem to work
   const firstNewId = (await pg.raw(`SELECT MAX(id) FROM ${TABLE}`)).rows[0].max + 1
   return pg(TABLE)
     .insert({ ...ruling, id: firstNewId }, '*')

@@ -1,5 +1,5 @@
 import { Ruling } from '@5rdb/api'
-import { Grid, Box, Button, makeStyles, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@material-ui/core'
+import { Grid, Typography, Box, Button, makeStyles, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@material-ui/core'
 import { useConfirm } from 'material-ui-confirm'
 import { useState } from 'react'
 import ReactMarkdown from 'react-markdown'
@@ -176,6 +176,7 @@ export function RulingList(props: { cardId: string, rulings: Ruling[] }): JSX.El
               className={classes.input}
             />
             <Box padding={2} border='1px solid lightgray' className={classes.input}>
+              <Typography>Preview:</Typography>
               <ReactMarkdown>
                 {rulingText}
               </ReactMarkdown>
