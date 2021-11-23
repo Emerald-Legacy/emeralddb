@@ -1,0 +1,44 @@
+[
+    {
+        "allowed_clans": [
+            "crab",
+            "crane",
+            "dragon",
+            "lion",
+            "phoenix",
+            "scorpion",
+            "unicorn"
+        ],
+        "clan": "crane",
+        "cost": "2",
+        "deck_limit": 3,
+        "element": [],
+        "fate": null,
+        "glory": 1,
+        "honor": null,
+        "id": "talented-performer",
+        "influence_cost": 3,
+        "influence_pool": null,
+        "is_banned": false,
+        "is_banned_in_jade": false,
+        "is_banned_in_skirmish": false,
+        "is_restricted": false,
+        "is_restricted_in_jade": false,
+        "military": "0",
+        "military_bonus": null,
+        "name": "Talented Performer",
+        "name_extra": null,
+        "political": "2",
+        "political_bonus": null,
+        "role_restriction": null,
+        "side": "conflict",
+        "strength": null,
+        "strength_bonus": null,
+        "text": "This character must be chosen as the target of each event, if able.",
+        "traits": [
+            "courtier"
+        ],
+        "type": "character",
+        "unicity": false
+    }
+]

@@ -1,0 +1,114 @@
+[
+  {
+      "card_id": "closed-shell-castle",
+      "flavor": "",
+      "illustrator": "Gong Studios",
+      "image_url": "https://gamepedia.cursecdn.com/l5r_gamepedia_en/thumb/4/41/Closed_Shell_Castle.png/422px-Closed_Shell_Castle.png?version=31e54e28df759ec31877666b4ea5a21e",
+      "position": "1",
+      "quantity": 1
+  },
+  {
+      "card_id": "overlooked-virtues",
+      "flavor": "",
+      "illustrator": "Jason Engle",
+      "image_url": "https://gamepedia.cursecdn.com/l5r_gamepedia_en/thumb/8/84/Overlooked_Virtues.png/421px-Overlooked_Virtues.png?version=d47a8d69915cb7d19ae9af2af15bed3c",
+      "position": "2",
+      "quantity": 1
+  },
+  {
+      "card_id": "enticing-wares",
+      "flavor": "",
+      "illustrator": "J. R. Baker",
+      "image_url": "https://gamepedia.cursecdn.com/l5r_gamepedia_en/thumb/c/cc/Enticing_Wares.png/422px-Enticing_Wares.png?version=f83c2d58b7e168f12fbdffb38a91ce8e",
+      "position": "3",
+      "quantity": 1
+  },
+  {
+      "card_id": "noteworthy-deeds",
+      "flavor": "",
+      "illustrator": "Sergio Camarena",
+      "image_url": "https://gamepedia.cursecdn.com/l5r_gamepedia_en/thumb/e/e1/Noteworthy_Deeds.png/422px-Noteworthy_Deeds.png?version=2535f66e8f6731802ed728dd681caead",
+      "position": "4",
+      "quantity": 1
+  },
+  {
+      "card_id": "fruitful-crossroads",
+      "flavor": "",
+      "illustrator": "Gong Studios",
+      "image_url": "https://gamepedia.cursecdn.com/l5r_gamepedia_en/thumb/9/9a/Fruitful_Crossroads.png/422px-Fruitful_Crossroads.png?version=e64175c2d312e20da4e4e6757d55b635",
+      "position": "5",
+      "quantity": 1
+  },
+  {
+      "card_id": "empty-pockets",
+      "flavor": "",
+      "illustrator": "Guillaume Ducos",
+      "image_url": "https://gamepedia.cursecdn.com/l5r_gamepedia_en/thumb/d/db/Empty_Pockets.png/422px-Empty_Pockets.png?version=236601aea1f28f971009621c5a630ca3",
+      "position": "6",
+      "quantity": 1
+  },
+  {
+      "card_id": "allied-with-the-crab",
+      "flavor": "",
+      "illustrator": "",
+      "image_url": "https://gamepedia.cursecdn.com/l5r_gamepedia_en/thumb/f/f8/Allied_with_the_Crab.png/422px-Allied_with_the_Crab.png?version=42f7e88031b5d024a2c1af087792c36d",
+      "position": "7",
+      "quantity": 1
+  },
+  {
+      "card_id": "allied-with-the-crane",
+      "flavor": "",
+      "illustrator": "",
+      "image_url": "https://gamepedia.cursecdn.com/l5r_gamepedia_en/thumb/6/6b/Allied_with_the_Crane.png/422px-Allied_with_the_Crane.png?version=7c3f643a1ceec5009512a4b8fcadf5f5",
+      "position": "8",
+      "quantity": 1
+  },
+  {
+      "card_id": "allied-with-the-dragon",
+      "flavor": "",
+      "illustrator": "",
+      "image_url": "https://gamepedia.cursecdn.com/l5r_gamepedia_en/thumb/c/cb/Allied_with_the_Dragon.png/422px-Allied_with_the_Dragon.png?version=bc7dcffa38fa9ec23ff91300d2bba137",
+      "position": "9",
+      "quantity": 1
+  },
+  {
+      "card_id": "allied-with-the-lion",
+      "flavor": "",
+      "illustrator": "",
+      "image_url": "https://gamepedia.cursecdn.com/l5r_gamepedia_en/thumb/9/96/Allied_with_the_Lion.png/422px-Allied_with_the_Lion.png?version=786dcfaf391cee6bf77c06b162cd5826",
+      "position": "10",
+      "quantity": 1
+  },
+  {
+      "card_id": "allied-with-the-phoenix",
+      "flavor": "",
+      "illustrator": "",
+      "image_url": "https://gamepedia.cursecdn.com/l5r_gamepedia_en/thumb/0/05/Allied_with_the_Phoenix.png/422px-Allied_with_the_Phoenix.png?version=50f8d6a9c6750569c528f9b34472a6ef",
+      "position": "11",
+      "quantity": 1
+  },
+  {
+      "card_id": "allied-with-the-scorpion",
+      "flavor": "",
+      "illustrator": "",
+      "image_url": "https://gamepedia.cursecdn.com/l5r_gamepedia_en/thumb/2/27/Allied_with_the_Scorpion.png/422px-Allied_with_the_Scorpion.png?version=de5ea06eee38479662396a01a42a8a21",
+      "position": "12",
+      "quantity": 1
+  },
+  {
+      "card_id": "allied-with-the-unicorn",
+      "flavor": "",
+      "illustrator": "",
+      "image_url": "https://gamepedia.cursecdn.com/l5r_gamepedia_en/thumb/f/fe/Allied_with_the_Unicorn.png/422px-Allied_with_the_Unicorn.png?version=7f3dcea01b03f7a033504b14e5727960",
+      "position": "13",
+      "quantity": 1
+  },
+  {
+      "card_id": "allies-of-convenience",
+      "flavor": "",
+      "illustrator": "",
+      "image_url": "https://gamepedia.cursecdn.com/l5r_gamepedia_en/5/55/Allies_of_Convenience.png?version=6b5256c9b9bb99f081c4af7516514be6",
+      "position": "14",
+      "quantity": 1
+  }
+]

@@ -1,0 +1,39 @@
+[
+    {
+        "allowed_clans": [
+        ],
+        "clan": "shadowlands",
+        "cost": "4",
+        "deck_limit": 3,
+        "element": [],
+        "fate": null,
+        "glory": 1,
+        "honor": null,
+        "id": "detritus-priest",
+        "influence_cost": null,
+        "influence_pool": null,
+        "is_banned": false,
+        "is_banned_in_jade": false,
+        "is_banned_in_skirmish": false,
+        "is_restricted": false,
+        "is_restricted_in_jade": false,
+        "military": "4",
+        "military_bonus": null,
+        "name": "Detritus Priest",
+        "name_extra": null,
+        "political": "7",
+        "political_bonus": null,
+        "role_restriction": null,
+        "side": "dynasty",
+        "strength": null,
+        "strength_bonus": null,
+        "text": "<b>Reaction:</b> After a <em>Goblin</em> you control wins a conflict, remove 1 fate from it - resolve the contested ring's effect. (Limit twice per round.)",
+        "traits": [
+            "shugenja",
+            "fire",
+            "goblin"
+        ],
+        "type": "character",
+        "unicity": true
+    }
+]

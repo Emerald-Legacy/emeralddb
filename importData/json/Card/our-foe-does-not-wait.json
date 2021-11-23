@@ -1,0 +1,42 @@
+[
+    {
+        "allowed_clans": [
+            "crab",
+            "crane",
+            "dragon",
+            "lion",
+            "phoenix",
+            "scorpion",
+            "unicorn"
+        ],
+        "clan": "crab",
+        "cost": "0",
+        "deck_limit": 3,
+        "element": [],
+        "fate": null,
+        "glory": null,
+        "honor": null,
+        "id": "our-foe-does-not-wait",
+        "influence_cost": 1,
+        "influence_pool": null,
+        "is_banned": false,
+        "is_banned_in_jade": false,
+        "is_banned_in_skirmish": false,
+        "is_restricted": false,
+        "is_restricted_in_jade": false,
+        "military": null,
+        "military_bonus": null,
+        "name": "Our Foe Does Not Wait",
+        "name_extra": null,
+        "political": null,
+        "political_bonus": null,
+        "role_restriction": "earth",
+        "side": "conflict",
+        "strength": null,
+        "strength_bonus": null,
+        "text": "<em>Earth</em> role only.\n<b>Reaction:</b> After you pass on declaring a conflict, choose an unbroken non-stronghold province you control - search the top 8 cards of your dynasty deck for a card and put it into that province faceup. Shuffle. (Max 1 per conflict opportunity.)",
+        "traits": [],
+        "type": "event",
+        "unicity": false
+    }
+]

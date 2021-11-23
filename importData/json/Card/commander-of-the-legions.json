@@ -1,0 +1,39 @@
+[
+    {
+        "allowed_clans": [
+            "lion"
+        ],
+        "clan": "lion",
+        "cost": "4",
+        "deck_limit": 3,
+        "element": [],
+        "fate": null,
+        "glory": 2,
+        "honor": null,
+        "id": "commander-of-the-legions",
+        "influence_cost": null,
+        "influence_pool": null,
+        "is_banned": false,
+        "is_banned_in_jade": false,
+        "is_banned_in_skirmish": false,
+        "is_restricted": false,
+        "is_restricted_in_jade": false,
+        "military": "4",
+        "military_bonus": null,
+        "name": "Commander of the Legions",
+        "name_extra": null,
+        "political": "2",
+        "political_bonus": null,
+        "role_restriction": null,
+        "side": "dynasty",
+        "strength": null,
+        "strength_bonus": null,
+        "text": "Each other [clan-lion] character you control gets +1[conflict-military].\nDuring the fate phase, if you have at least 5 more honor than an opponent, fate cannot be removed from [clan-lion] characters you control with printed cost 3 or lower.",
+        "traits": [
+            "bushi",
+            "commander"
+        ],
+        "type": "character",
+        "unicity": false
+    }
+]

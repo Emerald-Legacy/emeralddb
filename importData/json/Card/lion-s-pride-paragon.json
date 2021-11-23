@@ -1,0 +1,38 @@
+[
+    {
+        "allowed_clans": [
+            "lion"
+        ],
+        "clan": "lion",
+        "cost": "3",
+        "deck_limit": 3,
+        "element": [],
+        "fate": null,
+        "glory": 3,
+        "honor": null,
+        "id": "lion-s-pride-paragon",
+        "influence_cost": null,
+        "influence_pool": null,
+        "is_banned": false,
+        "is_banned_in_jade": false,
+        "is_banned_in_skirmish": false,
+        "is_restricted": false,
+        "is_restricted_in_jade": false,
+        "military": "3",
+        "military_bonus": null,
+        "name": "Lion's Pride Paragon",
+        "name_extra": null,
+        "political": "1",
+        "political_bonus": null,
+        "role_restriction": null,
+        "side": "dynasty",
+        "strength": null,
+        "strength_bonus": null,
+        "text": "Dire - This character does not bow as the result of conflict resolution. <i>(This character is dire when it has no fate on it.)</i>",
+        "traits": [
+            "bushi"
+        ],
+        "type": "character",
+        "unicity": false
+    }
+]

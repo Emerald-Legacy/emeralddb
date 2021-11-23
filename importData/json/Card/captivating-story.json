@@ -1,0 +1,42 @@
+[
+    {
+        "allowed_clans": [
+            "crab",
+            "crane",
+            "dragon",
+            "lion",
+            "phoenix",
+            "scorpion",
+            "unicorn"
+        ],
+        "clan": "crane",
+        "cost": "0",
+        "deck_limit": 3,
+        "element": [],
+        "fate": null,
+        "glory": null,
+        "honor": null,
+        "id": "captivating-story",
+        "influence_cost": 1,
+        "influence_pool": null,
+        "is_banned": false,
+        "is_banned_in_jade": false,
+        "is_banned_in_skirmish": false,
+        "is_restricted": false,
+        "is_restricted_in_jade": false,
+        "military": null,
+        "military_bonus": null,
+        "name": "Captivating Story",
+        "name_extra": null,
+        "political": null,
+        "political_bonus": null,
+        "role_restriction": "water",
+        "side": "conflict",
+        "strength": null,
+        "strength_bonus": null,
+        "text": "<em>Water</em> role only.\n<b>Action:</b> During a conflict, choose a character that is participating alone on your side - that character gets +1[conflict-political] until the end of the conflict for each faceup province you control. You may remove 1 fate from that character. If you do, honor it.",
+        "traits": [],
+        "type": "event",
+        "unicity": false
+    }
+]

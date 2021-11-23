@@ -1,0 +1,38 @@
+[
+    {
+        "allowed_clans": [
+            "crab"
+        ],
+        "clan": "crab",
+        "cost": "2",
+        "deck_limit": 3,
+        "element": [],
+        "fate": null,
+        "glory": 1,
+        "honor": null,
+        "id": "yasuki-oguri-2",
+        "influence_cost": null,
+        "influence_pool": null,
+        "is_banned": false,
+        "is_banned_in_jade": false,
+        "is_banned_in_skirmish": false,
+        "is_restricted": false,
+        "is_restricted_in_jade": false,
+        "military": "1",
+        "military_bonus": null,
+        "name": "Yasuki Oguri",
+        "name_extra": "(2)",
+        "political": "1",
+        "political_bonus": null,
+        "role_restriction": null,
+        "side": "dynasty",
+        "strength": null,
+        "strength_bonus": null,
+        "text": "Covert.\n<b>Action:</b> During a conflict in which this character is defending, spend 1 fate. Choose a character with 1 or more fate on it - move that character to the conflict.",
+        "traits": [
+            "courtier"
+        ],
+        "type": "character",
+        "unicity": true
+    }
+]

@@ -1,0 +1,45 @@
+[
+    {
+        "allowed_clans": [
+            "crab",
+            "crane",
+            "dragon",
+            "lion",
+            "phoenix",
+            "scorpion",
+            "unicorn"
+        ],
+        "clan": "unicorn",
+        "cost": "2",
+        "deck_limit": 3,
+        "element": [],
+        "fate": null,
+        "glory": 1,
+        "honor": null,
+        "id": "countryside-trader",
+        "influence_cost": 2,
+        "influence_pool": null,
+        "is_banned": false,
+        "is_banned_in_jade": false,
+        "is_banned_in_skirmish": false,
+        "is_restricted": false,
+        "is_restricted_in_jade": false,
+        "military": "1",
+        "military_bonus": null,
+        "name": "Countryside Trader",
+        "name_extra": null,
+        "political": "2",
+        "political_bonus": null,
+        "role_restriction": null,
+        "side": "conflict",
+        "strength": null,
+        "strength_bonus": null,
+        "text": "<b>Action:</b> During a conflict in which this character is attacking, spend 1 fate and choose a triggered ability printed on the attacked province - resolve that ability as if you controlled the province, ignoring all triggering conditions.",
+        "traits": [
+            "courtier",
+            "merchant"
+        ],
+        "type": "character",
+        "unicity": false
+    }
+]

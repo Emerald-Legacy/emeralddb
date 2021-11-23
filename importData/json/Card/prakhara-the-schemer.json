@@ -1,0 +1,37 @@
+[
+    {
+        "allowed_clans": [
+        ],
+        "clan": "shadowlands",
+        "cost": "4",
+        "deck_limit": 3,
+        "element": [],
+        "fate": null,
+        "glory": 0,
+        "honor": null,
+        "id": "prakhara-the-schemer",
+        "influence_cost": null,
+        "influence_pool": null,
+        "is_banned": false,
+        "is_banned_in_jade": false,
+        "is_banned_in_skirmish": false,
+        "is_restricted": false,
+        "is_restricted_in_jade": false,
+        "military": "2",
+        "military_bonus": null,
+        "name": "Prakhara the Schemer",
+        "name_extra": null,
+        "political": "7",
+        "political_bonus": null,
+        "role_restriction": null,
+        "side": "dynasty",
+        "strength": null,
+        "strength_bonus": null,
+        "text": "Corrupted. No non-[clan-shadowlands] attachments.\n<b>Interrupt:</b> When the effects of an opponent's event would initiate, spend 1 fate - cancel those effects. (Limit twice per round.)",
+        "traits": [
+            "rakshasa"
+        ],
+        "type": "character",
+        "unicity": true
+    }
+]

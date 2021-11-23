@@ -1,0 +1,37 @@
+[
+    {
+        "allowed_clans": [
+        ],
+        "clan": "shadowlands",
+        "cost": "4",
+        "deck_limit": 3,
+        "element": [],
+        "fate": null,
+        "glory": 0,
+        "honor": null,
+        "id": "undead-horror",
+        "influence_cost": null,
+        "influence_pool": null,
+        "is_banned": false,
+        "is_banned_in_jade": false,
+        "is_banned_in_skirmish": false,
+        "is_restricted": false,
+        "is_restricted_in_jade": false,
+        "military": "2",
+        "military_bonus": null,
+        "name": "Undead Horror",
+        "name_extra": null,
+        "political": "2",
+        "political_bonus": null,
+        "role_restriction": null,
+        "side": "dynasty",
+        "strength": null,
+        "strength_bonus": null,
+        "text": "Corrupted. <i>(This character enters play tainted.)</i>\n<b>Reaction:</b> After this character wins a conflict - attach a random character in each opponent's discard pile to this character as an attachment, treating its printed text box as if it were blank. That card gains the text: \"Add this card's printed [conflict-military] and [conflict-political] skill values to those of attached character.\"",
+        "traits": [
+            "undead"
+        ],
+        "type": "character",
+        "unicity": false
+    }
+]

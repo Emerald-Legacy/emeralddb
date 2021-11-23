@@ -1,0 +1,45 @@
+[
+    {
+        "allowed_clans": [
+            "crab",
+            "crane",
+            "dragon",
+            "lion",
+            "phoenix",
+            "scorpion",
+            "unicorn"
+        ],
+        "clan": "scorpion",
+        "cost": "3",
+        "deck_limit": 3,
+        "element": [],
+        "fate": null,
+        "glory": 0,
+        "honor": null,
+        "id": "unassuming-yojimbo",
+        "influence_cost": 2,
+        "influence_pool": null,
+        "is_banned": false,
+        "is_banned_in_jade": false,
+        "is_banned_in_skirmish": false,
+        "is_restricted": false,
+        "is_restricted_in_jade": false,
+        "military": "3",
+        "military_bonus": null,
+        "name": "Unassuming Yōjimbō",
+        "name_extra": null,
+        "political": "1",
+        "political_bonus": null,
+        "role_restriction": null,
+        "side": "conflict",
+        "strength": null,
+        "strength_bonus": null,
+        "text": "Covert. <i>(When this character attacks, choose one character without covert. That character cannot be declared as a defender.)</i>",
+        "traits": [
+            "bushi",
+            "yojimbo"
+        ],
+        "type": "character",
+        "unicity": false
+    }
+]

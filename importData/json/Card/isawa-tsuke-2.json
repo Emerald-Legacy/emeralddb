@@ -1,0 +1,40 @@
+[
+    {
+        "allowed_clans": [
+            "phoenix"
+        ],
+        "clan": "phoenix",
+        "cost": "5",
+        "deck_limit": 3,
+        "element": [],
+        "fate": null,
+        "glory": 3,
+        "honor": null,
+        "id": "isawa-tsuke-2",
+        "influence_cost": null,
+        "influence_pool": null,
+        "is_banned": false,
+        "is_banned_in_jade": false,
+        "is_banned_in_skirmish": false,
+        "is_restricted": false,
+        "is_restricted_in_jade": false,
+        "military": "5",
+        "military_bonus": null,
+        "name": "Isawa Tsuke",
+        "name_extra": "(2)",
+        "political": "4",
+        "political_bonus": null,
+        "role_restriction": null,
+        "side": "dynasty",
+        "strength": null,
+        "strength_bonus": null,
+        "text": "Pride.\n<b>Action:</b> During a conflict, if the [element-fire] ring is in the unclaimed ring pool, lose 1 or more honor. Choose an equals number of participating characters - remove 1 fate from each of those characters.",
+        "traits": [
+            "shugenja",
+            "fire",
+            "elemental-master"
+        ],
+        "type": "character",
+        "unicity": true
+    }
+]

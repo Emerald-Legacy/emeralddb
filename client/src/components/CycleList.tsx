@@ -1,0 +1,256 @@
+import {
+  Checkbox,
+  Collapse,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  makeStyles,
+} from '@material-ui/core'
+import { useUiStore } from '../providers/UiStoreProvider'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import ExpandLessIcon from '@material-ui/icons/ExpandLess'
+import { useState } from 'react'
+import { Cycle, Pack } from '@5rdb/api'
+
+type CycleWithPacks = Cycle & {
+  packs: Pack[]
+}
+
+const useStyles = makeStyles((theme) => ({
+  cycle: {
+    paddingLeft: theme.spacing(4),
+  },
+  pack: {
+    paddingLeft: theme.spacing(6),
+  },
+}))
+
+export function CycleList(props: {
+  withCheckbox?: boolean
+  onSelection?: (checkedPackIds: string[], checkedCycleIds: string[]) => void
+  onRootClick?: () => void
+  onPackClick?: (packId: string) => void
+  onCycleClick?: (cycleId: string) => void
+  selectedPacks?: string[]
+  selectedCycles?: string[]
+  rootLabel: string
+}): JSX.Element {
+  const { cycles, packs } = useUiStore()
+  const [checkedCycleIds, setCheckedCycleIds] = useState<string[]>(props.selectedCycles || [])
+  const [checkedPackIds, setCheckedPackIds] = useState<string[]>(props.selectedPacks || [])
+  const [allChecked, setAllChecked] = useState(false)
+  const [expandedElements, setExpandedElements] = useState(['root'])
+  const classes = useStyles()
+
+  if (
+    !allChecked &&
+    checkedCycleIds.length === cycles.length &&
+    checkedPackIds.length === packs.length
+  ) {
+    setAllChecked(true)
+  }
+
+  function groupPacksByCycle(): CycleWithPacks[] {
+    const result: CycleWithPacks[] = []
+    cycles.forEach((cycle) => {
+      result.push({
+        ...cycle,
+        packs: packs.filter((pack) => pack.cycle_id === cycle.id),
+      })
+    })
+    result.sort((a, b) => a.position - b.position)
+    return result
+  }
+
+  const cyclesWithPacks = groupPacksByCycle()
+
+  function removeOrAddPack(packIds: string[], id: string, remove: boolean): string[] {
+    const newPackIds = [...packIds]
+    const index = newPackIds.indexOf(id)
+    if (remove) {
+      if (index > -1) {
+        newPackIds.splice(index, 1)
+      }
+    } else {
+      if (index === -1) {
+        newPackIds.push(id)
+      }
+    }
+    return newPackIds
+  }
+
+  function updateCheckedPacksAndCycles(packIds: string[], cycleIds: string[]) {
+    setCheckedPackIds(packIds)
+    if (props.onSelection) {
+      props.onSelection(packIds, cycleIds)
+    }
+  }
+
+  function checkPack(checked: boolean, pack: Pack) {
+    let packIds = [...checkedPackIds]
+    packIds = removeOrAddPack(packIds, pack.id, !checked)
+    updateCheckedPacksAndCycles(packIds, checkedCycleIds)
+  }
+
+  function checkCycle(checked: boolean, cycle: CycleWithPacks) {
+    const cycleIds = [...checkedCycleIds]
+    let packIds = [...checkedPackIds]
+    const index = cycleIds.indexOf(cycle.id)
+    if (!checked) {
+      if (index > -1) {
+        cycleIds.splice(index, 1)
+      }
+    } else {
+      if (index === -1) {
+        cycleIds.push(cycle.id)
+      }
+    }
+    cycle.packs.forEach((pack) => {
+      packIds = removeOrAddPack(packIds, pack.id, !checked)
+    })
+    setCheckedCycleIds(cycleIds)
+    updateCheckedPacksAndCycles(packIds, cycleIds)
+  }
+
+  function checkAll(checked: boolean) {
+    const checkedPacks: string[] = []
+    const checkedCycles: string[] = []
+    if (checked) {
+      cyclesWithPacks.forEach((cycle) => {
+        cycle.packs.forEach((pack) => {
+          checkedPacks.push(pack.id)
+        })
+        checkedCycles.push(cycle.id)
+      })
+    }
+    setAllChecked(checked)
+    setCheckedPackIds(checkedPacks)
+    setCheckedCycleIds(checkedCycles)
+    updateCheckedPacksAndCycles(checkedPacks, checkedCycles)
+  }
+
+  function somePackForCycleChecked(cycle: CycleWithPacks): boolean {
+    const checkedCyclePacks = cycle.packs.filter((pack) => checkedPackIds.includes(pack.id))
+    if (checkedCyclePacks.length > 0) {
+      return true
+    }
+    return false
+  }
+
+  function notAllPacksForCycleChecked(cycle: CycleWithPacks): boolean {
+    const checkedCyclePacks = cycle.packs.filter((pack) => checkedPackIds.includes(pack.id))
+    if (checkedCyclePacks.length > 0 && checkedCyclePacks.length !== cycle.packs.length) {
+      return true
+    }
+    return false
+  }
+
+  function createPackElement(pack: Pack): JSX.Element {
+    return (
+      <ListItem button className={classes.pack} key={pack.id}>
+        {props.withCheckbox && (
+          <ListItemIcon>
+            <Checkbox
+              checked={checkedPackIds.includes(pack.id)}
+              onChange={(event) => checkPack(event.currentTarget.checked, pack)}
+              onClick={(e) => e.stopPropagation()}
+            />
+          </ListItemIcon>
+        )}
+        <ListItemText
+          primary={pack.name}
+          onClick={(e) => {
+            if (props.onPackClick) {
+              props.onPackClick(pack.id)
+              e.stopPropagation()
+            }
+          }}
+        />
+      </ListItem>
+    )
+  }
+
+  function toggleElementExpanded(element: string) {
+    const expanded = [...expandedElements]
+    if (expanded.includes(element)) {
+      const index = expanded.indexOf(element)
+      expanded.splice(index, 1)
+    } else {
+      expanded.push(element)
+    }
+    setExpandedElements(expanded)
+  }
+
+  function createCycleElement(cycle: CycleWithPacks): JSX.Element {
+    return (
+      <div key={cycle.id}>
+        <ListItem button onClick={() => toggleElementExpanded(cycle.id)} className={classes.cycle}>
+          {props.withCheckbox && (
+            <ListItemIcon>
+              <Checkbox
+                checked={
+                  checkedCycleIds.some((item) => item === cycle.id) ||
+                  somePackForCycleChecked(cycle)
+                }
+                indeterminate={notAllPacksForCycleChecked(cycle)}
+                onChange={(event) => checkCycle(event.currentTarget.checked, cycle)}
+                onClick={(e) => e.stopPropagation()}
+              />
+            </ListItemIcon>
+          )}
+          <ListItemText
+            primary={cycle.name}
+            onClick={(e) => {
+              if (props.onCycleClick) {
+                props.onCycleClick(cycle.id)
+                e.stopPropagation()
+              }
+            }}
+          />
+          {expandedElements.includes(cycle.id) ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+        </ListItem>
+        <Collapse in={expandedElements.includes(cycle.id)} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding dense>
+            {cycle.packs.map((pack) => createPackElement(pack))}
+          </List>
+        </Collapse>
+      </div>
+    )
+  }
+
+  function createRootElement(): JSX.Element {
+    return (
+      <List dense>
+        <ListItem button onClick={() => toggleElementExpanded('root')}>
+          {props.withCheckbox && (
+            <ListItemIcon>
+              <Checkbox
+                checked={allChecked}
+                onChange={(event) => checkAll(event.currentTarget.checked)}
+                onClick={(e) => e.stopPropagation()}
+              />
+            </ListItemIcon>
+          )}
+          <ListItemText
+            primary={props.rootLabel}
+            onClick={(e) => {
+              if (props.onRootClick) {
+                props.onRootClick()
+                e.stopPropagation()
+              }
+            }}
+          />
+          {expandedElements.includes('root') ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+        </ListItem>
+        <Collapse in={expandedElements.includes('root')} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding dense>
+            {cyclesWithPacks.map((cycle) => createCycleElement(cycle))}
+          </List>
+        </Collapse>
+      </List>
+    )
+  }
+
+  return createRootElement()
+}

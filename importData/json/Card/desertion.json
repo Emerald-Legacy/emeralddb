@@ -1,0 +1,42 @@
+[
+    {
+        "allowed_clans": [
+            "crab",
+            "crane",
+            "dragon",
+            "lion",
+            "phoenix",
+            "scorpion",
+            "unicorn"
+        ],
+        "clan": "neutral",
+        "cost": null,
+        "deck_limit": 1,
+        "element": [],
+        "fate": null,
+        "glory": null,
+        "honor": null,
+        "id": "desertion",
+        "influence_cost": null,
+        "influence_pool": null,
+        "is_banned": false,
+        "is_banned_in_jade": false,
+        "is_banned_in_skirmish": false,
+        "is_restricted": false,
+        "is_restricted_in_jade": false,
+        "military": null,
+        "military_bonus": null,
+        "name": "Desertion",
+        "name_extra": null,
+        "political": null,
+        "political_bonus": null,
+        "role_restriction": null,
+        "side": "treaty",
+        "strength": null,
+        "strength_bonus": null,
+        "text": "<em>(X is equal to the value staked on this treaty.)</em>\nThe player who broke this treaty gives control of a character they control with the highest printed cost of X or lower to the player who did not break this treaty.",
+        "traits": [],
+        "type": "treaty",
+        "unicity": false
+    }
+]

@@ -1,0 +1,38 @@
+[
+    {
+        "allowed_clans": [
+            "lion"
+        ],
+        "clan": "lion",
+        "cost": "2",
+        "deck_limit": 3,
+        "element": [],
+        "fate": null,
+        "glory": 2,
+        "honor": null,
+        "id": "battle-aspirant",
+        "influence_cost": null,
+        "influence_pool": null,
+        "is_banned": false,
+        "is_banned_in_jade": false,
+        "is_banned_in_skirmish": false,
+        "is_restricted": false,
+        "is_restricted_in_jade": false,
+        "military": "3",
+        "military_bonus": null,
+        "name": "Battle Aspirant",
+        "name_extra": null,
+        "political": "0",
+        "political_bonus": null,
+        "role_restriction": null,
+        "side": "dynasty",
+        "strength": null,
+        "strength_bonus": null,
+        "text": "<b>Reaction:</b> After this character is declared as an attacker in a [conflict-military] conflict, choose a character your opponent controls without covert - the chosen character must be declared as a defender in this conflict, if able.",
+        "traits": [
+            "bushi"
+        ],
+        "type": "character",
+        "unicity": false
+    }
+]

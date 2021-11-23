@@ -1,0 +1,81 @@
+@font-face {
+  font-family: 'emeralddb';
+  src:  url('assets/fonts/emeralddb.eot?ifct3w');
+  src:  url('assets/fonts/emeralddb.eot?ifct3w#iefix') format('embedded-opentype'),
+  url('assets/fonts/emeralddb.ttf?ifct3w') format('truetype'),
+  url('assets/fonts/emeralddb.woff?ifct3w') format('woff'),
+  url('assets/fonts/emeralddb.svg?ifct3w#emeralddb') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'emeralddb' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-conflict-military:before {
+  content: "\e900";
+}
+.icon-conflict-political:before {
+  content: "\e901";
+}
+.icon-element-air:before {
+  content: "\e902";
+}
+.icon-element-earth:before {
+  content: "\e903";
+}
+.icon-element-fire:before {
+  content: "\e904";
+}
+.icon-element-void:before {
+  content: "\e905";
+}
+.icon-element-water:before {
+  content: "\e906";
+}
+.icon-clan-crab:before {
+  content: "\e907";
+}
+.icon-clan-crane:before {
+  content: "\e908";
+}
+.icon-clan-dragon:before {
+  content: "\e909";
+}
+.icon-clan-lion:before {
+  content: "\e90a";
+}
+.icon-clan-phoenix:before {
+  content: "\e90b";
+}
+.icon-clan-scorpion:before {
+  content: "\e90c";
+}
+.icon-clan-unicorn:before {
+  content: "\e90d";
+}
+.icon-unique:before {
+  content: "\e90e";
+}
+.icon-element-all:before {
+  content: "\e90f";
+}
+.icon-clan-neutral:before {
+  content: "\e910";
+}
+.icon-clan-shadowlands:before {
+  content: "\e911";
+}

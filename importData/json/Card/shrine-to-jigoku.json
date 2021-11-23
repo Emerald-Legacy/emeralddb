@@ -1,0 +1,37 @@
+[
+    {
+        "allowed_clans": [
+        ],
+        "clan": "shadowlands",
+        "cost": null,
+        "deck_limit": 3,
+        "element": [],
+        "fate": null,
+        "glory": null,
+        "honor": null,
+        "id": "shrine-to-jigoku",
+        "influence_cost": null,
+        "influence_pool": null,
+        "is_banned": false,
+        "is_banned_in_jade": false,
+        "is_banned_in_skirmish": false,
+        "is_restricted": false,
+        "is_restricted_in_jade": false,
+        "military": null,
+        "military_bonus": null,
+        "name": "Shrine to Jigoku",
+        "name_extra": null,
+        "political": null,
+        "political_bonus": null,
+        "role_restriction": null,
+        "side": "dynasty",
+        "strength": null,
+        "strength_bonus": "+2",
+        "text": "<b>Interrupt:</b> When the conflict phase ends, spend up to 2 fate - for each fate spent this way, each opponent discards 1 random card from their hand.",
+        "traits": [
+            "shrine"
+        ],
+        "type": "holding",
+        "unicity": false
+    }
+]

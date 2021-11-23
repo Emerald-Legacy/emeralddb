@@ -1,0 +1,44 @@
+[
+    {
+        "allowed_clans": [
+            "crab",
+            "crane",
+            "dragon",
+            "lion",
+            "phoenix",
+            "scorpion",
+            "unicorn"
+        ],
+        "clan": "phoenix",
+        "cost": "0",
+        "deck_limit": 3,
+        "element": [],
+        "fate": null,
+        "glory": null,
+        "honor": null,
+        "id": "in-harmony",
+        "influence_cost": 2,
+        "influence_pool": null,
+        "is_banned": false,
+        "is_banned_in_jade": false,
+        "is_banned_in_skirmish": false,
+        "is_restricted": false,
+        "is_restricted_in_jade": false,
+        "military": null,
+        "military_bonus": "+0",
+        "name": "In Harmony",
+        "name_extra": null,
+        "political": null,
+        "political_bonus": "+1",
+        "role_restriction": null,
+        "side": "conflict",
+        "strength": null,
+        "strength_bonus": null,
+        "text": "Play only if you have at least 1 ring in your claimed ring pool.\nAncestral.\nFate on attached character cannot be removed by card or ring effects.",
+        "traits": [
+            "condition"
+        ],
+        "type": "attachment",
+        "unicity": false
+    }
+]

@@ -1,0 +1,39 @@
+[
+    {
+        "allowed_clans": [
+            "unicorn"
+        ],
+        "clan": "unicorn",
+        "cost": "2",
+        "deck_limit": 3,
+        "element": [],
+        "fate": null,
+        "glory": 1,
+        "honor": null,
+        "id": "reckless-avenger",
+        "influence_cost": null,
+        "influence_pool": null,
+        "is_banned": false,
+        "is_banned_in_jade": false,
+        "is_banned_in_skirmish": false,
+        "is_restricted": false,
+        "is_restricted_in_jade": false,
+        "military": "2",
+        "military_bonus": null,
+        "name": "Reckless Avenger",
+        "name_extra": null,
+        "political": "2",
+        "political_bonus": null,
+        "role_restriction": null,
+        "side": "dynasty",
+        "strength": null,
+        "strength_bonus": null,
+        "text": "Support. <i>(Another player may help pay this card's fate cost.)</i>\n<b>Action:</b> Each player in turn order may choose a character they control - ready the first chosen character, honor the second chosen character, and taint each other chosen character.",
+        "traits": [
+            "shugenja",
+            "water"
+        ],
+        "type": "character",
+        "unicity": false
+    }
+]

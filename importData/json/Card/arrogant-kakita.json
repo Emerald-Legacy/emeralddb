@@ -1,0 +1,39 @@
+[
+    {
+        "allowed_clans": [
+            "crane"
+        ],
+        "clan": "crane",
+        "cost": "2",
+        "deck_limit": 3,
+        "element": [],
+        "fate": null,
+        "glory": 2,
+        "honor": null,
+        "id": "arrogant-kakita",
+        "influence_cost": null,
+        "influence_pool": null,
+        "is_banned": false,
+        "is_banned_in_jade": false,
+        "is_banned_in_skirmish": false,
+        "is_restricted": false,
+        "is_restricted_in_jade": false,
+        "military": "3",
+        "military_bonus": null,
+        "name": "Arrogant Kakita",
+        "name_extra": null,
+        "political": "2",
+        "political_bonus": null,
+        "role_restriction": null,
+        "side": "dynasty",
+        "strength": null,
+        "strength_bonus": null,
+        "text": "Pride.\n<b>Forced Reaction:</b> After defenders are declared during a conflict in which this character is participating, initiate a [conflict-military] duel - resolve the duel. If this character is the duel's loser, move it home. (Unlimited.)",
+        "traits": [
+            "bushi",
+            "duelist"
+        ],
+        "type": "character",
+        "unicity": false
+    }
+]

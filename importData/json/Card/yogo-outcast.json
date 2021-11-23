@@ -1,0 +1,39 @@
+[
+    {
+        "allowed_clans": [
+            "scorpion"
+        ],
+        "clan": "scorpion",
+        "cost": "2",
+        "deck_limit": 3,
+        "element": [],
+        "fate": null,
+        "glory": 1,
+        "honor": null,
+        "id": "yogo-outcast",
+        "influence_cost": null,
+        "influence_pool": null,
+        "is_banned": false,
+        "is_banned_in_jade": false,
+        "is_banned_in_skirmish": false,
+        "is_restricted": false,
+        "is_restricted_in_jade": false,
+        "military": "2",
+        "military_bonus": null,
+        "name": "Yogo Outcast",
+        "name_extra": null,
+        "political": "2",
+        "political_bonus": null,
+        "role_restriction": null,
+        "side": "dynasty",
+        "strength": null,
+        "strength_bonus": null,
+        "text": "This character gets +1[conflict-military] and +1[conflict-political] while you are less honorable than an opponent.",
+        "traits": [
+            "shugenja",
+            "air"
+        ],
+        "type": "character",
+        "unicity": false
+    }
+]

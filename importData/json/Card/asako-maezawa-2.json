@@ -1,0 +1,38 @@
+[
+    {
+        "allowed_clans": [
+            "phoenix"
+        ],
+        "clan": "phoenix",
+        "cost": "3",
+        "deck_limit": 3,
+        "element": [],
+        "fate": null,
+        "glory": 2,
+        "honor": null,
+        "id": "asako-maezawa-2",
+        "influence_cost": null,
+        "influence_pool": null,
+        "is_banned": false,
+        "is_banned_in_jade": false,
+        "is_banned_in_skirmish": false,
+        "is_restricted": false,
+        "is_restricted_in_jade": false,
+        "military": "2",
+        "military_bonus": null,
+        "name": "Asako Maezawa",
+        "name_extra": "(2)",
+        "political": "3",
+        "political_bonus": null,
+        "role_restriction": null,
+        "side": "dynasty",
+        "strength": null,
+        "strength_bonus": null,
+        "text": "<b>Reaction:</b> After this character wins a conflict, choose a character with no fate on it - bow that character. If that character is a [clan-phoenix] character, also dishonor it.",
+        "traits": [
+            "courtier"
+        ],
+        "type": "character",
+        "unicity": true
+    }
+]

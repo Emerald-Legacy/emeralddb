@@ -1,0 +1,39 @@
+[
+    {
+        "allowed_clans": [
+            "lion"
+        ],
+        "clan": "lion",
+        "cost": "5",
+        "deck_limit": 3,
+        "element": [],
+        "fate": null,
+        "glory": 3,
+        "honor": null,
+        "id": "master-tactician",
+        "influence_cost": null,
+        "influence_pool": null,
+        "is_banned": false,
+        "is_banned_in_jade": false,
+        "is_banned_in_skirmish": false,
+        "is_restricted": false,
+        "is_restricted_in_jade": false,
+        "military": "5",
+        "military_bonus": null,
+        "name": "Master Tactician",
+        "name_extra": null,
+        "political": "5",
+        "political_bonus": null,
+        "role_restriction": null,
+        "side": "dynasty",
+        "strength": null,
+        "strength_bonus": null,
+        "text": "During conflicts in which this character is participating, if there is a <em>Battlefield</em> in play, you may look at and play the top card of your conflict deck as if it were in your hand. You cannot play more than 3 cards per round this way.",
+        "traits": [
+            "bushi",
+            "commander"
+        ],
+        "type": "character",
+        "unicity": false
+    }
+]

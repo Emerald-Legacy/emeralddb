@@ -1,0 +1,38 @@
+[
+    {
+        "allowed_clans": [
+            "crane"
+        ],
+        "clan": "crane",
+        "cost": "4",
+        "deck_limit": 3,
+        "element": [],
+        "fate": null,
+        "glory": 1,
+        "honor": null,
+        "id": "diplomatic-gift-giver",
+        "influence_cost": null,
+        "influence_pool": null,
+        "is_banned": false,
+        "is_banned_in_jade": false,
+        "is_banned_in_skirmish": false,
+        "is_restricted": false,
+        "is_restricted_in_jade": false,
+        "military": "3",
+        "military_bonus": null,
+        "name": "Diplomatic Gift-Giver",
+        "name_extra": null,
+        "political": "4",
+        "political_bonus": null,
+        "role_restriction": null,
+        "side": "dynasty",
+        "strength": null,
+        "strength_bonus": null,
+        "text": "<b>Action:</b> During a conflict in which this character is participating, each player chooses a character controlled by one of their opponents - each player moves 1 fate from their fate pool to the character they chose.",
+        "traits": [
+            "courtier"
+        ],
+        "type": "character",
+        "unicity": false
+    }
+]

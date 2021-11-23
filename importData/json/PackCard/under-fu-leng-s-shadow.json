@@ -1,0 +1,994 @@
+[
+  {
+      "card_id": "akuma-no-oni-coop",
+      "flavor": "",
+      "illustrator": "Calvin Chua",
+      "image_url": "https://i.imgur.com/7mJsN6k.png",
+      "position": "1A",
+      "quantity": 1
+  },
+  {
+      "card_id": "akuma-no-oni-challenge",
+      "flavor": "",
+      "illustrator": "Calvin Chua",
+      "image_url": "https://i.imgur.com/Ss3germ.png",
+      "position": "1B",
+      "quantity": 1
+  },
+  {
+      "card_id": "the-obsidian-flower-coop",
+      "flavor": "",
+      "illustrator": "Apterus",
+      "image_url": "https://i.imgur.com/WptTJWb.png",
+      "position": "2A",
+      "quantity": 1
+  },
+  {
+      "card_id": "the-obsidian-flower-challenge",
+      "flavor": "",
+      "illustrator": "Apterus",
+      "image_url": "https://i.imgur.com/ey55PrD.png",
+      "position": "2B",
+      "quantity": 1
+  },
+  {
+      "card_id": "atsuko-the-calamitous-coop",
+      "flavor": "",
+      "illustrator": "Diego Gisbert Llorens",
+      "image_url": "https://i.imgur.com/gOfKOqk.png",
+      "position": "3A",
+      "quantity": 1
+  },
+  {
+      "card_id": "atsuko-the-calamitous-challenge",
+      "flavor": "",
+      "illustrator": "Diego Gisbert Llorens",
+      "image_url": "https://i.imgur.com/V0kWeSu.png",
+      "position": "3B",
+      "quantity": 1
+  },
+  {
+      "card_id": "blood-fields",
+      "flavor": "",
+      "illustrator": "David Frasheski",
+      "image_url": "https://i.imgur.com/xSdfNOi.png",
+      "position": "4",
+      "quantity": 1
+  },
+  {
+      "card_id": "defiled-cavern",
+      "flavor": "",
+      "illustrator": "Apterus",
+      "image_url": "https://i.imgur.com/F5MJAAV.png",
+      "position": "5",
+      "quantity": 1
+  },
+  {
+      "card_id": "fallen-chrysanthemum-lake",
+      "flavor": "",
+      "illustrator": "John Anthony Di Giovanni",
+      "image_url": "https://i.imgur.com/JvCWbqJ.png",
+      "position": "6",
+      "quantity": 1
+  },
+  {
+      "card_id": "false-lantern-grove",
+      "flavor": "",
+      "illustrator": "Brian Valenzuela",
+      "image_url": "https://i.imgur.com/9sxy2pH.png",
+      "position": "7",
+      "quantity": 1
+  },
+  {
+      "card_id": "forgotten-tomb-of-fu-leng",
+      "flavor": "",
+      "illustrator": "Daria Khlebnikova",
+      "image_url": "https://i.imgur.com/bli0kz6.png",
+      "position": "8",
+      "quantity": 1
+  },
+  {
+      "card_id": "garden-of-corruption",
+      "flavor": "",
+      "illustrator": "Nele Diel",
+      "image_url": "https://i.imgur.com/oMbCcSE.png",
+      "position": "9",
+      "quantity": 1
+  },
+  {
+      "card_id": "haunted-jungles",
+      "flavor": "",
+      "illustrator": "Max Degen",
+      "image_url": "https://i.imgur.com/IHR4V0Y.png",
+      "position": "10",
+      "quantity": 1
+  },
+  {
+      "card_id": "maddening-emptiness",
+      "flavor": "",
+      "illustrator": "Daria Khlebnikova",
+      "image_url": "https://i.imgur.com/1RtpKMt.png",
+      "position": "11",
+      "quantity": 1
+  },
+  {
+      "card_id": "sea-of-shadows",
+      "flavor": "",
+      "illustrator": "David Frasheski",
+      "image_url": "https://i.imgur.com/jU1cYR5.png",
+      "position": "12",
+      "quantity": 1
+  },
+  {
+      "card_id": "spectral-watchtower",
+      "flavor": "",
+      "illustrator": "Daria Khlebnikova",
+      "image_url": "https://i.imgur.com/r7HkqNw.png",
+      "position": "13",
+      "quantity": 1
+  },
+  {
+      "card_id": "goblin-brawler",
+      "flavor": "Akuma no Oni's army outfitted itself with the weapons and armor scavanged from fallen samurai.",
+      "illustrator": "Paolo Puggioni",
+      "image_url": "https://i.imgur.com/FmNI5fI.png",
+      "position": "14",
+      "quantity": 3
+  },
+  {
+      "card_id": "fouleye-s-elite",
+      "flavor": "\"I'd be more worried about those teeth than that blade.\" - Hiruma Kogoe",
+      "illustrator": "Conceptopolis",
+      "image_url": "https://i.imgur.com/clvEycO.png",
+      "position": "15",
+      "quantity": 3
+  },
+  {
+      "card_id": "goblin-hovel",
+      "flavor": "",
+      "illustrator": "Apterus",
+      "image_url": "https://i.imgur.com/YUqmEzY.png",
+      "position": "16",
+      "quantity": 3
+  },
+  {
+      "card_id": "detritus-priest",
+      "flavor": "",
+      "illustrator": "Paolo Puggioni",
+      "image_url": "https://i.imgur.com/5lTBiYP.png",
+      "position": "17",
+      "quantity": 3
+  },
+  {
+      "card_id": "chieftain-fouleye",
+      "flavor": "\"Great gift. Lord accepts. You eat well tonight.\"",
+      "illustrator": "Borja Pindado",
+      "image_url": "https://i.imgur.com/dzDwuBe.png",
+      "position": "18",
+      "quantity": 3
+  },
+  {
+      "card_id": "skeletal-warrior",
+      "flavor": "",
+      "illustrator": "Diego Gisbert Llorens",
+      "image_url": "https://i.imgur.com/dAyrxhP.png",
+      "position": "19",
+      "quantity": 3
+  },
+  {
+      "card_id": "endless-ranks",
+      "flavor": "Each death beyond the Wall is in service to Fu Leng.",
+      "illustrator": "",
+      "image_url": "https://i.imgur.com/hbamfTY.png",
+      "position": "20",
+      "quantity": 3
+  },
+  {
+      "card_id": "killing-field",
+      "flavor": "\"No kami will ever return to this place now.\" - Isawa Nobu",
+      "illustrator": "Alexander Chelyshev",
+      "image_url": "https://i.imgur.com/2CTyX9G.png",
+      "position": "21",
+      "quantity": 3
+  },
+  {
+      "card_id": "undead-horror",
+      "flavor": "",
+      "illustrator": "Helge C. Balzer",
+      "image_url": "https://i.imgur.com/v0QCtWR.png",
+      "position": "22",
+      "quantity": 3
+  },
+  {
+      "card_id": "kitsu-sokori",
+      "flavor": "",
+      "illustrator": "John Anthony Di Giovanni",
+      "image_url": "https://i.imgur.com/xY1UfzU.png",
+      "position": "23",
+      "quantity": 3
+  },
+  {
+      "card_id": "lost-samurai",
+      "flavor": "The devotion of samurai, twisted by Jigoku into a mocker of Bushido.",
+      "illustrator": "Stanislav Dikolenko",
+      "image_url": "https://i.imgur.com/nZFXxz9.png",
+      "position": "24",
+      "quantity": 3
+  },
+  {
+      "card_id": "onikage-rider",
+      "flavor": "\"The thunder of hooves now brings me only terror and despair.\" - Shinjo Hideo",
+      "illustrator": "Jason Behnke",
+      "image_url": "https://i.imgur.com/vwiF6pI.png",
+      "position": "25",
+      "quantity": 3
+  },
+  {
+      "card_id": "dark-moto",
+      "flavor": "\"Such foul steeds will not succumb until their demon-riders have fallen.\" - Hida Tsuru",
+      "illustrator": "Pavel Kolomeyets",
+      "image_url": "https://i.imgur.com/Z5mSYar.png",
+      "position": "26",
+      "quantity": 3
+  },
+  {
+      "card_id": "moto-tsume",
+      "flavor": "One act of reckless pride. Three hundred years of terror.",
+      "illustrator": "Borja Pindado",
+      "image_url": "https://i.imgur.com/RFgaZWx.png",
+      "position": "27",
+      "quantity": 3
+  },
+  {
+      "card_id": "thundering-tide-keep",
+      "flavor": "\"It is a court of demonic puppetry.\" - Kuni Yori",
+      "illustrator": "Daria Khlebnikova",
+      "image_url": "https://i.imgur.com/xmlL2SV.png",
+      "position": "28",
+      "quantity": 3
+  },
+  {
+      "card_id": "scavenging-goblin",
+      "flavor": "",
+      "illustrator": "Marius Bota",
+      "image_url": "https://i.imgur.com/iHjxUfZ.png",
+      "position": "29",
+      "quantity": 3
+  },
+  {
+      "card_id": "penanggalan",
+      "flavor": "\"Who is she now?\" - Kitsuki Chiari",
+      "illustrator": "Marius Bota",
+      "image_url": "https://i.imgur.com/t6MUImp.png",
+      "position": "30",
+      "quantity": 3
+  },
+  {
+      "card_id": "wild-ogre",
+      "flavor": "\"Get away, runts! I've already lost enough of my dinner to your grimy kind.\"",
+      "illustrator": "Borja Pindado",
+      "image_url": "https://i.imgur.com/5z3ab3E.png",
+      "position": "31",
+      "quantity": 3
+  },
+  {
+      "card_id": "the-butcher-of-ishigaki",
+      "flavor": "\"Who can stand against it if not us?\" - Hida Nanako",
+      "illustrator": "Joshua Cairos",
+      "image_url": "https://i.imgur.com/rPMietW.png",
+      "position": "32",
+      "quantity": 3
+  },
+  {
+      "card_id": "oni-lair",
+      "flavor": "",
+      "illustrator": "Daria Khlebnikova",
+      "image_url": "https://i.imgur.com/bcvdJuW.png",
+      "position": "33",
+      "quantity": 3
+  },
+  {
+      "card_id": "shambling-servant",
+      "flavor": "Nothing is wasted in the courts of the wicked.",
+      "illustrator": "Paolo Puggioni",
+      "image_url": "https://i.imgur.com/xQ5qsqI.png",
+      "position": "34",
+      "quantity": 3
+  },
+  {
+      "card_id": "insatiable-gaki",
+      "flavor": "\"Leave the wretched thing to its hopeless gnawing.\" - Kuni Ritsuko",
+      "illustrator": "Apterus",
+      "image_url": "https://i.imgur.com/9dFAah5.png",
+      "position": "35",
+      "quantity": 3
+  },
+  {
+      "card_id": "haunted-ruins",
+      "flavor": "The wind whisles with screams of the forgotten.",
+      "illustrator": "Daria Khlebnikova",
+      "image_url": "https://i.imgur.com/2XeEVsP.png",
+      "position": "36",
+      "quantity": 3
+  },
+  {
+      "card_id": "chuda-gyushi",
+      "flavor": "\"I have need of you again, my wicked companion.\"",
+      "illustrator": "Marius Bota",
+      "image_url": "https://i.imgur.com/7lvGWgy.png",
+      "position": "37",
+      "quantity": 3
+  },
+  {
+      "card_id": "oni-of-obsidian-and-blood",
+      "flavor": "\"Only the deepest pits of Jigoku could spawn such evil.\" - Isawa Masahiro",
+      "illustrator": "Pavel Kolomeyets",
+      "image_url": "https://i.imgur.com/ECUfZ30.png",
+      "position": "38",
+      "quantity": 3
+  },
+  {
+      "card_id": "shrine-to-jigoku",
+      "flavor": "",
+      "illustrator": "Brenda Bal",
+      "image_url": "https://i.imgur.com/SJqpwxz.png",
+      "position": "39",
+      "quantity": 3
+  },
+  {
+      "card_id": "bloodthirsty-kansen",
+      "flavor": "\"It is no wonder the kami shun this place.\" - Kitsu Takeko",
+      "illustrator": "Pavel Kolomeyets",
+      "image_url": "https://i.imgur.com/dtMpdUY.png",
+      "position": "40",
+      "quantity": 3
+  },
+  {
+      "card_id": "bog-hag",
+      "flavor": "The villages thanked her with gifts of food and clothing, unaware that she was taking a much different rewards for healing their sick and wounded.",
+      "illustrator": "Marius Bota",
+      "image_url": "https://i.imgur.com/1QgWhES.png",
+      "position": "41",
+      "quantity": 3
+  },
+  {
+      "card_id": "prakhara-the-schemer",
+      "flavor": "Many samurai have fallen to the wiles of the demons of the Ivory Kingdoms.",
+      "illustrator": "Borja Pindado",
+      "image_url": "https://i.imgur.com/eybK8vl.png",
+      "position": "42",
+      "quantity": 3
+  },
+  {
+      "card_id": "gashadokuro",
+      "flavor": "",
+      "illustrator": "Halil Ural",
+      "image_url": "https://i.imgur.com/x76L1BE.png",
+      "position": "43",
+      "quantity": 3
+  },
+  {
+      "card_id": "power-of-jigoku",
+      "flavor": "",
+      "illustrator": "Helge C. Balzer",
+      "image_url": "https://i.imgur.com/2rY44ly.png",
+      "position": "44",
+      "quantity": 3
+  },
+  {
+      "card_id": "blade-of-chaos",
+      "flavor": "",
+      "illustrator": "Carlos Palma Cruchaga",
+      "image_url": "https://i.imgur.com/FE4iIh6.png",
+      "position": "45",
+      "quantity": 3
+  },
+  {
+      "card_id": "horrific-scarring",
+      "flavor": "",
+      "illustrator": "Immar Palomera",
+      "image_url": "https://i.imgur.com/p2wpUMA.png",
+      "position": "46",
+      "quantity": 3
+  },
+  {
+      "card_id": "violence-and-evil",
+      "flavor": "",
+      "illustrator": "Helge C. Balzer",
+      "image_url": "https://i.imgur.com/XZOckfo.png",
+      "position": "47",
+      "quantity": 3
+  },
+  {
+      "card_id": "the-wall-is-breached",
+      "flavor": "",
+      "illustrator": "Diego Gisbert Llorens",
+      "image_url": "https://i.imgur.com/3biQe6Y.png",
+      "position": "48",
+      "quantity": 3
+  },
+  {
+      "card_id": "way-of-the-shadowlands",
+      "flavor": "A day will come when the rightful Emperor sits the Emerald Throne.",
+      "illustrator": "Scott Wade",
+      "image_url": "https://i.imgur.com/OhG3EcF.png",
+      "position": "49",
+      "quantity": 3
+  },
+  {
+      "card_id": "tendrils-of-corruption",
+      "flavor": "\"I have been enlightened by Fu Leng's blessing. Now, too, shall you be.\"",
+      "illustrator": "Brian Valenzuela",
+      "image_url": "https://i.imgur.com/QRW0Uz7.png",
+      "position": "50",
+      "quantity": 3
+  },
+  {
+      "card_id": "drawn-to-blood",
+      "flavor": "",
+      "illustrator": "Imad Awan",
+      "image_url": "https://i.imgur.com/Ww7UJoZ.png",
+      "position": "51",
+      "quantity": 3
+  },
+  {
+      "card_id": "death-after-life",
+      "flavor": "",
+      "illustrator": "Patrick McEvoy",
+      "image_url": "https://i.imgur.com/0p9AiV7.png",
+      "position": "52",
+      "quantity": 3
+  },
+  {
+      "card_id": "at-his-command",
+      "flavor": "\"Akuma no Oni will not stop until all of Rokugan burns.\" - Isawa Tadaka",
+      "illustrator": "Helge C. Balzer",
+      "image_url": "https://i.imgur.com/A3ykOiG.png",
+      "position": "53",
+      "quantity": 3
+  },
+  {
+      "card_id": "evil-portents",
+      "flavor": "They say that which is better left unknown.",
+      "illustrator": "Apterus",
+      "image_url": "https://i.imgur.com/sB0YU9i.png",
+      "position": "54",
+      "quantity": 3
+  },
+  {
+      "card_id": "uncontained",
+      "flavor": "\"Those growths were wings?\" - Hiruma Izumi, final words",
+      "illustrator": "Helge C. Balzer",
+      "image_url": "https://i.imgur.com/VL8VH9K.png",
+      "position": "55",
+      "quantity": 3
+  },
+  {
+      "card_id": "unending-hatred",
+      "flavor": "\"Then we shall fight again.\" - Hida Kisada",
+      "illustrator": "Helge C. Balzer",
+      "image_url": "https://i.imgur.com/tNjl5H9.png",
+      "position": "56",
+      "quantity": 3
+  },
+  {
+      "card_id": "direct-assault",
+      "flavor": "\"Your screams taste of the delicate grey that soothes the soul.\" - Atsuko the Calamitous",
+      "illustrator": "Diego Gisbert Llorens",
+      "image_url": "https://i.imgur.com/1D1kxzn.png",
+      "position": "57",
+      "quantity": 3
+  },
+  {
+      "card_id": "dark-brother-s-blade",
+      "flavor": "",
+      "illustrator": "Carlos Palma Cruchaga",
+      "image_url": "https://i.imgur.com/70HqXMH.png",
+      "position": "58",
+      "quantity": 3
+  },
+  {
+      "card_id": "dark-bargain",
+      "flavor": "",
+      "illustrator": "Borja Pindado",
+      "image_url": "https://i.imgur.com/J4HiK0r.png",
+      "position": "59",
+      "quantity": 3
+  },
+  {
+      "card_id": "lurking-treachery",
+      "flavor": "",
+      "illustrator": "Alayna Lemmer",
+      "image_url": "https://i.imgur.com/pe6OFq6.png",
+      "position": "60",
+      "quantity": 3
+  },
+  {
+      "card_id": "permeating-mutation",
+      "flavor": "",
+      "illustrator": "Apterus",
+      "image_url": "https://i.imgur.com/2AjXFB2.png",
+      "position": "61",
+      "quantity": 3
+  },
+  {
+      "card_id": "consumed-by-evil",
+      "flavor": "",
+      "illustrator": "Carlos Nct",
+      "image_url": "https://i.imgur.com/XFGZDqL.png",
+      "position": "62",
+      "quantity": 3
+  },
+  {
+      "card_id": "blasphemous-act",
+      "flavor": "",
+      "illustrator": "Brenda Bae",
+      "image_url": "https://i.imgur.com/Fv3A9gn.png",
+      "position": "63",
+      "quantity": 3
+  },
+  {
+      "card_id": "spiritual-isolation",
+      "flavor": "Even destiny had abandoned her.",
+      "illustrator": "Imad Awan",
+      "image_url": "https://i.imgur.com/sYpNsXf.png",
+      "position": "64",
+      "quantity": 3
+  },
+  {
+      "card_id": "shameful-affliction",
+      "flavor": "His mind raced as the makeup diminished in his cup. He would have to find more, at any cost, lest he be betrayed by the evil beneath his skin.",
+      "illustrator": "Drazenka Kimpel",
+      "image_url": "https://i.imgur.com/PusBNPL.png",
+      "position": "65",
+      "quantity": 3
+  },
+  {
+      "card_id": "despair",
+      "flavor": "",
+      "illustrator": "Apterus",
+      "image_url": "https://i.imgur.com/gSLoEwx.png",
+      "position": "66",
+      "quantity": 3
+  },
+  {
+      "card_id": "madness",
+      "flavor": "\"You don't understand! It's choking me!\"",
+      "illustrator": "Andreia Ugrai",
+      "image_url": "https://i.imgur.com/bTKeTeT.png",
+      "position": "67",
+      "quantity": 3
+  },
+  {
+      "card_id": "duty-s-cost",
+      "flavor": "",
+      "illustrator": "Lin Hsiang",
+      "image_url": "https://i.imgur.com/jmQebJG.png",
+      "position": "68",
+      "quantity": 3
+  },
+  {
+      "card_id": "obsidian-shard",
+      "flavor": "",
+      "illustrator": "Drazenka Kimpel",
+      "image_url": "https://i.imgur.com/Kh2f98r.png",
+      "position": "69",
+      "quantity": 3
+  },
+  {
+      "card_id": "exploit-weakness",
+      "flavor": "The whispers had been right all along. His lord's treachery had to end tonight.",
+      "illustrator": "Alexander Chelyshev",
+      "image_url": "https://i.imgur.com/nDuVwpQ.png",
+      "position": "70",
+      "quantity": 3
+  },
+  {
+      "card_id": "tainted-wasteland",
+      "flavor": "",
+      "illustrator": "Aaron Miller",
+      "image_url": "https://i.imgur.com/HeGAGXo.png",
+      "position": "71",
+      "quantity": 3
+  },
+  {
+      "card_id": "in-service-to-shadow",
+      "flavor": "",
+      "illustrator": "Apterus",
+      "image_url": "https://i.imgur.com/6GBI4bH.png",
+      "position": "72",
+      "quantity": 3
+  },
+  {
+      "card_id": "the-first-war",
+      "flavor": "\"We fight Togashi's war, that the feuding of brothers will come to an end.\" - Togashi Kazue",
+      "illustrator": "Jason Behnke",
+      "image_url": "https://i.imgur.com/MoH5AtA.png",
+      "position": "73",
+      "quantity": 3
+  },
+  {
+      "card_id": "twin-soul-temple",
+      "flavor": "",
+      "illustrator": "Chris Ostrowski",
+      "image_url": "https://i.imgur.com/rCdMaMS.png",
+      "position": "74",
+      "quantity": 1
+  },
+  {
+      "card_id": "shiro-yogo",
+      "flavor": "",
+      "illustrator": "Daria Khlebnikova",
+      "image_url": "https://i.imgur.com/BB2qBOm.png",
+      "position": "75",
+      "quantity": 1
+  },
+  {
+      "card_id": "exiled-guardian",
+      "flavor": "",
+      "illustrator": "Imad Awan",
+      "image_url": "https://i.imgur.com/PP5per5.png",
+      "position": "76",
+      "quantity": 3
+  },
+  {
+      "card_id": "hida-backbreaker",
+      "flavor": "\"Will reputation deflect a tetsubo's strike? I thought not.\"",
+      "illustrator": "Romana Kendelic",
+      "image_url": "https://i.imgur.com/7NTYNro.png",
+      "position": "77",
+      "quantity": 3
+  },
+  {
+      "card_id": "third-tower",
+      "flavor": "",
+      "illustrator": "Hai Hoang",
+      "image_url": "https://i.imgur.com/fUunfCi.png",
+      "position": "78",
+      "quantity": 1
+  },
+  {
+      "card_id": "iron-warrior-vanguard",
+      "flavor": "\"I will never stop protecting you.\"",
+      "illustrator": "Toni Foti",
+      "image_url": "https://i.imgur.com/dodN32i.png",
+      "position": "79",
+      "quantity": 3
+  },
+  {
+      "card_id": "daidoji-strategist",
+      "flavor": "In honor of longstanding tradition, the Daidoji were welcomed among the Crab in defense of Rokugan. Their leadership, while effective, was somewhat less welcome.",
+      "illustrator": "Sergio Camarena",
+      "image_url": "https://i.imgur.com/5rgPt8e.png",
+      "position": "80",
+      "quantity": 3
+  },
+  {
+      "card_id": "discerning-yoriki",
+      "flavor": "",
+      "illustrator": "Chris Pritchard",
+      "image_url": "https://i.imgur.com/h5q2afb.png",
+      "position": "81",
+      "quantity": 3
+  },
+  {
+      "card_id": "togashi-dreamer",
+      "flavor": "",
+      "illustrator": "Drazenka Kimpel",
+      "image_url": "https://i.imgur.com/QIcEc4u.png",
+      "position": "82",
+      "quantity": 3
+  },
+  {
+      "card_id": "teacher-of-empty-thought",
+      "flavor": "\"You cannot hir me because you think you can hit me. I move with the flow of the kata, not with my mind, and am freed from the prison of thought.\"",
+      "illustrator": "Felipe Gaona",
+      "image_url": "https://i.imgur.com/Bf0B843.png",
+      "position": "83",
+      "quantity": 3
+  },
+  {
+      "card_id": "revered-bonsho",
+      "flavor": "\"The gong of the temple bell echoes the destiny that awaits us all.\"",
+      "illustrator": "Eli Ring",
+      "image_url": "https://i.imgur.com/AiQiMmh.png",
+      "position": "84",
+      "quantity": 3
+  },
+  {
+      "card_id": "field-tactician",
+      "flavor": "\"We will make it work.\"",
+      "illustrator": "Conceptopolis",
+      "image_url": "https://i.imgur.com/AouXsS0.png",
+      "position": "85",
+      "quantity": 3
+  },
+  {
+      "card_id": "akodo-mastermind",
+      "flavor": "",
+      "illustrator": "Carlos Nct",
+      "image_url": "https://i.imgur.com/dHZAdCe.png",
+      "position": "86",
+      "quantity": 3
+  },
+  {
+      "card_id": "void-wielder",
+      "flavor": "",
+      "illustrator": "Isuardi Therianto",
+      "image_url": "https://i.imgur.com/uZ5QQJg.png",
+      "position": "87",
+      "quantity": 3
+  },
+  {
+      "card_id": "isawa-skycaller",
+      "flavor": "\"Though my heart be heavy, Kaze-no-Kami shall lift my spirit.\"",
+      "illustrator": "Jonathan Moore",
+      "image_url": "https://i.imgur.com/P0uKEyJ.png",
+      "position": "88",
+      "quantity": 3
+  },
+  {
+      "card_id": "disciple-of-deception",
+      "flavor": "",
+      "illustrator": "Drew Baker",
+      "image_url": "https://i.imgur.com/Hl8tpT5.png",
+      "position": "89",
+      "quantity": 3
+  },
+  {
+      "card_id": "loyal-oathbreaker",
+      "flavor": "\"Take comfort in the knowledge that my love was true.\"",
+      "illustrator": "Mario Wibisono",
+      "image_url": "https://i.imgur.com/O5Udga8.png",
+      "position": "90",
+      "quantity": 3
+  },
+  {
+      "card_id": "silent-enforcer",
+      "flavor": "They betray not even a whisper",
+      "illustrator": "Apterus",
+      "image_url": "https://i.imgur.com/xurx4mA.png",
+      "position": "91",
+      "quantity": 3
+  },
+  {
+      "card_id": "reckless-avenger",
+      "flavor": "",
+      "illustrator": "Marcel Mercado",
+      "image_url": "https://i.imgur.com/mLVvzKX.png",
+      "position": "92",
+      "quantity": 3
+  },
+  {
+      "card_id": "seasoned-patroller",
+      "flavor": "\"I could barely shoot a bow at her age, and she's alread off winning a war!\" - Grandmother Sakae",
+      "illustrator": "Greg Lambrakis",
+      "image_url": "https://i.imgur.com/ELtVjRb.png",
+      "position": "93",
+      "quantity": 3
+  },
+  {
+      "card_id": "moto-beastmaster",
+      "flavor": "\"I'd keep my distance, I've seen them bring down bears.\"",
+      "illustrator": "Amélie Hutt",
+      "image_url": "https://i.imgur.com/mQGXgeH.png",
+      "position": "94",
+      "quantity": 3
+  },
+  {
+      "card_id": "fearless-sailor",
+      "flavor": "",
+      "illustrator": "Luis Nunez De Castro",
+      "image_url": "https://i.imgur.com/dwOWsEm.png",
+      "position": "95",
+      "quantity": 3
+  },
+  {
+      "card_id": "oni-tyrant",
+      "flavor": "",
+      "illustrator": "Calvin Chua",
+      "image_url": "https://i.imgur.com/RQAbJuE.png",
+      "position": "96",
+      "quantity": 3
+  },
+  {
+      "card_id": "audience-chamber",
+      "flavor": "When the clan champion visits, even lords are little more than servants.",
+      "illustrator": "Haibin Wu",
+      "image_url": "https://i.imgur.com/MZ730HN.png",
+      "position": "97",
+      "quantity": 3
+  },
+  {
+      "card_id": "jade-talisman",
+      "flavor": "The difference between sanctity and suffering.",
+      "illustrator": "Nino Vecia",
+      "image_url": "https://i.imgur.com/4TqdK1w.png",
+      "position": "98",
+      "quantity": 3
+  },
+  {
+      "card_id": "jade-inlaid-katana",
+      "flavor": "",
+      "illustrator": "Carlos Palma Cruchaga",
+      "image_url": "https://i.imgur.com/EpfKH0U.png",
+      "position": "99",
+      "quantity": 3
+  },
+  {
+      "card_id": "jade-strike",
+      "flavor": "",
+      "illustrator": "Carlos Nct",
+      "image_url": "https://i.imgur.com/2mUSpjx.png",
+      "position": "100",
+      "quantity": 3
+  },
+  {
+      "card_id": "preeminent-decree",
+      "flavor": "Even without her title, Kakita Ryoku's judgments prevail.",
+      "illustrator": "Le Vuong",
+      "image_url": "https://i.imgur.com/Qk5DC1Z.png",
+      "position": "101",
+      "quantity": 3
+  },
+  {
+      "card_id": "resourcefulness",
+      "flavor": "",
+      "illustrator": "Diego Gisbert Llorens",
+      "image_url": "https://i.imgur.com/tCWH3TE.png",
+      "position": "102",
+      "quantity": 3
+  },
+  {
+      "card_id": "masashigi-s-sacrifice",
+      "flavor": "",
+      "illustrator": "Nino Vecia",
+      "image_url": "https://i.imgur.com/f76fVTW.png",
+      "position": "103",
+      "quantity": 3
+  },
+  {
+      "card_id": "centered-breath",
+      "flavor": "",
+      "illustrator": "Lin Hsiang",
+      "image_url": "https://i.imgur.com/WO4XuWO.png",
+      "position": "104",
+      "quantity": 3
+  },
+  {
+      "card_id": "swell-of-seafoam",
+      "flavor": "",
+      "illustrator": "Carlos Diaz",
+      "image_url": "https://i.imgur.com/W4GnvF0.png",
+      "position": "105",
+      "quantity": 3
+  },
+  {
+      "card_id": "prove-your-skill",
+      "flavor": "\"I always doubted the gossip.\"",
+      "illustrator": "Ramon Puasa",
+      "image_url": "https://i.imgur.com/x4R7DXa.png",
+      "position": "106",
+      "quantity": 3
+  },
+  {
+      "card_id": "directing-the-battle",
+      "flavor": "",
+      "illustrator": "Charles Urbach",
+      "image_url": "https://i.imgur.com/oq1glB4.png",
+      "position": "107",
+      "quantity": 3
+  },
+  {
+      "card_id": "peerless-discipline",
+      "flavor": "\"Any of these farmers could be the difference between victory and defeat. Why would we not prepare them as best as possible?\"",
+      "illustrator": "Joshua Cairos",
+      "image_url": "https://i.imgur.com/mdE6mz6.png",
+      "position": "108",
+      "quantity": 3
+  },
+  {
+      "card_id": "spell-scroll",
+      "flavor": "",
+      "illustrator": "Carlos Palma Cruchaga",
+      "image_url": "https://i.imgur.com/dc5PVsI.png",
+      "position": "109",
+      "quantity": 3
+  },
+  {
+      "card_id": "elemental-inversion",
+      "flavor": "\"If all elements are of the Void, then what is their opposite?\" - Tao of Shinsei",
+      "illustrator": "Carlos Diaz",
+      "image_url": "https://i.imgur.com/PuOSo8c.png",
+      "position": "110",
+      "quantity": 3
+  },
+  {
+      "card_id": "dance-of-chikusho-do",
+      "flavor": "",
+      "illustrator": "Borja Pindado",
+      "image_url": "https://i.imgur.com/64HsRti.png",
+      "position": "111",
+      "quantity": 3
+  },
+  {
+      "card_id": "soshi-s-memory",
+      "flavor": "\"Does my Lord Bayushi fear the sunlight?\"",
+      "illustrator": "Adam S. Doyle",
+      "image_url": "https://i.imgur.com/NVQ7uUD.png",
+      "position": "112",
+      "quantity": 3
+  },
+  {
+      "card_id": "betrayed-vision",
+      "flavor": "",
+      "illustrator": "Drazenka Kimpel",
+      "image_url": "https://i.imgur.com/nzxR1LN.png",
+      "position": "113",
+      "quantity": 3
+  },
+  {
+      "card_id": "scarlet-sabre",
+      "flavor": "Vibrant tassles often adorn Unicorn blades, their Ujik meaning largely forgotten.",
+      "illustrator": "Carlos Palma Cruchaga",
+      "image_url": "https://i.imgur.com/2H1DX83.png",
+      "position": "114",
+      "quantity": 3
+  },
+  {
+      "card_id": "daikyu",
+      "flavor": "",
+      "illustrator": "Carlos Palma Cruchaga",
+      "image_url": "https://i.imgur.com/xHtvKsb.png",
+      "position": "115",
+      "quantity": 3
+  },
+  {
+      "card_id": "defiance",
+      "flavor": "Fall down seven times, stand up eight.",
+      "illustrator": "Andreia Ugrai",
+      "image_url": "https://i.imgur.com/GiWhpSP.png",
+      "position": "116",
+      "quantity": 3
+  },
+  {
+      "card_id": "exposed-secrets",
+      "flavor": "\"You seemed awfully excited to learn of Ikoma-sama's return. I thought you had barely spoken to her?\"",
+      "illustrator": "Andreia Ugrai",
+      "image_url": "https://i.imgur.com/BF7YCvD.png",
+      "position": "117",
+      "quantity": 3
+  },
+  {
+      "card_id": "lurking-affliction",
+      "flavor": "\"Heavens, Asako-sama, are you unwell? You will shatter the ceramics!\"",
+      "illustrator": "Lin Hsiang",
+      "image_url": "https://i.imgur.com/5k8jd69.png",
+      "position": "118",
+      "quantity": 3
+  },
+  {
+      "card_id": "way-of-the-warrior",
+      "flavor": "",
+      "illustrator": "Haibin Wu",
+      "image_url": "https://i.imgur.com/TRKwSBJ.png",
+      "position": "119",
+      "quantity": 3
+  },
+  {
+      "card_id": "accursed-summoning",
+      "flavor": "",
+      "illustrator": "IFS",
+      "image_url": "https://i.imgur.com/AmBgCIJ.png",
+      "position": "120",
+      "quantity": 3
+  },
+  {
+      "card_id": "unveiled-corruption",
+      "flavor": "The shrine was a lie, a facade for a maho-tsukai's personal laboratory.",
+      "illustrator": "Lin Hsiang",
+      "image_url": "https://i.imgur.com/Yz5yAaE.png",
+      "position": "121",
+      "quantity": 3
+  }
+]

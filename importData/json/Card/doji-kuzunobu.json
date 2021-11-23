@@ -1,0 +1,39 @@
+[
+    {
+        "allowed_clans": [
+            "crane"
+        ],
+        "clan": "crane",
+        "cost": "4",
+        "deck_limit": 3,
+        "element": [],
+        "fate": null,
+        "glory": 2,
+        "honor": null,
+        "id": "doji-kuzunobu",
+        "influence_cost": null,
+        "influence_pool": null,
+        "is_banned": false,
+        "is_banned_in_jade": false,
+        "is_banned_in_skirmish": false,
+        "is_restricted": false,
+        "is_restricted_in_jade": false,
+        "military": "3",
+        "military_bonus": null,
+        "name": "Doji Kuzunobu",
+        "name_extra": null,
+        "political": "4",
+        "political_bonus": null,
+        "role_restriction": null,
+        "side": "dynasty",
+        "strength": null,
+        "strength_bonus": null,
+        "text": "While this character is participating in a conflict, players cannot trigger reaction abilities.",
+        "traits": [
+            "courtier",
+            "creature"
+        ],
+        "type": "character",
+        "unicity": true
+    }
+]

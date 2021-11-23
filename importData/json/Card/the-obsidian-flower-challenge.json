@@ -1,0 +1,38 @@
+[
+    {
+        "allowed_clans": [
+        ],
+        "clan": "shadowlands",
+        "cost": "5",
+        "deck_limit": 1,
+        "element": [],
+        "fate": 5,
+        "glory": 0,
+        "honor": null,
+        "id": "the-obsidian-flower-challenge",
+        "influence_cost": null,
+        "influence_pool": null,
+        "is_banned": false,
+        "is_banned_in_jade": false,
+        "is_banned_in_skirmish": false,
+        "is_restricted": false,
+        "is_restricted_in_jade": false,
+        "military": "4",
+        "military_bonus": null,
+        "name": "The Obsidian Flower",
+        "name_extra": "Challenge",
+        "political": "4",
+        "political_bonus": null,
+        "role_restriction": null,
+        "side": "province",
+        "strength": null,
+        "strength_bonus": null,
+        "text": "Corrupted. No non-[clan-shadowlands] attachments.\n<b>Action:</b> Choose a tainted character an opponent controls. Its controller selects one - either each opponent loses 2 honor, or you gain control of the chosen character and it gains a [clan-shadowlands] clan symbol.",
+        "traits": [
+            "oni",
+            "champion"
+        ],
+        "type": "warlord",
+        "unicity": true
+    }
+]

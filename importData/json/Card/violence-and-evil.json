@@ -1,0 +1,35 @@
+[
+    {
+        "allowed_clans": [
+        ],
+        "clan": "shadowlands",
+        "cost": "2",
+        "deck_limit": 3,
+        "element": [],
+        "fate": null,
+        "glory": null,
+        "honor": null,
+        "id": "violence-and-evil",
+        "influence_cost": null,
+        "influence_pool": null,
+        "is_banned": false,
+        "is_banned_in_jade": false,
+        "is_banned_in_skirmish": false,
+        "is_restricted": false,
+        "is_restricted_in_jade": false,
+        "military": null,
+        "military_bonus": null,
+        "name": "Violence and Evil",
+        "name_extra": null,
+        "political": null,
+        "political_bonus": null,
+        "role_restriction": null,
+        "side": "conflict",
+        "strength": null,
+        "strength_bonus": null,
+        "text": "<b>Action:</b> If the current conflict is [conflict-political], switch the conflict type. Otherwise, choose up to 2 non-[clan-shadowlands] attachments on participating characters and discard them.",
+        "traits": [],
+        "type": "event",
+        "unicity": false
+    }
+]

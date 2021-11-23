@@ -1,0 +1,39 @@
+[
+    {
+        "allowed_clans": [
+            "lion"
+        ],
+        "clan": "lion",
+        "cost": "2",
+        "deck_limit": 3,
+        "element": [],
+        "fate": null,
+        "glory": 2,
+        "honor": null,
+        "id": "ikoma-tsanuri-2",
+        "influence_cost": null,
+        "influence_pool": null,
+        "is_banned": false,
+        "is_banned_in_jade": true,
+        "is_banned_in_skirmish": false,
+        "is_restricted": true,
+        "is_restricted_in_jade": false,
+        "military": "2",
+        "military_bonus": null,
+        "name": "Ikoma Tsanuri",
+        "name_extra": "(2)",
+        "political": "1",
+        "political_bonus": null,
+        "role_restriction": null,
+        "side": "dynasty",
+        "strength": null,
+        "strength_bonus": null,
+        "text": "Rally. <i>(After this card is revealed in a province, add the top card of your dynasty deck to the province, faceup.)</i>\nDuring conflicts in which this character is participating, your opponent cannot trigger abilities on the attacked province.",
+        "traits": [
+            "bushi",
+            "commander"
+        ],
+        "type": "character",
+        "unicity": true
+    }
+]

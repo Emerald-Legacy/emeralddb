@@ -1,0 +1,39 @@
+[
+    {
+        "allowed_clans": [
+            "crab"
+        ],
+        "clan": "crab",
+        "cost": "2",
+        "deck_limit": 3,
+        "element": [],
+        "fate": null,
+        "glory": 0,
+        "honor": null,
+        "id": "one-of-the-forgotten",
+        "influence_cost": null,
+        "influence_pool": null,
+        "is_banned": false,
+        "is_banned_in_jade": false,
+        "is_banned_in_skirmish": false,
+        "is_restricted": false,
+        "is_restricted_in_jade": false,
+        "military": "4",
+        "military_bonus": null,
+        "name": "One of the Forgotten",
+        "name_extra": null,
+        "political": "0",
+        "political_bonus": null,
+        "role_restriction": null,
+        "side": "dynasty",
+        "strength": null,
+        "strength_bonus": null,
+        "text": "You cannot place fate on this character when it is played from your provinces.\n<b>Reaction:</b> After an opponent passes on declaring a conflict, if that opponent controls any ready characters - put 1 fate on this character.",
+        "traits": [
+            "bushi",
+            "berserker"
+        ],
+        "type": "character",
+        "unicity": false
+    }
+]
