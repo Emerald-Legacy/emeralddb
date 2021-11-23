@@ -16,6 +16,7 @@ import { clans, formats } from '../../utils/enums'
 import { CardLink } from '../card/CardLink'
 import { BushiBuilderImportButton } from './BushiBuilderImportButton'
 import { FiveRingsDBImportButton } from './FiveRingsDBImportButton'
+import { CardFactionIcon } from "../card/CardFactionIcon";
 
 export function DeckBuilderWizard(props: {
   onComplete: (
@@ -107,6 +108,7 @@ export function DeckBuilderWizard(props: {
                   value={format.id}
                   control={<Radio />}
                   label={format.name}
+                  onClick={() => setFormat(format.id)}
                 />
               ))}
             </RadioGroup>
@@ -127,7 +129,8 @@ export function DeckBuilderWizard(props: {
                   key={clan.id}
                   value={clan.id}
                   control={<Radio />}
-                  label={clan.name}
+                  label={<span style={{fontSize: 18}}><CardFactionIcon faction={clan.id} colored /> {clan.name}</span>}
+                  onClick={() => setPrimaryClan(clan.id)}
                 />
               ))}
             </RadioGroup>
@@ -148,7 +151,8 @@ export function DeckBuilderWizard(props: {
                   key={thisStronghold.id}
                   value={thisStronghold.id}
                   control={<Radio />}
-                  label={<CardLink cardId={thisStronghold.id} format={format} />}
+                  label={<CardLink cardId={thisStronghold.id} format={format} notClickable />}
+                  onClick={() => setStronghold(thisStronghold.id)}
                 />
               ))}
             </RadioGroup>
@@ -171,7 +175,8 @@ export function DeckBuilderWizard(props: {
                       key={thisRole.id}
                       value={thisRole.id}
                       control={<Radio />}
-                      label={<CardLink cardId={thisRole.id} format={format} />}
+                      label={<CardLink cardId={thisRole.id} format={format} notClickable />}
+                      onClick={() => setRole(thisRole.id)}
                     />
                   ))}
                 </RadioGroup>
@@ -187,7 +192,8 @@ export function DeckBuilderWizard(props: {
                       key={thisRole.id}
                       value={thisRole.id}
                       control={<Radio />}
-                      label={<CardLink cardId={thisRole.id} format={format} />}
+                      label={<CardLink cardId={thisRole.id} format={format} notClickable />}
+                      onClick={() => setRole(thisRole.id)}
                     />
                   ))}
                 </RadioGroup>

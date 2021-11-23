@@ -112,6 +112,9 @@ export function DeckTabs(props: {
                     {latestList?.primary_clan && (
                       <CardFactionIcon faction={latestList.primary_clan} />
                     )}
+                    {latestList?.secondary_clan && (
+                      <CardFactionIcon faction={latestList.secondary_clan} />
+                    )}
                   </Typography>
                   <Typography className={classes.format}>
                     Format:{' '}

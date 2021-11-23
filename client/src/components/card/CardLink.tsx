@@ -1,5 +1,5 @@
 import { makeStyles, Popover, Theme } from '@material-ui/core'
-import { useState } from 'react'
+import React, {MouseEventHandler, useState} from 'react'
 import { useHistory } from 'react-router-dom'
 import { useUiStore } from '../../providers/UiStoreProvider'
 import { formats } from '../../utils/enums'
@@ -106,6 +106,7 @@ export function CardLink(props: {
   cardId: string
   sameTab?: boolean
   format?: string
+  notClickable?: boolean
 }): JSX.Element {
   const { cards } = useUiStore()
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
@@ -122,6 +123,12 @@ export function CardLink(props: {
 
   const handlePopoverClose = () => {
     setAnchorEl(null)
+  }
+
+  function handleClick(e: React.MouseEvent<HTMLElement>) {
+    if (props.notClickable) {
+      e.preventDefault();
+    }
   }
 
   const open = Boolean(anchorEl)
@@ -142,11 +149,12 @@ export function CardLink(props: {
   }
 
   return (
-    <>
+    <span>
       <a
         href={props.sameTab ? undefined : `/card/${card.id}`}
         target={'_blank'}
         style={{ color: 'inherit' }}
+        onClick={handleClick}
       >
         <span onMouseEnter={handlePopoverOpen} onMouseLeave={handlePopoverClose}>
           <CardTypeIcon type={card.type} faction={card.faction} />
@@ -190,6 +198,6 @@ export function CardLink(props: {
           <CardInformation cardWithVersions={card} />
         )}
       </Popover>
-    </>
+    </span>
   )
 }
