@@ -119,7 +119,7 @@ export enum FORMAT {
   EMERALD = 'emerald',
   JADE_EDICT = 'jade-edict',
   ENLIGHTENMENT = 'enlightenment',
-  OBSIDIAN = 'obsidian'
+  OBSIDIAN = 'obsidian',
 }
 
 export const FORMATS: FORMAT[] = [

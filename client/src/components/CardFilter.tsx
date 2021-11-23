@@ -203,6 +203,15 @@ function filterNumericCardValues(card: CardWithVersions, filters: NumericValueFi
   })
 }
 
+function replaceSpecialCharacters(text: string) : string {
+  return text
+    .toLocaleLowerCase()
+    .trim()
+    .replaceAll('ā', 'a')
+    .replaceAll('ō', 'o')
+    .replaceAll('ū', 'u')
+}
+
 export function applyFilters(cards: CardWithVersions[], filter: FilterState): CardWithVersions[] {
   let filteredCards = cards
   if (filter.factions && filter.factions.length > 0) {
@@ -247,12 +256,12 @@ export function applyFilters(cards: CardWithVersions[], filter: FilterState): Ca
     filteredCards = filteredCards.filter((c) => filterNumericCardValues(c, filter.numericValues))
   }
   if (filter.text) {
-    const query = filter.text.toLocaleLowerCase().trim()
+    const query = replaceSpecialCharacters(filter.text)
     filteredCards = filteredCards.filter(
       (c) =>
-        c.name.toLocaleLowerCase().includes(query) ||
+        replaceSpecialCharacters(c.name).includes(query) ||
         c.id.toLocaleLowerCase().includes(query) ||
-        c.text?.toLocaleLowerCase().includes(query) ||
+        replaceSpecialCharacters(c.text || '').includes(query) ||
         c.traits?.some((trait) => trait.toLowerCase().includes(query))
     )
   }
