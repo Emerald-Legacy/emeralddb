@@ -2,6 +2,8 @@ import { AsyncRouter, AsyncRouterInstance } from 'express-async-router'
 import * as getAllCards from './handlers/getAllCards'
 import * as getAllPacks from './handlers/getAllPacks'
 import * as createPack from './handlers/createPack'
+import * as importPack from './handlers/importPack'
+import * as exportPack from './handlers/exportPack'
 import * as getAllCycles from './handlers/getAllCycles'
 import * as createCycle from './handlers/createCycle'
 import * as getAllTraits from './handlers/getAllTraits'
@@ -45,6 +47,8 @@ export default (): AsyncRouterInstance => {
   api.put('/cards', authorizedOnly, dataAdminOnly, createCard.handler)
   api.get('/packs', getAllPacks.handler)
   api.put('/packs', authorizedOnly, dataAdminOnly, createPack.handler)
+  api.put('/packs/import', authorizedOnly, dataAdminOnly, importPack.handler)
+  api.get('/packs/export/:id', exportPack.handler)
   api.post('/cards-in-packs', authorizedOnly, dataAdminOnly, updateCardsInPack.handler)
   api.get('/cycles', getAllCycles.handler)
   api.put('/cycles', authorizedOnly, dataAdminOnly, createCycle.handler)
@@ -79,6 +83,16 @@ export default (): AsyncRouterInstance => {
       return {
         domain: env.auth0Domain,
         clientId: env.auth0ClientId,
+      }
+    }
+  )
+  api.get(
+    '/beta-url',
+    (): {
+      betaUrl: string
+    } => {
+      return {
+        betaUrl: env.betaUrl,
       }
     }
   )

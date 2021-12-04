@@ -25,6 +25,7 @@
     "@types/react-router-hash-link": "^2.4.0",
     "@types/react-rte": "^0.16.1",
     "@types/react-virtualized": "^9.21.11",
+    "axios": "^0.24.0",
     "bootstrap": "^4.5.3",
     "date-fns": "^2.17.0",
     "deep-equal": "^2.0.5",

@@ -62,6 +62,9 @@ export const privateApi = forge({
     Data: {
       import: { method: 'GET', path: '/import' },
     },
+    Beta: {
+      url: { method: 'GET', path: '/beta-url'}
+    },
     User: {
       current: { method: 'GET', path: '/users/me' },
       update: { method: 'PUT', path: '/users/me' },
@@ -89,6 +92,7 @@ export const privateApi = forge({
     },
     Pack: {
       create: { method: 'PUT', path: '/packs' },
+      import: { method: 'PUT', path: '/packs/import' },
     },
     Cycle: {
       create: { method: 'PUT', path: '/cycles' },

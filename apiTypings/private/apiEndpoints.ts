@@ -149,3 +149,22 @@ export interface DecklistComments$delete {
 export interface DecklistComments$update {
   request: { params: { id: string }; body: { comment: string } }
 }
+
+export interface Pack$import {
+  request: {
+    body: {
+      pack: Pack
+      cards: Card[]
+      cardsInPack: CardInPack[]
+    }
+  }
+}
+
+export interface Pack$export {
+  request: { params: { id: string } }
+  response: {
+    pack: Pack
+    cards: Card[]
+    cardsInPack: CardInPack[]
+  }
+}
