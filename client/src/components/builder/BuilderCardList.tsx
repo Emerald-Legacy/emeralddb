@@ -389,8 +389,7 @@ export function BuilderCardList(props: {
                 {tableData.map((card) => {
                     return (<GridListTile key={card.nameFactionType.cardId} cols={1}>
                           <CardImageOrText cardId={card.nameFactionType.cardId} />
-                          <br/>
-                          <Box style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
+                          <Box marginTop={'-20px'} style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
                             <CardQuantitySelector deckLimit={card.quantityForId.deckLimit} quantity={card.quantityForId.quantity} onQuantityChange={card.quantityForId.onQuantityChange} />
                           </Box>
                     </GridListTile>)

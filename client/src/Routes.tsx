@@ -91,7 +91,7 @@ export function Routes(): JSX.Element {
         <CardDetailView />
       </Route>
       <Route path="/">
-        <Redirect to="/cards" />
+        <Redirect to="/decks" />
       </Route>
     </Switch>
   )

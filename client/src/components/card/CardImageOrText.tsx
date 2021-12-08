@@ -19,7 +19,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 }))
 
 export function CardImageOrText(props: {
-  cardId: string
+  cardId: string,
+  onClick?: (id: string) => void
 }): JSX.Element {
   const { cards } = useUiStore()
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
@@ -41,7 +42,7 @@ export function CardImageOrText(props: {
   const open = Boolean(anchorEl)
   const cardImage = card.versions.length > 0 && card.versions[0].image_url
   return (
-    <>
+    <div style={{position: 'relative', height: '95%'}} >
       {cardImage ? (
         <img src={cardImage} height={'90%'} width={'100%'}/>
       ) : (
@@ -53,6 +54,7 @@ export function CardImageOrText(props: {
         size="small"
         onMouseEnter={handlePopoverOpen}
         onMouseLeave={handlePopoverClose}
+        onClick={() => props.onClick ? props.onClick(props.cardId) : {}}
       >
         <ZoomInIcon />
       </Fab>
@@ -78,6 +80,6 @@ export function CardImageOrText(props: {
           <CardInformation cardWithVersions={card} />
         )}
       </Popover>
-    </>
+    </div>
   )
 }

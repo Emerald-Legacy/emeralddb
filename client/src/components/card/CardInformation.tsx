@@ -6,6 +6,7 @@ import { getColorForFactionId } from '../../utils/factionUtils'
 import { capitalize } from '../../utils/stringUtils'
 import { CardText } from './CardText'
 import { ElementSymbol } from './ElementSymbol'
+import {useHistory} from "react-router-dom";
 
 const useStyles = makeStyles(() => ({
   clanMon: {
@@ -133,7 +134,9 @@ const ElementsElement = (props: { elements: string[] }) => {
 export function CardInformation(props: {
   cardWithVersions: CardWithVersions
   currentVersionPackId?: string
+  clickable?: boolean
 }): JSX.Element {
+  const history = useHistory()
   const classes = useStyles()
   const { traits, packs } = useUiStore()
   const card = props.cardWithVersions
@@ -147,6 +150,10 @@ export function CardInformation(props: {
 
   const textLines = card.text?.split('\n') || []
   const color = getColorForFactionId(card.faction)
+
+  const goToCardPage = (id: string) => {
+    history.push(`/card/${id}`)
+  }
 
   const getCardStatInfo = (card: Card) => {
     if (card.type === 'event') {
@@ -209,7 +216,7 @@ export function CardInformation(props: {
     <Box border="solid 1px" padding="15px" borderRadius="3px">
       <Grid container className={classes.block}>
         <Grid item xs={10}>
-          <Typography variant="h5" style={{ color: color }}>
+          <Typography variant="h5" style={{ color: color, cursor: props.clickable? 'pointer' : 'default' }} onClick={() => props.clickable ? goToCardPage(card.id) : {}}>
             {card.is_unique && <span className="icon icon-unique" />}
             {card.name}
           </Typography>
