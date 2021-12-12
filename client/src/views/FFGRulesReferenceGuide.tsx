@@ -727,6 +727,23 @@ export function FFGRulesReferenceGuide(): JSX.Element {
                 </p>
               </article>
               <article>
+                <AnchoredHeading addHeading={addHeading} level="2" text="Conflicts at Multiple Provinces" />
+                <p>
+                  When a conflict is at multiple provinces, each of those provinces
+                  is the "attacked province" and abilities that interact with the
+                  conflict being at those provinces can be used.
+                </p>
+                <p>
+                  During the resolution of a conflict at multiple provinces,
+                  compare the attacking player’s excess skill against the strength
+                  of each attacked province separately to determine if that
+                  province is broken.
+                </p>
+                <ul>
+                  <li>Any card ability that interacts with "the attacked province" interacts with one (not both) of those provinces.</li>
+                </ul>
+              </article>
+              <article>
                 <AnchoredHeading addHeading={addHeading} level="2" text="Constant Abilities" />
                 <p>
                   A constant ability is any non-keyword ability whose text contains no boldface
@@ -837,6 +854,14 @@ export function FFGRulesReferenceGuide(): JSX.Element {
                     the same title.
                   </li>
                 </ul>
+              </article>
+              <article>
+                <AnchoredHeading addHeading={addHeading} level="2" text="Corrupted" />
+                <p>Corrupted is a keyword ability. A character with the corrupted keyword enters play tainted. Abilities cannot be triggered from a corrupted character receiving the tainted status token from this keyword, as that card enters play already with that status.</p>
+                <p>
+                  <b>Related:</b>{" "}<a href="#tainted-tainted-status-token">Tainted, Tainted Status Token</a>{", "}
+                  <a href="#status-token">Status Token</a>
+                </p>
               </article>
               <article>
                 <AnchoredHeading addHeading={addHeading} level="2" text="Cost" />
@@ -1127,6 +1152,13 @@ export function FFGRulesReferenceGuide(): JSX.Element {
                     When a delayed effect resolves, it is still considered to be an ability
                     originating from the cardtype of the card that created the delayed effect.
                   </li>
+                </ul>
+              </article>
+              <article>
+                <AnchoredHeading addHeading={addHeading} level="2" text="Dire" />
+                <p>Dire is a variable keyword ability. A card with this keyword gains an additional ability while that character has no fate on it.</p>
+                <ul>
+                  <li>Most uses of the dire keyword grant a constant ability that is active while the character has no fate on it. Some may instead grant triggered abilities that can only be used while the character has no fate on it.</li>
                 </ul>
               </article>
               <article>
@@ -3363,6 +3395,11 @@ export function FFGRulesReferenceGuide(): JSX.Element {
                 <p>The game is now ready to begin.</p>
               </article>
               <article>
+                <AnchoredHeading addHeading={addHeading} level="2" text="Shadowlands" />
+                <p>The Shadowlands is a special faction that functions in cooperative and challenge play. It cannot be used in standard play and has a unique set of rules documented in the Under Fu Leng's Shadow rulebook, which can be found on www.L5R.com.</p>
+                <p>The Shadowlands faction is indicated by the following clan icon in text (<span className="icon icon-clan-shadowlands" />).</p>
+              </article>
+              <article>
                 <AnchoredHeading addHeading={addHeading} level="2" text="Shuffle" />
                 <p>
                   The word "shuffle" is used as a shorthand that instructs a player to shuffle a
@@ -3425,7 +3462,7 @@ export function FFGRulesReferenceGuide(): JSX.Element {
                 <AnchoredHeading addHeading={addHeading} level="2" text="Status Token" />
                 <p>
                   A status token can be placed on a card to alter its status during a game. These
-                  include honored status tokens and dishonored status tokens. Each kind of status
+                  include honored status tokens, dishonored status tokens and tainted status tokens. Each kind of status
                   token has a different effect on the card it is placed on.
                 </p>
                 <li>
@@ -3437,6 +3474,16 @@ export function FFGRulesReferenceGuide(): JSX.Element {
                   Dishonored status tokens are used to indicate a character’s dishonored status. A
                   character with a dishonored status token subtracts its glory from each of its
                   skills. That character’s controller loses 1 honor when that character leaves play,
+                </li>
+                <li>
+                  Tainted status tokens are used to indicate that a character or
+                  province has been tainted by the Shadowlands. A character
+                  with a tainted status token gets +2<span className="icon icon-conflict-military" /> and +2<span className="icon icon-conflict-political" />, but
+                  its controller must lose 1 honor when it is declared as an
+                  attacker or defender in a conflict. A province with a tainted
+                  status token gets +2 strength, but its controller must lose
+                  1 honor when they declare 1 or more defenders during
+                  conflicts at that province.
                 </li>
                 <li>
                   Dishonored status tokens can be placed on provinces by card abilities. A province
@@ -3516,6 +3563,42 @@ export function FFGRulesReferenceGuide(): JSX.Element {
                 <p>
                   <b>Related:</b> <a href="#gains">Gains</a>,<a href="#give">Give</a>,{' '}
                   <a href="#loses">Loses</a>
+                </p>
+              </article>
+              <article>
+                <AnchoredHeading addHeading={addHeading} level="2" text="Tainted, Tainted Status Token" />
+                <p>
+                  The tainted status token allows characters and provinces to
+                  become tainted by the corrupting presence of Jigoku.
+                </p>
+                <p>
+                  When a card ability or ring effect would taint a character, place
+                  a tainted status token on it. A tainted character cannot be
+                  tainted again.
+                </p>
+                <p>
+                  Each character that is tainted gets +2<span className="icon icon-conflict-military" /> and +2<span className="icon icon-conflict-political" />. As an
+                  additional cost to declare a tainted character as an attacker or
+                  defender in a conflict, its controller must lose 1 honor.
+                </p>
+                <p>
+                  Each province that is tainted gets +2 strength. As an additional
+                  cost to declare any number of defenders in a conflict against a
+                  tainted province, its controller must lose 1 honor.
+                </p>
+                <p>
+                  Once a card is tainted, that tainted status cannot be removed
+                  unless a card ability discards (or moves) its status token. If a
+                  tainted province is turned faceup or facedown, do not discard
+                  its tainted status token.
+                </p>
+                <p>
+                  A character’s tainted status has no bearing on its personal
+                  honor, and a tainted character can be honored or dishonored
+                  the same as an untainted character.
+                </p>
+                <p>
+                  <b>Related:</b> <a href="#corrupted">Corrupted</a>, <a href="#status-token">Status Token</a>
                 </p>
               </article>
               <article>
@@ -3739,6 +3822,13 @@ export function FFGRulesReferenceGuide(): JSX.Element {
                     abilities are optional. They can be triggered (or not) by their controller at
                     the ability's appropriate timing point. Forced triggered abilities are triggered
                     automatically by the game at the ability's appropriate timing point.
+                    <ul>
+                      <li>
+                        Any targets that must be chosen in the resolution of a
+                        card’s “Forced” ability are chosen by the controller of
+                        that card.
+                      </li>
+                    </ul>
                   </li>
                   <li>
                     Unless otherwise specified by the ability itself, each triggered ability may be

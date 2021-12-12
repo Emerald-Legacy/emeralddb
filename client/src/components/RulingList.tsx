@@ -140,7 +140,7 @@ export function RulingList(props: { cardId: string; rulings: Ruling[] }): JSX.El
       newText = newText.replaceAll('https://fiveringsdb.com', host)
     }
     if (newText?.includes('/rules/reference')) {
-      newText = newText.replaceAll('/rules/reference', '/rules')
+      newText = newText.replaceAll('/rules/reference', '/rules/emerald')
     }
     return newText || ''
   }

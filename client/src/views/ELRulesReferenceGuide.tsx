@@ -11,9 +11,10 @@ import {
   DialogActions,
   Button,
 } from '@material-ui/core'
-import { useEffect, useState } from 'react'
+import {useEffect, useRef, useState} from 'react'
 import { HashLink as Link } from 'react-router-hash-link'
 import TocIcon from '@material-ui/icons/Toc'
+import {useHistory} from "react-router-dom";
 
 interface Heading {
   href: string
@@ -49,41 +50,26 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-function AnchoredHeading(props: {
-  level: '1' | '2' | '3'
-  text: string
-  addHeading: (text: string, href: string, level: '1' | '2' | '3') => void
-}): JSX.Element {
-  const shorttext =
-    props.text.indexOf('(') > -1
-      ? props.text.substring(0, props.text.indexOf('(')).trim()
-      : props.text
-  const headingId = shorttext
-    .toLowerCase()
-    .replace(/\W+/g, '-')
-    .replace(/(^-|-$)/g, '')
 
-  useEffect(() => {
-    props.addHeading(props.text, `#${headingId}`, props.level)
-  }, [props.text, props.level])
-
-  const variant: 'h4' | 'h5' | 'h6' = props.level === '1' ? 'h4' : props.level === '2' ? 'h5' : 'h6'
-
-  return (
-    <Typography id={headingId} variant={variant}>
-      {props.text}
-    </Typography>
-  )
-}
 
 export function ELRulesReferenceGuide(): JSX.Element {
   const classes = useStyles()
   const currentHost = window.location.host
   const currentProtocol = window.location.protocol
+  const history = useHistory();
   const host = currentProtocol + '//' + currentHost
   const [headings, setHeadings] = useState<Heading[]>([])
   const isSmOrBigger = useMediaQuery('(min-width:600px)')
   const [showTable, setShowTable] = useState(false)
+  const scrollRef = useRef<HTMLHeadingElement>(null)
+  const [section, setSection] = useState(history?.location?.hash || '')
+  console.log(scrollRef)
+
+  if (section && scrollRef?.current && headings.length > 0) {
+    console.log(scrollRef)
+    scrollRef?.current?.scrollIntoView();
+    setSection('')
+  }
 
   const addHeading = (text: string, href: string, level: '1' | '2' | '3') => {
     if (headings.filter((heading) => heading.href === href).length === 0) {
@@ -94,6 +80,35 @@ export function ELRulesReferenceGuide(): JSX.Element {
       })
       setHeadings([...headings])
     }
+  }
+
+  function AnchoredHeading(props: {
+    level: '1' | '2' | '3'
+    text: string
+    addHeading: (text: string, href: string, level: '1' | '2' | '3') => void
+  }): JSX.Element {
+    const shorttext =
+      props.text.indexOf('(') > -1
+        ? props.text.substring(0, props.text.indexOf('(')).trim()
+        : props.text
+    const headingId = shorttext
+      .toLowerCase()
+      .replace(/\W+/g, '-')
+      .replace(/(^-|-$)/g, '')
+
+    useEffect(() => {
+      props.addHeading(props.text, `#${headingId}`, props.level)
+    }, [props.text, props.level])
+
+    const variant: 'h4' | 'h5' | 'h6' = props.level === '1' ? 'h4' : props.level === '2' ? 'h5' : 'h6'
+
+    const ref = `#${headingId}` === section ? scrollRef : null;
+
+    return (
+      <Typography id={headingId} variant={variant} ref={ref}>
+        {props.text}
+      </Typography>
+    )
   }
 
   function TableOfContents(): JSX.Element {
@@ -122,11 +137,11 @@ export function ELRulesReferenceGuide(): JSX.Element {
   return (
     <>
       <Grid container spacing={3} direction={isSmOrBigger ? 'row' : 'column-reverse'}>
-        <Grid sm={8}>
+        <Grid item sm={8}>
           <Box style={{ maxHeight: isSmOrBigger ? '93vh' : '85vh', overflow: 'auto' }} p={1}>
             <Typography variant="h4">Emerald Legacy: Rules Reference</Typography>
             <p>
-              <b>Version 1.1</b>, July 16, 2021
+              <b>Version 2.0</b>, December 12, 2021
               <br />
               PDF Version available{' '}
               <a
@@ -163,7 +178,8 @@ export function ELRulesReferenceGuide(): JSX.Element {
               <p>
                 If the text of this Rules Reference directly contradicts the text of FFG's Rules
                 Reference, the Emerald Legacy Rules Reference takes precedence. Changes to FFG's
-                Rules Reference are shown in <b className={classes.change}>green and bold</b>.
+                Rules Reference are shown in <b>bold</b>. Changes to the last version of the Emerald Legacy RRG are
+                written in <span className={classes.change}>green</span>.
               </p>
               <p>
                 If the text of a card directly contradicts the text of this Rules Reference, the
@@ -320,13 +336,13 @@ export function ELRulesReferenceGuide(): JSX.Element {
                   <li>
                     An attachment cannot enter play if there is no eligible card or game element to
                     which it can attach.{' '}
-                    <b className={classes.change}>
+                    <b>
                       A card or game element becomes ineligible for a player’s attachment if a copy
                       of that attachment controlled by the same player is already attached to it.
                       <br />
                       Example:{' '}
                     </b>
-                    <i className={classes.change}>
+                    <i>
                       Otomo Courtier is the only character in play and has Karolina's Ornate Fan
                       attached to it. Karolina has another copy of Ornate Fan in hand but she is not
                       allowed to play it, as there are no eligible targets for it. She can not
@@ -344,13 +360,13 @@ export function ELRulesReferenceGuide(): JSX.Element {
                   <li>
                     There is no limit on the number of attachments that may be attached to a card or
                     game element.{' '}
-                    <b className={classes.change}>
+                    <b>
                       However, only one copy of an attachment (by name) per player can be attached
                       to a card or game element at the same time.
                     </b>
                   </li>
                   <li>
-                    <b className={classes.change}>
+                    <b>
                       If a situation arises where a card or game element has multiple copies of an
                       attachment controlled by the same player attached to it, its controller (or
                       the First Player, if there is no controller) must immediately discard copies
@@ -558,6 +574,20 @@ export function ELRulesReferenceGuide(): JSX.Element {
                 </p>
               </article>
               <article>
+                <AnchoredHeading addHeading={addHeading} level="2" text="Cards under another card" />
+                <p className={classes.change}>
+                  Some card effects like Kaiu Shihobu (Defenders of Rokugan 10), Togashi Tsurumi (Through the Mists 13) or Stowaway (Through the Mists 50) place cards under another card. These cards are out of play and can only be interacted with by effects that explicitly state that.
+                </p>
+                <ul>
+                  <li className={classes.change}>
+                    If a card leaves play, any cards that have been put under it this way are removed from the game, unless otherwise specified by the effect that put them there.
+                  </li>
+                  <li className={classes.change}>
+                    This does not apply to attachments, only to cards that are explicitly placed under/underneath a card by a card effect.
+                  </li>
+                </ul>
+              </article>
+              <article>
                 <AnchoredHeading addHeading={addHeading} level="2" text="Cardtypes" />
                 <p>
                   The game's cardtypes are: character, attachment, holding, event, province,
@@ -741,6 +771,49 @@ export function ELRulesReferenceGuide(): JSX.Element {
                 </p>
               </article>
               <article>
+                <AnchoredHeading addHeading={addHeading} level="2" text="Conflict (Conflict Action, Conflict Reaction, Conflict Interrupt), Triggered Conflict Ability" />
+                <p className={classes.change}>
+                  If a triggered ability is preceded by the modifier "Conflict", that ability can only be triggered during a conflict. It functions as a shorthand for the following triggering conditions:<br/>
+                  - On events, provinces, strongholds and holdings "Conflict X:" replaces "X: During a conflict, ..."<br/>
+                  - On characters "Conflict X:" replaces "X: During a conflict in which this character is participating, ..."<br/>
+                  - On attachments "Conflict X:" replaces "X: During a conflict in which attached character is participating, ..."<br/>
+                </p>
+                <ul>
+                  <li className={classes.change}>
+                    If a Triggered Conflict Ability can only be triggered in a conflict of a specific type, the boldface timing command is preceded by the <span className="icon icon-conflict-military" /> or <span className="icon icon-conflict-political" /> symbols, respectively.<br/>
+                    <i>
+                      Example: A character has the ability "<b><span className="icon icon-conflict-military" /> Conflict Action:</b> Pay 1 fate - ready this character." This is equivalent to "<b>Action:</b> During a <span className="icon icon-conflict-military" /> conflict in which this character is participating, pay 1 fate - ready this character."
+                    </i>
+                  </li>
+                  <li className={classes.change}>
+                    If a card's remaining triggering conditions directly contradict parts of this replacement, the card's text takes precedence.<br/>
+                    <i>
+                      Example: The attachment Stinger (Through the Mists 34) has the ability "<b><span className="icon icon-conflict-military" /> Conflict Action:</b> While this card is in your hand, choose an attacking character and lose 1 honor - ...". Because Stinger has to be in your hand in order to trigger its ability, it does not have an attached character. In this case, the "<b><span className="icon icon-conflict-military" /> Conflict Action:</b>" is interpreted as "<b>Action:</b> During a <span className="icon icon-conflict-military" /> conflict, ..." instead of "Action: During a <span className="icon icon-conflict-military" /> conflict in which attached character is participating, …”
+                    </i>
+                  </li>
+                  <li className={classes.change}>
+                    If a player is instructed to resolve a Triggered Conflict Ability on a character, the triggering conditions above must still be met. This means that the character must be participating in a conflict of the right type (if specified).
+                  </li>
+                </ul>
+              </article>
+              <article>
+                <AnchoredHeading addHeading={addHeading} level="2" text="Conflicts at Multiple Provinces" />
+                <p>
+                  When a conflict is at multiple provinces, each of those provinces
+                  is the "attacked province" and abilities that interact with the
+                  conflict being at those provinces can be used.
+                </p>
+                <p>
+                  During the resolution of a conflict at multiple provinces,
+                  compare the attacking player’s excess skill against the strength
+                  of each attacked province separately to determine if that
+                  province is broken.
+                </p>
+                <ul>
+                  <li>Any card ability that interacts with "the attacked province" interacts with one (not both) of those provinces.</li>
+                </ul>
+              </article>
+              <article>
                 <AnchoredHeading addHeading={addHeading} level="2" text="Constant Abilities" />
                 <p>
                   A constant ability is any non-keyword ability whose text contains no boldface
@@ -853,6 +926,14 @@ export function ELRulesReferenceGuide(): JSX.Element {
                 </ul>
               </article>
               <article>
+                <AnchoredHeading addHeading={addHeading} level="2" text="Corrupted" />
+                <p>Corrupted is a keyword ability. A character with the corrupted keyword enters play tainted. Abilities cannot be triggered from a corrupted character receiving the tainted status token from this keyword, as that card enters play already with that status.</p>
+                <p>
+                  <b>Related:</b>{" "}<a href="#tainted-tainted-status-token">Tainted, Tainted Status Token</a>{", "}
+                  <a href="#status-token">Status Token</a>
+                </p>
+              </article>
+              <article>
                 <AnchoredHeading addHeading={addHeading} level="2" text="Cost" />
                 <p>
                   A card's cost is the numerical value that dictates how much fate must be paid to
@@ -929,18 +1010,18 @@ export function ELRulesReferenceGuide(): JSX.Element {
                 <AnchoredHeading addHeading={addHeading} level="2" text="Covert" />
                 <p>
                   Covert is a keyword ability. When a player initiates a conflict,
-                  <b className={classes.change}>
+                  <b>
                     {' '}
                     if at least one character with the covert keyword is declared as an attacker,{' '}
                   </b>{' '}
                   that player may choose one character without covert controlled by the defending
                   player.
-                  <b className={classes.change}> That character</b> is considered evaded by covert,
+                  <b> That character</b> is considered evaded by covert,
                   and cannot be declared as a defender for that conflict.
                 </p>
                 <ul>
                   <li>
-                    <b className={classes.change}>
+                    <b>
                       If multiple characters with the covert keyword are declared as attackers, the
                       evaded character is considered to be chosen and evaded by each of those
                       characters' covert abilities.
@@ -1155,6 +1236,13 @@ export function ELRulesReferenceGuide(): JSX.Element {
                 </ul>
               </article>
               <article>
+                <AnchoredHeading addHeading={addHeading} level="2" text="Dire" />
+                <p>Dire is a variable keyword ability. A card with this keyword gains an additional ability while that character has no fate on it.</p>
+                <ul>
+                  <li>Most uses of the dire keyword grant a constant ability that is active while the character has no fate on it. Some may instead grant triggered abilities that can only be used while the character has no fate on it.</li>
+                </ul>
+              </article>
+              <article>
                 <AnchoredHeading addHeading={addHeading} level="2" text="Discard Piles" />
                 <p>
                   The discard piles are out-of-play areas. Each player has a dynasty discard pile
@@ -1204,7 +1292,7 @@ export function ELRulesReferenceGuide(): JSX.Element {
                     cannot be used to replace or prevent this discard.
                   </li>
                   <li>
-                    <b className={classes.change}>
+                    <b>
                       A character played by the disguised keyword must be played into a conflict if
                       the character chosen by the keyword is also participating in the conflict,
                     </b>{' '}
@@ -2162,10 +2250,19 @@ export function ELRulesReferenceGuide(): JSX.Element {
                 </ul>
               </article>
               <article>
+                <AnchoredHeading addHeading={addHeading} level="2" text="Legendary X" />
+                <p className={classes.change}>
+                  Some characters are shrouded in legend and mystery. These characters are given the Legendary keyword. It consists of the word “Legendary” followed by a variable, numerical value X, that can be 0 or higher.
+                </p>
+                <p className={classes.change}>
+                  Legendary X means: “This card enters play with X fate on it and cannot have more than X fate on it. Fate cannot be added to this card. It cannot be put into play or prevented from leaving play by card effects, and cannot enter play outside of the Dynasty phase.”
+                </p>
+              </article>
+              <article>
                 <AnchoredHeading addHeading={addHeading} level="2" text="Limited" />
                 <p>
                   Limited is a keyword ability.{' '}
-                  <b className={classes.change}>
+                  <b>
                     As an additional cost to play a card with the limited keyword, a player must bow
                     their role card, this means that
                   </b>{' '}
@@ -2659,9 +2756,9 @@ export function ELRulesReferenceGuide(): JSX.Element {
                   </li>
                   <li>
                     When an event card is played, place it on the table,{' '}
-                    <b className={classes.change}> then pay its cost, </b>resolve its ability, and
+                    <b> then pay its cost, </b>resolve its ability, and
                     place the card in its owner's discard pile.{' '}
-                    <b className={classes.change}>
+                    <b>
                       The event is not in your hand (or province) while paying its cost. If the cost
                       of an event is (partially) prevented, it is still placed in its owners
                       corresponding discard pile.
@@ -2873,7 +2970,7 @@ export function ELRulesReferenceGuide(): JSX.Element {
                     trigger.
                   </li>
                   <li>
-                    <b className={classes.change}>
+                    <b>
                       A card with the Rally keyword does not count towards your minimum deck size
                       but still counts towards your maximum deck size during deckbuilding. This
                       means a player cannot include more than 5 cards with the Rally keyword in
@@ -3409,6 +3506,11 @@ export function ELRulesReferenceGuide(): JSX.Element {
                 <p>The game is now ready to begin.</p>
               </article>
               <article>
+                <AnchoredHeading addHeading={addHeading} level="2" text="Shadowlands" />
+                <p>The Shadowlands is a special faction that functions in cooperative and challenge play. It cannot be used in standard play and has a unique set of rules documented in the Under Fu Leng's Shadow rulebook, which can be found on www.L5R.com.</p>
+                <p>The Shadowlands faction is indicated by the following clan icon in text (<span className="icon icon-clan-shadowlands" />).</p>
+              </article>
+              <article>
                 <AnchoredHeading addHeading={addHeading} level="2" text="Shuffle" />
                 <p>
                   The word "shuffle" is used as a shorthand that instructs a player to shuffle a
@@ -3471,34 +3573,47 @@ export function ELRulesReferenceGuide(): JSX.Element {
                 <AnchoredHeading addHeading={addHeading} level="2" text="Status Token" />
                 <p>
                   A status token can be placed on a card to alter its status during a game. These
-                  include honored status tokens and dishonored status tokens. Each kind of status
+                  include honored status tokens, dishonored status tokens and tainted status tokens. Each kind of status
                   token has a different effect on the card it is placed on.
                 </p>
-                <li>
-                  Honored status tokens are used to indicate a character’s honored status. A
-                  character with an honored status token adds its glory to each of its skills. That
-                  character’s controller gains 1 honor when that character leaves play.
-                </li>
-                <li>
-                  Dishonored status tokens are used to indicate a character’s dishonored status. A
-                  character with a dishonored status token subtracts its glory from each of its
-                  skills. That character’s controller loses 1 honor when that character leaves play,
-                </li>
-                <li>
-                  Dishonored status tokens can be placed on provinces by card abilities. A province
-                  with a dishonored status token is treated as if its printed text box were blank
-                  (except for Traits) while the token is on that province.
-                </li>
-                <li>
-                  A status token cannot be removed from a card unless it is a character whose
-                  personal honor is changed (see Personal Honor, Personal Dishonor on page 15) or a
-                  card effect specifically moves or removes that status token.
-                </li>
-                <li>
-                  If a card effect “moves” or “discards” an honored or dishonored status token from
-                  a character, that character has not been honored or dishonored for the purposes of
-                  card abilities, even though it loses its honored/dishonored status.
-                </li>
+                <ul>
+
+                  <li>
+                    Honored status tokens are used to indicate a character’s honored status. A
+                    character with an honored status token adds its glory to each of its skills. That
+                    character’s controller gains 1 honor when that character leaves play.
+                  </li>
+                  <li>
+                    Dishonored status tokens are used to indicate a character’s dishonored status. A
+                    character with a dishonored status token subtracts its glory from each of its
+                    skills. That character’s controller loses 1 honor when that character leaves play,
+                  </li>
+                  <li>
+                    Tainted status tokens are used to indicate that a character or
+                    province has been tainted by the Shadowlands. A character
+                    with a tainted status token gets +2<span className="icon icon-conflict-military" /> and +2<span className="icon icon-conflict-political" />, but
+                    its controller must lose 1 honor when it is declared as an
+                    attacker or defender in a conflict. A province with a tainted
+                    status token gets +2 strength, but its controller must lose
+                    1 honor when they declare 1 or more defenders during
+                    conflicts at that province.
+                  </li>
+                  <li>
+                    Dishonored status tokens can be placed on provinces by card abilities. A province
+                    with a dishonored status token is treated as if its printed text box were blank
+                    (except for Traits) while the token is on that province.
+                  </li>
+                  <li>
+                    A status token cannot be removed from a card unless it is a character whose
+                    personal honor is changed (see Personal Honor, Personal Dishonor on page 15) or a
+                    card effect specifically moves or removes that status token.
+                  </li>
+                  <li>
+                    If a card effect “moves” or “discards” an honored or dishonored status token from
+                    a character, that character has not been honored or dishonored for the purposes of
+                    card abilities, even though it loses its honored/dishonored status.
+                  </li>
+                </ul>
                 <p>
                   See <a href="#personal-honor-personal-dishonor">Personal Honor</a>.
                 </p>
@@ -3562,6 +3677,42 @@ export function ELRulesReferenceGuide(): JSX.Element {
                 <p>
                   <b>Related:</b> <a href="#gains">Gains</a>,<a href="#give">Give</a>,{' '}
                   <a href="#loses">Loses</a>
+                </p>
+              </article>
+              <article>
+                <AnchoredHeading addHeading={addHeading} level="2" text="Tainted, Tainted Status Token" />
+                <p>
+                  The tainted status token allows characters and provinces to
+                  become tainted by the corrupting presence of Jigoku.
+                </p>
+                <p>
+                  When a card ability or ring effect would taint a character, place
+                  a tainted status token on it. A tainted character cannot be
+                  tainted again.
+                </p>
+                <p>
+                  Each character that is tainted gets +2<span className="icon icon-conflict-military" /> and +2<span className="icon icon-conflict-political" />. As an
+                  additional cost to declare a tainted character as an attacker or
+                  defender in a conflict, its controller must lose 1 honor.
+                </p>
+                <p>
+                  Each province that is tainted gets +2 strength. As an additional
+                  cost to declare any number of defenders in a conflict against a
+                  tainted province, its controller must lose 1 honor.
+                </p>
+                <p>
+                  Once a card is tainted, that tainted status cannot be removed
+                  unless a card ability discards (or moves) its status token. If a
+                  tainted province is turned faceup or facedown, do not discard
+                  its tainted status token.
+                </p>
+                <p>
+                  A character’s tainted status has no bearing on its personal
+                  honor, and a tainted character can be honored or dishonored
+                  the same as an untainted character.
+                </p>
+                <p>
+                  <b>Related:</b> <a href="#corrupted">Corrupted</a>, <a href="#status-token">Status Token</a>
                 </p>
               </article>
               <article>
@@ -3785,6 +3936,13 @@ export function ELRulesReferenceGuide(): JSX.Element {
                     abilities are optional. They can be triggered (or not) by their controller at
                     the ability's appropriate timing point. Forced triggered abilities are triggered
                     automatically by the game at the ability's appropriate timing point.
+                    <ul>
+                      <li>
+                        Any targets that must be chosen in the resolution of a
+                        card’s “Forced” ability are chosen by the controller of
+                        that card.
+                      </li>
+                    </ul>
                   </li>
                   <li>
                     Unless otherwise specified by the ability itself, each triggered ability may be
@@ -4486,9 +4644,9 @@ export function ELRulesReferenceGuide(): JSX.Element {
                 <li>Pass.</li>
               </ul>
               <p>
-                <span className={`${classes.change} ${classes.removed}`}>
-                  <b>NOTE</b>: During this window, a player is not permitted to play character or
-                  attachment cards from his or her hand.
+                <span className={`${classes.removed}`}>
+                  <b>NOTE: During this window, a player is not permitted to play character or
+                  attachment cards from his or her hand.</b>
                 </span>
               </p>
               <p>
@@ -5934,6 +6092,54 @@ export function ELRulesReferenceGuide(): JSX.Element {
                   triggered.
                 </li>
               </ul>
+              <AnchoredHeading addHeading={addHeading} level="2" text="Through The Mists" />
+              <h5 className={classes.change}>
+                <a href={`${host}/card/lucky-coin`} target="_blank">
+                  Lucky Coin
+                </a>
+                (11)
+              </h5>
+              <ul className={classes.change}>
+                <li>
+                  During conflicts, Lucky Coin only disables the effects of dishonored status tokens. The character is still dishonored. However, it doesn't subtract its glory from its skills and its controller doesn't lose honor when it leaves play (during a conflict).
+                </li>
+              </ul>
+              <h5 className={classes.change}>
+                <a href={`${host}/card/pride`} target="_blank">
+                  Pride
+                </a>
+                (19) and <a href={`${host}/card/noble-vanguard`} target="_blank">
+                  Noble Vanguard
+                </a>
+                (21) and
+              </h5>
+              <ul className={classes.change}>
+                <li>
+                  The attachments created by Pride and Noble Vanguard have no name, therefore the attachment limit does not apply. This means that multiple of these attachments can be attached to the same character.
+                </li>
+              </ul>
+              <h5 className={classes.change}>
+                <a href={`${host}/card/cherished-family-servant`} target="_blank">
+                  Cherished Family Servant
+                </a>
+                (36)
+              </h5>
+              <ul className={classes.change}>
+                <li>
+                  Cherished Family Servant enters play under the control of your opponent. Therefore, the Dire ability on Cherished Family Servant applies its effect to <em>Poison</em> attachments attached to your opponent’s characters as effects always apply to the controller of a card, unless otherwise specified.
+                </li>
+              </ul>
+              <h5 className={classes.change}>
+                <a href={`${host}/card/shinjo-atagi`} target="_blank">
+                  Shinjo Atagi
+                </a>
+                (39)
+              </h5>
+              <ul className={classes.change}>
+                <li>
+                  Shinjo Atagi compares the <span className="icon icon-conflict-military" /> skill of the character to the total province strength of the revealed province. This includes any province strength modifiers from holdings or effects that change the province strength (e.g. Ancestral Lands (Core Set 15) during <span className="icon icon-conflict-political" /> conflicts)
+                </li>
+              </ul>
             </section>
             <section>
               <AnchoredHeading addHeading={addHeading} level="1" text="Appendix IV: Card Errata" />
@@ -6150,7 +6356,7 @@ export function ELRulesReferenceGuide(): JSX.Element {
                 <br />
                 <i>(Added “Cannot be a stronghold province.”)</i>
               </p>
-              <h5 className={classes.change}>
+              <h5>
                 <a href={`${host}/card/shosuro-deceiver`} target="_blank">
                   Shosuro Deceiver
                 </a>{' '}
@@ -6159,23 +6365,23 @@ export function ELRulesReferenceGuide(): JSX.Element {
               <p>
                 Should read: “While this character is participating in a conflict it gains each
                 triggered ability on each other participating dishonored character
-                <b className={classes.change}>
+                <b>
                   {' '}
                   except for abilities granted by instances of this ability.”
                 </b>
                 <br />
-                <i className={classes.change}>
+                <i>
                   (Added “except for abilities granted by instances of this ability.”)
                 </i>
               </p>
-              <h5 className={classes.change}>
+              <h5>
                 <a href={`${host}/card/spell-scroll`} target="_blank">
                   Spell Scroll
                 </a>{' '}
                 (Under Fu Leng's Shadow, 109)
               </h5>
               <p>
-                <b className={classes.change}>Remove "Item" trait.</b>
+                <b>Remove "Item" trait.</b>
               </p>
               <AnchoredHeading addHeading={addHeading} level="2" text="Reprint Changes" />
               <p>
