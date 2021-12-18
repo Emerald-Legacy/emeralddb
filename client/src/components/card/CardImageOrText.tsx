@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 export function CardImageOrText(props: {
   cardId: string,
   onClick?: (id: string) => void
+  packId?: string
 }): JSX.Element {
   const { cards } = useUiStore()
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
@@ -46,7 +47,7 @@ export function CardImageOrText(props: {
       {cardImage ? (
         <img src={cardImage} height={'90%'} width={'100%'}/>
       ) : (
-        <CardInformation cardWithVersions={card} />
+        <CardInformation cardWithVersions={card} currentVersionPackId={props.packId}/>
       )}
       <Fab
         className={classes.fab}
@@ -77,7 +78,7 @@ export function CardImageOrText(props: {
         {cardImage ? (
           <img src={cardImage} style={{ width: 300, height: 420 }} />
         ) : (
-          <CardInformation cardWithVersions={card} />
+          <CardInformation cardWithVersions={card} currentVersionPackId={props.packId}/>
         )}
       </Popover>
     </div>

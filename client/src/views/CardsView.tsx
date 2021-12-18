@@ -399,6 +399,7 @@ export function CardsView(): JSX.Element {
                         setModalCard(cards.find((card) => card.id === cardId))
                         setCardModalOpen(true)
                       }}
+                      packId={card.versions.length > 0 ? card.versions[0].pack_id : ''}
                     />
                   </Box>
                 </Grid>
@@ -421,7 +422,7 @@ export function CardsView(): JSX.Element {
           {currentCards.map(card => (
             <Grid item xs={12} key={card.id} container spacing={4}>
               <Grid item xs={12} sm={6}>
-                <CardInformation cardWithVersions={card} clickable />
+                <CardInformation cardWithVersions={card} clickable currentVersionPackId={card.versions.length > 0 ? card.versions[0].pack_id : ''}/>
                 <Box padding={'5px'} justifyContent={'flex-end'}>
                   <Button
                     onClick={() => goToCardPage(card.id)}
@@ -440,6 +441,7 @@ export function CardsView(): JSX.Element {
                       setModalCard(cards.find((card) => card.id === cardId))
                       setCardModalOpen(true)
                     }}
+                    packId={card.versions.length > 0 ? card.versions[0].pack_id : ''}
                   />
                 </Box>
               </Grid>
