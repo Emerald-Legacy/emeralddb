@@ -116,7 +116,13 @@ export function CardsView(): JSX.Element {
     if (urlFilteredCards.length === 1) {
       history.push(`/card/${urlFilteredCards[0].id}`)
     }
+    const displayParam = urlSearchParams.get('display') || DisplayMode.LIST
+    const sortParam = urlSearchParams.get('sort') || SortMode.NAME
+
+    setDisplayMode(displayParam as DisplayMode)
+    setSortMode(sortParam as SortMode)
   }
+
   if (filter) {
     filteredCards = applyFilters(cards, filter)
   }
@@ -184,7 +190,15 @@ export function CardsView(): JSX.Element {
             <Select
               value={displayMode}
               label="Display Mode"
-              onChange={(event) => setDisplayMode(event.target.value as DisplayMode || DisplayMode.LIST)}
+              onChange={(event) => {
+                let newMode = event.target.value as DisplayMode || DisplayMode.LIST;
+                setDisplayMode(newMode)
+                urlSearchParams.set('display', newMode)
+                history.push({
+                  pathname: '/cards',
+                  search: urlSearchParams.toString()
+                })
+              }}
               variant={"outlined"}
               fullWidth
             >
@@ -197,7 +211,15 @@ export function CardsView(): JSX.Element {
             <Select
               value={sortMode}
               label="Sort Mode"
-              onChange={(event) => setSortMode(event.target.value as SortMode || SortMode.NAME)}
+              onChange={(event) => {
+                const newMode = event.target.value as SortMode || SortMode.NAME;
+                setSortMode(newMode)
+                urlSearchParams.set('sort', newMode)
+                history.push({
+                  pathname: '/cards',
+                  search: urlSearchParams.toString()
+                })
+              }}
               variant={"outlined"}
               fullWidth
             >
