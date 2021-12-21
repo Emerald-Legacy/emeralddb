@@ -12,7 +12,7 @@ const formats = [
   {
     id: 'emerald',
     name: 'Emerald Legacy - Emerald Edict',
-    link: 'https://secureservercdn.net/50.62.90.29/q5f.e39.myftpupload.com/wp-content/uploads/2021/10/Emerald_Edict_V2_0.pdf',
+    link: 'https://emeraldlegacy.org/rules/',
   },
   {
     id: 'jade-edict',

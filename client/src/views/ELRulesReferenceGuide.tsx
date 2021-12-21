@@ -146,7 +146,7 @@ export function ELRulesReferenceGuide(): JSX.Element {
               PDF Version available{' '}
               <a
                 href={
-                  'https://secureservercdn.net/192.169.220.85/q5f.e39.myftpupload.com/wp-content/uploads/2021/07/Emerald-Legacy-RRG-V1_2.pdf'
+                  'https://emeraldlegacy.org/rules/'
                 }
                 target={'_blank'}
               >
