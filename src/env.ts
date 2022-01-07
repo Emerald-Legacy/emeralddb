@@ -12,4 +12,34 @@ export default {
   auth0Domain: String(process.env.AUTH0_DOMAIN),
   auth0ClientId: String(process.env.AUTH0_CLIENT_ID),
   betaUrl: String(process.env.BETA_URL),
+  discord: parseDiscordConfig(),
+}
+
+function parseDiscordConfig(): {
+  clientId: string
+  botToken: string
+  isBotEnabled: boolean
+} {
+  if (typeof process.env.DISCORD_CONFIG !== 'string') {
+    throw Error('The DISCORD_CONFIG env variable is missing')
+  }
+
+  const errorMsgMalformed = 'The DISCORD_CONFIG env variable is malformed'
+  try {
+    const json = JSON.parse(process.env.DISCORD_CONFIG)
+    if (
+      typeof json.clientId === 'string' &&
+      typeof json.botToken === 'string' &&
+      typeof json.isBotEnabled === 'boolean'
+    ) {
+      return {
+        clientId: json.clientId,
+        botToken: json.botToken,
+        isBotEnabled: json.isBotEnabled,
+      }
+    }
+  } catch (e) {
+    throw Error(errorMsgMalformed)
+  }
+  throw Error(errorMsgMalformed)
 }
