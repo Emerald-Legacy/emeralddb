@@ -4,6 +4,7 @@ import { Routes } from 'discord-api-types/v9'
 
 import { Service } from '../../typings/Service'
 import { command as cardCommand } from './commands/card'
+import { command as rulingsCommand } from './commands/rulings'
 import { Config } from './types'
 
 export async function createBot(config: Config): Promise<Service> {
@@ -19,12 +20,14 @@ export async function createBot(config: Config): Promise<Service> {
     switch (interaction.commandName) {
       case cardCommand.name:
         return cardCommand.handler(interaction)
+      case rulingsCommand.name:
+        return rulingsCommand.handler(interaction)
     }
   })
 
   return {
     async run() {
-  await client.login(config.botToken)
+      await client.login(config.botToken)
       console.log('BOT: running')
     },
     async shutdown() {
@@ -37,6 +40,6 @@ export async function createBot(config: Config): Promise<Service> {
 
 async function registerCommands(config: Config): Promise<unknown> {
   const rest = new REST({ version: '9' }).setToken(config.botToken)
-  const body = [cardCommand.command].map((command) => command.toJSON())
+  const body = [cardCommand.command, rulingsCommand.command].map((command) => command.toJSON())
   return rest.put(Routes.applicationCommands(config.clientId), { body })
 }

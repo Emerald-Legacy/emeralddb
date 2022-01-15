@@ -23,6 +23,12 @@ export interface CardPackInput {
   image_url?: string
 }
 
+export interface RulingInput {
+  id: number
+  text: string
+  source: string
+  link: string
+}
 
 export interface CachedCard {
   image: string
