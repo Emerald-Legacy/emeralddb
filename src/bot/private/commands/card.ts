@@ -2,8 +2,7 @@ import { DiscordAPIError } from 'discord.js'
 import { SlashCommandBuilder } from '@discordjs/builders'
 import { search } from '../cardsFuzzySearch'
 import { Command } from '../types'
-
-const list = new Intl.ListFormat('en', { style: 'long', type: 'disjunction' })
+import { listAlternatives } from '../format'
 
 const name = 'card'
 
@@ -32,12 +31,13 @@ export const command: Command = {
         })
       }
       if (result.__tag === 'singleMatch') {
-        return interaction.reply(result.image)
+        return interaction.reply(result.card.image)
       }
+
       const candidates = result.names.map((name) => `\`${name}\``)
       return interaction.reply({
         ephemeral: true,
-        content: `I'm not sure I follow you. Maybe you're looking for ${list.format(candidates)}?`,
+        content: `I'm not sure I follow you. Are you looking for ${listAlternatives(candidates)}?`,
       })
     } catch (e) {
       if (e instanceof DiscordAPIError) {
