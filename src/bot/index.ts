@@ -1,1 +1,1 @@
-export { startBot } from './private/bot'
+export { createBot } from './private/bot'

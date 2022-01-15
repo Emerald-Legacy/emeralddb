@@ -1,12 +1,12 @@
-import { Client, Intents } from 'discord.js'
-
-import { Config } from './types'
-import { command as cardCommand } from './commands/card'
-
 import { REST } from '@discordjs/rest'
+import { Client, Intents } from 'discord.js'
 import { Routes } from 'discord-api-types/v9'
 
-export async function startBot(config: Config): Promise<void> {
+import { Service } from '../../typings/Service'
+import { command as cardCommand } from './commands/card'
+import { Config } from './types'
+
+export async function createBot(config: Config): Promise<Service> {
   console.log('BOT: registering commands')
   await registerCommands(config)
 
@@ -22,8 +22,17 @@ export async function startBot(config: Config): Promise<void> {
     }
   })
 
+  return {
+    async run() {
   await client.login(config.botToken)
-  console.log('BOT: done')
+      console.log('BOT: running')
+    },
+    async shutdown() {
+      console.log('BOT: shutdown start')
+      client.destroy()
+      console.log('BOT: shutdown done')
+    },
+  }
 }
 
 async function registerCommands(config: Config): Promise<unknown> {
