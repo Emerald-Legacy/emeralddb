@@ -2,7 +2,7 @@
 
 ## Prerequisites:
 To run the application you need:
-* Node version 14.15.1 or higher
+* Node version 16.13.1 or higher
 * A local Postgres database
 
 ## Set Up:
