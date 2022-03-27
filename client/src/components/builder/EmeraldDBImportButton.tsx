@@ -1,4 +1,4 @@
-import { DecklistViewModel } from '@5rdb/api'
+import { DecklistViewModel, Decklist } from '@5rdb/api'
 import {
   Button,
   Dialog,
@@ -10,7 +10,6 @@ import {
 } from '@material-ui/core'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
-import { Decklist } from '../../../../apiTypings'
 
 const emeraldDBPermalinkPrefix = 'https://www.emeralddb.org/decks/'
 const emeraldDBApiPrefix = 'https://www.emeralddb.org/api/decklists/'
