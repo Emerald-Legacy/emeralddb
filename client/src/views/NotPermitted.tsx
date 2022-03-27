@@ -1,4 +1,4 @@
-import { Container, Typography } from '@material-ui/core'
+import { Typography } from '@material-ui/core'
 
 export function NotPermitted(props: { reason?: string }): JSX.Element {
   return (

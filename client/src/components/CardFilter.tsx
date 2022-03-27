@@ -16,7 +16,14 @@ import {
   Typography,
   Collapse,
 } from '@material-ui/core'
-import { factions, cardTypes, sides, formats, elements, roleRestrictions } from '../utils/enums'
+import {
+  factions,
+  cardTypes,
+  sides,
+  elements,
+  roleRestrictions,
+  relevantFormats,
+} from '../utils/enums'
 import { CardTypeIcon } from './card/CardTypeIcon'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import { useUiStore } from '../providers/UiStoreProvider'
@@ -203,7 +210,7 @@ function filterNumericCardValues(card: CardWithVersions, filters: NumericValueFi
   })
 }
 
-function replaceSpecialCharacters(text: string) : string {
+function replaceSpecialCharacters(text: string): string {
   return text
     .toLocaleLowerCase()
     .trim()
@@ -337,6 +344,8 @@ export function CardFilter(props: {
   const [filterState, dispatchFilter] = useReducer(filterReducer, initialFilterState)
   const [searchTerm, setSearchTerm] = useState(props.filterState?.text || '')
   const [showFilters, setShowFilters] = useState(false)
+
+  const formats = relevantFormats
 
   const uniqueOptions = [
     { id: 'true', name: 'Yes' },

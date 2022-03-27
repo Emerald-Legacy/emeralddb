@@ -7,9 +7,9 @@ import {
   Grid,
   GridList,
   GridListTile,
-  Paper, Popover,
+  Paper,
   TextField,
-  useMediaQuery
+  useMediaQuery,
 } from '@material-ui/core'
 import lodash from 'lodash'
 import { useState } from 'react'
@@ -18,8 +18,8 @@ import { convertTraitList } from '../../utils/cardTextUtils'
 import { applyFilters, CardFilter, FilterState } from '../CardFilter'
 import { ColumnData, TableCardData, VirtualizedCardTable } from './VirtualizedCardTable'
 import Autocomplete from '@material-ui/lab/Autocomplete'
-import {CardQuantitySelector} from "./CardQuantitySelector";
-import {CardImageOrText} from "../card/CardImageOrText";
+import { CardQuantitySelector } from './CardQuantitySelector'
+import { CardImageOrText } from '../card/CardImageOrText'
 
 function initialFilter(primaryClan: string | undefined, format: string): FilterState {
   const sides = ['dynasty', 'conflict']
@@ -273,14 +273,16 @@ export function BuilderCardList(props: {
 
   return (
     <>
-      {showFilters && <CardFilter
-        onFilterChanged={(filter) => updateFilter(filter)}
-        filterState={filter}
-        deckbuilder
-      />}
-      <Paper style={{paddingTop: 10}}>
+      {showFilters && (
+        <CardFilter
+          onFilterChanged={(filter) => updateFilter(filter)}
+          filterState={filter}
+          deckbuilder
+        />
+      )}
+      <Paper style={{ paddingTop: 10 }}>
         <Grid container>
-          <Grid item xs={12} md={4} style={{padding: '0 5px'}}>
+          <Grid item xs={12} md={4} style={{ padding: '0 5px' }}>
             <Autocomplete
               id="combo-box-displayMode"
               autoHighlight
@@ -298,7 +300,7 @@ export function BuilderCardList(props: {
               onChange={(e, value) => setDisplayMode(value?.mode || DisplayMode.LIST)}
             />
           </Grid>
-          <Grid item xs={12} md={4} style={{padding: '0 5px'}}>
+          <Grid item xs={12} md={4} style={{ padding: '0 5px' }}>
             {showFilters ? (
               <Button
                 variant="contained"
@@ -319,13 +321,19 @@ export function BuilderCardList(props: {
               </Button>
             )}
           </Grid>
-          <Grid item xs={12} md={4} style={{padding: '0 5px'}}>
+          <Grid item xs={12} md={4} style={{ padding: '0 5px' }}>
             <FormControlLabel
-              control={<Checkbox checked={props.showAllCards} onChange={(e) => props.setShowAllCards(e.target.checked)} name="checkedA" />}
+              control={
+                <Checkbox
+                  checked={props.showAllCards}
+                  onChange={(e) => props.setShowAllCards(e.target.checked)}
+                  name="checkedA"
+                />
+              }
               label="Show Illegal Deck Cards"
             />
           </Grid>
-          <Grid item xs={12} md={4} style={{padding: '0 5px'}}>
+          <Grid item xs={12} md={4} style={{ padding: '0 5px' }}>
             <Autocomplete
               id="combo-box-sortMode"
               autoHighlight
@@ -343,7 +351,7 @@ export function BuilderCardList(props: {
               onChange={(e, value) => setSortMode(value?.mode || SortMode.NAME)}
             />
           </Grid>
-          <Grid item xs={12} md={4} style={{padding: '0 5px'}}>
+          <Grid item xs={12} md={4} style={{ padding: '0 5px' }}>
             <Autocomplete
               id="combo-box-sortOrder"
               options={['Ascending', 'Descending']}
@@ -356,7 +364,7 @@ export function BuilderCardList(props: {
             />
           </Grid>
           {!isSmOrSmaller && displayMode === DisplayMode.LIST && (
-            <Grid item xs={12} md={4} style={{padding: '0 5px'}}>
+            <Grid item xs={12} md={4} style={{ padding: '0 5px' }}>
               {showTraits ? (
                 <Button
                   variant="contained"
@@ -379,22 +387,36 @@ export function BuilderCardList(props: {
             </Grid>
           )}
           <Grid item xs={12} style={{ height: 830 }}>
-            {displayMode === DisplayMode.LIST && <VirtualizedCardTable
-              rowCount={filteredCards.length}
-              rowGetter={({ index }) => tableData[index]}
-              columns={columns}
-            />}
+            {displayMode === DisplayMode.LIST && (
+              <VirtualizedCardTable
+                rowCount={filteredCards.length}
+                rowGetter={({ index }) => tableData[index]}
+                columns={columns}
+              />
+            )}
             {displayMode === DisplayMode.IMAGES && (
-              <GridList cols={isSmOrSmaller ? 2 : 4} cellHeight={270} style={{height: '100%', marginTop: 10}}>
+              <GridList
+                cols={isSmOrSmaller ? 2 : 4}
+                cellHeight={270}
+                style={{ height: '100%', marginTop: 10 }}
+              >
                 {tableData.map((card) => {
-                    return (<GridListTile key={card.nameFactionType.cardId} cols={1}>
-                          <CardImageOrText cardId={card.nameFactionType.cardId} />
-                          <Box marginTop={'-20px'} style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
-                            <CardQuantitySelector deckLimit={card.quantityForId.deckLimit} quantity={card.quantityForId.quantity} onQuantityChange={card.quantityForId.onQuantityChange} />
-                          </Box>
-                    </GridListTile>)
-                  })
-                }
+                  return (
+                    <GridListTile key={card.nameFactionType.cardId} cols={1}>
+                      <CardImageOrText cardId={card.nameFactionType.cardId} />
+                      <Box
+                        marginTop={'-20px'}
+                        style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                      >
+                        <CardQuantitySelector
+                          deckLimit={card.quantityForId.deckLimit}
+                          quantity={card.quantityForId.quantity}
+                          onQuantityChange={card.quantityForId.onQuantityChange}
+                        />
+                      </Box>
+                    </GridListTile>
+                  )
+                })}
               </GridList>
             )}
           </Grid>

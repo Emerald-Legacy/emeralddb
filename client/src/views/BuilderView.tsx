@@ -1,5 +1,5 @@
 import { DeckWithVersions } from '@5rdb/api'
-import { Container, Grid, Typography } from '@material-ui/core'
+import { Grid, Typography } from '@material-ui/core'
 import { useEffect, useState } from 'react'
 import { publicApi } from '../api'
 import { DeckTabs } from '../components/deck/DeckTabs'

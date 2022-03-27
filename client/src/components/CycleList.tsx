@@ -1,6 +1,7 @@
 import {
   Checkbox,
   Collapse,
+  Link,
   List,
   ListItem,
   ListItemIcon,
@@ -27,11 +28,12 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 export function CycleList(props: {
+  onClick?: () => void
   withCheckbox?: boolean
   onSelection?: (checkedPackIds: string[], checkedCycleIds: string[]) => void
-  onRootClick?: () => void
-  onPackClick?: (packId: string) => void
-  onCycleClick?: (cycleId: string) => void
+  rootUrl?: string
+  packUrl?: string
+  cycleUrl?: string
   selectedPacks?: string[]
   selectedCycles?: string[]
   rootLabel: string
@@ -159,12 +161,10 @@ export function CycleList(props: {
           </ListItemIcon>
         )}
         <ListItemText
-          primary={pack.name}
+          primary={<Link href={props.packUrl + pack.id}>{pack.name}</Link>}
           onClick={(e) => {
-            if (props.onPackClick) {
-              props.onPackClick(pack.id)
-              e.stopPropagation()
-            }
+            props.onClick && props.onClick()
+            e.stopPropagation()
           }}
         />
       </ListItem>
@@ -200,12 +200,12 @@ export function CycleList(props: {
             </ListItemIcon>
           )}
           <ListItemText
-            primary={cycle.name}
+            primary={<Link href={props.cycleUrl + cycle.id}>{cycle.name}</Link>}
             onClick={(e) => {
-              if (props.onCycleClick) {
-                props.onCycleClick(cycle.id)
-                e.stopPropagation()
+              if (props.onClick) {
+                props.onClick()
               }
+              e.stopPropagation()
             }}
           />
           {expandedElements.includes(cycle.id) ? <ExpandLessIcon /> : <ExpandMoreIcon />}
@@ -233,12 +233,12 @@ export function CycleList(props: {
             </ListItemIcon>
           )}
           <ListItemText
-            primary={props.rootLabel}
+            primary={<Link href={props.rootUrl}>{props.rootLabel}</Link>}
             onClick={(e) => {
-              if (props.onRootClick) {
-                props.onRootClick()
-                e.stopPropagation()
+              if (props.onClick) {
+                props.onClick()
               }
+              e.stopPropagation()
             }}
           />
           {expandedElements.includes('root') ? <ExpandLessIcon /> : <ExpandMoreIcon />}

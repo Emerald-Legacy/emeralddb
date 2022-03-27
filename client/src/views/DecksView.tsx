@@ -1,13 +1,13 @@
 import { PublishedDecklist } from '@5rdb/api'
-import { Container, makeStyles, Paper, useMediaQuery } from '@material-ui/core'
+import { makeStyles, Paper, useMediaQuery } from '@material-ui/core'
 import { DataGrid, GridColumns } from '@material-ui/data-grid'
 import { useEffect, useState } from 'react'
-import { useHistory } from 'react-router-dom'
 import { publicApi } from '../api'
 import { applyDeckFilters, DeckFilter, DeckFilterState } from '../components/DeckFilter'
 import { formats } from '../utils/enums'
 import { getColorForFactionId } from '../utils/factionUtils'
 import { capitalize } from '../utils/stringUtils'
+import { EmeraldDBLink } from '../components/EmeraldDBLink'
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -20,7 +20,6 @@ export function DecksView(): JSX.Element {
   const [decks, setDecks] = useState<PublishedDecklist[]>([])
   const [filter, setFilter] = useState<DeckFilterState | undefined>(undefined)
   const isMdOrBigger = useMediaQuery('(min-width:600px)')
-  const history = useHistory()
 
   useEffect(() => {
     publicApi.Decklist.findPublished().then((response) => setDecks(response.data()))
@@ -42,7 +41,9 @@ export function DecksView(): JSX.Element {
       disableColumnMenu: true,
       renderCell: (params) => (
         <span>
-          {params.row.name} (v{params.row.version_number})
+          <EmeraldDBLink href={`/decks/${params.row.id}`}>
+            {params.row.name} (v{params.row.version_number})
+          </EmeraldDBLink>
         </span>
       ),
     },
@@ -115,9 +116,6 @@ export function DecksView(): JSX.Element {
           pageSize={50}
           autoHeight
           density="compact"
-          onRowClick={(param) => {
-            history.push(`/decks/${param.row.id}`)
-          }}
         />
       </Paper>
     </>

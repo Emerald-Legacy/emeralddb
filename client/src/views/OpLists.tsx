@@ -15,19 +15,9 @@ const formats = [
     link: 'https://emeraldlegacy.org/rules/',
   },
   {
-    id: 'jade-edict',
-    name: 'Jade Court - Jade Edict',
-    link: 'https://www.jadecourt.org/edict#edict-of-judgment-the-compiled-list',
-  },
-  {
     id: 'standard',
     name: 'Fantasy Flight Games - Imperial Law',
     link: 'https://images-cdn.fantasyflightgames.com/filer_public/61/f1/61f18d82-b566-47a7-bc65-3fe068e3194b/l5c01-online_imperiallaw_final.pdf',
-  },
-  {
-    id: 'obsidian',
-    name: 'Obsidian Heresy - Ban List',
-    link: 'https://obsidianheresy.blogspot.com/p/the-banned-cards.html',
   },
 ]
 

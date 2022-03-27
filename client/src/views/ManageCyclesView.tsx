@@ -2,7 +2,6 @@ import { Pack } from '@5rdb/api'
 import {
   Box,
   Button,
-  Container,
   Dialog,
   DialogActions,
   DialogContent,

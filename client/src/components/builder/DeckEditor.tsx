@@ -20,13 +20,14 @@ import { BuilderCardList } from './BuilderCardList'
 import { Decklist } from '../deck/Decklist'
 import { privateApi } from '../../api'
 import { DeckBuilderWizard } from './DeckBuilderWizard'
-import { formats } from '../../utils/enums'
+import { relevantFormats } from '../../utils/enums'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import { useSnackbar } from 'notistack'
 import { useHistory } from 'react-router-dom'
 import { createDeckStatistics } from '../deck/DeckValidator'
 import { Loading } from '../Loading'
 import { VersionPicker } from './VersionPicker'
+import { EmeraldDBLink } from '../EmeraldDBLink'
 
 const useStyles = makeStyles((theme) => ({
   unselectedList: {
@@ -90,9 +91,7 @@ function prefilterCards(cards: CardWithVersions[], decklist: DecklistViewModel) 
         !c.splash_banned_in || c.splash_banned_in.length === 0 || c.faction === stats.primaryClan
     )
   }
-  filteredCards = filteredCards.filter(
-    (c) => !c.banned_in?.includes(decklist.format)
-  )
+  filteredCards = filteredCards.filter((c) => !c.banned_in?.includes(decklist.format))
 
   return filteredCards
 }
@@ -114,6 +113,8 @@ export function DeckEditor(props: { existingDecklist?: DecklistType | undefined 
   const [newVersion, setNewVersion] = useState(decklist.version_number || '0.1')
   const [currentView, setCurrentView] = useState(ViewTypes.EDITOR)
   const [showAllCards, setShowAllCards] = useState(false)
+
+  const formats = relevantFormats
 
   if (props.existingDecklist && decklist.version_number === props.existingDecklist.version_number) {
     const nextVersionNumber = getNextVersionNumber(props.existingDecklist.version_number)
@@ -273,13 +274,11 @@ export function DeckEditor(props: { existingDecklist?: DecklistType | undefined 
           <Grid container spacing={1}>
             <Grid item xs={6}>
               {props.existingDecklist && (
-                <Button
-                  variant="contained"
-                  fullWidth
-                  onClick={() => history.push(`/decks/${props.existingDecklist?.deck_id}/`)}
-                >
-                  Link to Decklist
-                </Button>
+                <EmeraldDBLink href={`/decks/${props.existingDecklist?.deck_id}/`}>
+                  <Button variant="contained" fullWidth>
+                    Link to Decklist
+                  </Button>
+                </EmeraldDBLink>
               )}
             </Grid>
             <Grid item xs={6}>

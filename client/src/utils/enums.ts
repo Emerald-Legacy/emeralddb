@@ -10,6 +10,13 @@ export const cardTypes: { id: string; name: string }[] = [
   { id: 'warlord', name: 'Warlord' },
 ]
 
+export const relevantFormats: { id: string; name: string }[] = [
+  { id: 'standard', name: 'Imperial Law' },
+  { id: 'emerald', name: 'Emerald Legacy' },
+  { id: 'enlightenment', name: 'Enlightenment' },
+  { id: 'skirmish', name: 'Skirmish' },
+]
+
 export const formats: { id: string; name: string }[] = [
   { id: 'standard', name: 'Imperial Law' },
   { id: 'jade-edict', name: 'Jade Edict' },

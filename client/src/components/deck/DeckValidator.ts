@@ -351,15 +351,11 @@ export function createDeckStatistics(
   const bannedCards = allDeckCards.filter((c) => c.banned_in?.includes(format))
   const restrictedCards = allDeckCards.filter((c) => c.restricted_in?.includes(format))
 
-  const deckMaximum = format === 'skirmish'
-    ? 35
-    : format === 'obsidian'
-      ? 45 + numberOfRallyCards
-      : 45
+  const deckMaximum =
+    format === 'skirmish' ? 35 : format === 'obsidian' ? 45 + numberOfRallyCards : 45
   const deckMinimum = format === 'skirmish' ? 30 : 40
-  const dynastyDeckMinimum = format === 'emerald' || format === 'obsidian'
-    ? deckMinimum + numberOfRallyCards
-    : deckMinimum
+  const dynastyDeckMinimum =
+    format === 'emerald' || format === 'obsidian' ? deckMinimum + numberOfRallyCards : deckMinimum
 
   const stats: DeckStatistics = {
     maxInfluence: maxInfluence,
