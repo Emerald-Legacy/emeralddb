@@ -7,6 +7,7 @@ export interface UiStore {
   packs: Pack[]
   cycles: Cycle[]
   traits: Trait[]
+  toggleReload: () => void
 }
 
 export const UiStoreContext = createContext<UiStore>({
@@ -14,6 +15,7 @@ export const UiStoreContext = createContext<UiStore>({
   packs: [],
   cycles: [],
   traits: [],
+  toggleReload: () => {},
 })
 
 export function UiStoreProvider(props: { children: ReactNode }): JSX.Element {
@@ -21,13 +23,16 @@ export function UiStoreProvider(props: { children: ReactNode }): JSX.Element {
   const [packs, setPacks] = useState<Pack[]>([])
   const [cycles, setCycles] = useState<Cycle[]>([])
   const [traits, setTraits] = useState<Trait[]>([])
+  const [reload, setReload] = useState(false);
+
+  const toggleReload = () => setReload(!reload)
 
   useEffect(() => {
     publicApi.Pack.findAll().then((packs) => setPacks(packs.data()))
     publicApi.Card.findAll().then((cards) => setCards(cards.data()))
     publicApi.Cycle.findAll().then((cycles) => setCycles(cycles.data()))
     publicApi.Trait.findAll().then((traits) => setTraits(traits.data()))
-  }, [])
+  }, [reload])
 
   return (
     <UiStoreContext.Provider
@@ -36,6 +41,7 @@ export function UiStoreProvider(props: { children: ReactNode }): JSX.Element {
         packs: packs,
         cycles: cycles,
         traits: traits,
+        toggleReload: toggleReload,
       }}
     >
       {props.children}

@@ -102,6 +102,7 @@ export interface FilterState {
   restricted: string
   banned: string
   isUnique: string
+  showRotated: boolean
 }
 
 enum FilterType {
@@ -120,6 +121,7 @@ enum FilterType {
   FILTER_BANNED,
   FILTER_IS_UNIQUE,
   FILTER_NUMERIC_VALUES,
+  FILTER_ROTATED,
   FILTER_RESET,
 }
 
@@ -139,6 +141,7 @@ type FilterAction =
   | { type: FilterType.FILTER_BANNED; format: string }
   | { type: FilterType.FILTER_IS_UNIQUE; isUnique: string }
   | { type: FilterType.FILTER_NUMERIC_VALUES; numericValues: NumericValueFilter[] }
+  | { type: FilterType.FILTER_ROTATED; showRotated: boolean }
   | { type: FilterType.FILTER_RESET }
 
 function checkSingleValue(value: string | undefined, filter: NumericFilterTypeAndValue): boolean {
@@ -221,6 +224,9 @@ function replaceSpecialCharacters(text: string): string {
 
 export function applyFilters(cards: CardWithVersions[], filter: FilterState): CardWithVersions[] {
   let filteredCards = cards
+  if (!filter.showRotated) {
+    filteredCards = filteredCards.filter((c) => c.versions.some(version => !version.rotated))
+  }
   if (filter.factions && filter.factions.length > 0) {
     filteredCards = filteredCards.filter((c) => filter.factions?.includes(c.faction))
   }
@@ -289,6 +295,7 @@ const initialState: FilterState = {
   restricted: '',
   banned: '',
   isUnique: '',
+  showRotated: true
 }
 
 function filterReducer(state: FilterState, action: FilterAction): FilterState {
@@ -325,6 +332,8 @@ function filterReducer(state: FilterState, action: FilterAction): FilterState {
       return { ...state, isUnique: action.isUnique }
     case FilterType.FILTER_NUMERIC_VALUES:
       return { ...state, numericValues: [...action.numericValues] }
+    case FilterType.FILTER_ROTATED:
+      return { ...state, showRotated: action.showRotated }
     case FilterType.FILTER_RESET:
       return initialState
   }
@@ -668,6 +677,24 @@ export function CardFilter(props: {
                   </Grid>
                   <Grid item xs={6}>
                     <Autocomplete
+                      id="combo-box-is-rotated"
+                      autoHighlight
+                      options={uniqueOptions}
+                      getOptionLabel={(option) => option?.name || ''}
+                      value={uniqueOptions.find((option) => (option.id === 'true') === filterState.showRotated)}
+                      renderInput={(params) => (
+                        <TextField {...params} size="small" label="Show Rotated Cards" variant="outlined" />
+                      )}
+                      onChange={(e, value) =>
+                        dispatchFilter({
+                          type: FilterType.FILTER_ROTATED,
+                          showRotated: value ? value.id === 'true' : false,
+                        })
+                      }
+                    />
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Autocomplete
                       id="combo-box-restricted-in"
                       autoHighlight
                       options={formats}
@@ -689,7 +716,7 @@ export function CardFilter(props: {
                       }
                     />
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item xs={4}>
                     <Autocomplete
                       id="combo-box-banned-in"
                       autoHighlight
@@ -704,7 +731,7 @@ export function CardFilter(props: {
                       }
                     />
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item xs={4}>
                     <Autocomplete
                       id="combo-box-role-restriction-in"
                       autoHighlight

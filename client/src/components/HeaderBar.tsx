@@ -148,7 +148,7 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
                               rootUrl="/cards"
                               cycleUrl="/cards?cycle="
                               packUrl="/cards?pack="
-                              onClick={closeModalsAndPopUps}
+                              onClick={goTo}
                               rootLabel="View All Cards"
                             />
                           </div>
