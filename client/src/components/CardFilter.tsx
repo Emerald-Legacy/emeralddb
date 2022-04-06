@@ -102,7 +102,7 @@ export interface FilterState {
   restricted: string
   banned: string
   isUnique: string
-  showRotated: boolean
+  showRotated: 'true' | 'false' | 'onlyRotated'
 }
 
 enum FilterType {
@@ -141,7 +141,7 @@ type FilterAction =
   | { type: FilterType.FILTER_BANNED; format: string }
   | { type: FilterType.FILTER_IS_UNIQUE; isUnique: string }
   | { type: FilterType.FILTER_NUMERIC_VALUES; numericValues: NumericValueFilter[] }
-  | { type: FilterType.FILTER_ROTATED; showRotated: boolean }
+  | { type: FilterType.FILTER_ROTATED; showRotated: 'true' | 'false' | 'onlyRotated' }
   | { type: FilterType.FILTER_RESET }
 
 function checkSingleValue(value: string | undefined, filter: NumericFilterTypeAndValue): boolean {
@@ -224,8 +224,12 @@ function replaceSpecialCharacters(text: string): string {
 
 export function applyFilters(cards: CardWithVersions[], filter: FilterState): CardWithVersions[] {
   let filteredCards = cards
-  if (!filter.showRotated) {
-    filteredCards = filteredCards.filter((c) => c.versions.some(version => !version.rotated))
+  if (filter.showRotated !== 'true') {
+    if (filter.showRotated === 'false') {
+      filteredCards = filteredCards.filter((c) => c.versions.some(version => !version.rotated))
+    } else {
+      filteredCards = filteredCards.filter((c) => !c.versions.some(version => !version.rotated))
+    }
   }
   if (filter.factions && filter.factions.length > 0) {
     filteredCards = filteredCards.filter((c) => filter.factions?.includes(c.faction))
@@ -295,7 +299,7 @@ const initialState: FilterState = {
   restricted: '',
   banned: '',
   isUnique: '',
-  showRotated: true
+  showRotated: 'true'
 }
 
 function filterReducer(state: FilterState, action: FilterAction): FilterState {
@@ -359,6 +363,12 @@ export function CardFilter(props: {
   const uniqueOptions = [
     { id: 'true', name: 'Yes' },
     { id: 'false', name: 'No' },
+  ]
+
+  const rotatedOptions: { id: 'true' | 'false' | 'onlyRotated', name: string}[] = [
+    { id: 'true', name: 'Yes' },
+    { id: 'false', name: 'No' },
+    { id: 'onlyRotated', name: 'Only Rotated' },
   ]
 
   const debouncedSearchTerm = useDebounce(searchTerm, 500)
@@ -679,16 +689,16 @@ export function CardFilter(props: {
                     <Autocomplete
                       id="combo-box-is-rotated"
                       autoHighlight
-                      options={uniqueOptions}
+                      options={rotatedOptions}
                       getOptionLabel={(option) => option?.name || ''}
-                      value={uniqueOptions.find((option) => (option.id === 'true') === filterState.showRotated)}
+                      value={rotatedOptions.find((option) => option.id === filterState.showRotated)}
                       renderInput={(params) => (
                         <TextField {...params} size="small" label="Show Rotated Cards" variant="outlined" />
                       )}
                       onChange={(e, value) =>
                         dispatchFilter({
                           type: FilterType.FILTER_ROTATED,
-                          showRotated: value ? value.id === 'true' : false,
+                          showRotated: value?.id || 'true',
                         })
                       }
                     />

@@ -162,7 +162,7 @@ export function DeckBuilderWizard(props: {
                   key={thisStronghold.id}
                   value={thisStronghold.id}
                   control={<Radio />}
-                  label={<CardLink cardId={thisStronghold.id} format={format} notClickable />}
+                  label={<CardLink cardId={thisStronghold.id} format={format} notClickable sameTab />}
                   onClick={() => setStronghold(thisStronghold.id)}
                 />
               ))}
@@ -186,7 +186,7 @@ export function DeckBuilderWizard(props: {
                       key={thisRole.id}
                       value={thisRole.id}
                       control={<Radio />}
-                      label={<CardLink cardId={thisRole.id} format={format} notClickable />}
+                      label={<CardLink cardId={thisRole.id} format={format} notClickable sameTab />}
                       onClick={() => setRole(thisRole.id)}
                     />
                   ))}
@@ -203,7 +203,7 @@ export function DeckBuilderWizard(props: {
                       key={thisRole.id}
                       value={thisRole.id}
                       control={<Radio />}
-                      label={<CardLink cardId={thisRole.id} format={format} notClickable />}
+                      label={<CardLink cardId={thisRole.id} format={format} notClickable sameTab />}
                       onClick={() => setRole(thisRole.id)}
                     />
                   ))}

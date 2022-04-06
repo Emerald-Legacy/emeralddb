@@ -43,7 +43,7 @@ function initialFilter(primaryClan: string | undefined, format: string): FilterS
     restricted: '',
     banned: '',
     isUnique: '',
-    showRotated: false,
+    showRotated: 'false',
   }
 }
 
