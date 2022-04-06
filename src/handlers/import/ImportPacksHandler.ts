@@ -21,6 +21,7 @@ async function importPacks(packs: PackImport[]) {
         released_at: pack.released_at,
         publisher_id: pack.ffg_id,
         cycle_id: pack.cycle_id,
+        rotated: false
       })
   )
 }

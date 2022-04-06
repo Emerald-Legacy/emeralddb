@@ -24,6 +24,7 @@ export function importCardsInPack(path: string): void {
       image_url: cardInPack.image_url,
       position: cardInPack.position,
       quantity: cardInPack.quantity,
+      rotated: false
     })
   })
 }
