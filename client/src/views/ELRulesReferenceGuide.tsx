@@ -6471,6 +6471,62 @@ export function ELRulesReferenceGuide(): JSX.Element {
               <p>
                 <b>Remove "Item" trait.</b>
               </p>
+              <h5>
+                <a href={`${host}/card/daidoji-ienori`} target="_blank">
+                  Daidōji Ienori
+                </a>{' '}
+                (Through The Mists, 10)
+              </h5>
+              <p>
+                Should read: "<b>Conflict Action:</b> Choose a character - set that character's <span className="icon icon-conflict-military" /> and <span className="icon icon-conflict-political" /> skill to 3 until the end of the conflict. If this character is honored, the chosen character also cannot receive status tokens until the end of the conflict."
+                <br />
+                <i>(Replaces "<b>Conflict Action:</b> If this character is honored, choose a character - set that character's <span className="icon icon-conflict-military" /> and <span className="icon icon-conflict-political" /> skill to 3 until the end of the conflict.")</i>
+              </p>
+              <h5>
+                <a href={`${host}/card/akodo-cho`} target="_blank">
+                  Akodo Cho
+                </a>{' '}
+                (Through The Mists, 20)
+              </h5>
+              <p>
+                Should read: "<b>Bow</b> a <em>Follower</em> attachment..."
+                <br />
+                <i>(Replaces "Sacrifice a Follower attachment...")</i>
+              </p>
+              <h5>
+                <a href={`${host}/card/the-east-wind`} target="_blank">
+                  The East Wind
+                </a>{' '}
+                (Through The Mists, 37)
+              </h5>
+              <p>
+                Should read: "...choose an unbroken non-stronghold province <b>you control</b>, ..."
+                <br />
+                <i>(Added "you control")</i>
+              </p>
+              <h5>
+                <a href={`${host}/card/shinjo-atagi`} target="_blank">
+                  Shinjo Atagi
+                </a>{' '}
+                (Through The Mists, 39)
+              </h5>
+              <p>
+                Should read: "<b>Conflict Action:</b> Choose a participating character - set the skill matching the conflict type of that character to the printed strength of the attacked province until the end of the conflict."
+                <br />
+                <i>(Relaces "While you control no facedown provinces, this character gains +2<span className="icon icon-conflict-military" /> and +1<span className="icon icon-conflict-political" />.<br/><b>Conflict Action:</b> Choose a participating character your opponent controls - reveal a province you control. If the chosen character's <span className="icon icon-conflict-military" /> is less than or equal to the province's strength, bow that character.")</i>
+              </p>
+              <h5>
+                <a href={`${host}/card/stowaway`} target="_blank">
+                  Stowaway
+                </a>{' '}
+                (Through The Mists, 50)
+              </h5>
+              <p>
+                Should read: "This character gains +1<span className="icon icon-conflict-military" /> for every two facedown cards under it.<br/>
+                <b>Conflict Reaction:</b> After this character enters play during a conflict, or assigns to a conflict, choose up to two cards in any one discard pile - place them under this character, facedown."
+                <br />
+                <i>(Replaces "This character gains +1<span className="icon icon-conflict-military" /> for each facedown card under it.<br/><b>Conflict Action:</b> Choose a card in a discard pile - place it under this character, facedown. (Limit 1 per conflict.)")</i>
+              </p>
               <AnchoredHeading addHeading={addHeading} level="2" text="Reprint Changes" />
               <p>
                 The following errata clarifies the interaction between individual card text and the
