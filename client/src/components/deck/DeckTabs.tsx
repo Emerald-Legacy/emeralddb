@@ -3,7 +3,6 @@ import { makeStyles, Box, Typography, Button, Grid, useMediaQuery } from '@mater
 import { useConfirm } from 'material-ui-confirm'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
-import { useHistory } from 'react-router-dom'
 import { privateApi } from '../../api'
 import { formats } from '../../utils/enums'
 import { CardFactionIcon } from '../card/CardFactionIcon'
@@ -11,6 +10,7 @@ import { DecklistTabs, latestDecklistForDeck } from './DecklistTabs'
 import EditIcon from '@material-ui/icons/Edit'
 import DeleteIcon from '@material-ui/icons/Delete'
 import LinkIcon from '@material-ui/icons/Link'
+import { EmeraldDBLink } from '../EmeraldDBLink'
 
 const useStyles = makeStyles((theme) => ({
   unselectedDeck: {
@@ -40,7 +40,6 @@ export function DeckTabs(props: {
 }): JSX.Element {
   const { decks } = props
   const classes = useStyles()
-  const history = useHistory()
   const confirm = useConfirm()
   const { enqueueSnackbar } = useSnackbar()
   const [currentDeckId, setCurrentDeckId] = useState<string | undefined>()
@@ -83,15 +82,18 @@ export function DeckTabs(props: {
     <Grid container spacing={1}>
       <Grid item xs={12} lg={3} xl={4}>
         <Grid container>
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={() => history.push('/builder/create/new')}
-            fullWidth
-            className={classes.newDeckButton}
-          >
-            Create New Deck
-          </Button>
+          <Grid item xs={12}>
+            <EmeraldDBLink href={`/builder/create/new`}>
+              <Button
+                variant="contained"
+                color="secondary"
+                fullWidth
+                className={classes.newDeckButton}
+              >
+                Create New Deck
+              </Button>
+            </EmeraldDBLink>
+          </Grid>
           {sortedDecks.map((deck) => {
             const latestList = latestDecklistForDeck(deck)
             return (
@@ -138,28 +140,30 @@ export function DeckTabs(props: {
             <Grid item xs={12}>
               <Grid container spacing={1} justify="flex-end">
                 <Grid item xs={4}>
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    onClick={() => history.push(`/builder/${currentDeckId}/edit`)}
-                    fullWidth
-                    className={classes.newDeckButton}
-                    startIcon={<EditIcon />}
-                  >
-                    Edit Deck
-                  </Button>
+                  <EmeraldDBLink href={`/builder/${currentDeckId}/edit`}>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      fullWidth
+                      className={classes.newDeckButton}
+                      startIcon={<EditIcon />}
+                    >
+                      Edit Deck
+                    </Button>
+                  </EmeraldDBLink>
                 </Grid>
                 <Grid item xs={4}>
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    onClick={() => history.push(`/decks/${currentDeckId}/`)}
-                    fullWidth
-                    className={classes.newDeckButton}
-                    startIcon={<LinkIcon />}
-                  >
-                    Link (Latest Version)
-                  </Button>
+                  <EmeraldDBLink href={`/decks/${currentDeckId}/`}>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      fullWidth
+                      className={classes.newDeckButton}
+                      startIcon={<LinkIcon />}
+                    >
+                      Link (Latest Version)
+                    </Button>
+                  </EmeraldDBLink>
                 </Grid>
                 <Grid item xs={4}>
                   <Button

@@ -6,7 +6,7 @@ import { getColorForFactionId } from '../../utils/factionUtils'
 import { capitalize } from '../../utils/stringUtils'
 import { CardText } from './CardText'
 import { ElementSymbol } from './ElementSymbol'
-import {useHistory} from "react-router-dom";
+import { useHistory } from 'react-router-dom'
 
 const useStyles = makeStyles(() => ({
   clanMon: {
@@ -216,7 +216,11 @@ export function CardInformation(props: {
     <Box border="solid 1px" padding="15px" borderRadius="3px">
       <Grid container className={classes.block}>
         <Grid item xs={10}>
-          <Typography variant="h5" style={{ color: color, cursor: props.clickable? 'pointer' : 'default' }} onClick={() => props.clickable ? goToCardPage(card.id) : {}}>
+          <Typography
+            variant="h5"
+            style={{ color: color, cursor: props.clickable ? 'pointer' : 'default' }}
+            onClick={() => (props.clickable ? goToCardPage(card.id) : {})}
+          >
             {card.is_unique && <span className="icon icon-unique" />}
             {card.name}
           </Typography>

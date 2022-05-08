@@ -63,7 +63,7 @@ export const privateApi = forge({
       import: { method: 'GET', path: '/import' },
     },
     Beta: {
-      url: { method: 'GET', path: '/beta-url'}
+      url: { method: 'GET', path: '/beta-url' },
     },
     User: {
       current: { method: 'GET', path: '/users/me' },

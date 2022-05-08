@@ -1,4 +1,4 @@
-import { DecklistViewModel } from '@5rdb/api'
+import { DecklistViewModel, Decklist } from '@5rdb/api'
 import {
   Button,
   Dialog,
@@ -11,31 +11,10 @@ import {
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
 
-const fiveRingsDbPermalinkPrefix = 'https://fiveringsdb.com/strains/'
-const fiveRingsDbApiPrefix = 'https://api.fiveringsdb.com/strains/'
+const emeraldDBPermalinkPrefix = 'https://www.emeralddb.org/decks/'
+const emeraldDBApiPrefix = 'https://www.emeralddb.org/api/decklists/'
 
-interface FiveRingsDBResponse {
-  rrg_version: string
-  success: boolean
-  record: {
-    created_at: string
-    head: {
-      cards: Record<string, number>
-      description: string
-      format: string
-      id: string
-      name: string
-      primary_clan: string
-      problem: number
-      published: false
-      secondary_clan: string
-      version: string
-    }
-    id: string
-  }
-}
-
-export function FiveRingsDBImportButton(props: {
+export function EmeraldDBImportButton(props: {
   onImport: (decklist: DecklistViewModel) => void
 }): JSX.Element {
   const [modalOpen, setModalOpen] = useState(false)
@@ -44,21 +23,21 @@ export function FiveRingsDBImportButton(props: {
   const { enqueueSnackbar } = useSnackbar()
   const isSmOrSmaller = useMediaQuery('(max-width:400px)')
 
-  function importFiveRingsDBDeck() {
+  function importEmeraldDBDeck() {
     setLoading(true)
-    if (!permalink.startsWith(fiveRingsDbPermalinkPrefix)) {
-      enqueueSnackbar(`Invalid Permalink, must start with "${fiveRingsDbPermalinkPrefix}"!`, {
+    if (!permalink.startsWith(emeraldDBPermalinkPrefix)) {
+      enqueueSnackbar(`Invalid Permalink, must start with "${emeraldDBPermalinkPrefix}"!`, {
         variant: 'error',
       })
       setLoading(false)
     } else {
       const apiUrl = permalink
-        .replace(fiveRingsDbPermalinkPrefix, fiveRingsDbApiPrefix)
+        .replace(emeraldDBPermalinkPrefix, emeraldDBApiPrefix)
         .replace('/view', '')
       fetch(apiUrl)
         .then((res) => res.json())
-        .then((data) => {
-          const importedDeck = (data as FiveRingsDBResponse).record.head
+        .then((data: Decklist) => {
+          const importedDeck = data
           props.onImport({
             id: '',
             format: importedDeck.format,
@@ -69,8 +48,6 @@ export function FiveRingsDBImportButton(props: {
             description: importedDeck.description,
             cards: importedDeck.cards,
           })
-          setModalOpen(false)
-          setLoading(false)
         })
     }
   }
@@ -78,10 +55,10 @@ export function FiveRingsDBImportButton(props: {
   return (
     <>
       <Button variant="contained" color="secondary" fullWidth onClick={() => setModalOpen(true)}>
-        Import from FiveRingsDB
+        Import from EmeraldDB
       </Button>
       <Dialog open={modalOpen} onClose={() => setModalOpen(false)}>
-        <DialogTitle>Import from FiveRingsDB</DialogTitle>
+        <DialogTitle>Import from EmeraldDB</DialogTitle>
         <DialogContent>
           <TextField
             value={permalink}
@@ -100,7 +77,7 @@ export function FiveRingsDBImportButton(props: {
             variant="contained"
             color="secondary"
             disabled={loading}
-            onClick={() => importFiveRingsDBDeck()}
+            onClick={() => importEmeraldDBDeck()}
           >
             Import Deck
           </Button>

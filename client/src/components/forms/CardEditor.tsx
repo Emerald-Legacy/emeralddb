@@ -37,7 +37,8 @@ const useStyles = makeStyles((theme) => ({
 export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): JSX.Element {
   const history = useHistory()
   const existingCard = props.existingCard
-  const allTraits = useUiStore().traits
+  const uiStore = useUiStore();
+  const allTraits = uiStore.traits
 
   const [id, setId] = useState(existingCard?.id || '')
   const [name, setName] = useState(existingCard?.name || '')
@@ -326,11 +327,11 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
             const newCard = assembleCard()
             privateApi.Card.update({ cardId: newCard.id, body: newCard })
               .then(() => {
+                uiStore.toggleReload()
                 history.push(`/card/${newCard.id}`)
               })
               .catch((error) => {
                 console.log(error)
-                // TODO: Show error
               })
           })
           .catch(() => {
@@ -347,6 +348,7 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
           const newCard = assembleCard()
           privateApi.Card.create({ body: newCard })
             .then(() => {
+              uiStore.toggleReload()
               history.push(`/card/${newCard.id}`)
             })
             .catch((error) => {

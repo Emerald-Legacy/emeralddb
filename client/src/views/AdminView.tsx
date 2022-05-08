@@ -1,11 +1,10 @@
-import {Button, Container, TextField, Typography} from '@material-ui/core'
+import { Button, TextField, Typography } from '@material-ui/core'
 import { useHistory } from 'react-router-dom'
 import { privateApi } from '../api'
-import React, {useState} from "react";
-import axios from 'axios';
-import {useSnackbar} from "notistack";
-import {useBetaEnvironment} from "../hooks/useBetaEnvironment";
-
+import React, { useState } from 'react'
+import axios from 'axios'
+import { useSnackbar } from 'notistack'
+import { useBetaEnvironment } from '../hooks/useBetaEnvironment'
 
 export function AdminView(): JSX.Element {
   const history = useHistory()
@@ -19,18 +18,20 @@ export function AdminView(): JSX.Element {
   const betaUrl: string = betaEnvironment.data?.betaUrl || 'undefined'
 
   const importPack = () => {
-    const enteredPackId = packId;
-    setPackId('');
-    axios.get(`${betaUrl}api/packs/export/${enteredPackId}`)
-      .then(exported => privateApi.Pack.import({
+    const enteredPackId = packId
+    setPackId('')
+    axios
+      .get(`${betaUrl}api/packs/export/${enteredPackId}`)
+      .then((exported) =>
+        privateApi.Pack.import({
           body: {
-            ...exported.data
+            ...exported.data,
           },
         })
-        .then(() => enqueueSnackbar("Successfully imported pack!", { variant: "success"}))
-        .catch(() => enqueueSnackbar("Couldn't import pack", { variant: "error"}))
+          .then(() => enqueueSnackbar('Successfully imported pack!', { variant: 'success' }))
+          .catch(() => enqueueSnackbar("Couldn't import pack", { variant: 'error' }))
       )
-      .catch(() => enqueueSnackbar("Couldn't import pack", { variant: "error"}))
+      .catch(() => enqueueSnackbar("Couldn't import pack", { variant: 'error' }))
   }
 
   return (
@@ -54,18 +55,13 @@ export function AdminView(): JSX.Element {
       <br />
       <TextField
         value={packId}
-        onChange={(event => setPackId(event.target.value))}
-        label={"Pack ID"}
-        variant={"outlined"}
+        onChange={(event) => setPackId(event.target.value)}
+        label={'Pack ID'}
+        variant={'outlined'}
       />
       <br />
       <br />
-      <Button
-        disabled={packId == ''}
-        variant="contained"
-        color="secondary"
-        onClick={importPack}
-      >
+      <Button disabled={packId === ''} variant="contained" color="secondary" onClick={importPack}>
         Import A Pack From BETA
       </Button>
       <br />

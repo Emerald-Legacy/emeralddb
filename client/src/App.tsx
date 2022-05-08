@@ -1,5 +1,5 @@
 import { ThemeProvider } from '@material-ui/styles'
-import {createMuiTheme, responsiveFontSizes} from '@material-ui/core/styles'
+import { createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles'
 import { BrowserRouter } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import 'bootstrap/dist/css/bootstrap.min.css'

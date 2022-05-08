@@ -10,7 +10,6 @@ import {
   Menu,
   TextField,
   Toolbar,
-  Typography,
   useMediaQuery,
   Container,
   List,
@@ -24,6 +23,7 @@ import SearchIcon from '@material-ui/icons/Search'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import ExpandLessIcon from '@material-ui/icons/ExpandLess'
 import MenuIcon from '@material-ui/icons/Menu'
+import { EmeraldDBLink } from './EmeraldDBLink'
 
 const useStyles = makeStyles(() => ({
   title: {
@@ -75,11 +75,15 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
     setRulesAnchorEl(event.currentTarget)
   }
 
-  const goTo = (route: string) => {
-    history.push(route)
+  const closeModalsAndPopUps = () => {
     setCardAnchorEl(null)
     setRulesAnchorEl(null)
     setIsMobileOpen(false)
+  }
+
+  const goTo = (route: string) => {
+    closeModalsAndPopUps()
+    history.push(route)
   }
 
   const listenToEnterDown = (event: React.KeyboardEvent) => {
@@ -97,14 +101,9 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
             <Grid item xs={12} lg={is1440PxOrBigger ? 10 : 12} xl={10}>
               <Grid container>
                 <Grid item xs={11} sm={11} md={2} lg={3} xl={2}>
-                  <Typography
-                    variant="h6"
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => goTo('/cards')}
-                  >
+                  <EmeraldDBLink href={'/cards'} onClick={() => closeModalsAndPopUps()}>
                     <img src="/static/logo.png" className={classes.logo} />
-                  </Typography>
-                  <Typography className={classes.title}></Typography>
+                  </EmeraldDBLink>
                 </Grid>
                 {isMdOrSmaller && (
                   <Grid item xs={1} sm={1}>
@@ -123,7 +122,13 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
                     >
                       <Grid item>
                         <ListItem button dense={isMdOrSmaller}>
-                          <ListItemText primary="Cards" onClick={() => goTo('/cards')} />
+                          <ListItemText
+                            primary={
+                              <EmeraldDBLink href="/cards" onClick={closeModalsAndPopUps}>
+                                Cards
+                              </EmeraldDBLink>
+                            }
+                          />
                           <span onClick={handleCardMenuClick}>
                             {cardAnchorEl ? <ExpandLessIcon /> : <ExpandMoreIcon />}
                           </span>
@@ -140,36 +145,46 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
                         >
                           <div>
                             <CycleList
-                              onRootClick={() => {
-                                goTo('/cards')
-                                setCardAnchorEl(null)
-                              }}
-                              onCycleClick={(cycleId: string) => {
-                                goTo(`/cards?cycle=${cycleId}`)
-                                setCardAnchorEl(null)
-                              }}
-                              onPackClick={(packId: string) => {
-                                goTo(`/cards?pack=${packId}`)
-                                setCardAnchorEl(null)
-                              }}
+                              rootUrl="/cards"
+                              cycleUrl="/cards?cycle="
+                              packUrl="/cards?pack="
+                              onClick={goTo}
                               rootLabel="View All Cards"
                             />
                           </div>
                         </Menu>
                       </Grid>
                       <Grid item>
-                        <ListItem button dense={isMdOrSmaller} onClick={() => goTo('/decks')}>
-                          <ListItemText primary="Decks" />
+                        <ListItem button dense={isMdOrSmaller}>
+                          <ListItemText
+                            primary={
+                              <EmeraldDBLink href="/decks" onClick={closeModalsAndPopUps}>
+                                Decks
+                              </EmeraldDBLink>
+                            }
+                          />
                         </ListItem>
                       </Grid>
                       <Grid item>
-                        <ListItem button dense={isMdOrSmaller} onClick={() => goTo('/builder')}>
-                          <ListItemText primary="Builder" />
+                        <ListItem button dense={isMdOrSmaller}>
+                          <ListItemText
+                            primary={
+                              <EmeraldDBLink href="/builder" onClick={closeModalsAndPopUps}>
+                                Builder
+                              </EmeraldDBLink>
+                            }
+                          />
                         </ListItem>
                       </Grid>
                       <Grid item>
                         <ListItem button dense={isMdOrSmaller} onClick={handleRulesMenuClick}>
-                          <ListItemText primary="Rules" />
+                          <ListItemText
+                            primary={
+                              <EmeraldDBLink href="/rules" onClick={closeModalsAndPopUps}>
+                                Rules
+                              </EmeraldDBLink>
+                            }
+                          />
                           <span>{rulesAnchorEl ? <ExpandLessIcon /> : <ExpandMoreIcon />}</span>
                         </ListItem>
                         <Menu
@@ -184,38 +199,42 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
                         >
                           <div>
                             <List dense>
-                              <ListItem button onClick={() => goTo('/rules/organized-play')}>
-                                <b>Restricted and Banned Lists</b>
+                              <ListItem>
+                                <EmeraldDBLink
+                                  href="/rules/organized-play"
+                                  onClick={closeModalsAndPopUps}
+                                >
+                                  <b>Restricted and Banned Lists</b>
+                                </EmeraldDBLink>
                               </ListItem>
-                              <ListItem
-                                button
-                                onClick={() => goTo('/rules/organized-play/emerald')}
-                              >
-                                - Emerald Legacy
+                              <ListItem>
+                                <EmeraldDBLink
+                                  href="/rules/organized-play/emerald"
+                                  onClick={closeModalsAndPopUps}
+                                >
+                                  - Emerald Legacy
+                                </EmeraldDBLink>
                               </ListItem>
-                              <ListItem
-                                button
-                                onClick={() => goTo('/rules/organized-play/jade-edict')}
-                              >
-                                - Jade Court
+                              <ListItem>
+                                <EmeraldDBLink
+                                  href="/rules/organized-play/standard"
+                                  onClick={closeModalsAndPopUps}
+                                >
+                                  - Fantasy Flight Games
+                                </EmeraldDBLink>
                               </ListItem>
-                              <ListItem
-                                button
-                                onClick={() => goTo('/rules/organized-play/standard')}
-                              >
-                                - Fantasy Flight Games
+                              <ListItem>
+                                <EmeraldDBLink href="/rules/emerald" onClick={closeModalsAndPopUps}>
+                                  <b>Emerald Legacy's RRG</b>
+                                </EmeraldDBLink>
                               </ListItem>
-                              <ListItem
-                                button
-                                onClick={() => goTo('/rules/organized-play/obsidian')}
-                              >
-                                - Obsidian Heresy
-                              </ListItem>
-                              <ListItem button onClick={() => goTo('/rules/emerald')}>
-                                <b>Emerald Legacy's RRG</b>
-                              </ListItem>
-                              <ListItem button onClick={() => goTo('/rules/imperial')}>
-                                <b>Fantasy Flight Games' RRG</b>
+                              <ListItem>
+                                <EmeraldDBLink
+                                  href="/rules/imperial"
+                                  onClick={closeModalsAndPopUps}
+                                >
+                                  <b>Fantasy Flight Games' RRG</b>
+                                </EmeraldDBLink>
                               </ListItem>
                             </List>
                           </div>
@@ -223,14 +242,26 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
                       </Grid>
                       {isDataAdmin() && (
                         <Grid item>
-                          <ListItem button dense={isMdOrSmaller} onClick={() => goTo('/admin')}>
-                            <ListItemText primary="Admin" />
+                          <ListItem button dense={isMdOrSmaller}>
+                            <ListItemText
+                              primary={
+                                <EmeraldDBLink href="/admin" onClick={closeModalsAndPopUps}>
+                                  Admin
+                                </EmeraldDBLink>
+                              }
+                            />
                           </ListItem>
                         </Grid>
                       )}
                       <Grid item>
-                        <ListItem button dense={isMdOrSmaller} onClick={() => goTo('/faq')}>
-                          <ListItemText primary="FAQ" />
+                        <ListItem button dense={isMdOrSmaller}>
+                          <ListItemText
+                            primary={
+                              <EmeraldDBLink href="/faq" onClick={closeModalsAndPopUps}>
+                                FAQ
+                              </EmeraldDBLink>
+                            }
+                          />
                         </ListItem>
                       </Grid>
                       <Grid item>

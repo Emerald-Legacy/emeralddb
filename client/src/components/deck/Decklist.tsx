@@ -13,7 +13,7 @@ import lodash from 'lodash'
 import { Loading } from '../Loading'
 import { useState } from 'react'
 import { formats } from '../../utils/enums'
-import {CardFactionIcon} from "../card/CardFactionIcon";
+import { CardFactionIcon } from '../card/CardFactionIcon'
 
 export function DeckCardSubList(props: {
   cards: CardWithQuantity[]
@@ -229,13 +229,8 @@ export function Decklist(props: {
                   {decklist.name} (v{decklist.version_number})
                 </Typography>
                 <Typography variant="h4">
-                  {stats.primaryClan && (
-                    <CardFactionIcon faction={stats.primaryClan} colored />
-                  )}
-                  {' '}
-                  {stats.secondaryClan && (
-                    <CardFactionIcon faction={stats.secondaryClan} colored />
-                  )}
+                  {stats.primaryClan && <CardFactionIcon faction={stats.primaryClan} colored />}{' '}
+                  {stats.secondaryClan && <CardFactionIcon faction={stats.secondaryClan} colored />}
                 </Typography>
               </>
             )}

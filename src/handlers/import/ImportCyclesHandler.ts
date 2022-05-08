@@ -18,6 +18,7 @@ async function importCycles(cycles: CycleImport[]) {
         name: cycle.name,
         position: cycle.position,
         size: cycle.size,
+        rotated: false,
       })
   )
 }

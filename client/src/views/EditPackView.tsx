@@ -1,10 +1,10 @@
 import {
   Box,
-  Button,
+  Button, Checkbox,
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle,
+  DialogTitle, FormControlLabel,
   Grid,
   TextField,
   Typography,
@@ -20,7 +20,7 @@ import { privateApi } from '../api'
 import { useSnackbar } from 'notistack'
 
 export function EditPackView(): JSX.Element {
-  const { cards, packs } = useUiStore()
+  const { cards, packs, toggleReload } = useUiStore()
   const history = useHistory()
   const params = useParams<{ id: string }>()
   const [editIndex, setEditIndex] = useState(-1)
@@ -30,6 +30,7 @@ export function EditPackView(): JSX.Element {
   const [imageUrl, setImageUrl] = useState('')
   const [position, setPosition] = useState('')
   const [quantity, setQuantity] = useState(0)
+  const [rotated, setRotated] = useState(false)
   const [cardsInPack, setCardsInPack] = useState<CardInPack[]>([])
   const [modalOpen, setModalOpen] = useState(false)
   const { enqueueSnackbar } = useSnackbar()
@@ -48,7 +49,8 @@ export function EditPackView(): JSX.Element {
   const packCards = cards.filter((c) => c.versions.some((v) => v.pack_id === packId))
   if (cardsInPack.length === 0 && packCards.length > 0) {
     const newCardsInPack: CardInPack[] = packCards.map((p) => {
-      return { ...p.versions.find((v) => v.pack_id === packId), card_id: p.id, pack_id: packId }
+      const cardVersionInPack = p.versions.find((v) => v.pack_id === packId);
+      return { ...cardVersionInPack, card_id: p.id, pack_id: packId, rotated: cardVersionInPack?.rotated || false}
     })
     setCardsInPack(newCardsInPack)
   }
@@ -62,6 +64,7 @@ export function EditPackView(): JSX.Element {
       image_url: imageUrl,
       position: position,
       quantity: quantity,
+      rotated: rotated
     }
     if (editIndex === -1) {
       setCardsInPack([...cardsInPack, newCard])
@@ -81,6 +84,7 @@ export function EditPackView(): JSX.Element {
     setImageUrl(card.image_url || '')
     setPosition(card.position || '')
     setQuantity(card.quantity || 1)
+    setRotated(card.rotated || false)
     setModalOpen(true)
   }
 
@@ -92,6 +96,7 @@ export function EditPackView(): JSX.Element {
     setImageUrl('')
     setPosition('')
     setQuantity(3)
+    setRotated(false)
     setModalOpen(true)
   }
 
@@ -102,6 +107,7 @@ export function EditPackView(): JSX.Element {
       },
     })
       .then(() => {
+        toggleReload()
         enqueueSnackbar('Successfully posted pack cards!', { variant: 'success' })
         history.push('/admin/cycles')
       })
@@ -134,6 +140,7 @@ export function EditPackView(): JSX.Element {
                 <Typography>Illustrator: {card.illustrator}</Typography>
                 <Typography>Position: {card.position}</Typography>
                 <Typography>Quantity: {card.quantity}</Typography>
+                <Typography>Rotated: {card.rotated ? 'Yes' : 'No'}</Typography>
                 <Button
                   variant="contained"
                   color="secondary"
@@ -210,6 +217,14 @@ export function EditPackView(): JSX.Element {
                 type="number"
                 label="Quantity"
                 style={{ marginTop: 5 }}
+              />
+              <FormControlLabel
+                control={<Checkbox
+                  value={rotated}
+                  onChange={(value) => setRotated(value.target.checked)}
+                />}
+                label={"Rotated Out"}
+                labelPlacement="start"
               />
             </Grid>
             <Grid item xs={4}>

@@ -5,7 +5,11 @@ import {
   Button,
   Dialog,
   DialogActions,
-  DialogContent, Grid, Select, MenuItem, Box,
+  DialogContent,
+  Grid,
+  Select,
+  MenuItem,
+  Box,
 } from '@material-ui/core'
 import { DataGrid, GridColumns } from '@material-ui/data-grid'
 import { useHistory, useLocation } from 'react-router-dom'
@@ -18,8 +22,8 @@ import { CardWithVersions, Pack } from '@5rdb/api'
 import { CardInformation } from '../components/card/CardInformation'
 import { Loading } from '../components/Loading'
 import { CardLink } from '../components/card/CardLink'
-import {CardImageOrText} from "../components/card/CardImageOrText";
-import {Pagination} from "@material-ui/lab";
+import { CardImageOrText } from '../components/card/CardImageOrText'
+import { Pagination } from '@material-ui/lab'
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -54,7 +58,7 @@ enum DisplayMode {
 
 enum SortMode {
   NAME = 'name',
-  PACK_POSITION = 'pack_position'
+  PACK_POSITION = 'pack_position',
 }
 
 function createFilterFromUrlSearchParams(params: URLSearchParams, allPacks: Pack[]): FilterState {
@@ -81,11 +85,12 @@ function createFilterFromUrlSearchParams(params: URLSearchParams, allPacks: Pack
     restricted: '',
     banned: '',
     isUnique: '',
+    showRotated: 'true'
   }
 }
 
 export function CardsView(): JSX.Element {
-  const PAGE_SIZE = 60;
+  const PAGE_SIZE = 60
 
   const classes = useStyles()
   const { cards, packs, cycles, traits } = useUiStore()
@@ -133,55 +138,53 @@ export function CardsView(): JSX.Element {
 
   function CardModal(): JSX.Element {
     if (!modalCard) {
-      return (<div />)
+      return <div />
     }
-    return (<Dialog open={cardModalOpen} onClose={() => setCardModalOpen(false)}>
-      <DialogContent>
-        <CardInformation cardWithVersions={modalCard} clickable />
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={() => setCardModalOpen(false)} variant="contained">
-          Close
-        </Button>
-        <Button
-          onClick={() => goToCardPage(modalCard.id)}
-          color="secondary"
-          variant="contained"
-        >
-          Go To Card Page
-        </Button>
-      </DialogActions>
-    </Dialog>)
+    return (
+      <Dialog open={cardModalOpen} onClose={() => setCardModalOpen(false)}>
+        <DialogContent>
+          <CardInformation cardWithVersions={modalCard} clickable />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setCardModalOpen(false)} variant="contained">
+            Close
+          </Button>
+          <Button onClick={() => goToCardPage(modalCard.id)} color="secondary" variant="contained">
+            Go To Card Page
+          </Button>
+        </DialogActions>
+      </Dialog>
+    )
   }
 
   function Selectors(): JSX.Element {
     const sortOptions = [
       {
         option: SortMode.NAME,
-        label: "Sort by Name"
+        label: 'Sort by Name',
       },
       {
         option: SortMode.PACK_POSITION,
-        label: "Sort by Pack Position"
-      }
+        label: 'Sort by Pack Position',
+      },
     ]
 
     const displayOptions = [
       {
         option: DisplayMode.LIST,
-        label: "Table View"
+        label: 'Table View',
       },
       {
         option: DisplayMode.IMAGES,
-        label: "Image View"
+        label: 'Image View',
       },
       {
         option: DisplayMode.FULL,
-        label: "Text + Image View"
-      }
+        label: 'Text + Image View',
+      },
     ]
 
-    let pageCount = Math.ceil(filteredCards.length / PAGE_SIZE);
+    const pageCount = Math.ceil(filteredCards.length / PAGE_SIZE)
 
     return (
       <Box paddingBottom={'5px'}>
@@ -191,19 +194,21 @@ export function CardsView(): JSX.Element {
               value={displayMode}
               label="Display Mode"
               onChange={(event) => {
-                let newMode = event.target.value as DisplayMode || DisplayMode.LIST;
+                const newMode = (event.target.value as DisplayMode) || DisplayMode.LIST
                 setDisplayMode(newMode)
                 urlSearchParams.set('display', newMode)
                 history.push({
                   pathname: '/cards',
-                  search: urlSearchParams.toString()
+                  search: urlSearchParams.toString(),
                 })
               }}
-              variant={"outlined"}
+              variant={'outlined'}
               fullWidth
             >
-              {displayOptions.map(option => (
-                <MenuItem key={option.option} value={option.option}>{option.label}</MenuItem>
+              {displayOptions.map((option) => (
+                <MenuItem key={option.option} value={option.option}>
+                  {option.label}
+                </MenuItem>
               ))}
             </Select>
           </Grid>
@@ -212,24 +217,26 @@ export function CardsView(): JSX.Element {
               value={sortMode}
               label="Sort Mode"
               onChange={(event) => {
-                const newMode = event.target.value as SortMode || SortMode.NAME;
+                const newMode = (event.target.value as SortMode) || SortMode.NAME
                 setSortMode(newMode)
                 urlSearchParams.set('sort', newMode)
                 history.push({
                   pathname: '/cards',
-                  search: urlSearchParams.toString()
+                  search: urlSearchParams.toString(),
                 })
               }}
-              variant={"outlined"}
+              variant={'outlined'}
               fullWidth
             >
-              {sortOptions.map(option => (
-                <MenuItem key={option.option} value={option.option}>{option.label}</MenuItem>
+              {sortOptions.map((option) => (
+                <MenuItem key={option.option} value={option.option}>
+                  {option.label}
+                </MenuItem>
               ))}
             </Select>
           </Grid>
           <Grid item xs={12} sm={6} hidden={displayMode === DisplayMode.LIST}>
-            <Box style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
+            <Box style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <Pagination
                 count={pageCount}
                 page={page + 1}
@@ -237,7 +244,7 @@ export function CardsView(): JSX.Element {
                 color={'secondary'}
                 shape={'rounded'}
                 size={'large'}
-                style={{padding: '7px 0'}}
+                style={{ padding: '7px 0' }}
               />
             </Box>
           </Grid>
@@ -259,16 +266,16 @@ export function CardsView(): JSX.Element {
           : card.military_bonus !== null && card.military_bonus !== undefined
           ? card.military_bonus
           : card.type === 'character' || card.type === 'attachment'
-            ? '-'
-            : ''
+          ? '-'
+          : ''
       const pol =
         card.political !== null && card.political !== undefined
           ? card.political
           : card.political_bonus !== null && card.political_bonus !== undefined
           ? card.political_bonus
           : card.type === 'character' || card.type === 'attachment'
-            ? '-'
-            : ''
+          ? '-'
+          : ''
 
       return {
         id: card.id,
@@ -295,8 +302,8 @@ export function CardsView(): JSX.Element {
           const nameProps = params.value as NameProps
           return (
             <span style={{ marginLeft: -10, cursor: 'pointer' }}>
-            <CardLink cardId={nameProps.id} sameTab />
-          </span>
+              <CardLink cardId={nameProps.id} sameTab />
+            </span>
           )
         },
         sortComparator: (v1, v2, param1, param2) =>
@@ -323,7 +330,13 @@ export function CardsView(): JSX.Element {
       },
       { field: 'deck', headerName: 'Deck', disableColumnMenu: true, flex: 1, hide: !isMdOrBigger },
       { field: 'cost', headerName: 'Cost', disableColumnMenu: true, flex: 1, hide: !isMdOrBigger },
-      { field: 'military', headerName: 'Mil', disableColumnMenu: true, flex: 1, hide: !isMdOrBigger },
+      {
+        field: 'military',
+        headerName: 'Mil',
+        disableColumnMenu: true,
+        flex: 1,
+        hide: !isMdOrBigger,
+      },
       {
         field: 'political',
         headerName: 'Pol',
@@ -331,13 +344,29 @@ export function CardsView(): JSX.Element {
         flex: 1,
         hide: !isMdOrBigger,
       },
-      { field: 'glory', headerName: 'Glory', disableColumnMenu: true, flex: 1, hide: !isMdOrBigger },
-      { field: 'strength', headerName: 'Str', disableColumnMenu: true, flex: 1, hide: !isMdOrBigger },
+      {
+        field: 'glory',
+        headerName: 'Glory',
+        disableColumnMenu: true,
+        flex: 1,
+        hide: !isMdOrBigger,
+      },
+      {
+        field: 'strength',
+        headerName: 'Str',
+        disableColumnMenu: true,
+        flex: 1,
+        hide: !isMdOrBigger,
+      },
     ]
 
     return (
       <>
-        <CardFilter onFilterChanged={onFilterChanged} fullWidth filterState={urlParamFilter || filter} />
+        <CardFilter
+          onFilterChanged={onFilterChanged}
+          fullWidth
+          filterState={urlParamFilter || filter}
+        />
         <Paper className={classes.table}>
           <Selectors />
           <DataGrid
@@ -359,74 +388,76 @@ export function CardsView(): JSX.Element {
     )
   }
 
-  function calculatePackIndex (card: CardWithVersions): { packIndex: string, cardIndex: string } {
-    let dummy = {
-      packIndex: "9999",
-      cardIndex: "999"
+  function calculatePackIndex(card: CardWithVersions): { packIndex: string; cardIndex: string } {
+    const dummy = {
+      packIndex: '9999',
+      cardIndex: '999',
     }
     // TODO check for rotation
-    let cardVersion = card.versions.filter(() => true)[0]
+    const cardVersion = card.versions.filter(() => true)[0]
     if (!cardVersion) {
       return dummy
     }
-    let pack = packs.filter(pack => pack.id === cardVersion.pack_id)[0]
+    const pack = packs.filter((pack) => pack.id === cardVersion.pack_id)[0]
     if (!pack) {
       return dummy
     }
-    let cycle = cycles.filter(cycle => cycle.id === pack.cycle_id)[0]
-    let cyclePosition = (cycle?.position || 99) * 100
-    let packPosition = pack.position
-    let cardPosition = cardVersion.position || '999';
+    const cycle = cycles.filter((cycle) => cycle.id === pack.cycle_id)[0]
+    const cyclePosition = (cycle?.position || 99) * 100
+    const packPosition = pack.position
+    let cardPosition = cardVersion.position || '999'
     while (cardPosition.length < 3) {
       cardPosition = '0' + cardPosition
     }
     return {
       packIndex: (cyclePosition + packPosition).toString(),
-      cardIndex: cardPosition
+      cardIndex: cardPosition,
     }
   }
 
   const sortCardsByPackIndex = (cardA: CardWithVersions, cardB: CardWithVersions) => {
-    let aIndex = calculatePackIndex(cardA);
-    let bIndex = calculatePackIndex(cardB);
+    const aIndex = calculatePackIndex(cardA)
+    const bIndex = calculatePackIndex(cardB)
 
-    let indexCompare = aIndex.packIndex.localeCompare(bIndex.packIndex);
-    return indexCompare === 0 ?
-      aIndex.cardIndex.localeCompare(bIndex.cardIndex) :
-      indexCompare
+    const indexCompare = aIndex.packIndex.localeCompare(bIndex.packIndex)
+    return indexCompare === 0 ? aIndex.cardIndex.localeCompare(bIndex.cardIndex) : indexCompare
   }
 
-  let sortedCards = sortMode === SortMode.NAME ?
-    filteredCards.sort((a, b) => a.id.localeCompare(b.id)) :
-    filteredCards.sort(sortCardsByPackIndex)
+  const sortedCards =
+    sortMode === SortMode.NAME
+      ? filteredCards.sort((a, b) => a.id.localeCompare(b.id))
+      : filteredCards.sort(sortCardsByPackIndex)
 
-  let startIndexInclusive = page * PAGE_SIZE
-  let endIndexExclusive = startIndexInclusive + PAGE_SIZE
+  const startIndexInclusive = page * PAGE_SIZE
+  const endIndexExclusive = startIndexInclusive + PAGE_SIZE
 
-  let currentCards = sortedCards.slice(startIndexInclusive, endIndexExclusive)
+  const currentCards = sortedCards.slice(startIndexInclusive, endIndexExclusive)
 
   if (displayMode === DisplayMode.IMAGES) {
     return (
       <>
-        <CardFilter onFilterChanged={onFilterChanged} fullWidth filterState={urlParamFilter || filter} />
+        <CardFilter
+          onFilterChanged={onFilterChanged}
+          fullWidth
+          filterState={urlParamFilter || filter}
+        />
         <Paper className={classes.table}>
           <Selectors />
           <Grid container spacing={1}>
-            {currentCards.map(card => (
-                <Grid item xs={6} sm={4} md={3} lg={2} key={card.id}>
-                  <Box maxWidth={'240px'} margin={"0 auto"}>
-                    <CardImageOrText
-                      cardId={card.id}
-                      onClick={cardId => {
-                        setModalCard(cards.find((card) => card.id === cardId))
-                        setCardModalOpen(true)
-                      }}
-                      packId={card.versions.length > 0 ? card.versions[0].pack_id : ''}
-                    />
-                  </Box>
-                </Grid>
-              )
-            )}
+            {currentCards.map((card) => (
+              <Grid item xs={6} sm={4} md={3} lg={2} key={card.id}>
+                <Box maxWidth={'240px'} margin={'0 auto'}>
+                  <CardImageOrText
+                    cardId={card.id}
+                    onClick={(cardId) => {
+                      setModalCard(cards.find((card) => card.id === cardId))
+                      setCardModalOpen(true)
+                    }}
+                    packId={card.versions.length > 0 ? card.versions[0].pack_id : ''}
+                  />
+                </Box>
+              </Grid>
+            ))}
           </Grid>
           <Selectors />
           <CardModal />
@@ -437,14 +468,22 @@ export function CardsView(): JSX.Element {
 
   return (
     <>
-      <CardFilter onFilterChanged={onFilterChanged} fullWidth filterState={urlParamFilter || filter} />
+      <CardFilter
+        onFilterChanged={onFilterChanged}
+        fullWidth
+        filterState={urlParamFilter || filter}
+      />
       <Paper className={classes.table}>
         <Selectors />
         <Grid container spacing={1}>
-          {currentCards.map(card => (
+          {currentCards.map((card) => (
             <Grid item xs={12} key={card.id} container spacing={4}>
               <Grid item xs={12} sm={6}>
-                <CardInformation cardWithVersions={card} clickable currentVersionPackId={card.versions.length > 0 ? card.versions[0].pack_id : ''}/>
+                <CardInformation
+                  cardWithVersions={card}
+                  clickable
+                  currentVersionPackId={card.versions.length > 0 ? card.versions[0].pack_id : ''}
+                />
                 <Box padding={'5px'} justifyContent={'flex-end'}>
                   <Button
                     onClick={() => goToCardPage(card.id)}
@@ -459,7 +498,7 @@ export function CardsView(): JSX.Element {
                 <Box maxWidth={'300px'}>
                   <CardImageOrText
                     cardId={card.id}
-                    onClick={cardId => {
+                    onClick={(cardId) => {
                       setModalCard(cards.find((card) => card.id === cardId))
                       setCardModalOpen(true)
                     }}
@@ -468,8 +507,7 @@ export function CardsView(): JSX.Element {
                 </Box>
               </Grid>
             </Grid>
-            )
-          )}
+          ))}
         </Grid>
         <Selectors />
         <CardModal />

@@ -1,8 +1,8 @@
-import {Fab, makeStyles, Popover, Theme} from '@material-ui/core'
+import { Fab, makeStyles, Popover, Theme } from '@material-ui/core'
 import { useState } from 'react'
 import { useUiStore } from '../../providers/UiStoreProvider'
 import { CardInformation } from './CardInformation'
-import ZoomInIcon from '@material-ui/icons/ZoomIn';
+import ZoomInIcon from '@material-ui/icons/ZoomIn'
 
 const useStyles = makeStyles((theme: Theme) => ({
   popover: {
@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }))
 
 export function CardImageOrText(props: {
-  cardId: string,
+  cardId: string
   onClick?: (id: string) => void
   packId?: string
 }): JSX.Element {
@@ -43,11 +43,11 @@ export function CardImageOrText(props: {
   const open = Boolean(anchorEl)
   const cardImage = card.versions.length > 0 && card.versions[0].image_url
   return (
-    <div style={{position: 'relative', height: '95%'}} >
+    <div style={{ position: 'relative', height: '95%' }}>
       {cardImage ? (
-        <img src={cardImage} height={'90%'} width={'100%'}/>
+        <img src={cardImage} height={'90%'} width={'100%'} />
       ) : (
-        <CardInformation cardWithVersions={card} currentVersionPackId={props.packId}/>
+        <CardInformation cardWithVersions={card} currentVersionPackId={props.packId} />
       )}
       <Fab
         className={classes.fab}
@@ -55,7 +55,7 @@ export function CardImageOrText(props: {
         size="small"
         onMouseEnter={handlePopoverOpen}
         onMouseLeave={handlePopoverClose}
-        onClick={() => props.onClick ? props.onClick(props.cardId) : {}}
+        onClick={() => (props.onClick ? props.onClick(props.cardId) : {})}
       >
         <ZoomInIcon />
       </Fab>
@@ -78,7 +78,7 @@ export function CardImageOrText(props: {
         {cardImage ? (
           <img src={cardImage} style={{ width: 300, height: 420 }} />
         ) : (
-          <CardInformation cardWithVersions={card} currentVersionPackId={props.packId}/>
+          <CardInformation cardWithVersions={card} currentVersionPackId={props.packId} />
         )}
       </Popover>
     </div>

@@ -1,6 +1,7 @@
 import {
   Checkbox,
   Collapse,
+  Link,
   List,
   ListItem,
   ListItemIcon,
@@ -10,8 +11,10 @@ import {
 import { useUiStore } from '../providers/UiStoreProvider'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import ExpandLessIcon from '@material-ui/icons/ExpandLess'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { Cycle, Pack } from '@5rdb/api'
+import {EmeraldDBLink} from "./EmeraldDBLink";
+import CachedIcon from "@material-ui/icons/Cached";
 
 type CycleWithPacks = Cycle & {
   packs: Pack[]
@@ -27,11 +30,12 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 export function CycleList(props: {
+  onClick?: (route: string) => void
   withCheckbox?: boolean
   onSelection?: (checkedPackIds: string[], checkedCycleIds: string[]) => void
-  onRootClick?: () => void
-  onPackClick?: (packId: string) => void
-  onCycleClick?: (cycleId: string) => void
+  rootUrl?: string
+  packUrl?: string
+  cycleUrl?: string
   selectedPacks?: string[]
   selectedCycles?: string[]
   rootLabel: string
@@ -159,13 +163,15 @@ export function CycleList(props: {
           </ListItemIcon>
         )}
         <ListItemText
-          primary={pack.name}
-          onClick={(e) => {
-            if (props.onPackClick) {
-              props.onPackClick(pack.id)
-              e.stopPropagation()
-            }
-          }}
+          primary={
+            <EmeraldDBLink
+              href={props.packUrl + pack.id}
+              onClick={() => props.onClick && props.onClick(props.packUrl + pack.id)}
+              notClickable={!props.packUrl}
+            >
+              <span>{pack.rotated && <CachedIcon style={{ color: 'red', fontSize: 16 }} />} {pack.name}</span>
+            </EmeraldDBLink>
+          }
         />
       </ListItem>
     )
@@ -200,13 +206,15 @@ export function CycleList(props: {
             </ListItemIcon>
           )}
           <ListItemText
-            primary={cycle.name}
-            onClick={(e) => {
-              if (props.onCycleClick) {
-                props.onCycleClick(cycle.id)
-                e.stopPropagation()
-              }
-            }}
+            primary={
+              <EmeraldDBLink
+                href={props.cycleUrl + cycle.id}
+                onClick={() => props.onClick && props.onClick(props.cycleUrl + cycle.id)}
+                notClickable={!props.cycleUrl}
+              >
+                <span>{cycle.rotated && <CachedIcon style={{ color: 'red', fontSize: 16 }} />} {cycle.name}</span>
+              </EmeraldDBLink>
+            }
           />
           {expandedElements.includes(cycle.id) ? <ExpandLessIcon /> : <ExpandMoreIcon />}
         </ListItem>
@@ -233,13 +241,15 @@ export function CycleList(props: {
             </ListItemIcon>
           )}
           <ListItemText
-            primary={props.rootLabel}
-            onClick={(e) => {
-              if (props.onRootClick) {
-                props.onRootClick()
-                e.stopPropagation()
-              }
-            }}
+            primary={
+              <EmeraldDBLink
+                href={props.rootUrl || ''}
+                onClick={() => props.onClick && props.onClick(props.rootUrl || '')}
+                notClickable={!props.rootUrl}
+              >
+                {props.rootLabel}
+              </EmeraldDBLink>
+             }
           />
           {expandedElements.includes('root') ? <ExpandLessIcon /> : <ExpandMoreIcon />}
         </ListItem>

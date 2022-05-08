@@ -16,7 +16,14 @@ import {
   Typography,
   Collapse,
 } from '@material-ui/core'
-import { factions, cardTypes, sides, formats, elements, roleRestrictions } from '../utils/enums'
+import {
+  factions,
+  cardTypes,
+  sides,
+  elements,
+  roleRestrictions,
+  relevantFormats,
+} from '../utils/enums'
 import { CardTypeIcon } from './card/CardTypeIcon'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import { useUiStore } from '../providers/UiStoreProvider'
@@ -95,6 +102,7 @@ export interface FilterState {
   restricted: string
   banned: string
   isUnique: string
+  showRotated: 'true' | 'false' | 'onlyRotated'
 }
 
 enum FilterType {
@@ -113,6 +121,7 @@ enum FilterType {
   FILTER_BANNED,
   FILTER_IS_UNIQUE,
   FILTER_NUMERIC_VALUES,
+  FILTER_ROTATED,
   FILTER_RESET,
 }
 
@@ -132,6 +141,7 @@ type FilterAction =
   | { type: FilterType.FILTER_BANNED; format: string }
   | { type: FilterType.FILTER_IS_UNIQUE; isUnique: string }
   | { type: FilterType.FILTER_NUMERIC_VALUES; numericValues: NumericValueFilter[] }
+  | { type: FilterType.FILTER_ROTATED; showRotated: 'true' | 'false' | 'onlyRotated' }
   | { type: FilterType.FILTER_RESET }
 
 function checkSingleValue(value: string | undefined, filter: NumericFilterTypeAndValue): boolean {
@@ -203,7 +213,7 @@ function filterNumericCardValues(card: CardWithVersions, filters: NumericValueFi
   })
 }
 
-function replaceSpecialCharacters(text: string) : string {
+function replaceSpecialCharacters(text: string): string {
   return text
     .toLocaleLowerCase()
     .trim()
@@ -214,6 +224,13 @@ function replaceSpecialCharacters(text: string) : string {
 
 export function applyFilters(cards: CardWithVersions[], filter: FilterState): CardWithVersions[] {
   let filteredCards = cards
+  if (filter.showRotated !== 'true') {
+    if (filter.showRotated === 'false') {
+      filteredCards = filteredCards.filter((c) => c.versions.some(version => !version.rotated))
+    } else {
+      filteredCards = filteredCards.filter((c) => !c.versions.some(version => !version.rotated))
+    }
+  }
   if (filter.factions && filter.factions.length > 0) {
     filteredCards = filteredCards.filter((c) => filter.factions?.includes(c.faction))
   }
@@ -282,6 +299,7 @@ const initialState: FilterState = {
   restricted: '',
   banned: '',
   isUnique: '',
+  showRotated: 'true'
 }
 
 function filterReducer(state: FilterState, action: FilterAction): FilterState {
@@ -318,6 +336,8 @@ function filterReducer(state: FilterState, action: FilterAction): FilterState {
       return { ...state, isUnique: action.isUnique }
     case FilterType.FILTER_NUMERIC_VALUES:
       return { ...state, numericValues: [...action.numericValues] }
+    case FilterType.FILTER_ROTATED:
+      return { ...state, showRotated: action.showRotated }
     case FilterType.FILTER_RESET:
       return initialState
   }
@@ -338,9 +358,17 @@ export function CardFilter(props: {
   const [searchTerm, setSearchTerm] = useState(props.filterState?.text || '')
   const [showFilters, setShowFilters] = useState(false)
 
+  const formats = relevantFormats
+
   const uniqueOptions = [
     { id: 'true', name: 'Yes' },
     { id: 'false', name: 'No' },
+  ]
+
+  const rotatedOptions: { id: 'true' | 'false' | 'onlyRotated', name: string}[] = [
+    { id: 'true', name: 'Yes' },
+    { id: 'false', name: 'No' },
+    { id: 'onlyRotated', name: 'Only Rotated' },
   ]
 
   const debouncedSearchTerm = useDebounce(searchTerm, 500)
@@ -659,6 +687,24 @@ export function CardFilter(props: {
                   </Grid>
                   <Grid item xs={6}>
                     <Autocomplete
+                      id="combo-box-is-rotated"
+                      autoHighlight
+                      options={rotatedOptions}
+                      getOptionLabel={(option) => option?.name || ''}
+                      value={rotatedOptions.find((option) => option.id === filterState.showRotated)}
+                      renderInput={(params) => (
+                        <TextField {...params} size="small" label="Show Rotated Cards" variant="outlined" />
+                      )}
+                      onChange={(e, value) =>
+                        dispatchFilter({
+                          type: FilterType.FILTER_ROTATED,
+                          showRotated: value?.id || 'true',
+                        })
+                      }
+                    />
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Autocomplete
                       id="combo-box-restricted-in"
                       autoHighlight
                       options={formats}
@@ -680,7 +726,7 @@ export function CardFilter(props: {
                       }
                     />
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item xs={4}>
                     <Autocomplete
                       id="combo-box-banned-in"
                       autoHighlight
@@ -695,7 +741,7 @@ export function CardFilter(props: {
                       }
                     />
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item xs={4}>
                     <Autocomplete
                       id="combo-box-role-restriction-in"
                       autoHighlight

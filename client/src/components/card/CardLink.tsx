@@ -1,6 +1,5 @@
 import { makeStyles, Popover, Theme } from '@material-ui/core'
-import React, {MouseEventHandler, useState} from 'react'
-import { useHistory } from 'react-router-dom'
+import React, { useState } from 'react'
 import { useUiStore } from '../../providers/UiStoreProvider'
 import { formats } from '../../utils/enums'
 import { CardInformation } from './CardInformation'
@@ -9,7 +8,9 @@ import BlockIcon from '@material-ui/icons/Block'
 import WarningIcon from '@material-ui/icons/Warning'
 import LinkOffIcon from '@material-ui/icons/LinkOff'
 import Looks5Icon from '@material-ui/icons/Looks5'
+import CachedIcon from '@material-ui/icons/Cached';
 import { ElementSymbol } from './ElementSymbol'
+import { EmeraldDBLink } from '../EmeraldDBLink'
 
 const useStyles = makeStyles((theme: Theme) => ({
   popover: {
@@ -81,6 +82,11 @@ export function RallyIcon(props: { formats: string[] }): JSX.Element {
   )
 }
 
+export function RotatedIcon(props: { formats: string[] }): JSX.Element {
+  const icon = <CachedIcon style={{ color: 'red', fontSize: 16 }} />
+  return <DeckbuildingRestrictionIcon label="Rotated out in" inFormats={props.formats} icon={icon} />
+}
+
 export function BannedIcon(props: { formats: string[] }): JSX.Element {
   const icon = <BlockIcon style={{ color: 'red', fontSize: 16 }} />
   return <DeckbuildingRestrictionIcon label="Banned in" inFormats={props.formats} icon={icon} />
@@ -125,12 +131,6 @@ export function CardLink(props: {
     setAnchorEl(null)
   }
 
-  function handleClick(e: React.MouseEvent<HTMLElement>) {
-    if (props.notClickable) {
-      e.preventDefault();
-    }
-  }
-
   const open = Boolean(anchorEl)
   const cardImage = card.versions.length > 0 && card.versions[0].image_url
 
@@ -138,23 +138,27 @@ export function CardLink(props: {
   let restrictedFormats = card.restricted_in || []
   let splashBannedFormats = card.splash_banned_in || []
   let rallyFormats: string[] = []
+  let rotatedFormats: string[] = ['emerald']
 
   if (props.format) {
     bannedFormats = bannedFormats.filter((format) => format === props.format)
     restrictedFormats = restrictedFormats.filter((format) => format === props.format)
     splashBannedFormats = splashBannedFormats.filter((format) => format === props.format)
+    rotatedFormats = rotatedFormats.filter((format) => format === props.format)
   }
-  if ((props.format === 'emerald' || props.format === 'obsidian') && card.text?.includes('Rally.')) {
+  if (
+    (props.format === 'emerald' || props.format === 'obsidian') &&
+    card.text?.includes('Rally.')
+  ) {
     rallyFormats = ['emerald', 'obsidian']
   }
 
   return (
     <span>
-      <a
-        href={props.sameTab ? undefined : `/card/${card.id}`}
-        target={'_blank'}
-        style={{ color: 'inherit' }}
-        onClick={handleClick}
+      <EmeraldDBLink
+        href={`/card/${card.id}`}
+        notClickable={props.notClickable}
+        openInNewTab={!props.sameTab}
       >
         <span onMouseEnter={handlePopoverOpen} onMouseLeave={handlePopoverClose}>
           <CardTypeIcon type={card.type} faction={card.faction} />
@@ -174,8 +178,9 @@ export function CardLink(props: {
           {restrictedFormats.length > 0 && <RestrictedIcon formats={restrictedFormats} />}
           {splashBannedFormats.length > 0 && <SplashBannedIcon formats={splashBannedFormats} />}
           {rallyFormats.length > 0 && <RallyIcon formats={rallyFormats} />}
+          {rotatedFormats.length > 0 && !card.versions.some(v => !v.rotated) && <RotatedIcon formats={rotatedFormats} />}
         </span>
-      </a>
+      </EmeraldDBLink>
       <Popover
         id="mouse-over-popover"
         className={classes.popover}

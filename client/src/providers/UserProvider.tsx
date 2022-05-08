@@ -56,6 +56,5 @@ export function UserProvider(props: { children: ReactNode }): JSX.Element {
 }
 
 export function useCurrentUser() {
-  const currentUser = useContext(UserContext)
-  return currentUser
+  return useContext(UserContext)
 }

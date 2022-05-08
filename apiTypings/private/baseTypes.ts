@@ -50,6 +50,7 @@ export interface Pack {
   released_at?: Date | undefined
   publisher_id?: string | undefined
   cycle_id: string
+  rotated: boolean
 }
 
 export interface CardInPack {
@@ -60,6 +61,7 @@ export interface CardInPack {
   image_url?: string | undefined
   position?: string | undefined
   quantity?: number | undefined
+  rotated: boolean
 }
 
 export interface Cycle {
@@ -67,6 +69,7 @@ export interface Cycle {
   name: string
   position: number
   size: number
+  rotated: boolean
 }
 
 export interface Trait {

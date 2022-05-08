@@ -3,18 +3,18 @@ import { Box, Button, Grid, makeStyles, Tab, Tabs, Typography } from '@material-
 import { useConfirm } from 'material-ui-confirm'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
-import { useHistory } from 'react-router-dom'
 import { privateApi } from '../../api'
 import { Decklist } from './Decklist'
 import DeleteIcon from '@material-ui/icons/Delete'
 import LinkIcon from '@material-ui/icons/Link'
 import ShareIcon from '@material-ui/icons/Share'
 import BlockIcon from '@material-ui/icons/Block'
+import { EmeraldDBLink } from '../EmeraldDBLink'
 
 interface TabPanelProps {
   children?: React.ReactNode
-  index: any
-  value: any
+  index: string
+  value: string
 }
 
 function TabPanel(props: TabPanelProps): JSX.Element {
@@ -77,7 +77,6 @@ export function DecklistTabs(props: {
   const classes = useStyles()
   const confirm = useConfirm()
   const { enqueueSnackbar } = useSnackbar()
-  const history = useHistory()
 
   const versions = sortedVersionsForDeck(deck)
 
@@ -183,16 +182,17 @@ export function DecklistTabs(props: {
                   <Box border="1px solid" borderBottom="0" bgcolor="lightgray" p={2}>
                     <Grid container spacing={1} justify="flex-end">
                       <Grid item xs={6} md={4}>
-                        <Button
-                          variant="outlined"
-                          color="primary"
-                          onClick={() => history.push(`/decks/${v.id}`)}
-                          fullWidth
-                          size="small"
-                          startIcon={<LinkIcon />}
-                        >
-                          Link (This Version)
-                        </Button>
+                        <EmeraldDBLink href={`/decks/${v.id}`}>
+                          <Button
+                            variant="outlined"
+                            color="primary"
+                            fullWidth
+                            size="small"
+                            startIcon={<LinkIcon />}
+                          >
+                            Link (This Version)
+                          </Button>
+                        </EmeraldDBLink>
                       </Grid>
                       <Grid item xs={6} md={4}>
                         {!v.published_date ? (

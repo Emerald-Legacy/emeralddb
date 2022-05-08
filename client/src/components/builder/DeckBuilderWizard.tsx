@@ -12,11 +12,11 @@ import {
 } from '@material-ui/core'
 import { useState } from 'react'
 import { useUiStore } from '../../providers/UiStoreProvider'
-import { clans, formats } from '../../utils/enums'
+import { clans, relevantFormats } from '../../utils/enums'
 import { CardLink } from '../card/CardLink'
 import { BushiBuilderImportButton } from './BushiBuilderImportButton'
-import { FiveRingsDBImportButton } from './FiveRingsDBImportButton'
-import { CardFactionIcon } from "../card/CardFactionIcon";
+import { EmeraldDBImportButton } from './EmeraldDBImportButton'
+import { CardFactionIcon } from '../card/CardFactionIcon'
 
 export function DeckBuilderWizard(props: {
   onComplete: (
@@ -36,6 +36,11 @@ export function DeckBuilderWizard(props: {
 
   const strongholds = cards.filter((c) => c.faction === primaryClan && c.type === 'stronghold')
   const roles = cards.filter((c) => c.type === 'role' && !c.text?.includes('Draft format only.'))
+
+  const host = window.location.host
+  const isProduction = !host.includes('localhost') && !host.includes('beta-')
+
+  const formats = relevantFormats
 
   const isButtonDisabled = () => {
     if (
@@ -76,11 +81,13 @@ export function DeckBuilderWizard(props: {
           <Grid item xs={12}>
             <Typography align="center"> --- OR --- </Typography>
           </Grid>
-          <Grid item xs={12}>
-            <FiveRingsDBImportButton
-              onImport={(decklist: DecklistViewModel) => props.onImport(decklist)}
-            />
-          </Grid>
+          {!isProduction && (
+            <Grid item xs={12}>
+              <EmeraldDBImportButton
+                onImport={(decklist: DecklistViewModel) => props.onImport(decklist)}
+              />
+            </Grid>
+          )}
           <Grid item xs={12}>
             <BushiBuilderImportButton
               onImport={(decklist: DecklistViewModel) => props.onImport(decklist)}
@@ -129,7 +136,11 @@ export function DeckBuilderWizard(props: {
                   key={clan.id}
                   value={clan.id}
                   control={<Radio />}
-                  label={<span style={{fontSize: 18}}><CardFactionIcon faction={clan.id} colored /> {clan.name}</span>}
+                  label={
+                    <span style={{ fontSize: 18 }}>
+                      <CardFactionIcon faction={clan.id} colored /> {clan.name}
+                    </span>
+                  }
                   onClick={() => setPrimaryClan(clan.id)}
                 />
               ))}
@@ -151,7 +162,7 @@ export function DeckBuilderWizard(props: {
                   key={thisStronghold.id}
                   value={thisStronghold.id}
                   control={<Radio />}
-                  label={<CardLink cardId={thisStronghold.id} format={format} notClickable />}
+                  label={<CardLink cardId={thisStronghold.id} format={format} notClickable sameTab />}
                   onClick={() => setStronghold(thisStronghold.id)}
                 />
               ))}
@@ -175,7 +186,7 @@ export function DeckBuilderWizard(props: {
                       key={thisRole.id}
                       value={thisRole.id}
                       control={<Radio />}
-                      label={<CardLink cardId={thisRole.id} format={format} notClickable />}
+                      label={<CardLink cardId={thisRole.id} format={format} notClickable sameTab />}
                       onClick={() => setRole(thisRole.id)}
                     />
                   ))}
@@ -192,7 +203,7 @@ export function DeckBuilderWizard(props: {
                       key={thisRole.id}
                       value={thisRole.id}
                       control={<Radio />}
-                      label={<CardLink cardId={thisRole.id} format={format} notClickable />}
+                      label={<CardLink cardId={thisRole.id} format={format} notClickable sameTab />}
                       onClick={() => setRole(thisRole.id)}
                     />
                   ))}
