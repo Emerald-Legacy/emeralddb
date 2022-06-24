@@ -13,6 +13,7 @@ export const cardTypes: { id: string; name: string }[] = [
 export const relevantFormats: { id: string; name: string }[] = [
   { id: 'standard', name: 'Imperial Law' },
   { id: 'emerald', name: 'Emerald Legacy' },
+  { id: 'obsidian', name: 'Obsidian' },
   { id: 'enlightenment', name: 'Enlightenment' },
   { id: 'skirmish', name: 'Skirmish' },
 ]
