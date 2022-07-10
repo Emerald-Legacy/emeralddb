@@ -31,6 +31,7 @@ export type DeckStatistics = {
   conflictCards: ConflictCards
   bannedCards: CardWithQuantity[]
   restrictedCards: CardWithQuantity[]
+  rotatedCards: CardWithQuantity[]
   isSeeker: boolean
   roleElements: string[]
   deckMaximum: number
@@ -199,6 +200,11 @@ function validateDecklist(
         .join(', ')}`
     )
   }
+  if (stats.rotatedCards.length > 0) {
+    validationErrors.push(
+      `The deck contains rotated cards: ${stats.rotatedCards.map((c) => c.name).join(', ')}`
+    )
+  }
   const unallowedClans = allDeckCards.filter(
     (c) => !c.allowed_clans || !c.allowed_clans.includes(stats.primaryClan)
   )
@@ -319,6 +325,7 @@ export function createDeckStatistics(
 ): DeckStatistics {
   const { strongholds, provinces, roles, conflictCards, dynastyCards, allDeckCards } =
     splitCardsToDecks(cards || {}, allCards)
+  const allRotatedCardIds = allCards.filter(c => !c.versions.some(v => !v.rotated)).map(c => c.id)
   const dynastyCardsWrapper = splitDynastyCards(dynastyCards)
   const conflictCardsWrapper = splitConflictCards(conflictCards)
   const stronghold = strongholds.length > 0 ? strongholds[0] : null
@@ -350,6 +357,7 @@ export function createDeckStatistics(
     .reduce((a, b) => a + b, 0)
   const bannedCards = allDeckCards.filter((c) => c.banned_in?.includes(format))
   const restrictedCards = allDeckCards.filter((c) => c.restricted_in?.includes(format))
+  const rotatedCards = allDeckCards.filter((c) => allRotatedCardIds.includes(c.id))
 
   const deckMaximum =
     format === 'skirmish' ? 35 : format === 'obsidian' ? 45 + numberOfRallyCards : 45
@@ -378,6 +386,7 @@ export function createDeckStatistics(
     secondaryClan: secondaryClan,
     bannedCards: bannedCards,
     restrictedCards: restrictedCards,
+    rotatedCards: format === 'emerald' ? rotatedCards : [],
     validationErrors: [],
   }
 

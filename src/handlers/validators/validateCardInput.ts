@@ -94,9 +94,6 @@ export async function validateCardInput(card: Card): Promise<string[]> {
     if (!card.glory && card.glory !== 0) {
       errors.push(`The field 'glory' is required on card type 'character'`)
     }
-    if (!card.cost) {
-      errors.push(`The field 'cost' is required on card type 'character'`)
-    }
   }
   if (card.type === 'attachment') {
     if (!card.military_bonus) {

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { Card } from '@5rdb/api'
+import { Card, CardWithVersions } from '@5rdb/api'
 import lodash from 'lodash'
-import { getAllCards } from '../../gateways/storage/index'
+import { getAllCards, getAllCardsInPacks } from '../../gateways/storage/index'
 
 export type CardWithQuantity = Card & {
   quantity: number
@@ -33,6 +33,7 @@ export type DeckStatistics = {
   conflictCards: ConflictCards
   bannedCards: CardWithQuantity[]
   restrictedCards: CardWithQuantity[]
+  rotatedCards: CardWithQuantity[]
   isSeeker: boolean
   roleElements: string[]
   deckMaximum: number
@@ -201,6 +202,11 @@ function validateDecklist(
         .join(', ')}`
     )
   }
+  if (stats.rotatedCards.length > 0) {
+    validationErrors.push(
+      `The deck contains rotated cards: ${stats.rotatedCards.map((c) => c.name).join(', ')}`
+    )
+  }
   const unallowedClans = allDeckCards.filter(
     (c) => !c.allowed_clans || !c.allowed_clans.includes(stats.primaryClan)
   )
@@ -312,10 +318,13 @@ function validateDecklist(
 function createDeckStatistics(
   cards: Record<string, number>,
   format: string,
-  allCards: Card[]
+  allCardsWithVersions: CardWithVersions[]
 ): DeckStatistics {
   const { strongholds, provinces, roles, conflictCards, dynastyCards, allDeckCards } =
-    splitCardsToDecks(cards || {}, allCards)
+    splitCardsToDecks(cards || {}, allCardsWithVersions)
+  const allRotatedCardIds = allCardsWithVersions
+    .filter((c) => !c.versions.some((v) => !v.rotated))
+    .map((c) => c.id)
   const dynastyCardsWrapper = splitDynastyCards(dynastyCards)
   const conflictCardsWrapper = splitConflictCards(conflictCards)
   const stronghold = strongholds.length > 0 ? strongholds[0] : null
@@ -347,6 +356,7 @@ function createDeckStatistics(
     .reduce((a, b) => a + b, 0)
   const bannedCards = allDeckCards.filter((c) => c.banned_in?.includes(format))
   const restrictedCards = allDeckCards.filter((c) => c.restricted_in?.includes(format))
+  const rotatedCards = allDeckCards.filter((c) => allRotatedCardIds.includes(c.id))
 
   const deckMaximum =
     format === 'skirmish' ? 35 : format === 'obsidian' ? 45 + numberOfRallyCards : 45
@@ -375,6 +385,7 @@ function createDeckStatistics(
     secondaryClan: secondaryClan,
     bannedCards: bannedCards,
     restrictedCards: restrictedCards,
+    rotatedCards: format === 'emerald' ? rotatedCards : [],
     validationErrors: [],
   }
 
@@ -388,7 +399,18 @@ export async function isDeckValid(
   format: string
 ): Promise<{ valid: boolean; errors: string[] }> {
   const allCards = await getAllCards()
-  const { validationErrors } = createDeckStatistics(cards, format, allCards)
+  const allCardsWithVersions: CardWithVersions[] = allCards.map((card) => ({
+    ...card,
+    versions: [],
+  }))
+
+  const allCardsInPacks = await getAllCardsInPacks()
+  allCardsInPacks.forEach((cardInPack) =>
+    allCardsWithVersions
+      .find((card) => card.id === cardInPack.card_id)
+      ?.versions.push({ ...cardInPack })
+  )
+  const { validationErrors } = createDeckStatistics(cards, format, allCardsWithVersions)
   return {
     valid: validationErrors.length === 0,
     errors: validationErrors,
