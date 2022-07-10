@@ -60,7 +60,7 @@ export function CycleList(props: {
     cycles.forEach((cycle) => {
       result.push({
         ...cycle,
-        packs: packs.filter((pack) => pack.cycle_id === cycle.id),
+        packs: packs.filter((pack) => pack.cycle_id === cycle.id).sort((a, b) => a.position - b.position),
       })
     })
     result.sort((a, b) => a.position - b.position)
