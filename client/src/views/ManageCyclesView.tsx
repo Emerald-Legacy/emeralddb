@@ -174,7 +174,7 @@ export function ManageCyclesView(): JSX.Element {
           })
           .catch((error) => {
             console.log(error)
-            enqueueSnackbar("The cycle couldn't be rotated!", { variant: 'error' })
+            enqueueSnackbar("The pack couldn't be rotated!", { variant: 'error' })
           })
       })
       .catch(() => {

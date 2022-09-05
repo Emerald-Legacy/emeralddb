@@ -93,11 +93,11 @@ export const privateApi = forge({
     Pack: {
       create: { method: 'PUT', path: '/packs' },
       import: { method: 'PUT', path: '/packs/import' },
-      rotate: { method: 'PUT', path: '/packs/rotate/{cycleId}' },
+      rotate: { method: 'PUT', path: '/packs/rotate/{packId}' },
     },
     Cycle: {
       create: { method: 'PUT', path: '/cycles' },
-      rotate: { method: 'PUT', path: '/cycles/{cycleId}' },
+      rotate: { method: 'PUT', path: '/cycles/rotate/{cycleId}' },
     },
     CardInPack: {
       update: { method: 'POST', path: '/cards-in-packs' },
