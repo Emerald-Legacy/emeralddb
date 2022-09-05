@@ -2,6 +2,7 @@
 import { Card, CardWithVersions } from '@5rdb/api'
 import lodash from 'lodash'
 import { getAllCards, getAllCardsInPacks } from '../../gateways/storage/index'
+import {cardsThatModifyInfluence} from "../../../client/src/utils/enums";
 
 export type CardWithQuantity = Card & {
   quantity: number
@@ -330,14 +331,18 @@ function createDeckStatistics(
   const stronghold = strongholds.length > 0 ? strongholds[0] : null
   const role = roles.length > 0 ? roles[0] : null
   const baseInfluence = format === 'skirmish' ? 6 : stronghold?.influence_pool ?? 0
-  const extraInfluence = role
+  const extraInfluenceFromRole = role
     ? role.id.includes('support')
       ? 8
       : role.id.includes('keeper')
-      ? 3
-      : 0
+        ? 3
+        : 0
     : 0
-  const maxInfluence = baseInfluence + extraInfluence
+  const extraInfluenceFromCards = cardsThatModifyInfluence
+    .filter(card => cards[card.id] && cards[card.id] > 0)
+    .map(card => card.modifier * cards[card.id])
+    .reduce((a, b) => a + b)
+  const maxInfluence = baseInfluence + extraInfluenceFromRole + extraInfluenceFromCards
   const roleElements =
     role?.traits?.filter((trait) =>
       ['air', 'earth', 'fire', 'water', 'void', 'seeker', 'keeper'].includes(trait)
