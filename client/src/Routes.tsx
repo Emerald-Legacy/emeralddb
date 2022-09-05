@@ -1,4 +1,4 @@
-import { Redirect, Route, Switch } from 'react-router-dom'
+import { Redirect, Route, Switch, useHistory } from "react-router-dom";
 import { useCurrentUser } from './providers/UserProvider'
 import { AdminView } from './views/AdminView'
 import { BuilderView } from './views/BuilderView'
@@ -18,6 +18,7 @@ import { FFGRulesReferenceGuide } from './views/FFGRulesReferenceGuide'
 import { ELRulesReferenceGuide } from './views/ELRulesReferenceGuide'
 import { OpLists } from './views/OpLists'
 import { HelpView } from './views/HelpView'
+import { useEffect } from "react";
 
 const AuthenticatedRoute = (props: { children: JSX.Element; path: string }) => {
   const { isLoggedIn } = useCurrentUser()
@@ -34,6 +35,15 @@ const DataAdminRoute = (props: { children: JSX.Element; path: string }) => {
 }
 
 export function Routes(): JSX.Element {
+  const history = useHistory()
+  useEffect(() => {
+    history.listen(() => {
+      const host = window.location.host
+      const prefix = host.includes('localhost') ? 'LOCAL' : host.includes('beta-') ? 'BETA' : ''
+      const title = `${prefix} EmeraldDB`
+      document.title = title
+    })
+  }, [])
   return (
     <Switch>
       <Route path="/cards">
