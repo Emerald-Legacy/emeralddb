@@ -341,7 +341,7 @@ export function createDeckStatistics(
   const extraInfluenceFromCards = cardsThatModifyInfluence
     .filter(card => cards[card.id] && cards[card.id] > 0)
     .map(card => card.modifier * cards[card.id])
-    .reduce((a, b) => a + b)
+    .reduce((a, b) => a + b, 0)
   const maxInfluence = baseInfluence + extraInfluenceFromRole + extraInfluenceFromCards
   const roleElements =
     role?.traits?.filter((trait) =>
