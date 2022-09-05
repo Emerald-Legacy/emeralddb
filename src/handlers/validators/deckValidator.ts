@@ -2,7 +2,7 @@
 import { Card, CardWithVersions } from '@5rdb/api'
 import lodash from 'lodash'
 import { getAllCards, getAllCardsInPacks } from '../../gateways/storage/index'
-import {cardsThatModifyInfluence} from "../../../client/src/utils/enums";
+import { cardsThatModifyInfluence } from '../../../client/src/utils/enums'
 
 export type CardWithQuantity = Card & {
   quantity: number
@@ -335,12 +335,12 @@ function createDeckStatistics(
     ? role.id.includes('support')
       ? 8
       : role.id.includes('keeper')
-        ? 3
-        : 0
+      ? 3
+      : 0
     : 0
   const extraInfluenceFromCards = cardsThatModifyInfluence
-    .filter(card => cards[card.id] && cards[card.id] > 0)
-    .map(card => card.modifier * cards[card.id])
+    .filter((card) => cards[card.id] && cards[card.id] > 0)
+    .map((card) => card.modifier * cards[card.id])
     .reduce((a, b) => a + b)
   const maxInfluence = baseInfluence + extraInfluenceFromRole + extraInfluenceFromCards
   const roleElements =
