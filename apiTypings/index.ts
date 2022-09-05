@@ -35,6 +35,7 @@ export {
   Packs$create,
   Cycles$findAll,
   Cycles$create,
+  Cycles$rotate,
   Decks$find,
   Decks$findForUser,
   Decks$create,
@@ -55,4 +56,5 @@ export {
   DecklistComments$findForDecklist,
   Pack$import,
   Pack$export,
+  Pack$rotate,
 } from './private/apiEndpoints'
