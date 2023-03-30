@@ -62,11 +62,6 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
   const isMdOrSmaller = useMediaQuery('(max-width:960px)')
   const is1440PxOrBigger = useMediaQuery('(min-width:1440px)')
 
-  const host = window.location.host
-  const prefix = host.includes('localhost') ? 'LOCAL' : host.includes('beta-') ? 'BETA' : ''
-  const title = `${prefix} EmeraldDB`
-  document.title = title
-
   const handleCardMenuClick = (event: React.MouseEvent<HTMLDivElement>) => {
     setCardAnchorEl(event.currentTarget)
   }

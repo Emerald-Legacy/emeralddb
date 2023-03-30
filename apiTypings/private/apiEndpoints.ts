@@ -52,6 +52,10 @@ export interface Cycles$create {
   response: Cycle
 }
 
+export interface Cycles$rotate {
+  request: { params: { id: string } }
+}
+
 export interface Users$me {
   response: User
 }
@@ -167,4 +171,8 @@ export interface Pack$export {
     cards: Card[]
     cardsInPack: CardInPack[]
   }
+}
+
+export interface Pack$rotate {
+  request: { params: { id: string } }
 }

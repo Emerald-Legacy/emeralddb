@@ -13,12 +13,13 @@ import {
 } from '@material-ui/core'
 import { useConfirm } from 'material-ui-confirm'
 import { useSnackbar } from 'notistack'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { privateApi } from '../api'
 import { Loading } from '../components/Loading'
 import { useUiStore } from '../providers/UiStoreProvider'
 import { toSlugId } from '../utils/slugIdUtils'
+import CachedIcon from "@material-ui/icons/Cached";
 
 const useStyles = makeStyles((theme) => ({
   editButton: {
@@ -63,8 +64,6 @@ export function ManageCyclesView(): JSX.Element {
   if (!packs || !cycles) {
     return <Loading />
   }
-
-  console.log(cycles)
 
   const setPackIdAndName = (name: string) => {
     setPackId(toSlugId(name))
@@ -146,6 +145,43 @@ export function ManageCyclesView(): JSX.Element {
       })
   }
 
+  function rotateCycle(cycleId: string) {
+    confirm({ description: 'Do you really want to rotate out this cycle?' })
+      .then(() => {
+        privateApi.Cycle.rotate({
+          cycleId
+        })
+          .then(() => {
+            window.location.reload()
+          })
+          .catch((error) => {
+            console.log(error)
+            enqueueSnackbar("The cycle couldn't be rotated!", { variant: 'error' })
+          })
+      })
+      .catch(() => {
+        // Cancel confirmation dialog => do nothing
+      })
+  }
+  function rotatePack(packId: string) {
+    confirm({ description: 'Do you really want to rotate out this pack?' })
+      .then(() => {
+        privateApi.Pack.rotate({
+          packId
+        })
+          .then(() => {
+            window.location.reload()
+          })
+          .catch((error) => {
+            console.log(error)
+            enqueueSnackbar("The pack couldn't be rotated!", { variant: 'error' })
+          })
+      })
+      .catch(() => {
+        // Cancel confirmation dialog => do nothing
+      })
+  }
+
   return (
     <>
       <Grid container spacing={1} justify="flex-end">
@@ -159,12 +195,22 @@ export function ManageCyclesView(): JSX.Element {
         </Grid>
         {cycles.map((cycle) => (
           <Grid item xs={12}>
-            <Typography>{cycle.name}</Typography>
+            <Typography>
+              {cycle.rotated && <CachedIcon style={{ color: 'red', fontSize: 16 }} />}
+              {cycle.name}
+            </Typography>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => rotateCycle(cycle.id)}
+            >
+              Rotate Cycle
+            </Button>
             {packsForCycle(cycle.id).map((pack) => (
               <Grid container spacing={1}>
-                <Grid item xs={1}></Grid>
+                <Grid item xs={1} />
                 <Grid item xs={5}>
-                  <Typography>{pack.name}</Typography>
+                  <Typography>{pack.rotated && <CachedIcon style={{ color: 'red', fontSize: 16 }} />} {pack.name}</Typography>
                 </Grid>
                 <Grid item xs={6}>
                   <Button
@@ -173,6 +219,13 @@ export function ManageCyclesView(): JSX.Element {
                     onClick={() => history.push(`/admin/pack/${pack.id}`)}
                   >
                     Edit Pack Cards
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => rotatePack(pack.id)}
+                  >
+                    Rotate Pack
                   </Button>
                 </Grid>
               </Grid>

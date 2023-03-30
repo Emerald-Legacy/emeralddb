@@ -4,8 +4,10 @@ import * as getAllPacks from './handlers/getAllPacks'
 import * as createPack from './handlers/createPack'
 import * as importPack from './handlers/importPack'
 import * as exportPack from './handlers/exportPack'
+import * as rotatePack from './handlers/rotatePack'
 import * as getAllCycles from './handlers/getAllCycles'
 import * as createCycle from './handlers/createCycle'
+import * as rotateCycle from './handlers/rotateCycle'
 import * as getAllTraits from './handlers/getAllTraits'
 import * as getDeck from './handlers/getDeck'
 import * as getAllDecksForUser from './handlers/getAllDecksForUser'
@@ -48,10 +50,12 @@ export default (): AsyncRouterInstance => {
   api.get('/packs', getAllPacks.handler)
   api.put('/packs', authorizedOnly, dataAdminOnly, createPack.handler)
   api.put('/packs/import', authorizedOnly, dataAdminOnly, importPack.handler)
+  api.put('/packs/rotate/:id', authorizedOnly, dataAdminOnly, rotatePack.handler)
   api.get('/packs/export/:id', exportPack.handler)
   api.post('/cards-in-packs', authorizedOnly, dataAdminOnly, updateCardsInPack.handler)
   api.get('/cycles', getAllCycles.handler)
   api.put('/cycles', authorizedOnly, dataAdminOnly, createCycle.handler)
+  api.put('/cycles/rotate/:id', authorizedOnly, dataAdminOnly, rotateCycle.handler)
   api.get('/traits', getAllTraits.handler)
   api.get('/users/me', authorizedOnly, getCurrentUser.handler)
   api.put('/users/me', authorizedOnly, updateUser.handler)
