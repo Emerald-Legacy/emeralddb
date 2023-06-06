@@ -20,10 +20,10 @@ export function DeckCardSubList(props: {
   faction?: string | undefined
   format: string
   onQuantityChange?: ((cardId: string, quantity: number) => void) | undefined
-  sortByCost: boolean
+  sortByName: boolean
 }): JSX.Element {
   let list
-  if (props.sortByCost) {
+  if (!props.sortByName) {
     list = props.cards.sort(
       (a, b) => a.cost?.localeCompare(b.cost || '') || a.name.localeCompare(b.name)
     )
@@ -92,7 +92,7 @@ export function DeckCardSubListWithTitle(props: {
   title: string
   faction?: string
   format: string
-  sortByCost?: boolean
+  sortByName?: boolean
   onQuantityChange?: ((cardId: string, quantity: number) => void) | undefined
 }): JSX.Element {
   const quantity = props.cards.map((card) => card.quantity).reduce((a, b) => a + b, 0)
@@ -108,7 +108,7 @@ export function DeckCardSubListWithTitle(props: {
         faction={props.faction}
         format={props.format}
         onQuantityChange={props.onQuantityChange}
-        sortByCost={props.sortByCost || false}
+        sortByName={props.sortByName || false}
       />
     </>
   )
@@ -145,8 +145,8 @@ export function Decklist(props: {
   const { cards } = useUiStore()
   const { isLoggedIn } = useCurrentUser()
   const { enqueueSnackbar } = useSnackbar()
-  const [sortDynByCost, setSortDynByCost] = useState(false)
-  const [sortConfByCost, setSortConfByCost] = useState(false)
+  const [sortDynByName, setSortDynByName] = useState(false)
+  const [sortConfByName, setSortConfByName] = useState(false)
   const history = useHistory()
   const { decklist } = props
 
@@ -272,17 +272,17 @@ export function Decklist(props: {
         </Typography>
         <Grid component="label" container alignItems="center" spacing={1}>
           <Grid item>
-            <Typography variant="subtitle2">Sort By Name</Typography>
+            <Typography variant="subtitle2">Sort By Cost</Typography>
           </Grid>
           <Grid item>
             <Switch
               size="small"
-              checked={sortDynByCost}
-              onChange={() => setSortDynByCost(!sortDynByCost)}
+              checked={sortDynByName}
+              onChange={() => setSortDynByName(!sortDynByName)}
             />
           </Grid>
           <Grid item>
-            <Typography variant="subtitle2">Sort By Cost</Typography>
+            <Typography variant="subtitle2">Sort By Name</Typography>
           </Grid>
         </Grid>
         <DeckCardSubListWithTitle
@@ -290,14 +290,14 @@ export function Decklist(props: {
           title="Characters"
           format={stats.format}
           onQuantityChange={props.onQuantityChange}
-          sortByCost={sortDynByCost}
+          sortByName={sortDynByName}
         />
         <DeckCardSubListWithTitle
           cards={dynastyEvents}
           title="Events"
           format={stats.format}
           onQuantityChange={props.onQuantityChange}
-          sortByCost={sortDynByCost}
+          sortByName={sortDynByName}
         />
         <DeckCardSubListWithTitle
           cards={holdings}
@@ -315,17 +315,17 @@ export function Decklist(props: {
         </Typography>
         <Grid component="label" container alignItems="center" spacing={1}>
           <Grid item>
-            <Typography variant="subtitle2">Sort By Name</Typography>
+            <Typography variant="subtitle2">Sort By Cost</Typography>
           </Grid>
           <Grid item>
             <Switch
               size="small"
-              checked={sortConfByCost}
-              onChange={() => setSortConfByCost(!sortConfByCost)}
+              checked={sortConfByName}
+              onChange={() => setSortConfByName(!sortConfByName)}
             />
           </Grid>
           <Grid item>
-            <Typography variant="subtitle2">Sort By Cost</Typography>
+            <Typography variant="subtitle2">Sort By Name</Typography>
           </Grid>
         </Grid>
         <DeckCardSubListWithTitle
@@ -334,7 +334,7 @@ export function Decklist(props: {
           faction={stats.primaryClan}
           format={stats.format}
           onQuantityChange={props.onQuantityChange}
-          sortByCost={sortConfByCost}
+          sortByName={sortConfByName}
         />
         <DeckCardSubListWithTitle
           cards={attachments}
@@ -342,7 +342,7 @@ export function Decklist(props: {
           faction={stats.primaryClan}
           format={stats.format}
           onQuantityChange={props.onQuantityChange}
-          sortByCost={sortConfByCost}
+          sortByName={sortConfByName}
         />
         <DeckCardSubListWithTitle
           cards={conflictCharacters}
@@ -350,7 +350,7 @@ export function Decklist(props: {
           faction={stats.primaryClan}
           format={stats.format}
           onQuantityChange={props.onQuantityChange}
-          sortByCost={sortConfByCost}
+          sortByName={sortConfByName}
         />
       </Grid>
     </Grid>

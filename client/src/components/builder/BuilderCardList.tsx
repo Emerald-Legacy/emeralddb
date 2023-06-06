@@ -92,7 +92,7 @@ export function BuilderCardList(props: {
   const isSmOrSmaller = useMediaQuery('(max-width:600px)')
   const [showTraits, setShowTraits] = useState(true)
   const [showFilters, setShowFilters] = useState(true)
-  const [sortMode, setSortMode] = useState<SortMode>(SortMode.NAME)
+  const [sortMode, setSortMode] = useState<SortMode>(SortMode.COST)
   const [displayMode, setDisplayMode] = useState<DisplayMode>(DisplayMode.LIST)
   const [order, setOrder] = useState<'Ascending' | 'Descending'>('Ascending')
 
