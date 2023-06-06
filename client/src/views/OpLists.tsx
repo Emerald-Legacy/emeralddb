@@ -164,10 +164,9 @@ export function OpLists(): JSX.Element {
             </Typography>
           </Grid>
           {sortedCycles.map((cycle) => {
-            const rotatedCards = rotatedCardsByCycle(cycle.id)
-            const packsOfCycle = packs
-              .filter((p) => p.cycle_id === cycle.id)
-              .sort((a, b) => a.position - b.position)
+            const rotatedCardsOfCycle = rotatedCardsByCycle(cycle.id).sort((a, b) =>
+              a.name.localeCompare(b.name)
+            )
             return (
               <Grid
                 key={cycle.id}
@@ -176,37 +175,22 @@ export function OpLists(): JSX.Element {
                 sm={6}
                 md={4}
                 lg={3}
-                hidden={rotatedCards.length === 0}
+                hidden={rotatedCardsOfCycle.length === 0}
               >
                 <Box border="1px solid gray" borderRadius={4} p={2}>
                   <Typography>
-                    <b>Cycle: {cycle.name}</b> ({rotatedCards.length})
+                    <b>Cycle: {cycle.name}</b> ({rotatedCardsOfCycle.length})
                   </Typography>
-                  {packsOfCycle.map((pack) => {
-                    const rotatedPackCards = rotatedCardsByPack(pack.id).sort((a, b) =>
-                      a.name.localeCompare(b.name)
-                    )
-                    return (
-                      rotatedPackCards.length > 0 && (
-                        <Box key={pack.id}>
-                          <Typography>
-                            Pack: {pack.name} ({rotatedPackCards.length})
-                          </Typography>
-                          <List dense>
-                            {rotatedPackCards.map((card) => (
-                              <ListItem key={card.id}>
-                                <CardLink cardId={card.id} />
-                              </ListItem>
-                            ))}
-                          </List>
-                        </Box>
-                      )
-                    )
-                  })}
+                  <List dense>
+                    {rotatedCardsOfCycle.map((card) => (
+                      <ListItem key={card.id}>
+                        <CardLink cardId={card.id} />
+                      </ListItem>
+                    ))}
+                  </List>
                 </Box>
               </Grid>
-            )
-          })}
+            )})}
         </Grid>
       </Grid>
     </>
