@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): JSX.Element {
   const history = useHistory()
   const existingCard = props.existingCard
-  const uiStore = useUiStore();
+  const uiStore = useUiStore()
   const allTraits = uiStore.traits
 
   const [id, setId] = useState(existingCard?.id || '')

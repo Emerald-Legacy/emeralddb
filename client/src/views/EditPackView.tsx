@@ -1,10 +1,12 @@
 import {
   Box,
-  Button, Checkbox,
+  Button,
+  Checkbox,
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle, FormControlLabel,
+  DialogTitle,
+  FormControlLabel,
   Grid,
   TextField,
   Typography,
@@ -49,8 +51,13 @@ export function EditPackView(): JSX.Element {
   const packCards = cards.filter((c) => c.versions.some((v) => v.pack_id === packId))
   if (cardsInPack.length === 0 && packCards.length > 0) {
     const newCardsInPack: CardInPack[] = packCards.map((p) => {
-      const cardVersionInPack = p.versions.find((v) => v.pack_id === packId);
-      return { ...cardVersionInPack, card_id: p.id, pack_id: packId, rotated: cardVersionInPack?.rotated || false}
+      const cardVersionInPack = p.versions.find((v) => v.pack_id === packId)
+      return {
+        ...cardVersionInPack,
+        card_id: p.id,
+        pack_id: packId,
+        rotated: cardVersionInPack?.rotated || false,
+      }
     })
     setCardsInPack(newCardsInPack)
   }
@@ -64,7 +71,7 @@ export function EditPackView(): JSX.Element {
       image_url: imageUrl,
       position: position,
       quantity: quantity,
-      rotated: rotated
+      rotated: rotated,
     }
     if (editIndex === -1) {
       setCardsInPack([...cardsInPack, newCard])
@@ -219,11 +226,13 @@ export function EditPackView(): JSX.Element {
                 style={{ marginTop: 5 }}
               />
               <FormControlLabel
-                control={<Checkbox
-                  value={rotated}
-                  onChange={(value) => setRotated(value.target.checked)}
-                />}
-                label={"Rotated Out"}
+                control={
+                  <Checkbox
+                    value={rotated}
+                    onChange={(value) => setRotated(value.target.checked)}
+                  />
+                }
+                label={'Rotated Out'}
                 labelPlacement="start"
               />
             </Grid>

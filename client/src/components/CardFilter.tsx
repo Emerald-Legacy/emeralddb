@@ -226,9 +226,9 @@ export function applyFilters(cards: CardWithVersions[], filter: FilterState): Ca
   let filteredCards = cards
   if (filter.showRotated !== 'true') {
     if (filter.showRotated === 'false') {
-      filteredCards = filteredCards.filter((c) => c.versions.some(version => !version.rotated))
+      filteredCards = filteredCards.filter((c) => c.versions.some((version) => !version.rotated))
     } else {
-      filteredCards = filteredCards.filter((c) => !c.versions.some(version => !version.rotated))
+      filteredCards = filteredCards.filter((c) => !c.versions.some((version) => !version.rotated))
     }
   }
   if (filter.factions && filter.factions.length > 0) {
@@ -299,7 +299,7 @@ const initialState: FilterState = {
   restricted: '',
   banned: '',
   isUnique: '',
-  showRotated: 'true'
+  showRotated: 'true',
 }
 
 function filterReducer(state: FilterState, action: FilterAction): FilterState {
@@ -365,7 +365,7 @@ export function CardFilter(props: {
     { id: 'false', name: 'No' },
   ]
 
-  const rotatedOptions: { id: 'true' | 'false' | 'onlyRotated', name: string}[] = [
+  const rotatedOptions: { id: 'true' | 'false' | 'onlyRotated'; name: string }[] = [
     { id: 'true', name: 'Yes' },
     { id: 'false', name: 'No' },
     { id: 'onlyRotated', name: 'Only Rotated' },
@@ -693,7 +693,12 @@ export function CardFilter(props: {
                       getOptionLabel={(option) => option?.name || ''}
                       value={rotatedOptions.find((option) => option.id === filterState.showRotated)}
                       renderInput={(params) => (
-                        <TextField {...params} size="small" label="Show Rotated Cards" variant="outlined" />
+                        <TextField
+                          {...params}
+                          size="small"
+                          label="Show Rotated Cards"
+                          variant="outlined"
+                        />
                       )}
                       onChange={(e, value) =>
                         dispatchFilter({

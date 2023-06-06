@@ -8,7 +8,7 @@ import BlockIcon from '@material-ui/icons/Block'
 import WarningIcon from '@material-ui/icons/Warning'
 import LinkOffIcon from '@material-ui/icons/LinkOff'
 import Looks5Icon from '@material-ui/icons/Looks5'
-import CachedIcon from '@material-ui/icons/Cached';
+import CachedIcon from '@material-ui/icons/Cached'
 import { ElementSymbol } from './ElementSymbol'
 import { EmeraldDBLink } from '../EmeraldDBLink'
 
@@ -84,7 +84,9 @@ export function RallyIcon(props: { formats: string[] }): JSX.Element {
 
 export function RotatedIcon(props: { formats: string[] }): JSX.Element {
   const icon = <CachedIcon style={{ color: 'red', fontSize: 16 }} />
-  return <DeckbuildingRestrictionIcon label="Rotated out in" inFormats={props.formats} icon={icon} />
+  return (
+    <DeckbuildingRestrictionIcon label="Rotated out in" inFormats={props.formats} icon={icon} />
+  )
 }
 
 export function BannedIcon(props: { formats: string[] }): JSX.Element {
@@ -178,7 +180,9 @@ export function CardLink(props: {
           {restrictedFormats.length > 0 && <RestrictedIcon formats={restrictedFormats} />}
           {splashBannedFormats.length > 0 && <SplashBannedIcon formats={splashBannedFormats} />}
           {rallyFormats.length > 0 && <RallyIcon formats={rallyFormats} />}
-          {rotatedFormats.length > 0 && !card.versions.some(v => !v.rotated) && <RotatedIcon formats={rotatedFormats} />}
+          {rotatedFormats.length > 0 && !card.versions.some((v) => !v.rotated) && (
+            <RotatedIcon formats={rotatedFormats} />
+          )}
         </span>
       </EmeraldDBLink>
       <Popover

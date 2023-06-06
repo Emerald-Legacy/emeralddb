@@ -1,4 +1,4 @@
-import { Redirect, Route, Switch, useHistory } from "react-router-dom";
+import { Redirect, Route, Switch, useHistory } from 'react-router-dom'
 import { useCurrentUser } from './providers/UserProvider'
 import { AdminView } from './views/AdminView'
 import { BuilderView } from './views/BuilderView'
@@ -18,7 +18,7 @@ import { FFGRulesReferenceGuide } from './views/FFGRulesReferenceGuide'
 import { ELRulesReferenceGuide } from './views/ELRulesReferenceGuide'
 import { OpLists } from './views/OpLists'
 import { HelpView } from './views/HelpView'
-import { useEffect } from "react";
+import { useEffect } from 'react'
 
 const AuthenticatedRoute = (props: { children: JSX.Element; path: string }) => {
   const { isLoggedIn } = useCurrentUser()

@@ -318,6 +318,10 @@ function validateDecklist(
   return validationErrors
 }
 
+export const cardsThatModifyInfluence: { id: string; modifier: number }[] = [
+  { id: 'yatakabune-port', modifier: 4 },
+]
+
 export function createDeckStatistics(
   cards: Record<string, number>,
   format: string,
@@ -325,7 +329,9 @@ export function createDeckStatistics(
 ): DeckStatistics {
   const { strongholds, provinces, roles, conflictCards, dynastyCards, allDeckCards } =
     splitCardsToDecks(cards || {}, allCards)
-  const allRotatedCardIds = allCards.filter(c => !c.versions.some(v => !v.rotated)).map(c => c.id)
+  const allRotatedCardIds = allCards
+    .filter((c) => !c.versions.some((v) => !v.rotated))
+    .map((c) => c.id)
   const dynastyCardsWrapper = splitDynastyCards(dynastyCards)
   const conflictCardsWrapper = splitConflictCards(conflictCards)
   const stronghold = strongholds.length > 0 ? strongholds[0] : null
@@ -339,8 +345,8 @@ export function createDeckStatistics(
       : 0
     : 0
   const extraInfluenceFromCards = cardsThatModifyInfluence
-    .filter(card => cards[card.id] && cards[card.id] > 0)
-    .map(card => card.modifier * cards[card.id])
+    .filter((card) => cards[card.id] && cards[card.id] > 0)
+    .map((card) => card.modifier * cards[card.id])
     .reduce((a, b) => a + b, 0)
   const maxInfluence = baseInfluence + extraInfluenceFromRole + extraInfluenceFromCards
   const roleElements =
@@ -398,7 +404,3 @@ export function createDeckStatistics(
 
   return stats
 }
-
-export const cardsThatModifyInfluence: {id: string, modifier: number}[] = [
-  { id: 'yatakabune-port', modifier: 4 }
-]

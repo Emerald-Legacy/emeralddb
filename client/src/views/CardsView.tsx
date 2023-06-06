@@ -85,7 +85,7 @@ function createFilterFromUrlSearchParams(params: URLSearchParams, allPacks: Pack
     restricted: '',
     banned: '',
     isUnique: '',
-    showRotated: 'true'
+    showRotated: 'true',
   }
 }
 
