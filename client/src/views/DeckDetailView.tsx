@@ -23,7 +23,7 @@ export function DeckDetailView(): JSX.Element {
   }
 
   const decklist = data.data
-  document.title = `${decklist.name} (v${decklist.version_number})`;
+  document.title = `${decklist.name} (v${decklist.version_number})`
   return (
     <Grid container spacing={5} justify="center">
       <Grid item xs={12} md={7}>

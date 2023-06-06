@@ -1,7 +1,6 @@
 import {
   Checkbox,
   Collapse,
-  Link,
   List,
   ListItem,
   ListItemIcon,
@@ -13,8 +12,8 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import ExpandLessIcon from '@material-ui/icons/ExpandLess'
 import React, { useState } from 'react'
 import { Cycle, Pack } from '@5rdb/api'
-import {EmeraldDBLink} from "./EmeraldDBLink";
-import CachedIcon from "@material-ui/icons/Cached";
+import { EmeraldDBLink } from './EmeraldDBLink'
+import CachedIcon from '@material-ui/icons/Cached'
 
 type CycleWithPacks = Cycle & {
   packs: Pack[]
@@ -60,7 +59,9 @@ export function CycleList(props: {
     cycles.forEach((cycle) => {
       result.push({
         ...cycle,
-        packs: packs.filter((pack) => pack.cycle_id === cycle.id).sort((a, b) => a.position - b.position),
+        packs: packs
+          .filter((pack) => pack.cycle_id === cycle.id)
+          .sort((a, b) => a.position - b.position),
       })
     })
     result.sort((a, b) => a.position - b.position)
@@ -169,7 +170,9 @@ export function CycleList(props: {
               onClick={() => props.onClick && props.onClick(props.packUrl + pack.id)}
               notClickable={!props.packUrl}
             >
-              <span>{pack.rotated && <CachedIcon style={{ color: 'red', fontSize: 16 }} />} {pack.name}</span>
+              <span>
+                {pack.rotated && <CachedIcon style={{ color: 'red', fontSize: 16 }} />} {pack.name}
+              </span>
             </EmeraldDBLink>
           }
         />
@@ -212,7 +215,10 @@ export function CycleList(props: {
                 onClick={() => props.onClick && props.onClick(props.cycleUrl + cycle.id)}
                 notClickable={!props.cycleUrl}
               >
-                <span>{cycle.rotated && <CachedIcon style={{ color: 'red', fontSize: 16 }} />} {cycle.name}</span>
+                <span>
+                  {cycle.rotated && <CachedIcon style={{ color: 'red', fontSize: 16 }} />}{' '}
+                  {cycle.name}
+                </span>
               </EmeraldDBLink>
             }
           />
@@ -249,7 +255,7 @@ export function CycleList(props: {
               >
                 {props.rootLabel}
               </EmeraldDBLink>
-             }
+            }
           />
           {expandedElements.includes('root') ? <ExpandLessIcon /> : <ExpandMoreIcon />}
         </ListItem>

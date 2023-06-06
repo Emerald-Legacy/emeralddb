@@ -162,7 +162,9 @@ export function DeckBuilderWizard(props: {
                   key={thisStronghold.id}
                   value={thisStronghold.id}
                   control={<Radio />}
-                  label={<CardLink cardId={thisStronghold.id} format={format} notClickable sameTab />}
+                  label={
+                    <CardLink cardId={thisStronghold.id} format={format} notClickable sameTab />
+                  }
                   onClick={() => setStronghold(thisStronghold.id)}
                 />
               ))}

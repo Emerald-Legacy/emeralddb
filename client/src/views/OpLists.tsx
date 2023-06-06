@@ -1,12 +1,13 @@
 import { useUiStore } from '../providers/UiStoreProvider'
 import { useState } from 'react'
-import { Grid, TextField, Typography } from '@material-ui/core'
+import { Box, Grid, List, ListItem, TextField, Typography } from '@material-ui/core'
 import { Loading } from '../components/Loading'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import { clans } from '../utils/enums'
 import { OrganizedPlayList } from '../components/OrganizedPlayList'
 import { CardWithVersions } from '@5rdb/api'
 import { useHistory, useParams } from 'react-router-dom'
+import { CardLink } from '../components/card/CardLink'
 
 const formats = [
   {
@@ -30,7 +31,7 @@ function isSplashBanned(card: CardWithVersions, format: string, filterClan: stri
 
 export function OpLists(): JSX.Element {
   const params = useParams<{ format: string }>()
-  const { cards } = useUiStore()
+  const { cards, cycles, packs } = useUiStore()
   const [format, setFormat] = useState(params.format || '')
   const [filterClan, setFilterClan] = useState('')
   const history = useHistory()
@@ -56,6 +57,24 @@ export function OpLists(): JSX.Element {
   const splashBannedCards = format
     ? allCards.filter((c) => c.splash_banned_in?.includes(format))
     : []
+  const rotatedCards =
+    format === 'emerald'
+      ? allCards
+          .filter((c) => c.versions.length > 0)
+          .filter((c) => !c.versions.find((v) => !v.rotated))
+      : []
+
+  const rotatedCardsByPack = (packId: string) => {
+    return rotatedCards.filter((c) => c.versions.some((v) => v.pack_id === packId))
+  }
+
+  const rotatedCardsByCycle = (cycleId: string) => {
+    const packsOfCycle = packs.filter((p) => p.cycle_id === cycleId)
+    return packsOfCycle.flatMap((p) => rotatedCardsByPack(p.id))
+  }
+
+  const sortedCycles = cycles.sort((a, b) => a.position - b.position)
+
   return (
     <>
       <Grid container spacing={4}>
@@ -129,10 +148,65 @@ export function OpLists(): JSX.Element {
                 cards={splashBannedCards}
                 format={format}
                 title="Splash Banned List"
-                description="These cards have their influence removed and can not be splashed."
+                description="These cards have their influence removed and cannot be splashed."
               />
             </Grid>
           </Grid>
+        </Grid>
+        <Grid item container xs={12} spacing={2} hidden={format !== 'emerald'}>
+          <Grid item xs={12}>
+            <Typography>
+              <b>Rotated Cards</b>
+            </Typography>
+            <Typography>
+              These cards have been rotated out of the Emerald Legacy card pool and cannot be
+              included in your deck.
+            </Typography>
+          </Grid>
+          {sortedCycles.map((cycle) => {
+            const rotatedCards = rotatedCardsByCycle(cycle.id)
+            const packsOfCycle = packs
+              .filter((p) => p.cycle_id === cycle.id)
+              .sort((a, b) => a.position - b.position)
+            return (
+              <Grid
+                key={cycle.id}
+                item
+                xs={12}
+                sm={6}
+                md={4}
+                lg={3}
+                hidden={rotatedCards.length === 0}
+              >
+                <Box border="1px solid gray" borderRadius={4} p={2}>
+                  <Typography>
+                    <b>Cycle: {cycle.name}</b> ({rotatedCards.length})
+                  </Typography>
+                  {packsOfCycle.map((pack) => {
+                    const rotatedPackCards = rotatedCardsByPack(pack.id).sort((a, b) =>
+                      a.name.localeCompare(b.name)
+                    )
+                    return (
+                      rotatedPackCards.length > 0 && (
+                        <Box key={pack.id}>
+                          <Typography>
+                            Pack: {pack.name} ({rotatedPackCards.length})
+                          </Typography>
+                          <List dense>
+                            {rotatedPackCards.map((card) => (
+                              <ListItem key={card.id}>
+                                <CardLink cardId={card.id} />
+                              </ListItem>
+                            ))}
+                          </List>
+                        </Box>
+                      )
+                    )
+                  })}
+                </Box>
+              </Grid>
+            )
+          })}
         </Grid>
       </Grid>
     </>

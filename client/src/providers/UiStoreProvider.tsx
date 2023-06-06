@@ -23,7 +23,7 @@ export function UiStoreProvider(props: { children: ReactNode }): JSX.Element {
   const [packs, setPacks] = useState<Pack[]>([])
   const [cycles, setCycles] = useState<Cycle[]>([])
   const [traits, setTraits] = useState<Trait[]>([])
-  const [reload, setReload] = useState(false);
+  const [reload, setReload] = useState(false)
 
   const toggleReload = () => setReload(!reload)
 

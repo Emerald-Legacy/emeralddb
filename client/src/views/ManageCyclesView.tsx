@@ -19,7 +19,7 @@ import { privateApi } from '../api'
 import { Loading } from '../components/Loading'
 import { useUiStore } from '../providers/UiStoreProvider'
 import { toSlugId } from '../utils/slugIdUtils'
-import CachedIcon from "@material-ui/icons/Cached";
+import CachedIcon from '@material-ui/icons/Cached'
 
 const useStyles = makeStyles((theme) => ({
   editButton: {
@@ -149,7 +149,7 @@ export function ManageCyclesView(): JSX.Element {
     confirm({ description: 'Do you really want to rotate out this cycle?' })
       .then(() => {
         privateApi.Cycle.rotate({
-          cycleId
+          cycleId,
         })
           .then(() => {
             window.location.reload()
@@ -167,7 +167,7 @@ export function ManageCyclesView(): JSX.Element {
     confirm({ description: 'Do you really want to rotate out this pack?' })
       .then(() => {
         privateApi.Pack.rotate({
-          packId
+          packId,
         })
           .then(() => {
             window.location.reload()
@@ -199,18 +199,17 @@ export function ManageCyclesView(): JSX.Element {
               {cycle.rotated && <CachedIcon style={{ color: 'red', fontSize: 16 }} />}
               {cycle.name}
             </Typography>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => rotateCycle(cycle.id)}
-            >
+            <Button variant="contained" color="primary" onClick={() => rotateCycle(cycle.id)}>
               Rotate Cycle
             </Button>
             {packsForCycle(cycle.id).map((pack) => (
               <Grid container spacing={1}>
                 <Grid item xs={1} />
                 <Grid item xs={5}>
-                  <Typography>{pack.rotated && <CachedIcon style={{ color: 'red', fontSize: 16 }} />} {pack.name}</Typography>
+                  <Typography>
+                    {pack.rotated && <CachedIcon style={{ color: 'red', fontSize: 16 }} />}{' '}
+                    {pack.name}
+                  </Typography>
                 </Grid>
                 <Grid item xs={6}>
                   <Button
@@ -220,11 +219,7 @@ export function ManageCyclesView(): JSX.Element {
                   >
                     Edit Pack Cards
                   </Button>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => rotatePack(pack.id)}
-                  >
+                  <Button variant="contained" color="primary" onClick={() => rotatePack(pack.id)}>
                     Rotate Pack
                   </Button>
                 </Grid>
