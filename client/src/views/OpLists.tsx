@@ -13,7 +13,7 @@ const formats = [
   {
     id: 'emerald',
     name: 'Emerald Legacy - Emerald Edict',
-    link: 'https://emeraldlegacy.org/rules/',
+    link: 'https://emerald-legacy.github.io/rules-documents/Emerald%20Edict.pdf',
   },
   {
     id: 'standard',
