@@ -1,4 +1,4 @@
-import { insertOrUpdateCardInPack } from "../gateways/storage"
+import { insertOrUpdateCardInPack } from '../gateways/storage'
 import * as Express from 'express'
 import Joi from 'joi'
 import { ValidatedRequest } from '../middlewares/validator'
