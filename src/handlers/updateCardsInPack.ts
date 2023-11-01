@@ -1,11 +1,11 @@
-import { insertOrUpdateCardInPack } from '../gateways/storage/index'
+import { insertOrUpdateCardInPack } from "../gateways/storage"
 import * as Express from 'express'
 import Joi from 'joi'
 import { ValidatedRequest } from '../middlewares/validator'
-import { CardInPacks$update, CardInPack } from '@5rdb/api'
+import { CardInPacks$updateAll, CardInPack } from '@5rdb/api'
 
 export const schema = {
-  body: Joi.object<CardInPacks$update['request']['body']>({
+  body: Joi.object<CardInPacks$updateAll['request']['body']>({
     cardsInPacks: Joi.array(),
   }),
 }
