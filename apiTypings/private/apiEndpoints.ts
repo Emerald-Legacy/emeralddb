@@ -1,4 +1,4 @@
-import { Card, Cycle, Deck, Decklist, Ruling, Pack, User, CardInPack } from './baseTypes'
+import { Card, Cycle, Deck, Decklist, Ruling, Pack, User, CardInPack, Trait } from './baseTypes'
 import {
   CardWithVersions,
   CardWithDetails,
@@ -70,9 +70,17 @@ export interface Decks$create {
   response: Deck
 }
 
-export interface CardInPacks$update {
+export interface CardInPacks$updateAll {
   request: { body: { cardsInPacks: CardInPack[] } }
   response: CardInPack[]
+}
+
+export interface CardInPacks$insertOrUpdate {
+  request: { body: { cardInPack: CardInPack } }
+}
+
+export interface CardInPacks$delete {
+  request: { body: { cardInPack: CardInPack } }
 }
 
 export interface Decks$find {
@@ -175,4 +183,12 @@ export interface Pack$export {
 
 export interface Pack$rotate {
   request: { params: { id: string } }
+}
+
+export interface Traits$insertOrUpdate {
+  request: { body: { trait: Trait } }
+}
+
+export interface Traits$delete {
+  request: { body: { trait: Trait } }
 }

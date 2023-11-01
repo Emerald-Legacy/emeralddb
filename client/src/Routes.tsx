@@ -18,6 +18,7 @@ import { FFGRulesReferenceGuide } from './views/FFGRulesReferenceGuide'
 import { ELRulesReferenceGuide } from './views/ELRulesReferenceGuide'
 import { OpLists } from './views/OpLists'
 import { HelpView } from './views/HelpView'
+import { EditTraitsView } from './views/EditTraitsView'
 import { useEffect } from 'react'
 
 const AuthenticatedRoute = (props: { children: JSX.Element; path: string }) => {
@@ -93,6 +94,9 @@ export function Routes(): JSX.Element {
       </DataAdminRoute>
       <DataAdminRoute path="/admin/cycles">
         <ManageCyclesView />
+      </DataAdminRoute>
+      <DataAdminRoute path="/admin/traits">
+        <EditTraitsView />
       </DataAdminRoute>
       <DataAdminRoute path="/admin">
         <AdminView />

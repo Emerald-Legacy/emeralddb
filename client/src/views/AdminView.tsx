@@ -53,6 +53,11 @@ export function AdminView(): JSX.Element {
       </Button>
       <br />
       <br />
+      <Button variant="contained" color="secondary" onClick={() => history.push('/admin/traits')}>
+        Manage Traits
+      </Button>
+      <br />
+      <br />
       <TextField
         value={packId}
         onChange={(event) => setPackId(event.target.value)}

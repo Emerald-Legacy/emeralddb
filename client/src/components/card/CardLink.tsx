@@ -1,7 +1,7 @@
 import { makeStyles, Popover, Theme } from '@material-ui/core'
 import React, { useState } from 'react'
 import { useUiStore } from '../../providers/UiStoreProvider'
-import { formats } from '../../utils/enums'
+import { relevantFormats } from '../../utils/enums'
 import { CardInformation } from './CardInformation'
 import { CardTypeIcon } from './CardTypeIcon'
 import BlockIcon from '@material-ui/icons/Block'
@@ -39,7 +39,7 @@ export function DeckbuildingRestrictionIcon(props: {
   }
 
   const formatString = props.inFormats
-    .map((inFormat) => formats.find((format) => format.id === inFormat)?.name || '')
+    .map((inFormat) => relevantFormats.find((format) => format.id === inFormat)?.name || '')
     .join(', ')
 
   return (

@@ -28,7 +28,9 @@ export {
   Cards$delete,
   Cards$create,
   Cards$rename,
-  CardInPacks$update,
+  CardInPacks$updateAll,
+  CardInPacks$insertOrUpdate,
+  CardInPacks$delete,
   Users$me,
   Users$update,
   Packs$findAll,
@@ -57,4 +59,6 @@ export {
   Pack$import,
   Pack$export,
   Pack$rotate,
+  Traits$insertOrUpdate,
+  Traits$delete,
 } from './private/apiEndpoints'

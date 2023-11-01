@@ -1,7 +1,7 @@
 import { useEffect, useReducer, useState } from 'react'
 import { PublishedDecklist } from '@5rdb/api'
 import { Button, lighten, Grid, makeStyles, Paper, TextField } from '@material-ui/core'
-import { formats, clans } from '../utils/enums'
+import { relevantFormats, clans } from '../utils/enums'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 
 const useStyles = makeStyles((theme) => ({
@@ -148,9 +148,9 @@ export function DeckFilter(props: {
           <Autocomplete
             id="combo-box-format"
             autoHighlight
-            options={formats}
+            options={relevantFormats}
             getOptionLabel={(option) => option?.name || ''}
-            value={formats.find((format) => format.id === filterState.format)}
+            value={relevantFormats.find((format) => format.id === filterState.format)}
             renderInput={(params) => (
               <TextField {...params} size="small" label="Format" variant="outlined" />
             )}

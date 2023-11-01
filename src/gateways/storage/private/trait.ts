@@ -17,3 +17,7 @@ export async function insertOrUpdateTrait(trait: Trait): Promise<Trait> {
   const result = await pg.raw(`? ON CONFLICT ("id") DO ? returning *`, [insert, update])
   return result.rows[0]
 }
+
+export async function deleteTrait(traitId: string): Promise<Trait> {
+  return pg(TABLE).where('id', traitId).delete()
+}

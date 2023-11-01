@@ -100,12 +100,18 @@ export const privateApi = forge({
       rotate: { method: 'PUT', path: '/cycles/rotate/{cycleId}' },
     },
     CardInPack: {
-      update: { method: 'POST', path: '/cards-in-packs' },
+      updateAll: { method: 'POST', path: '/cards-in-packs' },
+      update: { method: 'PUT', path: '/cards-in-packs' },
+      delete: { method: 'DELETE', path: '/cards-in-packs' },
     },
     Comment: {
       create: { method: 'PUT', path: '/comments' },
       update: { method: 'POST', path: '/comments/{id}' },
       delete: { method: 'DELETE', path: '/comments/{id}' },
+    },
+    Trait: {
+      update: { method: 'PUT', path: '/traits'},
+      delete: { method: 'DELETE', path: '/traits'},
     },
   },
 })
