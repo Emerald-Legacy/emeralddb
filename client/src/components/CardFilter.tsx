@@ -1,5 +1,5 @@
 import { useEffect, useReducer, useState } from 'react'
-import { CardWithVersions, Trait, RoleRestriction } from '@5rdb/api'
+import { CardWithVersions, Trait, RoleRestriction, Format } from '@5rdb/api'
 import {
   Button,
   ButtonGroup,
@@ -97,11 +97,12 @@ export interface FilterState {
   roleRestrictions: string[]
   packs: string[]
   cycles: string[]
-  numericValues: NumericValueFilter[]
-  restricted: string
-  banned: string
   isUnique: string
-  showRotated: 'true' | 'false' | 'onlyRotated'
+  numericValues: NumericValueFilter[]
+  format: string
+  restricted: 'true' | 'false' | 'only'
+  banned: 'true' | 'false' | 'only'
+  illegal: 'true' | 'false'
 }
 
 enum FilterType {
@@ -116,11 +117,12 @@ enum FilterType {
   FILTER_PACKS,
   FILTER_CYCLES,
   FILTER_PACKS_AND_CYCLES,
+  FILTER_IS_UNIQUE,
+  FILTER_FORMAT,
   FILTER_RESTRICTED,
   FILTER_BANNED,
-  FILTER_IS_UNIQUE,
   FILTER_NUMERIC_VALUES,
-  FILTER_ROTATED,
+  FILTER_ILLEGAL,
   FILTER_RESET,
 }
 
@@ -136,11 +138,12 @@ type FilterAction =
   | { type: FilterType.FILTER_PACKS; packs: string[] }
   | { type: FilterType.FILTER_CYCLES; cycles: string[] }
   | { type: FilterType.FILTER_PACKS_AND_CYCLES; packs: string[]; cycles: string[] }
-  | { type: FilterType.FILTER_RESTRICTED; format: string }
-  | { type: FilterType.FILTER_BANNED; format: string }
   | { type: FilterType.FILTER_IS_UNIQUE; isUnique: string }
+  | { type: FilterType.FILTER_FORMAT; format: string }
+  | { type: FilterType.FILTER_RESTRICTED; showRestricted: 'true' | 'false' | 'only' }
+  | { type: FilterType.FILTER_BANNED; showBanned: 'true' | 'false' | 'only' }
+  | { type: FilterType.FILTER_ILLEGAL; showIllegal: 'true' | 'false' }
   | { type: FilterType.FILTER_NUMERIC_VALUES; numericValues: NumericValueFilter[] }
-  | { type: FilterType.FILTER_ROTATED; showRotated: 'true' | 'false' | 'onlyRotated' }
   | { type: FilterType.FILTER_RESET }
 
 function checkSingleValue(value: string | undefined, filter: NumericFilterTypeAndValue): boolean {
@@ -221,13 +224,29 @@ function replaceSpecialCharacters(text: string): string {
     .replaceAll('ū', 'u')
 }
 
-export function applyFilters(cards: CardWithVersions[], filter: FilterState): CardWithVersions[] {
+export function applyFilters(cards: CardWithVersions[], formats: Format[], filter: FilterState): CardWithVersions[] {
   let filteredCards = cards
-  if (filter.showRotated !== 'true') {
-    if (filter.showRotated === 'false') {
-      filteredCards = filteredCards.filter((c) => c.versions.some((version) => !version.rotated))
+  let chosenFormat = filter.format && formats.find(format => format.id === filter.format)
+  console.log(formats)
+  console.log(chosenFormat)
+  if (chosenFormat) {
+    let legalPacksOfFormat = chosenFormat.legal_packs || []
+    if (filter.banned === 'only' || filter.restricted === 'only') {
+      if (filter.banned === 'only') {
+        filteredCards = filteredCards.filter((c) => c.banned_in?.includes(filter.format))
+      } else {
+        filteredCards = filteredCards.filter((c) => c.restricted_in?.includes(filter.format))
+      }
     } else {
-      filteredCards = filteredCards.filter((c) => !c.versions.some((version) => !version.rotated))
+      if (filter.illegal === 'false') {
+        filteredCards = filteredCards.filter((c) => c.versions.some((version) => legalPacksOfFormat.some(pack => version.pack_id === pack)))
+      }
+      if (filter.restricted === 'false') {
+        filteredCards = filteredCards.filter((c) => !c.restricted_in?.includes(filter.format))
+      }
+      if (filter.banned === 'false') {
+        filteredCards = filteredCards.filter((c) => !c.banned_in?.includes(filter.format))
+      }
     }
   }
   if (filter.factions && filter.factions.length > 0) {
@@ -259,12 +278,6 @@ export function applyFilters(cards: CardWithVersions[], filter: FilterState): Ca
       c.versions?.some((version) => filter.packs?.includes(version.pack_id))
     )
   }
-  if (filter.restricted) {
-    filteredCards = filteredCards.filter((c) => c.restricted_in?.includes(filter.restricted))
-  }
-  if (filter.banned) {
-    filteredCards = filteredCards.filter((c) => c.banned_in?.includes(filter.banned))
-  }
   if (filter.isUnique) {
     filteredCards = filteredCards.filter((c) => c.is_unique === (filter.isUnique === 'true'))
   }
@@ -295,10 +308,11 @@ const initialState: FilterState = {
   roleRestrictions: [],
   cycles: [],
   numericValues: [],
-  restricted: '',
-  banned: '',
+  format: '',
+  restricted: 'true',
+  banned: 'false',
+  illegal: 'false',
   isUnique: '',
-  showRotated: 'true',
 }
 
 function filterReducer(state: FilterState, action: FilterAction): FilterState {
@@ -327,16 +341,18 @@ function filterReducer(state: FilterState, action: FilterAction): FilterState {
       return { ...state, cycles: action.cycles }
     case FilterType.FILTER_PACKS_AND_CYCLES:
       return { ...state, packs: action.packs, cycles: action.cycles }
-    case FilterType.FILTER_RESTRICTED:
-      return { ...state, restricted: action.format }
-    case FilterType.FILTER_BANNED:
-      return { ...state, banned: action.format }
     case FilterType.FILTER_IS_UNIQUE:
       return { ...state, isUnique: action.isUnique }
+    case FilterType.FILTER_FORMAT:
+      return { ...state, format: action.format }
+    case FilterType.FILTER_RESTRICTED:
+      return { ...state, restricted: action.showRestricted }
+    case FilterType.FILTER_BANNED:
+      return { ...state, banned: action.showBanned }
+    case FilterType.FILTER_ILLEGAL:
+      return { ...state, illegal: action.showIllegal }
     case FilterType.FILTER_NUMERIC_VALUES:
       return { ...state, numericValues: [...action.numericValues] }
-    case FilterType.FILTER_ROTATED:
-      return { ...state, showRotated: action.showRotated }
     case FilterType.FILTER_RESET:
       return initialState
   }
@@ -357,15 +373,20 @@ export function CardFilter(props: {
   const [searchTerm, setSearchTerm] = useState(props.filterState?.text || '')
   const [showFilters, setShowFilters] = useState(false)
 
-  const uniqueOptions = [
+  const yesNoOptions: { id: 'true' | 'false'; name: string }[] = [
     { id: 'true', name: 'Yes' },
     { id: 'false', name: 'No' },
   ]
 
-  const rotatedOptions: { id: 'true' | 'false' | 'onlyRotated'; name: string }[] = [
+  const illegalOptions: { id: 'true' | 'false'; name: string }[] = [
+    { id: 'true', name: 'All Packs' },
+    { id: 'false', name: 'Only Legal Packs' },
+  ]
+
+  const restrictedBannedOptions: { id: 'true' | 'false' | 'only'; name: string }[] = [
     { id: 'true', name: 'Yes' },
     { id: 'false', name: 'No' },
-    { id: 'onlyRotated', name: 'Only Rotated' },
+    { id: 'only', name: 'Only' },
   ]
 
   const debouncedSearchTerm = useDebounce(searchTerm, 500)
@@ -664,13 +685,13 @@ export function CardFilter(props: {
                       }
                     />
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item xs={4}>
                     <Autocomplete
                       id="combo-box-is-unique"
                       autoHighlight
-                      options={uniqueOptions}
+                      options={yesNoOptions}
                       getOptionLabel={(option) => option?.name || ''}
-                      value={uniqueOptions.find((option) => option.id === filterState.isUnique)}
+                      value={yesNoOptions.find((option) => option.id === filterState.isUnique)}
                       renderInput={(params) => (
                         <TextField {...params} size="small" label="Is Unique" variant="outlined" />
                       )}
@@ -679,67 +700,6 @@ export function CardFilter(props: {
                           type: FilterType.FILTER_IS_UNIQUE,
                           isUnique: value?.id || '',
                         })
-                      }
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Autocomplete
-                      id="combo-box-is-rotated"
-                      autoHighlight
-                      options={rotatedOptions}
-                      getOptionLabel={(option) => option?.name || ''}
-                      value={rotatedOptions.find((option) => option.id === filterState.showRotated)}
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          size="small"
-                          label="Show Rotated Cards"
-                          variant="outlined"
-                        />
-                      )}
-                      onChange={(e, value) =>
-                        dispatchFilter({
-                          type: FilterType.FILTER_ROTATED,
-                          showRotated: value?.id || 'true',
-                        })
-                      }
-                    />
-                  </Grid>
-                  <Grid item xs={4}>
-                    <Autocomplete
-                      id="combo-box-restricted-in"
-                      autoHighlight
-                      options={relevantFormats}
-                      getOptionLabel={(option) => option?.name || ''}
-                      value={relevantFormats.find((format) => format.id === filterState.restricted)}
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          size="small"
-                          label="Restricted In"
-                          variant="outlined"
-                        />
-                      )}
-                      onChange={(e, value) =>
-                        dispatchFilter({
-                          type: FilterType.FILTER_RESTRICTED,
-                          format: value?.id || '',
-                        })
-                      }
-                    />
-                  </Grid>
-                  <Grid item xs={4}>
-                    <Autocomplete
-                      id="combo-box-banned-in"
-                      autoHighlight
-                      options={relevantFormats}
-                      getOptionLabel={(option) => option?.name || ''}
-                      value={relevantFormats.find((format) => format.id === filterState.banned)}
-                      renderInput={(params) => (
-                        <TextField {...params} size="small" label="Banned In" variant="outlined" />
-                      )}
-                      onChange={(e, value) =>
-                        dispatchFilter({ type: FilterType.FILTER_BANNED, format: value?.id || '' })
                       }
                     />
                   </Grid>
@@ -767,6 +727,101 @@ export function CardFilter(props: {
                       }
                     />
                   </Grid>
+                  <Grid item xs={4}>
+                    <Autocomplete
+                      id="combo-box-format"
+                      autoHighlight
+                      options={relevantFormats}
+                      getOptionLabel={(option) => option?.name || ''}
+                      value={relevantFormats.find((format) => format.id === filterState.format)}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          size="small"
+                          label="Choose a format"
+                          variant="outlined"
+                        />
+                      )}
+                      onChange={(e, value) =>
+                        dispatchFilter({
+                          type: FilterType.FILTER_FORMAT,
+                          format: value?.id || '',
+                        })
+                      }
+                    />
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Autocomplete
+                      id="combo-box-is-illegal"
+                      autoHighlight
+                      options={illegalOptions}
+                      disabled={!filterState.format}
+                      getOptionLabel={(option) => option?.name || ''}
+                      value={illegalOptions.find((option) => option.id === filterState.illegal)}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          size="small"
+                          label="Pack Legality"
+                          variant="outlined"
+                        />
+                      )}
+                      onChange={(e, value) =>
+                        dispatchFilter({
+                          type: FilterType.FILTER_ILLEGAL,
+                          showIllegal: value?.id || 'true',
+                        })
+                      }
+                    />
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Autocomplete
+                      id="combo-box-restricted-in"
+                      disabled={!filterState.format}
+                      autoHighlight
+                      options={restrictedBannedOptions}
+                      getOptionLabel={(option) => option?.name || ''}
+                      value={restrictedBannedOptions.find((option) => option.id === filterState.restricted)}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          size="small"
+                          label="Show Restricted Cards"
+                          variant="outlined"
+                        />
+                      )}
+                      onChange={(e, value) =>
+                        dispatchFilter({
+                          type: FilterType.FILTER_RESTRICTED,
+                          showRestricted: value?.id || 'true',
+                        })
+                      }
+                    />
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Autocomplete
+                      id="combo-box-banned-in"
+                      autoHighlight
+                      options={restrictedBannedOptions}
+                      disabled={!filterState.format}
+                      getOptionLabel={(option) => option?.name || ''}
+                      value={restrictedBannedOptions.find((option) => option.id === filterState.banned)}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          size="small"
+                          label="Show Banned Cards"
+                          variant="outlined"
+                        />
+                      )}
+                      onChange={(e, value) =>
+                        dispatchFilter({
+                          type: FilterType.FILTER_BANNED,
+                          showBanned: value?.id || 'false',
+                        })
+                      }
+                    />
+                  </Grid>
                   <Grid item xs={12}>
                     <Button
                       fullWidth
@@ -788,7 +843,7 @@ export function CardFilter(props: {
                     item
                     xs={12}
                     sm={props.deckbuilder ? 12 : 6}
-                    md={props.deckbuilder ? 12 : 4}
+                    md={props.deckbuilder ? 6 : 4}
                   >
                     <CardValueFilter
                       valueLabel={<span className={`icon icon-conflict-military`} />}
@@ -801,7 +856,7 @@ export function CardFilter(props: {
                     item
                     xs={12}
                     sm={props.deckbuilder ? 12 : 6}
-                    md={props.deckbuilder ? 12 : 4}
+                    md={props.deckbuilder ? 6 : 4}
                   >
                     <CardValueFilter
                       valueLabel={<span className={`icon icon-conflict-political`} />}
@@ -814,7 +869,7 @@ export function CardFilter(props: {
                     item
                     xs={12}
                     sm={props.deckbuilder ? 12 : 6}
-                    md={props.deckbuilder ? 12 : 4}
+                    md={props.deckbuilder ? 6 : 4}
                   >
                     <CardValueFilter
                       valueLabel={<span>Cost:</span>}
@@ -827,7 +882,7 @@ export function CardFilter(props: {
                     item
                     xs={12}
                     sm={props.deckbuilder ? 12 : 6}
-                    md={props.deckbuilder ? 12 : 4}
+                    md={props.deckbuilder ? 6 : 4}
                   >
                     <CardValueFilter
                       valueLabel={<span>Inf:</span>}
@@ -840,7 +895,7 @@ export function CardFilter(props: {
                     item
                     xs={12}
                     sm={props.deckbuilder ? 12 : 6}
-                    md={props.deckbuilder ? 12 : 4}
+                    md={props.deckbuilder ? 6 : 4}
                   >
                     <CardValueFilter
                       valueLabel={<span>Glory:</span>}
@@ -853,7 +908,7 @@ export function CardFilter(props: {
                     item
                     xs={12}
                     sm={props.deckbuilder ? 12 : 6}
-                    md={props.deckbuilder ? 12 : 4}
+                    md={props.deckbuilder ? 6 : 4}
                   >
                     <CardValueFilter
                       valueLabel={<span>Str:</span>}

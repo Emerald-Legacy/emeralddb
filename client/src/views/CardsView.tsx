@@ -82,10 +82,11 @@ function createFilterFromUrlSearchParams(params: URLSearchParams, allPacks: Pack
     packs: packs,
     cycles: cycle ? [cycle] : [],
     numericValues: [],
-    restricted: '',
-    banned: '',
+    format: '',
+    restricted: 'true',
+    banned: 'false',
     isUnique: '',
-    showRotated: 'true',
+    illegal: 'false',
   }
 }
 
@@ -93,7 +94,7 @@ export function CardsView(): JSX.Element {
   const PAGE_SIZE = 60
 
   const classes = useStyles()
-  const { cards, packs, cycles, traits } = useUiStore()
+  const { cards, packs, cycles, traits, formats } = useUiStore()
   const history = useHistory()
   const location = useLocation()
   const [filter, setFilter] = useState<FilterState | undefined>(undefined)
@@ -117,7 +118,7 @@ export function CardsView(): JSX.Element {
     setFilter(urlParamFilter)
     setUrlParams(location.search)
     // Only 1 result => Go to card page
-    const urlFilteredCards = applyFilters(cards, urlParamFilter)
+    const urlFilteredCards = applyFilters(cards, formats, urlParamFilter)
     if (urlFilteredCards.length === 1) {
       history.push(`/card/${urlFilteredCards[0].id}`)
     }
@@ -129,7 +130,7 @@ export function CardsView(): JSX.Element {
   }
 
   if (filter) {
-    filteredCards = applyFilters(cards, filter)
+    filteredCards = applyFilters(cards, formats, filter)
   }
 
   const goToCardPage = (id: string) => {
@@ -302,7 +303,7 @@ export function CardsView(): JSX.Element {
           const nameProps = params.value as NameProps
           return (
             <span style={{ marginLeft: -10, cursor: 'pointer' }}>
-              <CardLink cardId={nameProps.id} sameTab />
+              <CardLink cardId={nameProps.id} sameTab format={filter?.format} />
             </span>
           )
         },

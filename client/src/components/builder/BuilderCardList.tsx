@@ -40,10 +40,11 @@ function initialFilter(primaryClan: string | undefined, format: string): FilterS
     roleRestrictions: [],
     cycles: [],
     numericValues: [],
-    restricted: '',
-    banned: '',
+    format: format,
+    restricted: 'true',
+    banned: 'false',
+    illegal: 'false',
     isUnique: '',
-    showRotated: 'false',
   }
 }
 
@@ -84,7 +85,7 @@ export function BuilderCardList(props: {
   format: string
   primaryClan: string | undefined
 }): JSX.Element {
-  const { traits } = useUiStore()
+  const { traits, relevantFormats } = useUiStore()
   const [filter, setFilter] = useState<FilterState | undefined>(
     initialFilter(props.primaryClan, props.format)
   )
@@ -100,7 +101,7 @@ export function BuilderCardList(props: {
 
   let filteredCards = props.prefilteredCards
   if (filter) {
-    filteredCards = applyFilters(filteredCards, filter)
+    filteredCards = applyFilters(filteredCards, relevantFormats, filter)
   }
 
   function changeCardQuantity(cardId: string, quantity: number) {

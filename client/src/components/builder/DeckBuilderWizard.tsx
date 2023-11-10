@@ -34,7 +34,10 @@ export function DeckBuilderWizard(props: {
   const [stronghold, setStronghold] = useState('')
   const [role, setRole] = useState('')
 
-  const strongholds = cards.filter((c) => c.faction === primaryClan && c.type === 'stronghold')
+  const chosenFormat = format && relevantFormats.find((f) => f.id === format)
+  const strongholds = cards
+    .filter((c) => c.faction === primaryClan && c.type === 'stronghold')
+    .filter((c) => !chosenFormat || chosenFormat.legal_packs?.some(packId => c.versions.some(v => v.pack_id === packId)))
   const roles = cards.filter((c) => c.type === 'role' && !c.text?.includes('Draft format only.'))
 
   const host = window.location.host
