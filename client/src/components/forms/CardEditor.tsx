@@ -7,7 +7,6 @@ import {
   factions,
   typesInSide,
   sidesForType,
-  relevantFormats,
   clans,
   roleRestrictions,
   elements as allElements,
@@ -538,7 +537,7 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
             <Grid item xs={12} sm={6} md={3}>
               <MultiCheckbox
                 label="Restricted In"
-                items={relevantFormats}
+                items={uiStore.relevantFormats}
                 onChange={(formats: string[]) => setRestrictedIn(formats)}
                 defaultItems={restricted_in}
               />
@@ -546,7 +545,7 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
             <Grid item xs={12} sm={6} md={3}>
               <MultiCheckbox
                 label="Banned In"
-                items={relevantFormats}
+                items={uiStore.relevantFormats}
                 onChange={(formats: string[]) => setBannedIn(formats)}
                 defaultItems={banned_in}
               />
@@ -570,7 +569,7 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
               <Grid item xs={12} sm={4}>
                 <MultiCheckbox
                   label="Splash Banned In"
-                  items={relevantFormats}
+                  items={uiStore.relevantFormats}
                   onChange={(formats: string[]) => setSplashBannedIn(formats)}
                   defaultItems={splash_banned_in}
                 />

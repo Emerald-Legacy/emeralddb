@@ -12,7 +12,7 @@ import {
 } from '@material-ui/core'
 import { useState } from 'react'
 import { useUiStore } from '../../providers/UiStoreProvider'
-import { clans, relevantFormats } from '../../utils/enums'
+import { clans } from '../../utils/enums'
 import { CardLink } from '../card/CardLink'
 import { BushiBuilderImportButton } from './BushiBuilderImportButton'
 import { EmeraldDBImportButton } from './EmeraldDBImportButton'
@@ -26,7 +26,7 @@ export function DeckBuilderWizard(props: {
   ) => void
   onImport: (decklist: DecklistViewModel) => void
 }): JSX.Element {
-  const { cards } = useUiStore()
+  const { cards, relevantFormats } = useUiStore()
 
   const [step, setStep] = useState(-1)
   const [format, setFormat] = useState('')
@@ -39,8 +39,6 @@ export function DeckBuilderWizard(props: {
 
   const host = window.location.host
   const isProduction = !host.includes('localhost') && !host.includes('beta-')
-
-  const formats = relevantFormats
 
   const isButtonDisabled = () => {
     if (
@@ -108,7 +106,7 @@ export function DeckBuilderWizard(props: {
               value={format}
               onChange={(e) => setFormat((e.target as HTMLInputElement).value)}
             >
-              {formats.map((format) => (
+              {relevantFormats.map((format) => (
                 <FormControlLabel
                   style={{ margin: '0 0 0 -11' }}
                   key={format.id}

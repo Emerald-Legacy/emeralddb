@@ -1,4 +1,6 @@
 import { AsyncRouter, AsyncRouterInstance } from 'express-async-router'
+import * as getAllFormats from './handlers/getAllFormats'
+import * as insertOrUpdateFormat from './handlers/insertOrUpdateFormat'
 import * as getAllCards from './handlers/getAllCards'
 import * as getAllPacks from './handlers/getAllPacks'
 import * as createPack from './handlers/createPack'
@@ -59,6 +61,8 @@ export default (): AsyncRouterInstance => {
   api.post('/cards-in-packs', authorizedOnly, dataAdminOnly, updateCardsInPack.handler)
   api.put('/cards-in-packs', authorizedOnly, dataAdminOnly, updateCardInPack.handler)
   api.delete('/cards-in-packs', authorizedOnly, dataAdminOnly, deleteCardInPack.handler)
+  api.get('/formats', getAllFormats.handler)
+  api.put('/formats', authorizedOnly, dataAdminOnly, insertOrUpdateFormat.handler)
   api.get('/cycles', getAllCycles.handler)
   api.put('/cycles', authorizedOnly, dataAdminOnly, createCycle.handler)
   api.put('/cycles/rotate/:id', authorizedOnly, dataAdminOnly, rotateCycle.handler)

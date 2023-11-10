@@ -1,7 +1,6 @@
 import { makeStyles, Popover, Theme } from '@material-ui/core'
 import React, { useState } from 'react'
 import { useUiStore } from '../../providers/UiStoreProvider'
-import { relevantFormats } from '../../utils/enums'
 import { CardInformation } from './CardInformation'
 import { CardTypeIcon } from './CardTypeIcon'
 import BlockIcon from '@material-ui/icons/Block'
@@ -26,6 +25,7 @@ export function DeckbuildingRestrictionIcon(props: {
   inFormats: string[]
   icon: JSX.Element
 }): JSX.Element {
+  const { relevantFormats } = useUiStore()
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
   const classes = useStyles()
   const open = Boolean(anchorEl)

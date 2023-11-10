@@ -36,6 +36,9 @@ export const publicApi = forge({
     Cycle: {
       findAll: { method: 'GET', path: '/cycles' },
     },
+    Format: {
+      findAll: { method: 'GET', path: '/formats' },
+    },
     Trait: {
       findAll: { method: 'GET', path: '/traits' },
     },
@@ -103,6 +106,9 @@ export const privateApi = forge({
       updateAll: { method: 'POST', path: '/cards-in-packs' },
       update: { method: 'PUT', path: '/cards-in-packs' },
       delete: { method: 'DELETE', path: '/cards-in-packs' },
+    },
+    Format: {
+      update: { method: 'PUT', path: '/formats' },
     },
     Comment: {
       create: { method: 'PUT', path: '/comments' },

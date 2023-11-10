@@ -4,13 +4,13 @@ import { useConfirm } from 'material-ui-confirm'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
 import { privateApi } from '../../api'
-import { formats } from '../../utils/enums'
 import { CardFactionIcon } from '../card/CardFactionIcon'
 import { DecklistTabs, latestDecklistForDeck } from './DecklistTabs'
 import EditIcon from '@material-ui/icons/Edit'
 import DeleteIcon from '@material-ui/icons/Delete'
 import LinkIcon from '@material-ui/icons/Link'
 import { EmeraldDBLink } from '../EmeraldDBLink'
+import { useUiStore } from "../../providers/UiStoreProvider";
 
 const useStyles = makeStyles((theme) => ({
   unselectedDeck: {
@@ -39,6 +39,7 @@ export function DeckTabs(props: {
   onDeckUpdated: () => void
 }): JSX.Element {
   const { decks } = props
+  const { formats } = useUiStore()
   const classes = useStyles()
   const confirm = useConfirm()
   const { enqueueSnackbar } = useSnackbar()

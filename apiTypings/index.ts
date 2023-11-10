@@ -33,6 +33,8 @@ export {
   CardInPacks$delete,
   Users$me,
   Users$update,
+  Formats$findAll,
+  Formats$insertOrUpdate,
   Packs$findAll,
   Packs$create,
   Cycles$findAll,

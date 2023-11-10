@@ -20,6 +20,7 @@ import { OpLists } from './views/OpLists'
 import { HelpView } from './views/HelpView'
 import { EditTraitsView } from './views/EditTraitsView'
 import { useEffect } from 'react'
+import { EditFormatsView } from "./views/EditFormatsView";
 
 const AuthenticatedRoute = (props: { children: JSX.Element; path: string }) => {
   const { isLoggedIn } = useCurrentUser()
@@ -97,6 +98,9 @@ export function Routes(): JSX.Element {
       </DataAdminRoute>
       <DataAdminRoute path="/admin/traits">
         <EditTraitsView />
+      </DataAdminRoute>
+      <DataAdminRoute path="/admin/formats">
+        <EditFormatsView />
       </DataAdminRoute>
       <DataAdminRoute path="/admin">
         <AdminView />

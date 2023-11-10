@@ -22,7 +22,6 @@ import {
   sides,
   elements,
   roleRestrictions,
-  relevantFormats,
 } from '../utils/enums'
 import { CardTypeIcon } from './card/CardTypeIcon'
 import Autocomplete from '@material-ui/lab/Autocomplete'
@@ -350,15 +349,13 @@ export function CardFilter(props: {
   deckbuilder?: boolean
 }): JSX.Element {
   const classes = useStyles()
-  const { traits } = useUiStore()
+  const { traits, relevantFormats } = useUiStore()
   const [initialFilterState, setInitialFilterState] = useState<FilterState>(
     props.filterState || initialState
   )
   const [filterState, dispatchFilter] = useReducer(filterReducer, initialFilterState)
   const [searchTerm, setSearchTerm] = useState(props.filterState?.text || '')
   const [showFilters, setShowFilters] = useState(false)
-
-  const formats = relevantFormats
 
   const uniqueOptions = [
     { id: 'true', name: 'Yes' },
@@ -712,9 +709,9 @@ export function CardFilter(props: {
                     <Autocomplete
                       id="combo-box-restricted-in"
                       autoHighlight
-                      options={formats}
+                      options={relevantFormats}
                       getOptionLabel={(option) => option?.name || ''}
-                      value={formats.find((format) => format.id === filterState.restricted)}
+                      value={relevantFormats.find((format) => format.id === filterState.restricted)}
                       renderInput={(params) => (
                         <TextField
                           {...params}
@@ -735,9 +732,9 @@ export function CardFilter(props: {
                     <Autocomplete
                       id="combo-box-banned-in"
                       autoHighlight
-                      options={formats}
+                      options={relevantFormats}
                       getOptionLabel={(option) => option?.name || ''}
-                      value={formats.find((format) => format.id === filterState.banned)}
+                      value={relevantFormats.find((format) => format.id === filterState.banned)}
                       renderInput={(params) => (
                         <TextField {...params} size="small" label="Banned In" variant="outlined" />
                       )}

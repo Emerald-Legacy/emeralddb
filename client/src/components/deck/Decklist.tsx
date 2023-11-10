@@ -12,7 +12,6 @@ import { CardQuantitySelector } from '../builder/CardQuantitySelector'
 import lodash from 'lodash'
 import { Loading } from '../Loading'
 import { useState } from 'react'
-import { formats } from '../../utils/enums'
 import { CardFactionIcon } from '../card/CardFactionIcon'
 
 export function DeckCardSubList(props: {
@@ -142,7 +141,7 @@ export function Decklist(props: {
   withoutHeader?: boolean
   onQuantityChange?: ((cardId: string, quantity: number) => void) | undefined
 }): JSX.Element {
-  const { cards } = useUiStore()
+  const { cards, formats } = useUiStore()
   const { isLoggedIn } = useCurrentUser()
   const { enqueueSnackbar } = useSnackbar()
   const [sortDynByName, setSortDynByName] = useState(false)

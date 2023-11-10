@@ -20,7 +20,6 @@ import { BuilderCardList } from './BuilderCardList'
 import { Decklist } from '../deck/Decklist'
 import { privateApi } from '../../api'
 import { DeckBuilderWizard } from './DeckBuilderWizard'
-import { relevantFormats } from '../../utils/enums'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import { useSnackbar } from 'notistack'
 import { useHistory } from 'react-router-dom'
@@ -103,7 +102,7 @@ enum ViewTypes {
 }
 
 export function DeckEditor(props: { existingDecklist?: DecklistType | undefined }): JSX.Element {
-  const { cards } = useUiStore()
+  const { cards, relevantFormats } = useUiStore()
   const classes = useStyles()
   const [decklist, setDecklist] = useState(props.existingDecklist || getEmptyDeckList())
   const { enqueueSnackbar } = useSnackbar()
@@ -113,8 +112,6 @@ export function DeckEditor(props: { existingDecklist?: DecklistType | undefined 
   const [newVersion, setNewVersion] = useState(decklist.version_number || '0.1')
   const [currentView, setCurrentView] = useState(ViewTypes.EDITOR)
   const [showAllCards, setShowAllCards] = useState(false)
-
-  const formats = relevantFormats
 
   if (props.existingDecklist && decklist.version_number === props.existingDecklist.version_number) {
     const nextVersionNumber = getNextVersionNumber(props.existingDecklist.version_number)
@@ -240,9 +237,9 @@ export function DeckEditor(props: { existingDecklist?: DecklistType | undefined 
             <Autocomplete
               id="combo-box-format"
               autoHighlight
-              options={formats}
+              options={relevantFormats}
               getOptionLabel={(option) => option.name}
-              value={formats.find((item) => item.id === decklist.format) || null}
+              value={relevantFormats.find((item) => item.id === decklist.format) || null}
               renderInput={(params) => (
                 <TextField {...params} label="Format" variant="outlined" size="small" />
               )}

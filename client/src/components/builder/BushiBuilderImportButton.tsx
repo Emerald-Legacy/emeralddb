@@ -11,7 +11,6 @@ import {
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import { useState } from 'react'
 import { useUiStore } from '../../providers/UiStoreProvider'
-import { formats } from '../../utils/enums'
 
 function mapDeckStringToCards(
   deckString: string,
@@ -60,7 +59,7 @@ function mapDeckStringToCards(
 export function BushiBuilderImportButton(props: {
   onImport: (decklist: DecklistViewModel) => void
 }): JSX.Element {
-  const { cards, packs } = useUiStore()
+  const { cards, packs, formats } = useUiStore()
   const [modalOpen, setModalOpen] = useState(false)
   const [format, setFormat] = useState('')
   const [deckString, setDeckString] = useState('')

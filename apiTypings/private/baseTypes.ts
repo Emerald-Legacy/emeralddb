@@ -70,6 +70,7 @@ export interface Cycle {
   position: number
   size: number
   rotated: boolean
+  publisher: 'ffg' | 'emerald-legacy'
 }
 
 export interface Trait {
@@ -85,6 +86,8 @@ export interface RoleRestriction {
 export interface Format {
   id: string
   name: string
+  legal_packs?: string[]
+  supported: boolean
 }
 
 export interface User {

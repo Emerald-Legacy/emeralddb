@@ -1,4 +1,15 @@
-import { Card, Cycle, Deck, Decklist, Ruling, Pack, User, CardInPack, Trait } from './baseTypes'
+import {
+  Card,
+  Cycle,
+  Deck,
+  Decklist,
+  Ruling,
+  Pack,
+  User,
+  CardInPack,
+  Trait,
+  Format,
+} from './baseTypes'
 import {
   CardWithVersions,
   CardWithDetails,
@@ -32,6 +43,15 @@ export interface Cards$create {
 
 export interface Cards$delete {
   request: { params: { cardId: string }; body: { replacementCardId?: string } }
+}
+
+export interface Formats$insertOrUpdate {
+  request: { body: { format: Format } }
+  response: Format
+}
+
+export interface Formats$findAll {
+  response: Format[]
 }
 
 export interface Packs$findAll {
