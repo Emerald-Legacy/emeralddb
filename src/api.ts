@@ -71,7 +71,6 @@ export default (): AsyncRouterInstance => {
   api.delete('/traits', authorizedOnly, dataAdminOnly, deleteTrait.handler)
   api.get('/users/me', authorizedOnly, getCurrentUser.handler)
   api.put('/users/me', authorizedOnly, updateUser.handler)
-  api.get('/import', authorizedOnly, dataAdminOnly, importData.handler)
   api.get('/decks/:deckId', getDeck.handler)
   api.post('/decks', getAllDecksForUser.handler)
   api.put('/decks', authorizedOnly, createDeck.handler)
