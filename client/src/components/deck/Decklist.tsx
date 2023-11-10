@@ -169,7 +169,7 @@ export function Decklist(props: {
       })
   }
 
-  const stats = createDeckStatistics(decklist.cards, decklist.format, cards)
+  const stats = createDeckStatistics(decklist.cards, decklist.format, cards, formats)
   const { dynastyCharacters, dynastyEvents, holdings } = stats.dynastyCards
   const { conflictCharacters, conflictEvents, attachments } = stats.conflictCards
 

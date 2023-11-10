@@ -1,4 +1,4 @@
-import { DecklistViewModel, Decklist as DecklistType, Deck, CardWithVersions } from '@5rdb/api'
+import { DecklistViewModel, Decklist as DecklistType, Deck, CardWithVersions, Format } from "@5rdb/api";
 import {
   Box,
   Button,
@@ -63,8 +63,8 @@ function getNextVersionNumber(versionNumber: string): string {
   return versionParts.join('.')
 }
 
-function prefilterCards(cards: CardWithVersions[], decklist: DecklistViewModel) {
-  const stats = createDeckStatistics(decklist.cards, decklist.format, cards)
+function prefilterCards(cards: CardWithVersions[], decklist: DecklistViewModel, formats: Format[]) {
+  const stats = createDeckStatistics(decklist.cards, decklist.format, cards, formats)
   let filteredCards = decklist.primary_clan
     ? cards.filter((card) => card.allowed_clans?.includes(decklist.primary_clan || ''))
     : cards
@@ -102,7 +102,7 @@ enum ViewTypes {
 }
 
 export function DeckEditor(props: { existingDecklist?: DecklistType | undefined }): JSX.Element {
-  const { cards, relevantFormats } = useUiStore()
+  const { cards, formats, relevantFormats } = useUiStore()
   const classes = useStyles()
   const [decklist, setDecklist] = useState(props.existingDecklist || getEmptyDeckList())
   const { enqueueSnackbar } = useSnackbar()
@@ -139,7 +139,7 @@ export function DeckEditor(props: { existingDecklist?: DecklistType | undefined 
   }
 
   function setDeckListFromNewCards(newCards: Record<string, number>) {
-    const stats = createDeckStatistics(newCards, decklist.format, cards)
+    const stats = createDeckStatistics(newCards, decklist.format, cards, formats)
     setDecklist({
       ...decklist,
       cards: newCards,
@@ -153,7 +153,7 @@ export function DeckEditor(props: { existingDecklist?: DecklistType | undefined 
       <DeckBuilderWizard
         onComplete={setWizardResult}
         onImport={(decklist: DecklistViewModel) => {
-          const stats = createDeckStatistics(decklist.cards, decklist.format, cards)
+          const stats = createDeckStatistics(decklist.cards, decklist.format, cards, formats)
           setDecklist({
             ...decklist,
             primary_clan: stats.primaryClan,
@@ -165,7 +165,7 @@ export function DeckEditor(props: { existingDecklist?: DecklistType | undefined 
     )
   }
 
-  const filteredCards = showAllCards ? cards : prefilterCards(cards, decklist)
+  const filteredCards = showAllCards ? cards : prefilterCards(cards, decklist, formats)
 
   function updateDeck(decklist: DecklistViewModel, deckId: string) {
     privateApi.Decklist.create({

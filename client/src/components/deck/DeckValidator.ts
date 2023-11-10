@@ -1,4 +1,4 @@
-import { CardWithVersions } from '@5rdb/api'
+import { CardWithVersions, Format } from '@5rdb/api'
 import lodash from 'lodash'
 
 export type CardWithQuantity = CardWithVersions & {
@@ -202,7 +202,7 @@ function validateDecklist(
   }
   if (stats.rotatedCards.length > 0) {
     validationErrors.push(
-      `The deck contains rotated cards: ${stats.rotatedCards.map((c) => c.name).join(', ')}`
+      `The deck contains cards from packs that aren't legal in the format: ${stats.rotatedCards.map((c) => c.name).join(', ')}`
     )
   }
   const unallowedClans = allDeckCards.filter(
@@ -237,12 +237,7 @@ function validateDecklist(
   }
 
   if (stats.format === 'emerald') {
-    if (
-      dynastyCards
-        .filter((c) => c.text?.includes('Rally.'))
-        .map((c) => c.quantity)
-        .reduce((a, b) => a + b, 0) > 5
-    ) {
+    if (stats.numberOfRallyCards > 5) {
       validationErrors.push(`The deck contains more than 5 Rally cards.`)
     }
     const splashBannedCards = conflictCards.filter(
@@ -318,31 +313,29 @@ function validateDecklist(
   return validationErrors
 }
 
-export const cardsThatModifyInfluence: { id: string; modifier: number }[] = [
-  { id: 'yatakabune-port', modifier: 4 },
-]
-
 export function createDeckStatistics(
   cards: Record<string, number>,
-  format: string,
-  allCards: CardWithVersions[]
+  formatId: string,
+  allCardsWithVersions: CardWithVersions[],
+  formats: Format[]
 ): DeckStatistics {
+  const format = formats.find(f => f.id === formatId)
   const { strongholds, provinces, roles, conflictCards, dynastyCards, allDeckCards } =
-    splitCardsToDecks(cards || {}, allCards)
-  const allRotatedCardIds = allCards
-    .filter((c) => !c.versions.some((v) => !v.rotated))
+    splitCardsToDecks(cards || {}, allCardsWithVersions)
+  const allIllegalCardIds = allCardsWithVersions
+    .filter((c) => !c.versions.some((v) => (format?.legal_packs || []).includes(v.pack_id)))
     .map((c) => c.id)
   const dynastyCardsWrapper = splitDynastyCards(dynastyCards)
   const conflictCardsWrapper = splitConflictCards(conflictCards)
   const stronghold = strongholds.length > 0 ? strongholds[0] : null
   const role = roles.length > 0 ? roles[0] : null
-  const baseInfluence = format === 'skirmish' ? 6 : stronghold?.influence_pool ?? 0
+  const baseInfluence = formatId === 'skirmish' ? 6 : stronghold?.influence_pool ?? 0
   const extraInfluenceFromRole = role
     ? role.id.includes('support')
       ? 8
       : role.id.includes('keeper')
-      ? 3
-      : 0
+        ? 3
+        : 0
     : 0
   const extraInfluenceFromCards = cardsThatModifyInfluence
     .filter((card) => cards[card.id] && cards[card.id] > 0)
@@ -358,22 +351,22 @@ export function createDeckStatistics(
     .filter((c) => c.text?.includes('Rally.'))
     .map((c) => c.quantity)
     .reduce((a, b) => a + b, 0)
-  const primaryClan = extractPrimaryClan(format, stronghold, dynastyCards)
+  const primaryClan = extractPrimaryClan(formatId, stronghold, dynastyCards)
   const secondaryClan =
     conflictCards.find((c) => c.faction !== primaryClan && c.faction !== 'neutral')?.faction || ''
   const usedInfluence = conflictCards
     .filter((c) => c.faction !== primaryClan)
     .map((c) => (c.influence_cost || 0) * c.quantity)
     .reduce((a, b) => a + b, 0)
-  const bannedCards = allDeckCards.filter((c) => c.banned_in?.includes(format))
-  const restrictedCards = allDeckCards.filter((c) => c.restricted_in?.includes(format))
-  const rotatedCards = allDeckCards.filter((c) => allRotatedCardIds.includes(c.id))
+  const bannedCards = allDeckCards.filter((c) => c.banned_in?.includes(formatId))
+  const restrictedCards = allDeckCards.filter((c) => c.restricted_in?.includes(formatId))
+  const illegalCards = allDeckCards.filter((c) => allIllegalCardIds.includes(c.id))
 
   const deckMaximum =
-    format === 'skirmish' ? 35 : format === 'obsidian' ? 45 + numberOfRallyCards : 45
-  const deckMinimum = format === 'skirmish' ? 30 : 40
+    formatId === 'skirmish' ? 35 : formatId === 'obsidian' ? 45 + numberOfRallyCards : 45
+  const deckMinimum = formatId === 'skirmish' ? 30 : 40
   const dynastyDeckMinimum =
-    format === 'emerald' || format === 'obsidian' ? deckMinimum + numberOfRallyCards : deckMinimum
+    formatId === 'emerald' || formatId === 'obsidian' ? deckMinimum + numberOfRallyCards : deckMinimum
 
   const stats: DeckStatistics = {
     maxInfluence: maxInfluence,
@@ -391,12 +384,12 @@ export function createDeckStatistics(
     conflictDeckMinimum: deckMinimum,
     dynastyDeckMinimum: dynastyDeckMinimum,
     numberOfRallyCards: numberOfRallyCards,
-    format: format,
+    format: formatId,
     primaryClan: primaryClan,
     secondaryClan: secondaryClan,
     bannedCards: bannedCards,
     restrictedCards: restrictedCards,
-    rotatedCards: format === 'emerald' ? rotatedCards : [],
+    rotatedCards: illegalCards,
     validationErrors: [],
   }
 
@@ -404,3 +397,7 @@ export function createDeckStatistics(
 
   return stats
 }
+
+export const cardsThatModifyInfluence: { id: string; modifier: number }[] = [
+  { id: 'yatakabune-port', modifier: 4 },
+]
