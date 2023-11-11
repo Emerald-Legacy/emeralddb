@@ -136,6 +136,9 @@ export function CardLink(props: {
   const format = relevantFormats.find(f => f.id === props.format)
   if (format) {
     legalVersions = legalVersions.filter(v => !format || format.legal_packs?.includes(v.pack_id));
+    if (format.id === 'emerald') {
+      legalVersions = legalVersions.filter(v => !v.rotated)
+    }
   }
 
   const open = Boolean(anchorEl)

@@ -328,6 +328,9 @@ function createDeckStatistics(
   const allIllegalCardIds = allCardsWithVersions
     .filter((c) => !c.versions.some((v) => (format.legal_packs || []).includes(v.pack_id)))
     .map((c) => c.id)
+  const allRotatedCardIds = allCardsWithVersions
+    .filter((c) => !c.versions.some((v) => !v.rotated))
+    .map((c) => c.id)
   const dynastyCardsWrapper = splitDynastyCards(dynastyCards)
   const conflictCardsWrapper = splitConflictCards(conflictCards)
   const stronghold = strongholds.length > 0 ? strongholds[0] : null
@@ -364,6 +367,7 @@ function createDeckStatistics(
   const bannedCards = allDeckCards.filter((c) => c.banned_in?.includes(formatId))
   const restrictedCards = allDeckCards.filter((c) => c.restricted_in?.includes(formatId))
   const illegalCards = allDeckCards.filter((c) => allIllegalCardIds.includes(c.id))
+  const rotatedCards = allDeckCards.filter((c) => allRotatedCardIds.includes(c.id))
 
   const deckMaximum =
     formatId === 'skirmish' ? 35 : formatId === 'obsidian' ? 45 + numberOfRallyCards : 45
@@ -394,7 +398,7 @@ function createDeckStatistics(
     secondaryClan: secondaryClan,
     bannedCards: bannedCards,
     restrictedCards: restrictedCards,
-    rotatedCards: illegalCards,
+    rotatedCards: formatId === 'emerald' ? [...illegalCards, ...rotatedCards] : illegalCards,
     validationErrors: [],
   }
 
