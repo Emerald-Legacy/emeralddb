@@ -37,3 +37,4 @@ export {
   getComment,
   deleteComment,
 } from './private/decklist_comment'
+export { getAllFormats, insertOrUpdateFormat } from './private/formats'

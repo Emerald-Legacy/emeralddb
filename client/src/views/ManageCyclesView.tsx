@@ -130,6 +130,7 @@ export function ManageCyclesView(): JSX.Element {
             name: cycleName,
             size: cycleSize,
             position: cyclePosition,
+            publisher: 'emerald-legacy'
           },
         })
           .then(() => {

@@ -10,23 +10,6 @@ export const cardTypes: { id: string; name: string }[] = [
   { id: 'warlord', name: 'Warlord' },
 ]
 
-export const relevantFormats: { id: string; name: string }[] = [
-  { id: 'standard', name: 'Imperial Law' },
-  { id: 'emerald', name: 'Emerald Legacy' },
-  { id: 'obsidian', name: 'Obsidian' },
-  { id: 'enlightenment', name: 'Enlightenment' },
-  { id: 'skirmish', name: 'Skirmish' },
-]
-
-export const formats: { id: string; name: string }[] = [
-  { id: 'standard', name: 'Imperial Law' },
-  { id: 'jade-edict', name: 'Jade Edict' },
-  { id: 'emerald', name: 'Emerald Legacy' },
-  { id: 'skirmish', name: 'Skirmish' },
-  { id: 'enlightenment', name: 'Enlightenment' },
-  { id: 'obsidian', name: 'Obsidian' },
-]
-
 export const sides: { id: string; name: string }[] = [
   { id: 'dynasty', name: 'Dynasty' },
   { id: 'conflict', name: 'Conflict' },

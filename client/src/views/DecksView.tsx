@@ -4,10 +4,10 @@ import { DataGrid, GridColumns } from '@material-ui/data-grid'
 import { useEffect, useState } from 'react'
 import { publicApi } from '../api'
 import { applyDeckFilters, DeckFilter, DeckFilterState } from '../components/DeckFilter'
-import { formats } from '../utils/enums'
 import { getColorForFactionId } from '../utils/factionUtils'
 import { capitalize } from '../utils/stringUtils'
 import { EmeraldDBLink } from '../components/EmeraldDBLink'
+import { useUiStore } from "../providers/UiStoreProvider";
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -17,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
 
 export function DecksView(): JSX.Element {
   const classes = useStyles()
+  const { formats } = useUiStore()
   const [decks, setDecks] = useState<PublishedDecklist[]>([])
   const [filter, setFilter] = useState<DeckFilterState | undefined>(undefined)
   const isMdOrBigger = useMediaQuery('(min-width:600px)')

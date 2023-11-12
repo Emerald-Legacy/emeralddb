@@ -15,17 +15,16 @@ import { useHistory, useParams } from 'react-router-dom'
 import { Loading } from '../components/Loading'
 import { useUiStore } from '../providers/UiStoreProvider'
 import { RequestError } from '../components/RequestError'
-import { useState } from 'react'
+import { useEffect, useState } from "react";
 import { CardInPack } from '@5rdb/api'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import { privateApi } from '../api'
 import { useSnackbar } from 'notistack'
+import { useConfirm } from "material-ui-confirm";
 
 export function EditPackView(): JSX.Element {
   const { cards, packs, toggleReload } = useUiStore()
-  const history = useHistory()
   const params = useParams<{ id: string }>()
-  const [editIndex, setEditIndex] = useState(-1)
   const [cardId, setCardId] = useState('')
   const [flavor, setFlavor] = useState('')
   const [illustrator, setIllustrator] = useState('')
@@ -35,21 +34,12 @@ export function EditPackView(): JSX.Element {
   const [rotated, setRotated] = useState(false)
   const [cardsInPack, setCardsInPack] = useState<CardInPack[]>([])
   const [modalOpen, setModalOpen] = useState(false)
+  const confirm = useConfirm()
   const { enqueueSnackbar } = useSnackbar()
 
-  if (!cards || !packs) {
-    return <Loading />
-  }
-
-  const packId = params.id
-  const pack = packs.find((p) => p.id === packId)
-
-  if (!pack) {
-    return <RequestError requestError="No pack for that ID!" />
-  }
-
-  const packCards = cards.filter((c) => c.versions.some((v) => v.pack_id === packId))
-  if (cardsInPack.length === 0 && packCards.length > 0) {
+  useEffect(() => {
+    if (cards && packId) {
+    const packCards = cards.filter((c) => c.versions.some((v) => v.pack_id === packId))
     const newCardsInPack: CardInPack[] = packCards.map((p) => {
       const cardVersionInPack = p.versions.find((v) => v.pack_id === packId)
       return {
@@ -60,6 +50,18 @@ export function EditPackView(): JSX.Element {
       }
     })
     setCardsInPack(newCardsInPack)
+    }
+  }, [cards])
+
+  if (!cards || !packs) {
+    return <Loading />
+  }
+
+  const packId = params.id
+  const pack = packs.find((p) => p.id === packId)
+
+  if (!pack) {
+    return <RequestError requestError="No pack for that ID!" />
   }
 
   function updateCards() {
@@ -73,18 +75,42 @@ export function EditPackView(): JSX.Element {
       quantity: quantity,
       rotated: rotated,
     }
-    if (editIndex === -1) {
-      setCardsInPack([...cardsInPack, newCard])
-    } else {
-      const newArray = [...cardsInPack]
-      newArray[editIndex] = newCard
-      setCardsInPack(newArray)
-    }
-    setModalOpen(false)
+    privateApi.CardInPack.update({
+      body: {
+        cardInPack: newCard
+      }
+    }).then(() => {
+      toggleReload()
+      setCardsInPack([])
+      enqueueSnackbar('Successfully posted pack card!', { variant: 'success' })
+      setModalOpen(false)
+    })
+      .catch((error) => {
+        console.log(error)
+        enqueueSnackbar("The card couldn't be added to the pack!", { variant: 'error' })
+      })
+  }
+
+  function deleteCard(cardInPack: CardInPack) {
+    confirm({ description: 'Do you really want to delete this card from the pack?' })
+      .then(() => {
+        privateApi.CardInPack.delete({
+          body: {
+            cardInPack: cardInPack
+          }
+        }).then(() => {
+          toggleReload()
+          setModalOpen(false)
+          setCardsInPack([])
+          enqueueSnackbar('Successfully deleted card from pack!', { variant: 'success' })
+        }).catch((error) => {
+            console.log(error)
+            enqueueSnackbar("The card couldn't be deleted from the pack!", { variant: 'error' })
+        })
+      })
   }
 
   function openEditModal(card: CardInPack, index: number) {
-    setEditIndex(index)
     setCardId(card.card_id)
     setFlavor(card.flavor || '')
     setIllustrator(card.illustrator || '')
@@ -96,7 +122,6 @@ export function EditPackView(): JSX.Element {
   }
 
   function openCreateModal() {
-    setEditIndex(-1)
     setCardId('')
     setFlavor('')
     setIllustrator('')
@@ -107,30 +132,10 @@ export function EditPackView(): JSX.Element {
     setModalOpen(true)
   }
 
-  function savePackCards() {
-    privateApi.CardInPack.update({
-      body: {
-        cardsInPacks: cardsInPack,
-      },
-    })
-      .then(() => {
-        toggleReload()
-        enqueueSnackbar('Successfully posted pack cards!', { variant: 'success' })
-        history.push('/admin/cycles')
-      })
-      .catch((error) => {
-        console.log(error)
-        enqueueSnackbar("The cards couldn't be posted!", { variant: 'error' })
-      })
-  }
-
   return (
     <Grid container spacing={2} justify="center">
       <Grid item xs={12}>
         <Typography>{pack.name}</Typography>
-        <Button variant="contained" color="secondary" onClick={() => savePackCards()}>
-          Save Changes
-        </Button>
       </Grid>
       <Grid item xs={12}>
         <Button variant="contained" color="secondary" onClick={() => openCreateModal()}>
@@ -154,6 +159,12 @@ export function EditPackView(): JSX.Element {
                   onClick={() => openEditModal(card, index)}
                 >
                   Edit
+                </Button>
+                <Button
+                  variant="contained"
+                  onClick={() => deleteCard(card)}
+                >
+                  Delete
                 </Button>
               </Box>
             </Grid>

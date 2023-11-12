@@ -1,8 +1,9 @@
 import { useEffect, useReducer, useState } from 'react'
 import { PublishedDecklist } from '@5rdb/api'
 import { Button, lighten, Grid, makeStyles, Paper, TextField } from '@material-ui/core'
-import { formats, clans } from '../utils/enums'
+import { clans } from '../utils/enums'
 import Autocomplete from '@material-ui/lab/Autocomplete'
+import { useUiStore } from "../providers/UiStoreProvider";
 
 const useStyles = makeStyles((theme) => ({
   filter: {
@@ -101,6 +102,7 @@ export function DeckFilter(props: {
   onFilterChanged: (filter: DeckFilterState) => void
 }): JSX.Element {
   const classes = useStyles()
+  const { relevantFormats } = useUiStore()
   const [initialFilterState] = useState<DeckFilterState>(props.filterState || initialState)
   const [filterState, dispatchFilter] = useReducer(filterReducer, initialFilterState)
   useEffect(() => props.onFilterChanged(filterState), [filterState])
@@ -148,9 +150,9 @@ export function DeckFilter(props: {
           <Autocomplete
             id="combo-box-format"
             autoHighlight
-            options={formats}
+            options={relevantFormats}
             getOptionLabel={(option) => option?.name || ''}
-            value={formats.find((format) => format.id === filterState.format)}
+            value={relevantFormats.find((format) => format.id === filterState.format)}
             renderInput={(params) => (
               <TextField {...params} size="small" label="Format" variant="outlined" />
             )}

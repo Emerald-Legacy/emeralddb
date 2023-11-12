@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { Card, CardWithVersions } from '@5rdb/api'
+import { CardWithVersions, Format } from '@5rdb/api'
 import lodash from 'lodash'
-import { getAllCards, getAllCardsInPacks } from '../../gateways/storage/index'
+import { getAllCards, getAllCardsInPacks, getAllFormats } from '../../gateways/storage/index'
 
-export type CardWithQuantity = Card & {
+export type CardWithQuantity = CardWithVersions & {
   quantity: number
 }
 
@@ -70,7 +70,7 @@ function extractPrimaryClan(
   return primaryClan
 }
 
-function splitCardsToDecks(cards: Record<string, number>, allCards: Card[]): DeckCards {
+function splitCardsToDecks(cards: Record<string, number>, allCards: CardWithVersions[]): DeckCards {
   const strongholds: CardWithQuantity[] = []
   const roles: CardWithQuantity[] = []
   const provinces: CardWithQuantity[] = []
@@ -204,7 +204,9 @@ function validateDecklist(
   }
   if (stats.rotatedCards.length > 0) {
     validationErrors.push(
-      `The deck contains rotated cards: ${stats.rotatedCards.map((c) => c.name).join(', ')}`
+      `The deck contains cards from packs that aren't legal in the format: ${stats.rotatedCards
+        .map((c) => c.name)
+        .join(', ')}`
     )
   }
   const unallowedClans = allDeckCards.filter(
@@ -317,11 +319,15 @@ function validateDecklist(
 
 function createDeckStatistics(
   cards: Record<string, number>,
-  format: string,
+  format: Format,
   allCardsWithVersions: CardWithVersions[]
 ): DeckStatistics {
+  const formatId = format.id
   const { strongholds, provinces, roles, conflictCards, dynastyCards, allDeckCards } =
     splitCardsToDecks(cards || {}, allCardsWithVersions)
+  const allIllegalCardIds = allCardsWithVersions
+    .filter((c) => !c.versions.some((v) => (format.legal_packs || []).includes(v.pack_id)))
+    .map((c) => c.id)
   const allRotatedCardIds = allCardsWithVersions
     .filter((c) => !c.versions.some((v) => !v.rotated))
     .map((c) => c.id)
@@ -329,7 +335,7 @@ function createDeckStatistics(
   const conflictCardsWrapper = splitConflictCards(conflictCards)
   const stronghold = strongholds.length > 0 ? strongholds[0] : null
   const role = roles.length > 0 ? roles[0] : null
-  const baseInfluence = format === 'skirmish' ? 6 : stronghold?.influence_pool ?? 0
+  const baseInfluence = formatId === 'skirmish' ? 6 : stronghold?.influence_pool ?? 0
   const extraInfluenceFromRole = role
     ? role.id.includes('support')
       ? 8
@@ -351,22 +357,25 @@ function createDeckStatistics(
     .filter((c) => c.text?.includes('Rally.'))
     .map((c) => c.quantity)
     .reduce((a, b) => a + b, 0)
-  const primaryClan = extractPrimaryClan(format, stronghold, dynastyCards)
+  const primaryClan = extractPrimaryClan(format.id, stronghold, dynastyCards)
   const secondaryClan =
     conflictCards.find((c) => c.faction !== primaryClan && c.faction !== 'neutral')?.faction || ''
   const usedInfluence = conflictCards
     .filter((c) => c.faction !== primaryClan)
     .map((c) => (c.influence_cost || 0) * c.quantity)
     .reduce((a, b) => a + b, 0)
-  const bannedCards = allDeckCards.filter((c) => c.banned_in?.includes(format))
-  const restrictedCards = allDeckCards.filter((c) => c.restricted_in?.includes(format))
+  const bannedCards = allDeckCards.filter((c) => c.banned_in?.includes(formatId))
+  const restrictedCards = allDeckCards.filter((c) => c.restricted_in?.includes(formatId))
+  const illegalCards = allDeckCards.filter((c) => allIllegalCardIds.includes(c.id))
   const rotatedCards = allDeckCards.filter((c) => allRotatedCardIds.includes(c.id))
 
   const deckMaximum =
-    format === 'skirmish' ? 35 : format === 'obsidian' ? 45 + numberOfRallyCards : 45
-  const deckMinimum = format === 'skirmish' ? 30 : 40
+    formatId === 'skirmish' ? 35 : formatId === 'obsidian' ? 45 + numberOfRallyCards : 45
+  const deckMinimum = formatId === 'skirmish' ? 30 : 40
   const dynastyDeckMinimum =
-    format === 'emerald' || format === 'obsidian' ? deckMinimum + numberOfRallyCards : deckMinimum
+    formatId === 'emerald' || formatId === 'obsidian'
+      ? deckMinimum + numberOfRallyCards
+      : deckMinimum
 
   const stats: DeckStatistics = {
     maxInfluence: maxInfluence,
@@ -384,12 +393,12 @@ function createDeckStatistics(
     conflictDeckMinimum: deckMinimum,
     dynastyDeckMinimum: dynastyDeckMinimum,
     numberOfRallyCards: numberOfRallyCards,
-    format: format,
+    format: format.id,
     primaryClan: primaryClan,
     secondaryClan: secondaryClan,
     bannedCards: bannedCards,
     restrictedCards: restrictedCards,
-    rotatedCards: format === 'emerald' ? rotatedCards : [],
+    rotatedCards: formatId === 'emerald' ? [...illegalCards, ...rotatedCards] : illegalCards,
     validationErrors: [],
   }
 
@@ -400,9 +409,10 @@ function createDeckStatistics(
 
 export async function isDeckValid(
   cards: Record<string, number>,
-  format: string
+  formatId: string
 ): Promise<{ valid: boolean; errors: string[] }> {
   const allCards = await getAllCards()
+  const allFormats = await getAllFormats()
   const allCardsWithVersions: CardWithVersions[] = allCards.map((card) => ({
     ...card,
     versions: [],
@@ -414,6 +424,13 @@ export async function isDeckValid(
       .find((card) => card.id === cardInPack.card_id)
       ?.versions.push({ ...cardInPack })
   )
+  const format = allFormats.find((format) => format.id === formatId)
+  if (!format) {
+    return {
+      valid: false,
+      errors: ['Illegal format supplied'],
+    }
+  }
   const { validationErrors } = createDeckStatistics(cards, format, allCardsWithVersions)
   return {
     valid: validationErrors.length === 0,

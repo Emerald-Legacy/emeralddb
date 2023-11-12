@@ -1,4 +1,6 @@
 import { AsyncRouter, AsyncRouterInstance } from 'express-async-router'
+import * as getAllFormats from './handlers/getAllFormats'
+import * as insertOrUpdateFormat from './handlers/insertOrUpdateFormat'
 import * as getAllCards from './handlers/getAllCards'
 import * as getAllPacks from './handlers/getAllPacks'
 import * as createPack from './handlers/createPack'
@@ -9,6 +11,8 @@ import * as getAllCycles from './handlers/getAllCycles'
 import * as createCycle from './handlers/createCycle'
 import * as rotateCycle from './handlers/rotateCycle'
 import * as getAllTraits from './handlers/getAllTraits'
+import * as updateTrait from './handlers/updateTrait'
+import * as deleteTrait from './handlers/deleteTrait'
 import * as getDeck from './handlers/getDeck'
 import * as getAllDecksForUser from './handlers/getAllDecksForUser'
 import * as createDeck from './handlers/createDeck'
@@ -28,10 +32,11 @@ import * as createRuling from './handlers/createRuling'
 import * as deleteDeck from './handlers/deleteDeck'
 import * as deleteDecklist from './handlers/deleteDecklist'
 import * as deleteRuling from './handlers/deleteRuling'
-import * as importData from './handlers/importData'
 import * as getCurrentUser from './handlers/getCurrentUser'
 import * as updateUser from './handlers/updateUser'
 import * as updateCardsInPack from './handlers/updateCardsInPack'
+import * as updateCardInPack from './handlers/updateCardInPack'
+import * as deleteCardInPack from './handlers/deleteCardInPack'
 import * as createDecklistComment from './handlers/createDecklistComment'
 import * as updateDecklistComment from './handlers/updateDecklistComment'
 import * as deleteDecklistComment from './handlers/deleteDecklistComment'
@@ -53,13 +58,18 @@ export default (): AsyncRouterInstance => {
   api.put('/packs/rotate/:id', authorizedOnly, dataAdminOnly, rotatePack.handler)
   api.get('/packs/export/:id', exportPack.handler)
   api.post('/cards-in-packs', authorizedOnly, dataAdminOnly, updateCardsInPack.handler)
+  api.put('/cards-in-packs', authorizedOnly, dataAdminOnly, updateCardInPack.handler)
+  api.delete('/cards-in-packs', authorizedOnly, dataAdminOnly, deleteCardInPack.handler)
+  api.get('/formats', getAllFormats.handler)
+  api.put('/formats', authorizedOnly, dataAdminOnly, insertOrUpdateFormat.handler)
   api.get('/cycles', getAllCycles.handler)
   api.put('/cycles', authorizedOnly, dataAdminOnly, createCycle.handler)
   api.put('/cycles/rotate/:id', authorizedOnly, dataAdminOnly, rotateCycle.handler)
   api.get('/traits', getAllTraits.handler)
+  api.put('/traits', authorizedOnly, dataAdminOnly, updateTrait.handler)
+  api.delete('/traits', authorizedOnly, dataAdminOnly, deleteTrait.handler)
   api.get('/users/me', authorizedOnly, getCurrentUser.handler)
   api.put('/users/me', authorizedOnly, updateUser.handler)
-  api.get('/import', authorizedOnly, dataAdminOnly, importData.handler)
   api.get('/decks/:deckId', getDeck.handler)
   api.post('/decks', getAllDecksForUser.handler)
   api.put('/decks', authorizedOnly, createDeck.handler)

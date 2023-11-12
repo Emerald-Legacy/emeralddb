@@ -1,7 +1,6 @@
 import { makeStyles, Popover, Theme } from '@material-ui/core'
 import React, { useState } from 'react'
 import { useUiStore } from '../../providers/UiStoreProvider'
-import { formats } from '../../utils/enums'
 import { CardInformation } from './CardInformation'
 import { CardTypeIcon } from './CardTypeIcon'
 import BlockIcon from '@material-ui/icons/Block'
@@ -26,6 +25,7 @@ export function DeckbuildingRestrictionIcon(props: {
   inFormats: string[]
   icon: JSX.Element
 }): JSX.Element {
+  const { relevantFormats } = useUiStore()
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
   const classes = useStyles()
   const open = Boolean(anchorEl)
@@ -39,7 +39,7 @@ export function DeckbuildingRestrictionIcon(props: {
   }
 
   const formatString = props.inFormats
-    .map((inFormat) => formats.find((format) => format.id === inFormat)?.name || '')
+    .map((inFormat) => relevantFormats.find((format) => format.id === inFormat)?.name || '')
     .join(', ')
 
   return (
@@ -85,7 +85,7 @@ export function RallyIcon(props: { formats: string[] }): JSX.Element {
 export function RotatedIcon(props: { formats: string[] }): JSX.Element {
   const icon = <CachedIcon style={{ color: 'red', fontSize: 16 }} />
   return (
-    <DeckbuildingRestrictionIcon label="Rotated out in" inFormats={props.formats} icon={icon} />
+    <DeckbuildingRestrictionIcon label="Not Legal in" inFormats={props.formats} icon={icon} />
   )
 }
 
@@ -116,7 +116,7 @@ export function CardLink(props: {
   format?: string
   notClickable?: boolean
 }): JSX.Element {
-  const { cards } = useUiStore()
+  const { cards, relevantFormats } = useUiStore()
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
   const classes = useStyles()
 
@@ -132,21 +132,28 @@ export function CardLink(props: {
   const handlePopoverClose = () => {
     setAnchorEl(null)
   }
+  let legalVersions = card.versions
+  const format = relevantFormats.find(f => f.id === props.format)
+  if (format) {
+    legalVersions = legalVersions.filter(v => !format || format.legal_packs?.includes(v.pack_id));
+    if (format.id === 'emerald') {
+      legalVersions = legalVersions.filter(v => !v.rotated)
+    }
+  }
 
   const open = Boolean(anchorEl)
-  const cardImage = card.versions.length > 0 && card.versions[0].image_url
+  const cardImage = legalVersions.length > 0 && legalVersions[0].image_url
 
-  let bannedFormats = card.banned_in || []
-  let restrictedFormats = card.restricted_in || []
-  let splashBannedFormats = card.splash_banned_in || []
+  let bannedFormats = card.banned_in?.filter(f => relevantFormats.some(rf => rf.id === f)) || []
+  let restrictedFormats = card.restricted_in?.filter(f => relevantFormats.some(rf => rf.id === f)) || []
+  let splashBannedFormats = card.splash_banned_in?.filter(f => relevantFormats.some(rf => rf.id === f)) || []
   let rallyFormats: string[] = []
-  let rotatedFormats: string[] = ['emerald']
+
 
   if (props.format) {
     bannedFormats = bannedFormats.filter((format) => format === props.format)
     restrictedFormats = restrictedFormats.filter((format) => format === props.format)
     splashBannedFormats = splashBannedFormats.filter((format) => format === props.format)
-    rotatedFormats = rotatedFormats.filter((format) => format === props.format)
   }
   if (
     (props.format === 'emerald' || props.format === 'obsidian') &&
@@ -180,8 +187,8 @@ export function CardLink(props: {
           {restrictedFormats.length > 0 && <RestrictedIcon formats={restrictedFormats} />}
           {splashBannedFormats.length > 0 && <SplashBannedIcon formats={splashBannedFormats} />}
           {rallyFormats.length > 0 && <RallyIcon formats={rallyFormats} />}
-          {rotatedFormats.length > 0 && !card.versions.some((v) => !v.rotated) && (
-            <RotatedIcon formats={rotatedFormats} />
+          {format && legalVersions.length === 0 && (
+            <RotatedIcon formats={[format.id]} />
           )}
         </span>
       </EmeraldDBLink>

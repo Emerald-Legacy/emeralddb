@@ -1,4 +1,4 @@
-import { DecklistViewModel, Decklist as DecklistType, Deck, CardWithVersions } from '@5rdb/api'
+import { DecklistViewModel, Decklist as DecklistType, Deck, CardWithVersions, Format } from "@5rdb/api";
 import {
   Box,
   Button,
@@ -20,7 +20,6 @@ import { BuilderCardList } from './BuilderCardList'
 import { Decklist } from '../deck/Decklist'
 import { privateApi } from '../../api'
 import { DeckBuilderWizard } from './DeckBuilderWizard'
-import { relevantFormats } from '../../utils/enums'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import { useSnackbar } from 'notistack'
 import { useHistory } from 'react-router-dom'
@@ -64,8 +63,8 @@ function getNextVersionNumber(versionNumber: string): string {
   return versionParts.join('.')
 }
 
-function prefilterCards(cards: CardWithVersions[], decklist: DecklistViewModel) {
-  const stats = createDeckStatistics(decklist.cards, decklist.format, cards)
+function prefilterCards(cards: CardWithVersions[], decklist: DecklistViewModel, formats: Format[]) {
+  const stats = createDeckStatistics(decklist.cards, decklist.format, cards, formats)
   let filteredCards = decklist.primary_clan
     ? cards.filter((card) => card.allowed_clans?.includes(decklist.primary_clan || ''))
     : cards
@@ -103,7 +102,7 @@ enum ViewTypes {
 }
 
 export function DeckEditor(props: { existingDecklist?: DecklistType | undefined }): JSX.Element {
-  const { cards } = useUiStore()
+  const { cards, formats, relevantFormats } = useUiStore()
   const classes = useStyles()
   const [decklist, setDecklist] = useState(props.existingDecklist || getEmptyDeckList())
   const { enqueueSnackbar } = useSnackbar()
@@ -113,8 +112,6 @@ export function DeckEditor(props: { existingDecklist?: DecklistType | undefined 
   const [newVersion, setNewVersion] = useState(decklist.version_number || '0.1')
   const [currentView, setCurrentView] = useState(ViewTypes.EDITOR)
   const [showAllCards, setShowAllCards] = useState(false)
-
-  const formats = relevantFormats
 
   if (props.existingDecklist && decklist.version_number === props.existingDecklist.version_number) {
     const nextVersionNumber = getNextVersionNumber(props.existingDecklist.version_number)
@@ -142,7 +139,7 @@ export function DeckEditor(props: { existingDecklist?: DecklistType | undefined 
   }
 
   function setDeckListFromNewCards(newCards: Record<string, number>) {
-    const stats = createDeckStatistics(newCards, decklist.format, cards)
+    const stats = createDeckStatistics(newCards, decklist.format, cards, formats)
     setDecklist({
       ...decklist,
       cards: newCards,
@@ -156,7 +153,7 @@ export function DeckEditor(props: { existingDecklist?: DecklistType | undefined 
       <DeckBuilderWizard
         onComplete={setWizardResult}
         onImport={(decklist: DecklistViewModel) => {
-          const stats = createDeckStatistics(decklist.cards, decklist.format, cards)
+          const stats = createDeckStatistics(decklist.cards, decklist.format, cards, formats)
           setDecklist({
             ...decklist,
             primary_clan: stats.primaryClan,
@@ -168,7 +165,7 @@ export function DeckEditor(props: { existingDecklist?: DecklistType | undefined 
     )
   }
 
-  const filteredCards = showAllCards ? cards : prefilterCards(cards, decklist)
+  const filteredCards = showAllCards ? cards : prefilterCards(cards, decklist, formats)
 
   function updateDeck(decklist: DecklistViewModel, deckId: string) {
     privateApi.Decklist.create({
@@ -240,9 +237,9 @@ export function DeckEditor(props: { existingDecklist?: DecklistType | undefined 
             <Autocomplete
               id="combo-box-format"
               autoHighlight
-              options={formats}
+              options={relevantFormats}
               getOptionLabel={(option) => option.name}
-              value={formats.find((item) => item.id === decklist.format) || null}
+              value={relevantFormats.find((item) => item.id === decklist.format) || null}
               renderInput={(params) => (
                 <TextField {...params} label="Format" variant="outlined" size="small" />
               )}

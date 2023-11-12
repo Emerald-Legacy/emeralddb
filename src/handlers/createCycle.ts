@@ -9,6 +9,7 @@ export const schema = {
     name: Joi.string().required(),
     position: Joi.number().required(),
     size: Joi.number().required(),
+    publisher: Joi.string().required(),
   }),
 }
 
