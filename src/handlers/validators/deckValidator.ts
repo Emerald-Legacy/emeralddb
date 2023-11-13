@@ -398,7 +398,7 @@ function createDeckStatistics(
     secondaryClan: secondaryClan,
     bannedCards: bannedCards,
     restrictedCards: restrictedCards,
-    rotatedCards: formatId === 'emerald' ? [...illegalCards, ...rotatedCards] : illegalCards,
+    rotatedCards: formatId === 'emerald' ? lodash.uniq([...illegalCards, ...rotatedCards]) : illegalCards,
     validationErrors: [],
   }
 
