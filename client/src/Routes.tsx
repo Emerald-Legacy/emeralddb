@@ -15,12 +15,12 @@ import { ManageCyclesView } from './views/ManageCyclesView'
 import { NotLoggedIn } from './views/NotLoggedIn'
 import { NotPermitted } from './views/NotPermitted'
 import { FFGRulesReferenceGuide } from './views/FFGRulesReferenceGuide'
-import { ELRulesReferenceGuide } from './views/ELRulesReferenceGuide'
 import { OpLists } from './views/OpLists'
 import { HelpView } from './views/HelpView'
 import { EditTraitsView } from './views/EditTraitsView'
 import { useEffect } from 'react'
 import { EditFormatsView } from "./views/EditFormatsView";
+import { ELRulesReferenceGuideNew } from "./views/ELRulesReferenceGuideNew";
 
 const AuthenticatedRoute = (props: { children: JSX.Element; path: string }) => {
   const { isLoggedIn } = useCurrentUser()
@@ -55,7 +55,7 @@ export function Routes(): JSX.Element {
         <FFGRulesReferenceGuide />
       </Route>
       <Route path="/rules/emerald">
-        <ELRulesReferenceGuide />
+        <ELRulesReferenceGuideNew />
       </Route>
       <Route path="/rules/organized-play/:format">
         <OpLists />
