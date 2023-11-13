@@ -1,6 +1,16 @@
 import { useEffect, useState } from "react";
 import asciidoctor from "asciidoctor";
-import { Box, Button, Dialog, DialogActions, DialogContent, Fab, Grid, useMediaQuery } from "@material-ui/core";
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  Fab,
+  Grid,
+  Typography,
+  useMediaQuery
+} from "@material-ui/core";
 import TocIcon from "@material-ui/icons/Toc";
 
 export function ELRulesReferenceGuideNew(): JSX.Element {
@@ -38,8 +48,6 @@ export function ELRulesReferenceGuideNew(): JSX.Element {
       .replaceAll("class=\"emeralddb\">&#59660;", 'class=\"icon icon-clan-scorpion\"')
       .replaceAll("class=\"emeralddb\">&#59661;", 'class=\"icon icon-clan-unicorn\"');
 
-    console.log(convertedHtml)
-
     const splitted = convertedHtml.split('<div id="preamble">')
     const tableOfContents = splitted[0]
     const document = splitted[1]
@@ -55,6 +63,14 @@ export function ELRulesReferenceGuideNew(): JSX.Element {
     <Grid container spacing={3} direction={isSmOrBigger ? 'row' : 'column-reverse'}>
       <Grid item sm={8}>
         <Box style={{ maxHeight: isSmOrBigger ? '93vh' : '85vh', overflow: 'auto' }} p={1}>
+          <Typography variant="h4">Emerald Legacy: Rules Reference</Typography>
+          <p>
+            PDF Version available{' '}
+            <a href={'https://emeraldlegacy.org/rules/'} target={'_blank'}>
+              here
+            </a>
+            .
+          </p>
           <div dangerouslySetInnerHTML={{__html: content}} />
         </Box>
       </Grid>
