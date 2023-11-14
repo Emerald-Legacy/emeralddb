@@ -123,7 +123,7 @@ export function EditFormatsView(): JSX.Element {
                 variant="outlined"
                 fullWidth
                 onChange={(e) => setFormatId(e.target.value)}
-                label="Trait ID"
+                label="Format ID"
                 style={{ marginTop: 5 }}
               />
               <TextField
@@ -131,7 +131,7 @@ export function EditFormatsView(): JSX.Element {
                 variant="outlined"
                 fullWidth
                 onChange={(e) => setFormatName(e.target.value)}
-                label="Trait Display Name"
+                label="Format Display Name"
                 style={{ marginTop: 5 }}
               />
               <FormControlLabel

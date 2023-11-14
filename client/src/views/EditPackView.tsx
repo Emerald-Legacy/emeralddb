@@ -11,7 +11,7 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core'
-import { useHistory, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { Loading } from '../components/Loading'
 import { useUiStore } from '../providers/UiStoreProvider'
 import { RequestError } from '../components/RequestError'
@@ -37,6 +37,18 @@ export function EditPackView(): JSX.Element {
   const confirm = useConfirm()
   const { enqueueSnackbar } = useSnackbar()
 
+  function compareCardsInPack(a: CardInPack, b: CardInPack) {
+    const positionA = a.position || '0'
+    const positionANumber = Number.parseInt(positionA.replace(/\D/g,''));
+    const positionAExtra = positionA.replace(/[0-9]/g, '');
+
+    const positionB = b.position || '0'
+    const positionBNumber = Number.parseInt(positionB.replace(/\D/g,''));
+    const positionBExtra = positionB.replace(/[0-9]/g, '');
+
+    return positionANumber - positionBNumber || positionAExtra.localeCompare(positionBExtra) || a.card_id.localeCompare(b.card_id);
+  }
+
   useEffect(() => {
     if (cards && packId) {
     const packCards = cards.filter((c) => c.versions.some((v) => v.pack_id === packId))
@@ -48,7 +60,7 @@ export function EditPackView(): JSX.Element {
         pack_id: packId,
         rotated: cardVersionInPack?.rotated || false,
       }
-    })
+    }).sort((a, b) => compareCardsInPack(a, b))
     setCardsInPack(newCardsInPack)
     }
   }, [cards])
