@@ -85,7 +85,7 @@ export function BuilderCardList(props: {
   format: string
   primaryClan: string | undefined
 }): JSX.Element {
-  const { traits, relevantFormats } = useUiStore()
+  const { traits, relevantFormats, validCardVersionForFormat } = useUiStore()
   const [filter, setFilter] = useState<FilterState | undefined>(
     initialFilter(props.primaryClan, props.format)
   )
@@ -405,7 +405,7 @@ export function BuilderCardList(props: {
                 {tableData.map((card) => {
                   return (
                     <GridListTile key={card.nameFactionType.cardId} cols={1}>
-                      <CardImageOrText cardId={card.nameFactionType.cardId} formatId={props.format}/>
+                      <CardImageOrText cardId={card.nameFactionType.cardId} cardVersion={validCardVersionForFormat(card.nameFactionType.cardId, props.format)}/>
                       <Box
                         marginTop={'-20px'}
                         style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}

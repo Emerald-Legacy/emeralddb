@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useUiStore } from '../../providers/UiStoreProvider'
 import { CardInformation } from './CardInformation'
 import ZoomInIcon from '@material-ui/icons/ZoomIn'
+import { CardInPack } from "@5rdb/api";
 
 const useStyles = makeStyles((theme: Theme) => ({
   popover: {
@@ -21,9 +22,9 @@ const useStyles = makeStyles((theme: Theme) => ({
 export function CardImageOrText(props: {
   cardId: string
   onClick?: (id: string) => void
-  formatId?: string
+  cardVersion: Omit<CardInPack, "card_id"> | undefined
 }): JSX.Element {
-  const { cards, validCardVersionForFormat } = useUiStore()
+  const { cards } = useUiStore()
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
   const classes = useStyles()
 
@@ -41,9 +42,7 @@ export function CardImageOrText(props: {
   }
 
   const open = Boolean(anchorEl)
-  const cardVersion = props.formatId ?
-    validCardVersionForFormat(props.cardId, props.formatId || '') :
-    card.versions[0]
+  const cardVersion = props.cardVersion || card.versions[0]
   const cardImage = cardVersion && cardVersion.image_url
   return (
     <div style={{ position: 'relative', height: '95%' }}>

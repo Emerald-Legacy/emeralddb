@@ -138,7 +138,9 @@ export function CardsView(): JSX.Element {
   }
 
   function findCardVersion(card: CardWithVersions) {
-    return filter?.format ? validCardVersionForFormat(card.id, filter.format) : card.versions[0];
+    let versionsWithFilteredPacks = filter?.packs ? card.versions.filter(v => filter.packs.includes(v.pack_id)) : card.versions
+    let validFormatVersion = filter?.format && validCardVersionForFormat(card.id, filter.format)
+    return validFormatVersion || versionsWithFilteredPacks.length > 0 ? versionsWithFilteredPacks[0] : card.versions[0];
   }
 
   function CardModal(): JSX.Element {
@@ -457,7 +459,7 @@ export function CardsView(): JSX.Element {
                       setModalCard(cards.find((card) => card.id === cardId))
                       setCardModalOpen(true)
                     }}
-                    formatId={filter?.format}
+                    cardVersion={findCardVersion(card)}
                   />
                 </Box>
               </Grid>
@@ -506,7 +508,7 @@ export function CardsView(): JSX.Element {
                       setModalCard(cards.find((card) => card.id === cardId))
                       setCardModalOpen(true)
                     }}
-                    formatId={filter?.format}
+                    cardVersion={findCardVersion(card)}
                   />
                 </Box>
               </Grid>
