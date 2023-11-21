@@ -1,4 +1,4 @@
-import { Pack, Cycle, Trait, CardWithVersions, Format } from '@5rdb/api'
+import { Pack, Cycle, Trait, CardWithVersions, Format, CardInPack } from "@5rdb/api";
 import { createContext, ReactNode, useEffect, useState, useContext } from 'react'
 import { publicApi } from '../api'
 
@@ -9,6 +9,7 @@ export interface UiStore {
   traits: Trait[]
   formats: Format[]
   relevantFormats: Format[]
+  validCardVersionForFormat: (cardId: string, formatId: string) => Omit<CardInPack, 'card_id'> | undefined
   toggleReload: () => void
 }
 
@@ -19,6 +20,7 @@ export const UiStoreContext = createContext<UiStore>({
   traits: [],
   formats: [],
   relevantFormats: [],
+  validCardVersionForFormat: () => undefined,
   toggleReload: () => {},
 })
 
@@ -45,6 +47,16 @@ export function UiStoreProvider(props: { children: ReactNode }): JSX.Element {
     })
   }, [reload])
 
+  const validVersionForFormat = (cardId: string, formatId: string) => {
+    console.log(cardId, formatId)
+    const format = formats.find(f => f.id === formatId)
+    const card = cards.find(c => c.id === cardId)
+    if (!format || !card) {
+      return undefined
+    }
+    return card.versions.find(v => (format.legal_packs || []).includes(v.pack_id)) || undefined
+  }
+
   return (
     <UiStoreContext.Provider
       value={{
@@ -54,6 +66,7 @@ export function UiStoreProvider(props: { children: ReactNode }): JSX.Element {
         traits: traits,
         formats: formats,
         relevantFormats: relevantFormats,
+        validCardVersionForFormat: validVersionForFormat,
         toggleReload: toggleReload,
       }}
     >

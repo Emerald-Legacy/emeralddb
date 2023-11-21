@@ -1,4 +1,4 @@
-import { Card, CardWithVersions } from '@5rdb/api'
+import { Card, CardInPack, CardWithVersions } from "@5rdb/api";
 import { Box, Typography, Grid, makeStyles } from '@material-ui/core'
 import { useUiStore } from '../../providers/UiStoreProvider'
 import { convertTraitList } from '../../utils/cardTextUtils'
@@ -49,7 +49,7 @@ export function FormattedValueOrCrossedOut(props: {
     return (
       <Typography className={classes.stats}>
         <b>{props.label}:</b> {props.value}
-        {props.icon && <span className={`icon icon-${props.icon}`}></span>}
+        {props.icon && <span className={`icon icon-${props.icon}`}/>}
       </Typography>
     )
   }
@@ -133,20 +133,15 @@ const ElementsElement = (props: { elements: string[] }) => {
 
 export function CardInformation(props: {
   cardWithVersions: CardWithVersions
-  currentVersionPackId?: string
+  currentVersion?: Omit<CardInPack, 'card_id'>
   clickable?: boolean
 }): JSX.Element {
   const history = useHistory()
   const classes = useStyles()
   const { traits, packs } = useUiStore()
   const card = props.cardWithVersions
-  const version =
-    props.currentVersionPackId &&
-    props.cardWithVersions.versions.find(
-      (version) => version.pack_id === props.currentVersionPackId
-    )
-  const packName =
-    props.currentVersionPackId && packs.find((pack) => pack.id === props.currentVersionPackId)?.name
+  const version = props.currentVersion
+  const packName = version && packs.find((pack) => pack.id === version.pack_id)?.name
 
   const textLines = card.text?.split('\n') || []
   const color = getColorForFactionId(card.faction)

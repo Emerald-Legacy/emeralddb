@@ -10,6 +10,7 @@ import Looks5Icon from '@material-ui/icons/Looks5'
 import CachedIcon from '@material-ui/icons/Cached'
 import { ElementSymbol } from './ElementSymbol'
 import { EmeraldDBLink } from '../EmeraldDBLink'
+import { CardInPack } from "@5rdb/api";
 
 const useStyles = makeStyles((theme: Theme) => ({
   popover: {
@@ -116,7 +117,7 @@ export function CardLink(props: {
   format?: string
   notClickable?: boolean
 }): JSX.Element {
-  const { cards, relevantFormats } = useUiStore()
+  const { cards, relevantFormats, validCardVersionForFormat } = useUiStore()
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
   const classes = useStyles()
 
@@ -132,17 +133,17 @@ export function CardLink(props: {
   const handlePopoverClose = () => {
     setAnchorEl(null)
   }
-  let legalVersions = card.versions
+  let legalVersion: Omit<CardInPack, 'card_id'> | undefined = card.versions[0]
   const format = relevantFormats.find(f => f.id === props.format)
   if (format) {
-    legalVersions = legalVersions.filter(v => !format || format.legal_packs?.includes(v.pack_id));
-    if (format.id === 'emerald') {
-      legalVersions = legalVersions.filter(v => !v.rotated)
+    legalVersion = validCardVersionForFormat(card.id, format.id)
+    if (legalVersion && format.id === 'emerald' && legalVersion.rotated) {
+      legalVersion = undefined
     }
   }
 
   const open = Boolean(anchorEl)
-  const cardImage = legalVersions.length > 0 && legalVersions[0].image_url
+  const cardImage = legalVersion?.image_url
 
   let bannedFormats = card.banned_in?.filter(f => relevantFormats.some(rf => rf.id === f)) || []
   let restrictedFormats = card.restricted_in?.filter(f => relevantFormats.some(rf => rf.id === f)) || []
@@ -187,7 +188,7 @@ export function CardLink(props: {
           {restrictedFormats.length > 0 && <RestrictedIcon formats={restrictedFormats} />}
           {splashBannedFormats.length > 0 && <SplashBannedIcon formats={splashBannedFormats} />}
           {rallyFormats.length > 0 && <RallyIcon formats={rallyFormats} />}
-          {format && legalVersions.length === 0 && (
+          {format && !legalVersion && (
             <RotatedIcon formats={[format.id]} />
           )}
         </span>
@@ -211,7 +212,7 @@ export function CardLink(props: {
         {cardImage ? (
           <img src={cardImage} style={{ width: 300, height: 420 }} />
         ) : (
-          <CardInformation cardWithVersions={card} />
+          <CardInformation cardWithVersions={card} currentVersion={legalVersion}/>
         )}
       </Popover>
     </span>
