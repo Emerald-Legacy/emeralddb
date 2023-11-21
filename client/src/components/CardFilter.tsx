@@ -227,8 +227,6 @@ function replaceSpecialCharacters(text: string): string {
 export function applyFilters(cards: CardWithVersions[], formats: Format[], filter: FilterState): CardWithVersions[] {
   let filteredCards = cards
   let chosenFormat = filter.format && formats.find(format => format.id === filter.format)
-  console.log(formats)
-  console.log(chosenFormat)
   if (chosenFormat) {
     let legalPacksOfFormat = chosenFormat.legal_packs || []
     if (filter.banned === 'only' || filter.restricted === 'only') {
@@ -297,7 +295,7 @@ export function applyFilters(cards: CardWithVersions[], formats: Format[], filte
   return filteredCards
 }
 
-const initialState: FilterState = {
+export const initialState: FilterState = {
   cardTypes: [],
   factions: [],
   packs: [],

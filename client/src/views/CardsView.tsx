@@ -17,7 +17,7 @@ import { useUiStore } from '../providers/UiStoreProvider'
 import { convertTraitList } from '../utils/cardTextUtils'
 import { capitalize } from '../utils/stringUtils'
 import { useState } from 'react'
-import { applyFilters, CardFilter, FilterState } from '../components/CardFilter'
+import { applyFilters, CardFilter, FilterState, initialState } from "../components/CardFilter";
 import { CardWithVersions, Pack } from '@5rdb/api'
 import { CardInformation } from '../components/card/CardInformation'
 import { Loading } from '../components/Loading'
@@ -61,7 +61,7 @@ enum SortMode {
   PACK_POSITION = 'pack_position',
 }
 
-function createFilterFromUrlSearchParams(params: URLSearchParams, allPacks: Pack[]): FilterState {
+function createFilterFromUrlSearchParams(params: URLSearchParams, allPacks: Pack[], initialFilter: FilterState): FilterState {
   const cycle = params.get('cycle')
   const pack = params.get('pack')
   const query = params.get('query') || ''
@@ -72,21 +72,10 @@ function createFilterFromUrlSearchParams(params: URLSearchParams, allPacks: Pack
     : []
 
   return {
-    text: decodeURIComponent(query),
-    factions: [],
-    cardTypes: [],
-    sides: [],
-    traits: [],
-    elements: [],
-    roleRestrictions: [],
-    packs: packs,
-    cycles: cycle ? [cycle] : [],
-    numericValues: [],
-    format: '',
-    restricted: 'true',
-    banned: 'false',
-    isUnique: '',
-    illegal: 'false',
+    ...initialFilter,
+    text: decodeURIComponent(query) || initialFilter.text,
+    packs: packs || initialFilter.packs,
+    cycles: cycle ? [cycle] : initialFilter.cycles
   }
 }
 
@@ -94,7 +83,7 @@ export function CardsView(): JSX.Element {
   const PAGE_SIZE = 60
 
   const classes = useStyles()
-  const { cards, packs, cycles, traits, formats } = useUiStore()
+  const { cards, packs, cycles, traits, formats, validCardVersionForFormat } = useUiStore()
   const history = useHistory()
   const location = useLocation()
   const [filter, setFilter] = useState<FilterState | undefined>(undefined)
@@ -114,16 +103,27 @@ export function CardsView(): JSX.Element {
   const urlSearchParams = new URLSearchParams(location.search)
   let urlParamFilter
   if (location.search !== urlParams) {
-    urlParamFilter = createFilterFromUrlSearchParams(urlSearchParams, packs)
-    setFilter(urlParamFilter)
-    setUrlParams(location.search)
-    // Only 1 result => Go to card page
-    const urlFilteredCards = applyFilters(cards, formats, urlParamFilter)
-    if (urlFilteredCards.length === 1) {
-      history.push(`/card/${urlFilteredCards[0].id}`)
+    const newSearchParams = urlSearchParams
+    const previousSearchParams = new URLSearchParams(urlParams)
+    if (
+      newSearchParams.get('pack') != previousSearchParams.get('pack') ||
+      newSearchParams.get('cycle') != previousSearchParams.get('cycle') ||
+      newSearchParams.get('query') != previousSearchParams.get('query')
+    ){
+      console.log('update Filter')
+      urlParamFilter = createFilterFromUrlSearchParams(newSearchParams, packs, filter || initialState)
+      setFilter(urlParamFilter)
+
+      // Only 1 result => Go to card page
+      const urlFilteredCards = applyFilters(cards, formats, urlParamFilter)
+      if (urlFilteredCards.length === 1) {
+        history.push(`/card/${urlFilteredCards[0].id}`)
+      }
     }
-    const displayParam = urlSearchParams.get('display') || DisplayMode.LIST
-    const sortParam = urlSearchParams.get('sort') || SortMode.NAME
+    setUrlParams(location.search)
+
+    const displayParam = newSearchParams.get('display') || displayMode
+    const sortParam = newSearchParams.get('sort') || sortMode
 
     setDisplayMode(displayParam as DisplayMode)
     setSortMode(sortParam as SortMode)
@@ -137,6 +137,10 @@ export function CardsView(): JSX.Element {
     history.push(`/card/${id}`)
   }
 
+  function findCardVersion(card: CardWithVersions) {
+    return filter?.format ? validCardVersionForFormat(card.id, filter.format) : card.versions[0];
+  }
+
   function CardModal(): JSX.Element {
     if (!modalCard) {
       return <div />
@@ -144,7 +148,7 @@ export function CardsView(): JSX.Element {
     return (
       <Dialog open={cardModalOpen} onClose={() => setCardModalOpen(false)}>
         <DialogContent>
-          <CardInformation cardWithVersions={modalCard} clickable />
+          <CardInformation cardWithVersions={modalCard} clickable currentVersion={findCardVersion(modalCard)}/>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setCardModalOpen(false)} variant="contained">
@@ -254,8 +258,8 @@ export function CardsView(): JSX.Element {
     )
   }
 
-  const onFilterChanged = (filter: FilterState) => {
-    setFilter(filter)
+  const onFilterChanged = (newFilter: FilterState) => {
+    setFilter(newFilter)
     setPage(0)
   }
 
@@ -366,7 +370,7 @@ export function CardsView(): JSX.Element {
         <CardFilter
           onFilterChanged={onFilterChanged}
           fullWidth
-          filterState={urlParamFilter || filter}
+          filterState={filter || urlParamFilter}
         />
         <Paper className={classes.table}>
           <Selectors />
@@ -394,7 +398,6 @@ export function CardsView(): JSX.Element {
       packIndex: '9999',
       cardIndex: '999',
     }
-    // TODO check for rotation
     const cardVersion = card.versions.filter(() => true)[0]
     if (!cardVersion) {
       return dummy
@@ -440,7 +443,7 @@ export function CardsView(): JSX.Element {
         <CardFilter
           onFilterChanged={onFilterChanged}
           fullWidth
-          filterState={urlParamFilter || filter}
+          filterState={filter || urlParamFilter}
         />
         <Paper className={classes.table}>
           <Selectors />
@@ -454,7 +457,7 @@ export function CardsView(): JSX.Element {
                       setModalCard(cards.find((card) => card.id === cardId))
                       setCardModalOpen(true)
                     }}
-                    packId={card.versions.length > 0 ? card.versions[0].pack_id : ''}
+                    formatId={filter?.format}
                   />
                 </Box>
               </Grid>
@@ -472,7 +475,7 @@ export function CardsView(): JSX.Element {
       <CardFilter
         onFilterChanged={onFilterChanged}
         fullWidth
-        filterState={urlParamFilter || filter}
+        filterState={filter || urlParamFilter}
       />
       <Paper className={classes.table}>
         <Selectors />
@@ -483,7 +486,7 @@ export function CardsView(): JSX.Element {
                 <CardInformation
                   cardWithVersions={card}
                   clickable
-                  currentVersionPackId={card.versions.length > 0 ? card.versions[0].pack_id : ''}
+                  currentVersion={findCardVersion(card)}
                 />
                 <Box padding={'5px'} justifyContent={'flex-end'}>
                   <Button
@@ -503,7 +506,7 @@ export function CardsView(): JSX.Element {
                       setModalCard(cards.find((card) => card.id === cardId))
                       setCardModalOpen(true)
                     }}
-                    packId={card.versions.length > 0 ? card.versions[0].pack_id : ''}
+                    formatId={filter?.format}
                   />
                 </Box>
               </Grid>

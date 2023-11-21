@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Container,
@@ -6,9 +6,9 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  Grid,
-  TextField,
-} from '@material-ui/core'
+  Grid, makeStyles, Tab, Tabs,
+  TextField, Typography
+} from "@material-ui/core";
 import { useHistory, useParams } from 'react-router-dom'
 import { EmptyState } from '../components/EmptyState'
 import { Loading } from '../components/Loading'
@@ -25,10 +25,22 @@ import { useConfirm } from 'material-ui-confirm'
 import { useSnackbar } from 'notistack'
 import { toSlugId } from '../utils/slugIdUtils'
 
+const useStyles = makeStyles((theme) => ({
+  unselected: {
+    borderColor: 'lightgrey',
+  },
+  selected: {
+    borderColor: theme.palette.primary.main,
+    backgroundColor: theme.palette.secondary.light,
+    color: theme.palette.secondary.contrastText,
+  }
+}))
+
 export function CardDetailView(): JSX.Element {
   const params = useParams<{ id: string }>()
-  const { cards } = useUiStore()
+  const { cards, packs } = useUiStore()
   const [data] = useCard(params.id)
+  const [chosenVersionIndex, setChosenVersionIndex] = useState(0)
   const [chosenVersion, setChosenVersion] = useState<Omit<CardInPack, 'card_id'>>()
   const [deletionModalOpen, setDeletionModalOpen] = useState(false)
   const [renameModalOpen, setRenameModalOpen] = useState(false)
@@ -39,7 +51,15 @@ export function CardDetailView(): JSX.Element {
   const { isDataAdmin } = useCurrentUser()
   const confirm = useConfirm()
   const { enqueueSnackbar } = useSnackbar()
+  const classes = useStyles()
   const history = useHistory()
+
+
+  useEffect(() => {
+    if (data.data) {
+      setChosenVersion(data.data.versions[chosenVersionIndex])
+    }
+  }, [chosenVersionIndex, data])
 
   if (data.loading) {
     return <Loading />
@@ -52,10 +72,6 @@ export function CardDetailView(): JSX.Element {
   }
 
   const card = data.data
-
-  if (!chosenVersion && card.versions.length > 0) {
-    setChosenVersion(card.versions[0])
-  }
 
   const imageWidth = card.type === 'treaty' ? 450 : 300
 
@@ -128,53 +144,87 @@ export function CardDetailView(): JSX.Element {
   }
 
   return (
-    <Container>
+    <Container style={{paddingTop: '5px'}}>
       <Grid container spacing={5}>
         <Grid item xs={12} md={7}>
           <CardInformation
             cardWithVersions={card}
-            currentVersionPackId={chosenVersion?.pack_id || ''}
+            currentVersion={chosenVersion}
           />
+          {card.versions.length > 1 && (
+            <Grid item xs={12}>
+              <Tabs
+                TabIndicatorProps={{
+                  style: {
+                    top: 0,
+                  }
+                }}
+                value={chosenVersionIndex}
+                onChange={(_, newValue) =>
+                  setChosenVersionIndex(newValue)
+                }
+                variant="scrollable"
+                scrollButtons="auto"
+              >
+                {card.versions.map((v, index) => (
+                  <Tab
+                    key={v.pack_id}
+                    value={index}
+                    label={<Typography variant="caption">{packs.find(p => p.id === v.pack_id)?.name || 'Unknown Pack'}</Typography>}
+                    className={
+                      chosenVersionIndex === index ? classes.selected : classes.unselected
+                    }
+                  />
+                ))}
+              </Tabs>
+            </Grid>
+          )}
           <RulingList cardId={card.id} rulings={card.rulings} />
         </Grid>
-        <Grid item xs={12} md={5}>
+        <Grid item xs={12} md={5} container spacing={0}>
           {chosenVersion && (
-            <div>
+            <Grid item xs={12}>
               <img src={chosenVersion.image_url || ''} style={{ maxWidth: imageWidth }} />
-            </div>
+            </Grid>
           )}
           {isDataAdmin() && (
-            <Button
-              variant="contained"
-              color="secondary"
-              fullWidth
-              onClick={() => history.push(`/card/${card.id}/edit`)}
-              style={{ marginTop: 10, maxWidth: imageWidth }}
-            >
-              Edit this Card
-            </Button>
+            <Grid item xs={12}>
+              <Button
+                variant="contained"
+                color="secondary"
+                fullWidth
+                onClick={() => history.push(`/card/${card.id}/edit`)}
+                style={{ marginTop: 10, maxWidth: imageWidth }}
+              >
+                Edit this Card
+              </Button>
+            </Grid>
           )}
           {isDataAdmin() && (
-            <Button
-              variant="contained"
-              color="secondary"
-              fullWidth
-              onClick={() => setRenameModalOpen(true)}
-              style={{ marginTop: 10, maxWidth: imageWidth }}
-            >
-              Rename this Card
-            </Button>
+            <Grid item xs={12}>
+              <Button
+                variant="contained"
+                color="secondary"
+                fullWidth
+                onClick={() => setRenameModalOpen(true)}
+                style={{ marginTop: 10, maxWidth: imageWidth }}
+              >
+                Rename this Card
+              </Button>
+            </Grid>
           )}
           {isDataAdmin() && (
-            <Button
-              variant="contained"
-              color="secondary"
-              fullWidth
-              onClick={() => setDeletionModalOpen(true)}
-              style={{ marginTop: 10, maxWidth: imageWidth }}
-            >
-              Delete this Card
-            </Button>
+            <Grid item xs={12}>
+              <Button
+                variant="contained"
+                color="secondary"
+                fullWidth
+                onClick={() => setDeletionModalOpen(true)}
+                style={{ marginTop: 10, maxWidth: imageWidth }}
+              >
+                Delete this Card
+              </Button>
+            </Grid>
           )}
         </Grid>
       </Grid>

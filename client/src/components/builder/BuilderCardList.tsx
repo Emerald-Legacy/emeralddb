@@ -405,7 +405,7 @@ export function BuilderCardList(props: {
                 {tableData.map((card) => {
                   return (
                     <GridListTile key={card.nameFactionType.cardId} cols={1}>
-                      <CardImageOrText cardId={card.nameFactionType.cardId} />
+                      <CardImageOrText cardId={card.nameFactionType.cardId} formatId={props.format}/>
                       <Box
                         marginTop={'-20px'}
                         style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
