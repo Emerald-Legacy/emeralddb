@@ -17,6 +17,7 @@ import { CardLink } from '../card/CardLink'
 import { BushiBuilderImportButton } from './BushiBuilderImportButton'
 import { EmeraldDBImportButton } from './EmeraldDBImportButton'
 import { CardFactionIcon } from '../card/CardFactionIcon'
+import { FormatWithInfo } from '../format/FormatWithInfo'
 
 export function DeckBuilderWizard(props: {
   onComplete: (
@@ -119,7 +120,7 @@ export function DeckBuilderWizard(props: {
                   key={format.id}
                   value={format.id}
                   control={<Radio />}
-                  label={format.name}
+                  label={<FormatWithInfo format={format} />}
                   onClick={() => setFormat(format.id)}
                 />
               ))}
