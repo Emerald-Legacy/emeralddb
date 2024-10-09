@@ -88,6 +88,9 @@ export interface Format {
   name: string
   legal_packs?: string[]
   supported: boolean
+  position: number
+  maintainer?: string
+  description?: string
 }
 
 export interface User {

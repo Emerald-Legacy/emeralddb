@@ -23,6 +23,9 @@ export function EditFormatsView(): JSX.Element {
   const [formatName, setFormatName] = useState('')
   const [legalPacks, setLegalPacks] = useState<string[]>([])
   const [isSupported, setIsSupported] = useState(false)
+  const [position, setPosition] = useState(0)
+  const [maintainer, setMaintainer] = useState('')
+  const [description, setDescription] = useState('')
   const [modalOpen, setModalOpen] = useState(false)
   const [packModalOpen, setPackModalOpen] = useState(false)
   const { enqueueSnackbar } = useSnackbar()
@@ -36,6 +39,9 @@ export function EditFormatsView(): JSX.Element {
     setFormatName(format.name)
     setLegalPacks(format.legal_packs || [])
     setIsSupported(format.supported)
+    setPosition(format.position)
+    setMaintainer(format.maintainer || '')
+    setDescription(format.description || '')
     setModalOpen(true)
   }
 
@@ -44,13 +50,24 @@ export function EditFormatsView(): JSX.Element {
     setFormatName('')
     setLegalPacks([])
     setIsSupported(false)
+    setPosition(0)
+    setMaintainer('')
+    setDescription('')
     setModalOpen(true)
   }
 
   function saveFormat() {
     privateApi.Format.update({
       body: {
-        format: { id: formatId, name: formatName, legal_packs: legalPacks, supported: isSupported },
+        format: {
+          id: formatId,
+          name: formatName,
+          legal_packs: legalPacks,
+          supported: isSupported,
+          position: position,
+          maintainer: maintainer || null,
+          description: description || null,
+        },
       },
     })
       .then(() => {
@@ -59,6 +76,9 @@ export function EditFormatsView(): JSX.Element {
         setFormatName('')
         setLegalPacks([])
         setIsSupported(false)
+        setPosition(0)
+        setMaintainer('')
+        setDescription('')
         setModalOpen(false)
         enqueueSnackbar('Successfully posted format!', { variant: 'success' })
       })
@@ -68,7 +88,11 @@ export function EditFormatsView(): JSX.Element {
       })
   }
 
-  const sortedFormats = formats.sort((a, b) => a.id.localeCompare(b.id))
+  function compareFormats(a: Format, b: Format): number {
+    return a.position - b.position || a.id.localeCompare(b.id)
+  }
+
+  const sortedFormats = formats.sort(compareFormats)
 
   return (
     <Grid container spacing={2} justify="center">
@@ -81,6 +105,9 @@ export function EditFormatsView(): JSX.Element {
       <Table size={"small"}>
         <TableHead>
           <TableCell>
+            Position
+          </TableCell>
+          <TableCell>
             Format ID
           </TableCell>
           <TableCell>
@@ -88,6 +115,12 @@ export function EditFormatsView(): JSX.Element {
           </TableCell>
           <TableCell>
             Supported in Deckbuilding
+          </TableCell>
+          <TableCell>
+            Maintainer
+          </TableCell>
+          <TableCell>
+            Description
           </TableCell>
           <TableCell>
             Number of Legal Packs
@@ -99,9 +132,12 @@ export function EditFormatsView(): JSX.Element {
         <TableBody>
           {sortedFormats.map((format) => (
             <TableRow key={format.id}>
+              <TableCell>{format.position}</TableCell>
               <TableCell>{format.id}</TableCell>
               <TableCell>{format.name}</TableCell>
               <TableCell>{format.supported ? 'Yes' : 'No'}</TableCell>
+              <TableCell>{format.maintainer || 'N/A'}</TableCell>
+              <TableCell>{format.description || 'N/A'}</TableCell>
               <TableCell>{format.legal_packs?.length || 0}</TableCell>
               <TableCell>
                 <IconButton color='secondary' onClick={() => openEditModal(format)}>
@@ -118,6 +154,16 @@ export function EditFormatsView(): JSX.Element {
           <Grid container spacing={1}>
             <Grid item xs={12}>
               <TextField
+                value={position}
+                multiline
+                variant="outlined"
+                fullWidth
+                onChange={(e) => setPosition(Number.parseInt(e.target.value))}
+                label="Position"
+                type="number"
+                style={{ marginTop: 5 }}
+              />
+              <TextField
                 value={formatId}
                 multiline
                 variant="outlined"
@@ -132,6 +178,24 @@ export function EditFormatsView(): JSX.Element {
                 fullWidth
                 onChange={(e) => setFormatName(e.target.value)}
                 label="Format Display Name"
+                style={{ marginTop: 5 }}
+              />
+              <TextField
+                value={maintainer}
+                multiline
+                variant="outlined"
+                fullWidth
+                onChange={(e) => setMaintainer(e.target.value)}
+                label="Maintainer"
+                style={{ marginTop: 5 }}
+              />
+              <TextField
+                value={description}
+                multiline
+                variant="outlined"
+                fullWidth
+                onChange={(e) => setDescription(e.target.value)}
+                label="Description"
                 style={{ marginTop: 5 }}
               />
               <FormControlLabel
