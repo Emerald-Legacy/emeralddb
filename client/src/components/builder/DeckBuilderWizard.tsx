@@ -1,4 +1,4 @@
-import { DecklistViewModel } from '@5rdb/api'
+import { DecklistViewModel, Format } from '@5rdb/api'
 import {
   Button,
   FormControlLabel,
@@ -17,6 +17,7 @@ import { CardLink } from '../card/CardLink'
 import { BushiBuilderImportButton } from './BushiBuilderImportButton'
 import { EmeraldDBImportButton } from './EmeraldDBImportButton'
 import { CardFactionIcon } from '../card/CardFactionIcon'
+import { FormatWithInfo } from '../format/FormatWithInfo'
 
 export function DeckBuilderWizard(props: {
   onComplete: (
@@ -67,6 +68,10 @@ export function DeckBuilderWizard(props: {
     props.onComplete(format, primaryClan, strongholdAndRole)
   }
 
+  function sortFormats(a: Format, b: Format): number {
+    return a.position - b.position || a.id.localeCompare(b.id)
+  }
+
   return (
     <Grid container spacing={2} justify="center" alignItems="center" direction="column">
       <Grid item xs={12} md={4} hidden={step > -1}>
@@ -109,13 +114,13 @@ export function DeckBuilderWizard(props: {
               value={format}
               onChange={(e) => setFormat((e.target as HTMLInputElement).value)}
             >
-              {relevantFormats.map((format) => (
+              {relevantFormats.sort(sortFormats).map((format) => (
                 <FormControlLabel
                   style={{ margin: '0 0 0 -11' }}
                   key={format.id}
                   value={format.id}
                   control={<Radio />}
-                  label={format.name}
+                  label={<FormatWithInfo format={format} />}
                   onClick={() => setFormat(format.id)}
                 />
               ))}
