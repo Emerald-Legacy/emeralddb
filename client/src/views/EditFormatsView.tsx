@@ -26,6 +26,7 @@ export function EditFormatsView(): JSX.Element {
   const [position, setPosition] = useState(0)
   const [maintainer, setMaintainer] = useState('')
   const [description, setDescription] = useState('')
+  const [infoLink, setInfoLink] = useState('')
   const [modalOpen, setModalOpen] = useState(false)
   const [packModalOpen, setPackModalOpen] = useState(false)
   const { enqueueSnackbar } = useSnackbar()
@@ -42,6 +43,7 @@ export function EditFormatsView(): JSX.Element {
     setPosition(format.position)
     setMaintainer(format.maintainer || '')
     setDescription(format.description || '')
+    setInfoLink(format.info_link || '')
     setModalOpen(true)
   }
 
@@ -53,6 +55,7 @@ export function EditFormatsView(): JSX.Element {
     setPosition(0)
     setMaintainer('')
     setDescription('')
+    setInfoLink('')
     setModalOpen(true)
   }
 
@@ -67,6 +70,7 @@ export function EditFormatsView(): JSX.Element {
           position: position,
           maintainer: maintainer || null,
           description: description || null,
+          info_link: infoLink || null,
         },
       },
     })
@@ -79,6 +83,7 @@ export function EditFormatsView(): JSX.Element {
         setPosition(0)
         setMaintainer('')
         setDescription('')
+        setInfoLink('')
         setModalOpen(false)
         enqueueSnackbar('Successfully posted format!', { variant: 'success' })
       })
@@ -123,6 +128,9 @@ export function EditFormatsView(): JSX.Element {
             Description
           </TableCell>
           <TableCell>
+            Info Link
+          </TableCell>
+          <TableCell>
             Number of Legal Packs
           </TableCell>
           <TableCell>
@@ -138,6 +146,12 @@ export function EditFormatsView(): JSX.Element {
               <TableCell>{format.supported ? 'Yes' : 'No'}</TableCell>
               <TableCell>{format.maintainer || 'N/A'}</TableCell>
               <TableCell>{format.description || 'N/A'}</TableCell>
+              <TableCell>
+                {format.info_link ?
+                  <a href={format.info_link}>{format.info_link}</a> :
+                  'N/A'
+                }
+              </TableCell>
               <TableCell>{format.legal_packs?.length || 0}</TableCell>
               <TableCell>
                 <IconButton color='secondary' onClick={() => openEditModal(format)}>
@@ -196,6 +210,15 @@ export function EditFormatsView(): JSX.Element {
                 fullWidth
                 onChange={(e) => setDescription(e.target.value)}
                 label="Description"
+                style={{ marginTop: 5 }}
+              />
+              <TextField
+                value={infoLink}
+                multiline
+                variant="outlined"
+                fullWidth
+                onChange={(e) => setInfoLink(e.target.value)}
+                label="Link for further information"
                 style={{ marginTop: 5 }}
               />
               <FormControlLabel

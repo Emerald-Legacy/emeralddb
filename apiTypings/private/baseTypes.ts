@@ -91,6 +91,7 @@ export interface Format {
   position: number
   maintainer?: string
   description?: string
+  info_link?: string
 }
 
 export interface User {
