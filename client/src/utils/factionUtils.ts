@@ -3,6 +3,7 @@ export const factions: { id: string; name: string; color: string }[] = [
   { id: 'crane', name: 'Crane', color: '#44c2bc' },
   { id: 'dragon', name: 'Dragon', color: '#1d6922' },
   { id: 'lion', name: 'Lion', color: '#dece23' },
+  { id: 'mantis', name: 'Mantis', color: '#2c8369' },
   { id: 'phoenix', name: 'Phoenix', color: '#de9923' },
   { id: 'scorpion', name: 'Scorpion', color: '#ab1916' },
   { id: 'unicorn', name: 'Unicorn', color: '#90119e' },
