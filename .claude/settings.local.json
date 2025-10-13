@@ -9,7 +9,8 @@
       "Bash(cd:*)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
-      "Bash(npm run build:server:*)"
+      "Bash(npm run build:server:*)",
+      "Bash(npm uninstall:*)"
     ],
     "deny": [],
     "ask": []

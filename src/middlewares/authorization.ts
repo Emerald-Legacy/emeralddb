@@ -23,7 +23,7 @@ export const authorizedOnly = jwt({
     rateLimit: true,
     jwksRequestsPerMinute: 5,
     jwksUri: `https://${env.auth0Domain}/.well-known/jwks.json`,
-  }),
+  }) as any,
   audience: 'http://fiveringsdb.com',
   issuer: `https://${env.auth0Domain}/`,
   algorithms: ['RS256'],
