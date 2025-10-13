@@ -20,10 +20,10 @@
     "test:unit:watch": "ava --watch"
   },
   "engines": {
-    "node": "^16.13.1"
+    "node": ">=18.0.0"
   },
   "volta": {
-    "node": "16.13.1"
+    "node": "22.11.0"
   },
   "license": "MIT",
   "dependencies": {
