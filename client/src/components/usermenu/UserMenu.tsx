@@ -130,7 +130,7 @@ export function UserMenu(props: { audience: string; scope: string }): JSX.Elemen
 
   return (
     <div>
-      <LoginButton onLogin={fetchToken} />
+      <LoginButton onLogin={fetchToken} audience={props.audience} scope={props.scope} />
     </div>
   )
 }
