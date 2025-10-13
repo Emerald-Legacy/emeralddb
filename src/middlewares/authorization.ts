@@ -33,10 +33,12 @@ export async function rulesAdminOnly(req: express.Request, res: express.Response
   const user: Auth0User = req.user as Auth0User
   if (!user?.sub) {
     res.status(401).send()
+    return
   }
   const dbUser = await getOrInsertDBUser(user.sub)
   if (!dbUser.roles.includes(RULES_ADMIN)) {
     res.status(401).send()
+    return
   }
 }
 
@@ -44,9 +46,11 @@ export async function dataAdminOnly(req: express.Request, res: express.Response)
   const user: Auth0User = req.user as Auth0User
   if (!user?.sub) {
     res.status(401).send()
+    return
   }
   const dbUser = await getOrInsertDBUser(user.sub)
   if (!dbUser.roles.includes(DATA_ADMIN)) {
     res.status(401).send()
+    return
   }
 }
