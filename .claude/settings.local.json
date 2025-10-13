@@ -11,7 +11,8 @@
       "Bash(git commit:*)",
       "Bash(npm run build:server:*)",
       "Bash(npm uninstall:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(npm outdated:*)"
     ],
     "deny": [],
     "ask": []
