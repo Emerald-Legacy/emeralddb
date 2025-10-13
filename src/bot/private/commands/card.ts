@@ -16,10 +16,10 @@ export const command: Command = {
         .setName('name')
         .setDescription('The name of the card or a part of its name')
         .setRequired(true)
-    ),
+    ) as any,
 
   async handler(interaction) {
-    const query = interaction.options.getString('name')
+    const query = (interaction as any).options.getString('name')
     if (!query) return
 
     const result = await search(query)

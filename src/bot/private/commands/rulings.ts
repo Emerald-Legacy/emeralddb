@@ -1,4 +1,4 @@
-import { DiscordAPIError, MessageEmbedOptions, ColorResolvable } from 'discord.js'
+import { DiscordAPIError, EmbedBuilder, ColorResolvable } from 'discord.js'
 import { SlashCommandBuilder } from '@discordjs/builders'
 import { getAllRulingsForCard } from '../../../gateways/storage'
 import { search } from '../cardsFuzzySearch'
@@ -17,10 +17,10 @@ export const command: Command = {
         .setName('name')
         .setDescription('The name of the card or a part of its name')
         .setRequired(true)
-    ),
+    ) as any,
 
   async handler(interaction) {
-    const query = interaction.options.getString('name')
+    const query = (interaction as any).options.getString('name')
     if (!query) return
 
     const result = await search(query)
@@ -69,29 +69,27 @@ export const command: Command = {
  */
 const toEmbed =
   (card: CachedCard) =>
-  (ruling: RulingInput): MessageEmbedOptions => ({
-    color: color(ruling),
-    author: {
-      name: truncate(256, card.name),
-      url: `https://www.emeralddb.org/card/${card.id}`,
-    },
-    title: truncate(256, `Rulling #${ruling.id}`),
-    url: ruling.link,
-    thumbnail: {
-      url: card.image,
-    },
-    description: truncate(4096, formatRulingText(ruling.text)),
-    footer: {
-      text: truncate(2048, ruling.source),
-    },
-  })
+  (ruling: RulingInput): EmbedBuilder =>
+    new EmbedBuilder()
+      .setColor(color(ruling))
+      .setAuthor({
+        name: truncate(256, card.name),
+        url: `https://www.emeralddb.org/card/${card.id}`,
+      })
+      .setTitle(truncate(256, `Rulling #${ruling.id}`))
+      .setURL(ruling.link)
+      .setThumbnail(card.image)
+      .setDescription(truncate(4096, formatRulingText(ruling.text)))
+      .setFooter({
+        text: truncate(2048, ruling.source),
+      })
 
-function color(ruling: RulingInput): ColorResolvable {
+function color(ruling: RulingInput): number {
   switch (ruling.source) {
     case 'Developer ruling':
-      return 'BLUE'
+      return 0x0000ff // Blue
     default:
-      return 'GREEN'
+      return 0x00ff00 // Green
   }
 }
 

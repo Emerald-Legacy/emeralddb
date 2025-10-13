@@ -1,6 +1,6 @@
 import { REST } from '@discordjs/rest'
-import { Client, Intents } from 'discord.js'
-import { Routes } from 'discord-api-types/v9'
+import { Client, GatewayIntentBits } from 'discord.js'
+import { Routes } from 'discord-api-types/v10'
 
 import { Service } from '../../typings/Service'
 import { command as cardCommand } from './commands/card'
@@ -12,7 +12,7 @@ export async function createBot(config: Config): Promise<Service> {
   await registerCommands(config)
 
   console.log('BOT: initializing bot')
-  const client = new Client({ intents: [Intents.FLAGS.GUILDS] })
+  const client = new Client({ intents: [GatewayIntentBits.Guilds] })
 
   client.on('interactionCreate', async (interaction) => {
     if (!interaction.isCommand()) return
@@ -39,7 +39,7 @@ export async function createBot(config: Config): Promise<Service> {
 }
 
 async function registerCommands(config: Config): Promise<unknown> {
-  const rest = new REST({ version: '9' }).setToken(config.botToken)
+  const rest = new REST({ version: '10' }).setToken(config.botToken)
   const body = [cardCommand.command, rulingsCommand.command].map((command) => command.toJSON())
   return rest.put(Routes.applicationCommands(config.clientId), { body })
 }
