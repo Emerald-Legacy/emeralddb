@@ -1,4 +1,3 @@
-import bodyParser from 'body-parser'
 import cors from 'cors'
 import express, { Request, Response } from 'express'
 import helmet from 'helmet'
@@ -14,13 +13,13 @@ export default async (): Promise<Service> => {
   const app = express()
 
   app.use(helmet({ contentSecurityPolicy: false }))
-  app.use(bodyParser.json({ limit: '200mb' }))
-  app.use(bodyParser.urlencoded({ extended: true }))
+  app.use(express.json({ limit: '200mb' }))
+  app.use(express.urlencoded({ extended: true }))
 
   app.use(cors())
   app.use('/api', api())
   app.use(express.static(path.resolve(__dirname, 'public')))
-  app.get('/*', function (req: Request, res: Response) {
+  app.get('/*path', function (req: Request, res: Response) {
     res.sendFile(path.resolve(__dirname, 'public', 'index.html'))
   })
 

@@ -1,4 +1,5 @@
-import { AsyncRouter, AsyncRouterInstance } from 'express-async-router'
+import { Router } from 'express'
+import { asyncHandler } from './utils/asyncHandler'
 import * as getAllFormats from './handlers/getAllFormats'
 import * as insertOrUpdateFormat from './handlers/insertOrUpdateFormat'
 import * as getAllCards from './handlers/getAllCards'
@@ -44,71 +45,62 @@ import * as getAllCommentsForDecklist from './handlers/getAllCommentsForDecklist
 import { authorizedOnly, dataAdminOnly, rulesAdminOnly } from './middlewares/authorization'
 import env from './env'
 
-export default (): AsyncRouterInstance => {
-  const api = AsyncRouter()
-  api.get('/cards', getAllCards.handler)
-  api.get('/cards/:cardId', getCardDetails.handler)
-  api.post('/cards/:cardId', authorizedOnly, dataAdminOnly, updateCard.handler)
-  api.delete('/cards/:cardId', authorizedOnly, dataAdminOnly, deleteCard.handler)
-  api.post('/cards/:cardId/rename', authorizedOnly, dataAdminOnly, renameCard.handler)
-  api.put('/cards', authorizedOnly, dataAdminOnly, createCard.handler)
-  api.get('/packs', getAllPacks.handler)
-  api.put('/packs', authorizedOnly, dataAdminOnly, createPack.handler)
-  api.put('/packs/import', authorizedOnly, dataAdminOnly, importPack.handler)
-  api.put('/packs/rotate/:id', authorizedOnly, dataAdminOnly, rotatePack.handler)
-  api.get('/packs/export/:id', exportPack.handler)
-  api.post('/cards-in-packs', authorizedOnly, dataAdminOnly, updateCardsInPack.handler)
-  api.put('/cards-in-packs', authorizedOnly, dataAdminOnly, updateCardInPack.handler)
-  api.delete('/cards-in-packs', authorizedOnly, dataAdminOnly, deleteCardInPack.handler)
-  api.get('/formats', getAllFormats.handler)
-  api.put('/formats', authorizedOnly, dataAdminOnly, insertOrUpdateFormat.handler)
-  api.get('/cycles', getAllCycles.handler)
-  api.put('/cycles', authorizedOnly, dataAdminOnly, createCycle.handler)
-  api.put('/cycles/rotate/:id', authorizedOnly, dataAdminOnly, rotateCycle.handler)
-  api.get('/traits', getAllTraits.handler)
-  api.put('/traits', authorizedOnly, dataAdminOnly, updateTrait.handler)
-  api.delete('/traits', authorizedOnly, dataAdminOnly, deleteTrait.handler)
-  api.get('/users/me', authorizedOnly, getCurrentUser.handler)
-  api.put('/users/me', authorizedOnly, updateUser.handler)
-  api.get('/decks/:deckId', getDeck.handler)
-  api.post('/decks', getAllDecksForUser.handler)
-  api.put('/decks', authorizedOnly, createDeck.handler)
-  api.delete('/decks/:deckId', authorizedOnly, deleteDeck.handler)
-  api.get('/decklists', getAllPublishedDecklists.handler)
-  api.get('/decklists/:decklistId', getDecklist.handler)
-  api.post('/decklists/:decklistId/publish', authorizedOnly, publishDecklist.handler)
-  api.post('/decklists/:decklistId/unpublish', authorizedOnly, unpublishDecklist.handler)
-  api.post('/decklists/validate', validateDecklist.handler)
-  api.delete('/decklists/:decklistId', authorizedOnly, deleteDecklist.handler)
-  api.put('/decklists', authorizedOnly, createDecklist.handler)
-  api.put('/rulings', authorizedOnly, rulesAdminOnly, createRuling.handler)
-  api.post('/rulings/:rulingId', authorizedOnly, rulesAdminOnly, updateRuling.handler)
-  api.delete('/rulings/:rulingId', authorizedOnly, rulesAdminOnly, deleteRuling.handler)
-  api.get('/decklists/:decklistId/comments', getAllCommentsForDecklist.handler)
-  api.put('/comments', authorizedOnly, createDecklistComment.handler)
-  api.post('/comments/:id', authorizedOnly, updateDecklistComment.handler)
-  api.delete('/comments/:id', authorizedOnly, deleteDecklistComment.handler)
-  api.get(
-    '/auth0',
-    (): {
-      domain: string
-      clientId: string
-    } => {
-      return {
-        domain: env.auth0Domain,
-        clientId: env.auth0ClientId,
-      }
-    }
-  )
-  api.get(
-    '/beta-url',
-    (): {
-      betaUrl: string
-    } => {
-      return {
-        betaUrl: env.betaUrl,
-      }
-    }
-  )
+export default (): Router => {
+  const api = Router()
+  const w = asyncHandler // shorthand for wrapping handlers
+
+  api.get('/cards', w(getAllCards.handler))
+  api.get('/cards/:cardId', w(getCardDetails.handler))
+  api.post('/cards/:cardId', authorizedOnly, w(dataAdminOnly), w(updateCard.handler))
+  api.delete('/cards/:cardId', authorizedOnly, w(dataAdminOnly), w(deleteCard.handler))
+  api.post('/cards/:cardId/rename', authorizedOnly, w(dataAdminOnly), w(renameCard.handler))
+  api.put('/cards', authorizedOnly, w(dataAdminOnly), w(createCard.handler))
+  api.get('/packs', w(getAllPacks.handler))
+  api.put('/packs', authorizedOnly, w(dataAdminOnly), w(createPack.handler))
+  api.put('/packs/import', authorizedOnly, w(dataAdminOnly), w(importPack.handler))
+  api.put('/packs/rotate/:id', authorizedOnly, w(dataAdminOnly), w(rotatePack.handler))
+  api.get('/packs/export/:id', w(exportPack.handler))
+  api.post('/cards-in-packs', authorizedOnly, w(dataAdminOnly), w(updateCardsInPack.handler))
+  api.put('/cards-in-packs', authorizedOnly, w(dataAdminOnly), w(updateCardInPack.handler))
+  api.delete('/cards-in-packs', authorizedOnly, w(dataAdminOnly), w(deleteCardInPack.handler))
+  api.get('/formats', w(getAllFormats.handler))
+  api.put('/formats', authorizedOnly, w(dataAdminOnly), w(insertOrUpdateFormat.handler))
+  api.get('/cycles', w(getAllCycles.handler))
+  api.put('/cycles', authorizedOnly, w(dataAdminOnly), w(createCycle.handler))
+  api.put('/cycles/rotate/:id', authorizedOnly, w(dataAdminOnly), w(rotateCycle.handler))
+  api.get('/traits', w(getAllTraits.handler))
+  api.put('/traits', authorizedOnly, w(dataAdminOnly), w(updateTrait.handler))
+  api.delete('/traits', authorizedOnly, w(dataAdminOnly), w(deleteTrait.handler))
+  api.get('/users/me', authorizedOnly, w(getCurrentUser.handler))
+  api.put('/users/me', authorizedOnly, w(updateUser.handler))
+  api.get('/decks/:deckId', w(getDeck.handler))
+  api.post('/decks', w(getAllDecksForUser.handler))
+  api.put('/decks', authorizedOnly, w(createDeck.handler))
+  api.delete('/decks/:deckId', authorizedOnly, w(deleteDeck.handler))
+  api.get('/decklists', w(getAllPublishedDecklists.handler))
+  api.get('/decklists/:decklistId', w(getDecklist.handler))
+  api.post('/decklists/:decklistId/publish', authorizedOnly, w(publishDecklist.handler))
+  api.post('/decklists/:decklistId/unpublish', authorizedOnly, w(unpublishDecklist.handler))
+  api.post('/decklists/validate', w(validateDecklist.handler))
+  api.delete('/decklists/:decklistId', authorizedOnly, w(deleteDecklist.handler))
+  api.put('/decklists', authorizedOnly, w(createDecklist.handler))
+  api.put('/rulings', authorizedOnly, w(rulesAdminOnly), w(createRuling.handler))
+  api.post('/rulings/:rulingId', authorizedOnly, w(rulesAdminOnly), w(updateRuling.handler))
+  api.delete('/rulings/:rulingId', authorizedOnly, w(rulesAdminOnly), w(deleteRuling.handler))
+  api.get('/decklists/:decklistId/comments', w(getAllCommentsForDecklist.handler))
+  api.put('/comments', authorizedOnly, w(createDecklistComment.handler))
+  api.post('/comments/:id', authorizedOnly, w(updateDecklistComment.handler))
+  api.delete('/comments/:id', authorizedOnly, w(deleteDecklistComment.handler))
+  api.get('/auth0', (req, res) => {
+    res.json({
+      domain: env.auth0Domain,
+      clientId: env.auth0ClientId,
+    })
+  })
+  api.get('/beta-url', (req, res) => {
+    res.json({
+      betaUrl: env.betaUrl,
+    })
+  })
   return api
 }

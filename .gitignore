@@ -36,3 +36,4 @@ coverage
 report.*.json
 
 .idea/
+.claude/settings.local.json

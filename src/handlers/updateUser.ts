@@ -15,7 +15,7 @@ export async function handler(
   req: ValidatedRequest<typeof schema>,
   res: Express.Response
 ): Promise<User | undefined> {
-  const currentUser = req.user as User & { sub: string }
+  const currentUser = (req as any).auth as User & { sub: string }
   if (!currentUser?.sub) {
     res.status(401).send()
     return

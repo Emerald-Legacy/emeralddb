@@ -313,8 +313,8 @@ export function CardsView(): JSX.Element {
             </span>
           )
         },
-        sortComparator: (v1, v2, param1, param2) =>
-          param1.row.name.name.localeCompare(param2.row.name.name),
+        sortComparator: (v1, v2) =>
+          (v1 as NameProps).name.localeCompare((v2 as NameProps).name),
       },
       {
         field: 'traits',
@@ -377,7 +377,6 @@ export function CardsView(): JSX.Element {
         <Paper className={classes.table}>
           <Selectors />
           <DataGrid
-            disableColumnResize
             disableSelectionOnClick
             columns={columns}
             rows={tableCards}

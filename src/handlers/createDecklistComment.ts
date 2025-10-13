@@ -14,7 +14,7 @@ export const schema = {
 export async function handler(
   req: ValidatedRequest<typeof schema>
 ): Promise<DecklistComment | undefined> {
-  const user = req.user as { sub: string }
+  const user = (req as any).auth as { sub: string }
   return insertComment({
     comment: req.body.comment,
     decklist_id: req.body.decklist_id,

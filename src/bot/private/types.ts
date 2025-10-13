@@ -9,7 +9,7 @@ export interface Config {
 export interface Command {
   name: string
   command: Omit<SlashCommandBuilder, 'addSubcommand' | 'addSubcommandGroup'>
-  handler(interaction: CommandInteraction): Promise<void>
+  handler(interaction: CommandInteraction): Promise<any>
 }
 
 export interface CardInput {

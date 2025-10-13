@@ -18,7 +18,7 @@ export const schema = {
 }
 
 export async function handler(req: ValidatedRequest<typeof schema>): Promise<Decklist | undefined> {
-  const user = req.user as { sub: string }
+  const user = (req as any).auth as { sub: string }
   console.log('Create decklist for user ' + user.sub)
   return await insertDecklist({ ...req.body, user_id: user.sub })
 }

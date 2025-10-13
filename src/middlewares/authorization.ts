@@ -1,5 +1,5 @@
 import * as express from 'express'
-import jwt from 'express-jwt'
+import { expressjwt as jwt } from 'express-jwt'
 import jwks from 'jwks-rsa'
 import { getOrInsertDBUser } from '../gateways/storage'
 import env from '../env'
@@ -29,24 +29,38 @@ export const authorizedOnly = jwt({
   algorithms: ['RS256'],
 })
 
-export async function rulesAdminOnly(req: express.Request, res: express.Response): Promise<void> {
-  const user: Auth0User = req.user as Auth0User
+export async function rulesAdminOnly(
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+): Promise<void> {
+  const user: Auth0User = (req as any).auth as Auth0User
   if (!user?.sub) {
     res.status(401).send()
+    return
   }
   const dbUser = await getOrInsertDBUser(user.sub)
   if (!dbUser.roles.includes(RULES_ADMIN)) {
     res.status(401).send()
+    return
   }
+  next()
 }
 
-export async function dataAdminOnly(req: express.Request, res: express.Response): Promise<void> {
-  const user: Auth0User = req.user as Auth0User
+export async function dataAdminOnly(
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+): Promise<void> {
+  const user: Auth0User = (req as any).auth as Auth0User
   if (!user?.sub) {
     res.status(401).send()
+    return
   }
   const dbUser = await getOrInsertDBUser(user.sub)
   if (!dbUser.roles.includes(DATA_ADMIN)) {
     res.status(401).send()
+    return
   }
+  next()
 }

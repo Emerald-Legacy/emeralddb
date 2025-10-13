@@ -14,21 +14,23 @@ jobs:
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: Use Node.js
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v4
       with:
-        node-version: '16.13.1'
+        node-version: '22.x'
+        cache: 'yarn'
     - run: yarn
     - run: yarn lint
   compilation-tests:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: Use Node.js
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v4
       with:
-        node-version: '16.13.1'
+        node-version: '22.x'
+        cache: 'yarn'
     - run: yarn
     - run: yarn build
 
@@ -37,7 +39,7 @@ jobs:
     needs: [lint, compilation-tests]
     if: github.ref == 'refs/heads/master'
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - uses: akhileshns/heroku-deploy@v3.6.8 # This is the action
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
@@ -49,7 +51,7 @@ jobs:
     needs: [lint, compilation-tests]
     if: github.ref == 'refs/heads/release'
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - uses: akhileshns/heroku-deploy@v3.6.8 # This is the action
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}

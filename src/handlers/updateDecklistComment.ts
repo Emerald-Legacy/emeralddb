@@ -14,7 +14,7 @@ export async function handler(
   req: ValidatedRequest<typeof schema>,
   res: Express.Response
 ): Promise<DecklistComment | undefined> {
-  const user = req.user as { sub: string }
+  const user = (req as any).auth as { sub: string }
   const comment = await getComment(req.params.id)
   if (!comment) {
     res.status(404).send()

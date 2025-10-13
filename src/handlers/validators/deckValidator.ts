@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { CardWithVersions, Format } from '@5rdb/api'
 import lodash from 'lodash'
 import { getAllCards, getAllCardsInPacks, getAllFormats } from '../../gateways/storage/index'
@@ -335,13 +334,13 @@ function createDeckStatistics(
   const conflictCardsWrapper = splitConflictCards(conflictCards)
   const stronghold = strongholds.length > 0 ? strongholds[0] : null
   const role = roles.length > 0 ? roles[0] : null
-  const baseInfluence = formatId === 'skirmish' ? 6 : stronghold?.influence_pool ?? 0
+  const baseInfluence = formatId === 'skirmish' ? 6 : (stronghold?.influence_pool ?? 0)
   const extraInfluenceFromRole = role
     ? role.id.includes('support')
       ? 8
       : role.id.includes('keeper')
-      ? 3
-      : 0
+        ? 3
+        : 0
     : 0
   const extraInfluenceFromCards = cardsThatModifyInfluence
     .filter((card) => cards[card.id] && cards[card.id] > 0)
@@ -398,7 +397,8 @@ function createDeckStatistics(
     secondaryClan: secondaryClan,
     bannedCards: bannedCards,
     restrictedCards: restrictedCards,
-    rotatedCards: formatId === 'emerald' ? lodash.uniq([...illegalCards, ...rotatedCards]) : illegalCards,
+    rotatedCards:
+      formatId === 'emerald' ? lodash.uniq([...illegalCards, ...rotatedCards]) : illegalCards,
     validationErrors: [],
   }
 
