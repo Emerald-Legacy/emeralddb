@@ -42,6 +42,7 @@ export function Auth0ProviderWithHistory(props: {
               audience: props.audience,
               scope: props.scope,
             }}
+            cacheLocation={'localstorage'}
             onRedirectCallback={onRedirectCallback}
           >
             {props.children}
