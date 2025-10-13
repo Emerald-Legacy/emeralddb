@@ -110,7 +110,6 @@ export function DecksView(): JSX.Element {
       <DeckFilter onFilterChanged={setFilter} filterState={filter} />
       <Paper className={classes.table}>
         <DataGrid
-          disableColumnResize
           disableSelectionOnClick
           columns={columns}
           rows={sortedDecks}
