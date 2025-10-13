@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
+ 
 import { CardWithVersions, Format } from '@5rdb/api'
 import lodash from 'lodash'
 import { getAllCards, getAllCardsInPacks, getAllFormats } from '../../gateways/storage/index'

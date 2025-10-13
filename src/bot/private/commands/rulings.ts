@@ -1,4 +1,4 @@
-import { DiscordAPIError, EmbedBuilder, ColorResolvable } from 'discord.js'
+import { DiscordAPIError, EmbedBuilder } from 'discord.js'
 import { SlashCommandBuilder } from '@discordjs/builders'
 import { getAllRulingsForCard } from '../../../gateways/storage'
 import { search } from '../cardsFuzzySearch'

@@ -12,7 +12,7 @@ export type ValidatedRequest<
   Params extends ParamsDictionary = ParamsDictionary,
   QuerySchema = ReqSchema['query'] extends ObjectSchema<infer C> ? C : Query,
   BodySchema = ReqSchema['body'] extends ObjectSchema<infer C> ? C : undefined
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
 > = Request<Params, any, BodySchema, QuerySchema>
 
 export const validate =

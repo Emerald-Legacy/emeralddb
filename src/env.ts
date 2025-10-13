@@ -38,7 +38,7 @@ function parseDiscordConfig(): {
         isBotEnabled: json.isBotEnabled,
       }
     }
-  } catch (e) {
+  } catch {
     throw Error(errorMsgMalformed)
   }
   throw Error(errorMsgMalformed)
