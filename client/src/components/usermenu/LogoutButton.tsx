@@ -16,8 +16,9 @@ export function LogoutButton(props: { onLogout: () => void }): JSX.Element {
         unsetToken()
         props.onLogout()
         logout({
-          client_id: auth0Config.clientId,
-          returnTo: window.location.origin + '/cards',
+          logoutParams: {
+            returnTo: window.location.origin + '/cards',
+          },
         })
       }}
     >

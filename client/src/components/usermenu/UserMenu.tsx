@@ -44,8 +44,10 @@ export function UserMenu(props: { audience: string; scope: string }): JSX.Elemen
   const fetchToken = async () => {
     try {
       const accessToken = await getAccessTokenSilently({
-        audience: props.audience,
-        scope: props.scope,
+        authorizationParams: {
+          audience: props.audience,
+          scope: props.scope,
+        },
       })
       setToken(accessToken)
       queryClient.invalidateQueries(Queries.USER)

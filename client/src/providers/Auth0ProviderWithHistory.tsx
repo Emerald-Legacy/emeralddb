@@ -22,7 +22,7 @@ export function Auth0ProviderWithHistory(props: {
   const auth0Domain: string = auth0Config.data?.domain || 'undefined'
   const auth0ClientId: string = auth0Config.data?.clientId || 'undefined'
 
-  const onRedirectCallback = (appState: { returnTo?: string }) => {
+  const onRedirectCallback = (appState?: { returnTo?: string }) => {
     console.log(window.location.pathname)
     history.push(appState?.returnTo || window.location.pathname)
   }
@@ -37,10 +37,12 @@ export function Auth0ProviderWithHistory(props: {
           <Auth0Provider
             domain={auth0Domain}
             clientId={auth0ClientId}
-            redirectUri={redirectUri}
+            authorizationParams={{
+              redirect_uri: redirectUri,
+              audience: props.audience,
+              scope: props.scope,
+            }}
             onRedirectCallback={onRedirectCallback}
-            audience={props.audience}
-            scope={props.scope}
           >
             {props.children}
           </Auth0Provider>

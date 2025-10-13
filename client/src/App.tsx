@@ -42,7 +42,6 @@ export default function App(): JSX.Element {
                 <ConfirmProvider
                   defaultOptions={{
                     dialogProps: {
-                      open: true,
                       maxWidth: 'md',
                     },
                   }}
