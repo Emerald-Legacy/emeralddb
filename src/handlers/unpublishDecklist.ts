@@ -19,7 +19,7 @@ export async function handler(
     res.sendStatus(404)
     return
   }
-  const user = req.user as { sub: string }
+  const user = (req as any).auth as { sub: string }
   if (user.sub !== decklist.user_id) {
     res.sendStatus(403)
     return

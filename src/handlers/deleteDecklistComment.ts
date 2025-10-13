@@ -3,7 +3,7 @@ import { Request, Response } from 'express'
 
 export async function handler(req: Request, res: Response): Promise<void> {
   const commentId = req.params.id
-  const user = req.user as { sub: string }
+  const user = (req as any).auth as { sub: string }
   const comment = await getComment(commentId)
   if (!comment) {
     res.status(404).send()

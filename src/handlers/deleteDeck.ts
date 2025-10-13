@@ -12,7 +12,7 @@ export async function handler(req: Request, res: Response): Promise<void> {
     res.status(404).send()
     return
   }
-  const user = req.user as { sub: string }
+  const user = (req as any).auth as { sub: string }
   if (deck.user_id !== user.sub) {
     res.status(403).send()
     return

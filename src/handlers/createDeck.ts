@@ -10,7 +10,7 @@ export const schema = {
 }
 
 export async function handler(req: ValidatedRequest<typeof schema>): Promise<Deck | undefined> {
-  const user = req.user as { sub: string }
+  const user = (req as any).auth as { sub: string }
   console.log('Create deck for user ' + user.sub)
   const deck = await insertDeck({ user_id: user.sub, forked_from: req.body.forkedFrom })
   if (req.body.forkedFrom) {

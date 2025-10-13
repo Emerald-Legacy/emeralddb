@@ -1,5 +1,5 @@
 import * as express from 'express'
-import jwt from 'express-jwt'
+import { expressjwt as jwt } from 'express-jwt'
 import jwks from 'jwks-rsa'
 import { getOrInsertDBUser } from '../gateways/storage'
 import env from '../env'
@@ -23,14 +23,14 @@ export const authorizedOnly = jwt({
     rateLimit: true,
     jwksRequestsPerMinute: 5,
     jwksUri: `https://${env.auth0Domain}/.well-known/jwks.json`,
-  }) as any,
+  }),
   audience: 'http://fiveringsdb.com',
   issuer: `https://${env.auth0Domain}/`,
   algorithms: ['RS256'],
 })
 
 export async function rulesAdminOnly(req: express.Request, res: express.Response): Promise<void> {
-  const user: Auth0User = req.user as Auth0User
+  const user: Auth0User = (req as any).auth as Auth0User
   if (!user?.sub) {
     res.status(401).send()
   }
@@ -41,7 +41,7 @@ export async function rulesAdminOnly(req: express.Request, res: express.Response
 }
 
 export async function dataAdminOnly(req: express.Request, res: express.Response): Promise<void> {
-  const user: Auth0User = req.user as Auth0User
+  const user: Auth0User = (req as any).auth as Auth0User
   if (!user?.sub) {
     res.status(401).send()
   }
