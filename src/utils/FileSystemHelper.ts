@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-non-literal-fs-filename */
 import fs from 'fs'
 
 export function getFilesInDirectory(dir: string, allFiles?: string[]): string[] {

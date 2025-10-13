@@ -11,8 +11,7 @@ export type ValidatedRequest<
   ReqSchema extends ValidationProperties,
   Params extends ParamsDictionary = ParamsDictionary,
   QuerySchema = ReqSchema['query'] extends ObjectSchema<infer C> ? C : Query,
-  BodySchema = ReqSchema['body'] extends ObjectSchema<infer C> ? C : undefined
-   
+  BodySchema = ReqSchema['body'] extends ObjectSchema<infer C> ? C : undefined,
 > = Request<Params, any, BodySchema, QuerySchema>
 
 export const validate =
