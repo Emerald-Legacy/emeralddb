@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm audit:*)",
+      "Bash(node:*)",
+      "Bash(yarn audit --json)",
+      "Bash(npm --version)",
+      "Bash(npm install:*)",
+      "Bash(cd:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(npm run build:server:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

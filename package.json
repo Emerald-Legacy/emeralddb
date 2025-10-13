@@ -36,7 +36,7 @@
     "@types/express-jwt": "^6.0.1",
     "@types/jsonwebtoken": "^8.5.1",
     "@types/lodash": "^4.14.170",
-    "@types/node": "16.11.9",
+    "@types/node": "^22.18.10",
     "@types/passport": "^1.0.2",
     "@types/uuid": "^8.3.0",
     "@typescript-eslint/eslint-plugin": "^4.18.0",
@@ -70,7 +70,7 @@
     "pg": "^8.5.1",
     "prettier": "^2.2.1",
     "source-map-support": "^0.5.16",
-    "typescript": "^4.1.2",
+    "typescript": "^5.9.3",
     "uuid": "^8.3.2"
   },
   "ava": {
