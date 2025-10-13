@@ -1,4 +1,4 @@
-import { insertDeck, getDecklist, insertDecklist } from '../gateways/storage/index'
+import { insertDeck, getDecklist, insertDecklist } from '../gateways/storage'
 import Joi from 'joi'
 import { ValidatedRequest } from '../middlewares/validator'
 import { Deck, Decks$create } from '@5rdb/api'
@@ -12,9 +12,9 @@ export const schema = {
 export async function handler(req: ValidatedRequest<typeof schema>): Promise<Deck | undefined> {
   const user = (req as any).auth as { sub: string }
   console.log('Create deck for user ' + user.sub)
-  const deck = await insertDeck({ user_id: user.sub, forked_from: req.body.forkedFrom })
-  if (req.body.forkedFrom) {
-    const decklist = await getDecklist(req.body.forkedFrom)
+  const deck = await insertDeck({ user_id: user.sub, forked_from: req.body?.forkedFrom })
+  if (req.body?.forkedFrom) {
+    const decklist = await getDecklist(req.body?.forkedFrom)
     if (decklist) {
       await insertDecklist({
         deck_id: deck.id,
