@@ -14,7 +14,7 @@ import {
 import { useState } from 'react'
 import { useQueryClient } from 'react-query'
 import { privateApi } from '../../api'
-import { setToken } from '../../utils/auth'
+import { getToken, hasAuth0Token, setToken } from '../../utils/auth'
 import { Queries } from '../HeaderBar'
 import { LoginButton } from './LoginButton'
 import { LogoutButton } from './LogoutButton'
@@ -28,7 +28,8 @@ export function UserMenu(props: { audience: string; scope: string }): JSX.Elemen
   const [modalOpen, setModalOpen] = useState(false)
   const [modalUsername, setModalUsername] = useState<string>()
 
-  const { getAccessTokenSilently } = useAuth0()
+  const { getAccessTokenSilently } = useAuth0();
+
   const { currentUser, setCurrentUser } = useCurrentUser()
 
   const queryClient = useQueryClient()
@@ -40,20 +41,26 @@ export function UserMenu(props: { audience: string; scope: string }): JSX.Elemen
   const handleClose = () => {
     setAnchorEl(null)
   }
-
-  const fetchToken = async () => {
+  const getUserToken = () => {
     try {
-      const accessToken = await getAccessTokenSilently({
-        authorizationParams: {
-          audience: props.audience,
-          scope: props.scope,
-        },
-      })
-      setToken(accessToken)
-      queryClient.invalidateQueries(Queries.USER)
+      if (hasAuth0Token()) {
+        getAccessTokenSilently({
+          authorizationParams: {
+            audience: props.audience,
+            scope: props.scope,
+          },
+        }).then(accessToken => {
+          setToken(accessToken)
+          queryClient.invalidateQueries(Queries.USER)
+        })
+      }
     } catch (e) {
       console.log(e)
     }
+  };
+
+  if(hasAuth0Token() && !getToken()) {
+    getUserToken()
   }
 
   if (currentUser !== undefined) {
@@ -130,7 +137,7 @@ export function UserMenu(props: { audience: string; scope: string }): JSX.Elemen
 
   return (
     <div>
-      <LoginButton onLogin={fetchToken} audience={props.audience} scope={props.scope} />
+      <LoginButton audience={props.audience} scope={props.scope} />
     </div>
   )
 }

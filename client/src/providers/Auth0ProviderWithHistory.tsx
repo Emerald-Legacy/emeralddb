@@ -23,8 +23,8 @@ export function Auth0ProviderWithHistory(props: {
   const auth0ClientId: string = auth0Config.data?.clientId || 'undefined'
 
   const onRedirectCallback = (appState?: { returnTo?: string }) => {
-    console.log(window.location.pathname)
-    history.push(appState?.returnTo || window.location.pathname)
+    let location = appState?.returnTo || window.location.pathname
+    history.push(location + "cards")
   }
 
   const redirectUri = window.location.origin.includes('localhost')
@@ -42,7 +42,6 @@ export function Auth0ProviderWithHistory(props: {
               audience: props.audience,
               scope: props.scope,
             }}
-            useRefreshTokens={true}
             cacheLocation="localstorage"
             onRedirectCallback={onRedirectCallback}
           >
