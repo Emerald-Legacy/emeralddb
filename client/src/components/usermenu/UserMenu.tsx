@@ -12,7 +12,7 @@ import {
   TextField,
 } from '@mui/material'
 import { useState } from 'react'
-import { useQueryClient } from 'react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import { privateApi } from '../../api'
 import { getToken, hasAuth0Token, setToken } from '../../utils/auth'
 import { Queries } from '../HeaderBar'
@@ -51,7 +51,7 @@ export function UserMenu(props: { audience: string; scope: string }): JSX.Elemen
           },
         }).then(accessToken => {
           setToken(accessToken)
-          queryClient.invalidateQueries(Queries.USER)
+          queryClient.invalidateQueries({ queryKey: [Queries.USER] })
         })
       }
     } catch (e) {
