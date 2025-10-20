@@ -73,8 +73,8 @@ const StyledPaper = styled(Paper)((
   },
 
   [`& .${classes.filterGridItem}`]: {
-    height: 40,
-    margin: '4px 0',
+    height: 32,
+    margin: '2px 0',
   },
 
   [`& .${classes.filterGridItemBuilder}`]: {

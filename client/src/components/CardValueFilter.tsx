@@ -15,15 +15,15 @@ const StyledGrid = styled(Grid)((
   }
 ) => ({
   [`& .${classes.buttonGroup}`]: {
-    marginLeft: theme.spacing(2),
-    marginRight: theme.spacing(1),
+    marginLeft: theme.spacing(1.8),
+    marginRight: theme.spacing(2),
   },
 
   [`& .${classes.button}`]: {
     height: 24,
     width: 24,
     minWidth: 24,
-    padding: 3,
+    padding: 2,
   }
 }));
 
@@ -45,7 +45,7 @@ export function CardValueFilter(props: {
 
   return (
     <StyledGrid container alignItems="flex-end" alignContent="flex-end">
-      <Grid size={{ xs: 2, md: 1 }}>
+      <Grid size={{ xs: 2, md: 1 }} sx={{ paddingRight: 1.8 }}>
         {props.valueLabel}
       </Grid>
       <Grid size={{ xs: 4, md: 4 }}>
@@ -73,9 +73,15 @@ export function CardValueFilter(props: {
           </Button>
         </ButtonGroup>
       </Grid>
-      <Grid size={{ xs: 6, md: 7 }}>
-        <TextField value={filterString} onChange={(e) => setFilterString(e.target.value)} />
+      <Grid size={{ xs: 4, md: 5 }}>
+        <TextField
+          value={filterString}
+          onChange={(e) => setFilterString(e.target.value)}
+          variant="standard"
+          fullWidth
+        />
       </Grid>
+      <Grid size={{ xs: 2, md: 2 }} />
     </StyledGrid>
   );
 }
