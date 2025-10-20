@@ -1,6 +1,6 @@
 import { Popover, Theme } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useUiStore } from '../../providers/UiStoreProvider'
 import { CardInformation } from './CardInformation'
 import { CardTypeIcon } from './CardTypeIcon'
@@ -23,10 +23,6 @@ const classes = {
 const Root = styled('span')(({
   theme
 }) => ({
-  [`& .${classes.popover}`]: {
-    pointerEvents: 'none',
-  },
-
   [`& .${classes.popoverText}`]: {
     padding: theme.spacing(1),
   }
@@ -127,23 +123,19 @@ export function CardLink(props: {
   sameTab?: boolean
   format?: string
   notClickable?: boolean
+  hoveredCardId?: string | null
 }): JSX.Element {
   const { cards, relevantFormats, validCardVersionForFormat } = useUiStore()
-  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
-
+  const spanRef = React.useRef<HTMLSpanElement>(null)
 
   const card = cards.find((card) => card.id === props.cardId)
   if (!card) {
     return <span>Unknown Card ID</span>
   }
 
-  const handlePopoverOpen = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
-    setAnchorEl(event.currentTarget)
-  }
+  // Determine if popover should be open based on external hover state
+  const open = props.hoveredCardId === props.cardId
 
-  const handlePopoverClose = () => {
-    setAnchorEl(null)
-  }
   let legalVersion: Omit<CardInPack, 'card_id'> | undefined = card.versions[0]
   const format = relevantFormats.find(f => f.id === props.format)
   if (format) {
@@ -153,7 +145,6 @@ export function CardLink(props: {
     }
   }
 
-  const open = Boolean(anchorEl)
   const cardImage = legalVersion?.image_url
 
   let bannedFormats = card.banned_in?.filter(f => relevantFormats.some(rf => rf.id === f)) || []
@@ -175,40 +166,36 @@ export function CardLink(props: {
   }
 
   return (
-    <span>
+    <span ref={spanRef} style={{ display: 'inline-block' }}>
       <EmeraldDBLink
         href={`/card/${card.id}`}
         notClickable={props.notClickable}
         openInNewTab={!props.sameTab}
       >
-        <span onMouseEnter={handlePopoverOpen} onMouseLeave={handlePopoverClose}>
-          <CardTypeIcon type={card.type} faction={card.faction} />
-          {card.is_unique && (
-            <>
-              {' '}
-              <span className={`icon icon-unique`} style={{ fontSize: 12 }} />
-            </>
-          )}{' '}
-          {card.name}{' '}
-          {card.elements?.map((element) => (
-            <ElementSymbol element={element} key={element} withoutName />
-          ))}
-        </span>
-        <span>
-          {bannedFormats.length > 0 && <BannedIcon formats={bannedFormats} />}
-          {restrictedFormats.length > 0 && <RestrictedIcon formats={restrictedFormats} />}
-          {splashBannedFormats.length > 0 && <SplashBannedIcon formats={splashBannedFormats} />}
-          {rallyFormats.length > 0 && <RallyIcon formats={rallyFormats} />}
-          {format && !legalVersion && (
-            <RotatedIcon formats={[format.id]} />
-          )}
-        </span>
+        <CardTypeIcon type={card.type} faction={card.faction} />
+        {card.is_unique && (
+          <>
+            {' '}
+            <span className={`icon icon-unique`} style={{ fontSize: 12 }} />
+          </>
+        )}{' '}
+        {card.name}{' '}
+        {card.elements?.map((element) => (
+          <ElementSymbol element={element} key={element} withoutName />
+        ))}
+        {bannedFormats.length > 0 && <BannedIcon formats={bannedFormats} />}
+        {restrictedFormats.length > 0 && <RestrictedIcon formats={restrictedFormats} />}
+        {splashBannedFormats.length > 0 && <SplashBannedIcon formats={splashBannedFormats} />}
+        {rallyFormats.length > 0 && <RallyIcon formats={rallyFormats} />}
+        {format && !legalVersion && (
+          <RotatedIcon formats={[format.id]} />
+        )}
       </EmeraldDBLink>
       <Popover
         id="mouse-over-popover"
         className={classes.popover}
         open={open}
-        anchorEl={anchorEl}
+        anchorEl={spanRef.current}
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'right',
@@ -217,11 +204,16 @@ export function CardLink(props: {
           vertical: 'bottom',
           horizontal: 'left',
         }}
-        onClose={handlePopoverClose}
         disableRestoreFocus
+        sx={{ pointerEvents: 'none' }}
+        slotProps={{
+          paper: {
+            sx: { pointerEvents: 'none' }
+          }
+        }}
       >
         {cardImage ? (
-          <img src={cardImage} style={{ width: 300, height: 420 }} />
+          <img src={cardImage} style={{ width: 300, height: 420 }} alt={card.name} />
         ) : (
           <CardInformation cardWithVersions={card} currentVersion={legalVersion}/>
         )}
