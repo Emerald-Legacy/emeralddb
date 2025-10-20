@@ -34,7 +34,7 @@ export default function App(): JSX.Element {
 
   return (
     <StyledEngineProvider injectFirst>
-      (<ThemeProvider theme={theme}>
+      <ThemeProvider theme={theme}>
         <QueryClientProvider client={queryClient}>
           <BrowserRouter>
             <Auth0ProviderWithHistory audience={audience} scope={scope}>
@@ -63,7 +63,7 @@ export default function App(): JSX.Element {
             </Auth0ProviderWithHistory>
           </BrowserRouter>
         </QueryClientProvider>
-      </ThemeProvider>)
+      </ThemeProvider>
     </StyledEngineProvider>
   );
 }

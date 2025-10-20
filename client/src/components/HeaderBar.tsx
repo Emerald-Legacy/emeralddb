@@ -50,7 +50,10 @@ const StyledAppBar = styled(AppBar)(() => ({
   },
 
   [`& .${classes.searchField}`]: {
-    backgroundColor: 'white',
+    '& .MuiOutlinedInput-root': {
+      backgroundColor: 'white',
+      borderRadius: '4px',
+    },
     minWidth: 50,
     maxWidth: 200,
   }
@@ -280,6 +283,8 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
                           <TextField
                             className={classes.searchField}
                             placeholder="Search Card..."
+                            size="small"
+                            variant="outlined"
                             InputProps={{
                               startAdornment: (
                                 <InputAdornment position="start">
