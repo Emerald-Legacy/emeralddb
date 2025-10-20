@@ -2,7 +2,6 @@ import { Theme } from '@mui/material/styles';
 import { ThemeProvider, createTheme, responsiveFontSizes, StyledEngineProvider } from '@mui/material/styles';
 import { BrowserRouter } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from 'react-query'
-import 'bootstrap/dist/css/bootstrap.min.css'
 import { HeaderBar } from './components/HeaderBar'
 import { Auth0ProviderWithHistory } from './providers/Auth0ProviderWithHistory'
 import { UiStoreProvider } from './providers/UiStoreProvider'
