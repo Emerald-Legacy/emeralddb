@@ -19,7 +19,7 @@ import { useUiStore } from '../../providers/UiStoreProvider'
 import SaveIcon from '@mui/icons-material/Save'
 import { useConfirm } from 'material-ui-confirm'
 import { privateApi } from '../../api'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { toSlugId } from '../../utils/slugIdUtils'
 
 const useStyles = makeStyles((theme) => ({
@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): JSX.Element {
-  const history = useHistory()
+  const navigate = useNavigate()
   const existingCard = props.existingCard
   const uiStore = useUiStore()
   const allTraits = uiStore.traits
@@ -328,7 +328,7 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
             privateApi.Card.update({ cardId: newCard.id, body: newCard })
               .then(() => {
                 uiStore.toggleReload()
-                history.push(`/card/${newCard.id}`)
+                navigate(`/card/${newCard.id}`)
               })
               .catch((error) => {
                 console.log(error)
@@ -349,7 +349,7 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
           privateApi.Card.create({ body: newCard })
             .then(() => {
               uiStore.toggleReload()
-              history.push(`/card/${newCard.id}`)
+              navigate(`/card/${newCard.id}`)
             })
             .catch((error) => {
               console.log(error)

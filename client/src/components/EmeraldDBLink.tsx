@@ -1,5 +1,5 @@
 import React from 'react'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { Link } from '@mui/material'
 
 export function EmeraldDBLink(props: {
@@ -9,10 +9,10 @@ export function EmeraldDBLink(props: {
   notClickable?: boolean
   openInNewTab?: boolean
 }): JSX.Element {
-  const history = useHistory()
+  const navigate = useNavigate()
 
   function goTo(route: string) {
-    history.push(route)
+    navigate(route)
   }
 
   function onLinkClick(

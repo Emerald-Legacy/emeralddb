@@ -6,7 +6,7 @@ import Autocomplete from '@mui/material/Autocomplete'
 import { clans } from '../utils/enums'
 import { OrganizedPlayList } from '../components/OrganizedPlayList'
 import { CardWithVersions } from '@5rdb/api'
-import { useHistory, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { CardLink } from '../components/card/CardLink'
 
 const formats = [
@@ -32,15 +32,15 @@ function isSplashBanned(card: CardWithVersions, format: string, filterClan: stri
 export function OpLists(): JSX.Element {
   const params = useParams<{ format: string }>()
   const { cards, cycles, packs } = useUiStore()
-  const [format, setFormat] = useState(params.format || '')
+  const [format, setFormat] = useState(params.format! || '')
   const [filterClan, setFilterClan] = useState('')
-  const history = useHistory()
+  const navigate = useNavigate()
 
   if (!cards) {
     return <Loading />
   }
-  if (params.format && params.format !== format) {
-    setFormat(params.format)
+  if (params.format! && params.format! !== format) {
+    setFormat(params.format!)
   }
   const formatName = formats.find((f) => f.id === format)?.name || ''
   const formatLink = formats.find((f) => f.id === format)?.link || ''
@@ -99,7 +99,7 @@ export function OpLists(): JSX.Element {
             onChange={(e, value) => {
               const newPathParam = value?.id || ''
               setFormat(newPathParam)
-              history.push(`/rules/organized-play/${newPathParam}`)
+              navigate(`/rules/organized-play/${newPathParam}`)
             }}
           />
         </Grid>

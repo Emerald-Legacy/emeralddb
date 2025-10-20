@@ -1,5 +1,5 @@
 import React, { createContext, ReactNode } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { Auth0Provider } from '@auth0/auth0-react'
 import { useAuth0Config } from '../hooks/useAuth0Config'
 import { Paper, Typography } from '@mui/material'
@@ -14,7 +14,7 @@ export function Auth0ProviderWithHistory(props: {
   scope: string
   children: ReactNode
 }): JSX.Element {
-  const history = useHistory()
+  const navigate = useNavigate()
   const [auth0Config] = useAuth0Config()
   if (auth0Config.loading) {
     return <Typography>Loading ...</Typography>
@@ -24,7 +24,7 @@ export function Auth0ProviderWithHistory(props: {
 
   const onRedirectCallback = (appState?: { returnTo?: string }) => {
     let location = appState?.returnTo || window.location.pathname
-    history.push(location + "cards")
+    navigate(location + "cards")
   }
 
   const redirectUri = window.location.origin.includes('localhost')

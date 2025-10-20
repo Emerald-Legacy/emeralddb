@@ -7,7 +7,7 @@ import { getColorForFactionId } from '../../utils/factionUtils'
 import { capitalize } from '../../utils/stringUtils'
 import { CardText } from './CardText'
 import { ElementSymbol } from './ElementSymbol'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 const useStyles = makeStyles(() => ({
   clanMon: {
@@ -137,7 +137,7 @@ export function CardInformation(props: {
   currentVersion?: Omit<CardInPack, 'card_id'>
   clickable?: boolean
 }): JSX.Element {
-  const history = useHistory()
+  const navigate = useNavigate()
   const classes = useStyles()
   const { traits, packs } = useUiStore()
   const card = props.cardWithVersions
@@ -148,7 +148,7 @@ export function CardInformation(props: {
   const color = getColorForFactionId(card.faction)
 
   const goToCardPage = (id: string) => {
-    history.push(`/card/${id}`)
+    navigate(`/card/${id}`)
   }
 
   const getCardStatInfo = (card: Card) => {

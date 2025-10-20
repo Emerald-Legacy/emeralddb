@@ -13,7 +13,7 @@ import {
   Typography,
 } from "@mui/material";
 import makeStyles from '@mui/styles/makeStyles';
-import { useHistory, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { EmptyState } from '../components/EmptyState'
 import { Loading } from '../components/Loading'
 import { RequestError } from '../components/RequestError'
@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
 export function CardDetailView(): JSX.Element {
   const params = useParams<{ id: string }>()
   const { cards, packs } = useUiStore()
-  const [data] = useCard(params.id)
+  const [data] = useCard(params.id!)
   const [chosenVersionIndex, setChosenVersionIndex] = useState(0)
   const [chosenVersion, setChosenVersion] = useState<Omit<CardInPack, 'card_id'>>()
   const [deletionModalOpen, setDeletionModalOpen] = useState(false)
@@ -56,7 +56,7 @@ export function CardDetailView(): JSX.Element {
   const confirm = useConfirm()
   const { enqueueSnackbar } = useSnackbar()
   const classes = useStyles()
-  const history = useHistory()
+  const navigate = useNavigate()
 
 
   useEffect(() => {
@@ -105,9 +105,9 @@ export function CardDetailView(): JSX.Element {
         })
           .then(() => {
             if (deletionReplacementCardId) {
-              history.push(`/card/${deletionReplacementCardId}`)
+              navigate(`/card/${deletionReplacementCardId}`)
             } else {
-              history.push('/cards')
+              navigate('/cards')
             }
             setDeletionModalOpen(false)
           })
@@ -134,7 +134,7 @@ export function CardDetailView(): JSX.Element {
           },
         })
           .then(() => {
-            history.push(`/card/${newCardId}`)
+            navigate(`/card/${newCardId}`)
             setRenameModalOpen(false)
           })
           .catch((error) => {
@@ -197,7 +197,7 @@ export function CardDetailView(): JSX.Element {
                 variant="contained"
                 color="secondary"
                 fullWidth
-                onClick={() => history.push(`/card/${card.id}/edit`)}
+                onClick={() => navigate(`/card/${card.id}/edit`)}
                 style={{ marginTop: 10, maxWidth: imageWidth }}
               >
                 Edit this Card

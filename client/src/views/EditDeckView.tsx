@@ -1,4 +1,4 @@
-import { useHistory, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { DeckEditor } from '../components/builder/DeckEditor'
 import { latestDecklistForDeck } from '../components/deck/DecklistTabs'
 import { EmptyState } from '../components/EmptyState'
@@ -9,8 +9,8 @@ import { useCurrentUser } from '../providers/UserProvider'
 
 export function EditDeckView(): JSX.Element {
   const params = useParams<{ id: string }>()
-  const history = useHistory()
-  const [data] = useDeck(params.id)
+  const navigate = useNavigate()
+  const [data] = useDeck(params.id!)
   const { currentUser } = useCurrentUser()
 
   if (data.loading) {
@@ -25,7 +25,7 @@ export function EditDeckView(): JSX.Element {
 
   const deck = data.data
   if (!currentUser || deck?.user_id !== currentUser?.id) {
-    history.push(`/decks/${params.id}`)
+    navigate(`/decks/${params.id!}`)
   }
 
   const latestDecklist = latestDecklistForDeck(deck)

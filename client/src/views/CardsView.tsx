@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import { DataGrid, GridColDef } from '@mui/x-data-grid'
-import { useHistory, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useUiStore } from '../providers/UiStoreProvider'
 import { convertTraitList } from '../utils/cardTextUtils'
 import { capitalize } from '../utils/stringUtils'
@@ -84,7 +84,7 @@ export function CardsView(): JSX.Element {
 
   const classes = useStyles()
   const { cards, packs, cycles, traits, formats, validCardVersionForFormat } = useUiStore()
-  const history = useHistory()
+  const navigate = useNavigate()
   const location = useLocation()
   const [filter, setFilter] = useState<FilterState | undefined>(undefined)
   const [modalCard, setModalCard] = useState<CardWithVersions | undefined>(undefined)
@@ -117,7 +117,7 @@ export function CardsView(): JSX.Element {
       // Only 1 result => Go to card page
       const urlFilteredCards = applyFilters(cards, formats, urlParamFilter)
       if (urlFilteredCards.length === 1) {
-        history.push(`/card/${urlFilteredCards[0].id}`)
+        navigate(`/card/${urlFilteredCards[0].id}`)
       }
     }
     setUrlParams(location.search)
@@ -134,7 +134,7 @@ export function CardsView(): JSX.Element {
   }
 
   const goToCardPage = (id: string) => {
-    history.push(`/card/${id}`)
+    navigate(`/card/${id}`)
   }
 
   function findCardVersion(card: CardWithVersions) {
@@ -204,7 +204,7 @@ export function CardsView(): JSX.Element {
                 const newMode = (event.target.value as DisplayMode) || DisplayMode.LIST
                 setDisplayMode(newMode)
                 urlSearchParams.set('display', newMode)
-                history.push({
+                navigate({
                   pathname: '/cards',
                   search: urlSearchParams.toString(),
                 })
@@ -227,7 +227,7 @@ export function CardsView(): JSX.Element {
                 const newMode = (event.target.value as SortMode) || SortMode.NAME
                 setSortMode(newMode)
                 urlSearchParams.set('sort', newMode)
-                history.push({
+                navigate({
                   pathname: '/cards',
                   search: urlSearchParams.toString(),
                 })

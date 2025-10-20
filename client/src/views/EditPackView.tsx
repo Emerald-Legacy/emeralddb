@@ -69,7 +69,7 @@ export function EditPackView(): JSX.Element {
     return <Loading />
   }
 
-  const packId = params.id
+  const packId = params.id!
   const pack = packs.find((p) => p.id === packId)
 
   if (!pack) {

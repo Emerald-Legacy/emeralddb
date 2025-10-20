@@ -22,7 +22,7 @@ import { privateApi } from '../../api'
 import { DeckBuilderWizard } from './DeckBuilderWizard'
 import Autocomplete from '@mui/material/Autocomplete'
 import { useSnackbar } from 'notistack'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { createDeckStatistics } from '../deck/DeckValidator'
 import { Loading } from '../Loading'
 import { VersionPicker } from './VersionPicker'
@@ -106,7 +106,7 @@ export function DeckEditor(props: { existingDecklist?: DecklistType | undefined 
   const classes = useStyles()
   const [decklist, setDecklist] = useState(props.existingDecklist || getEmptyDeckList())
   const { enqueueSnackbar } = useSnackbar()
-  const history = useHistory()
+  const navigate = useNavigate()
   const [versionModalOpen, setVersionModalOpen] = useState(false)
   const [description, setDescription] = useState(props.existingDecklist?.description || '')
   const [newVersion, setNewVersion] = useState(decklist.version_number || '0.1')
@@ -176,7 +176,7 @@ export function DeckEditor(props: { existingDecklist?: DecklistType | undefined 
       },
     }).then(() => {
       setDecklist({ ...decklist, version_number: getNextVersionNumber(decklist.version_number) })
-      history.push(`/builder/${deckId}/edit`)
+      navigate(`/builder/${deckId}/edit`)
       enqueueSnackbar('Successfully created deck', { variant: 'success' })
       setVersionModalOpen(false)
     })

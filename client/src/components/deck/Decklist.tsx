@@ -1,6 +1,6 @@
 import { Deck, DecklistViewModel } from '@5rdb/api'
 import { Box, Button, Grid, Switch, Typography } from '@mui/material'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { privateApi } from '../../api'
 import { useUiStore } from '../../providers/UiStoreProvider'
 import { useCurrentUser } from '../../providers/UserProvider'
@@ -146,7 +146,7 @@ export function Decklist(props: {
   const { enqueueSnackbar } = useSnackbar()
   const [sortDynByName, setSortDynByName] = useState(false)
   const [sortConfByName, setSortConfByName] = useState(false)
-  const history = useHistory()
+  const navigate = useNavigate()
   const { decklist } = props
 
   if (cards.length === 0) {
@@ -161,7 +161,7 @@ export function Decklist(props: {
     })
       .then((response) => {
         const newDeck = response.data() as Deck
-        history.push(`/builder/${newDeck.id}/edit`)
+        navigate(`/builder/${newDeck.id}/edit`)
         enqueueSnackbar('Successfully copied deck!', { variant: 'success' })
       })
       .catch((error) => {

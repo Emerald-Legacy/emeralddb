@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import { UserMenu } from './usermenu/UserMenu'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useCurrentUser } from '../providers/UserProvider'
 import { useState } from 'react'
 import { CycleList } from './CycleList'
@@ -53,7 +53,7 @@ export enum Queries {
 
 export function HeaderBar(props: { audience: string; scope: string }): JSX.Element {
   const classes = useStyles()
-  const history = useHistory()
+  const navigate = useNavigate()
   const { isDataAdmin } = useCurrentUser()
   const [cardAnchorEl, setCardAnchorEl] = useState<null | HTMLElement>(null)
   const [rulesAnchorEl, setRulesAnchorEl] = useState<null | HTMLElement>(null)
@@ -78,7 +78,7 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
 
   const goTo = (route: string) => {
     closeModalsAndPopUps()
-    history.push(route)
+    navigate(route)
   }
 
   const listenToEnterDown = (event: React.KeyboardEvent) => {

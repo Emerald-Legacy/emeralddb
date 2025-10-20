@@ -10,7 +10,7 @@ import { DecklistComments } from '../components/deck/DecklistComments'
 
 export function DeckDetailView(): JSX.Element {
   const params = useParams<{ id: string }>()
-  const [data] = useDecklist(params.id)
+  const [data] = useDecklist(params.id!)
 
   if (data.loading) {
     return <Loading />

@@ -14,7 +14,7 @@ import makeStyles from '@mui/styles/makeStyles';
 import { useConfirm } from 'material-ui-confirm'
 import { useSnackbar } from 'notistack'
 import React, { useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { privateApi } from '../api'
 import { Loading } from '../components/Loading'
 import { useUiStore } from '../providers/UiStoreProvider'
@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
 
 export function ManageCyclesView(): JSX.Element {
   const classes = useStyles()
-  const history = useHistory()
+  const navigate = useNavigate()
   const { packs, cycles } = useUiStore()
   const [packModalOpen, setPackModalOpen] = useState(false)
   const [cycleModalOpen, setCycleModalOpen] = useState(false)
@@ -216,7 +216,7 @@ export function ManageCyclesView(): JSX.Element {
                   <Button
                     variant="contained"
                     color="secondary"
-                    onClick={() => history.push(`/admin/pack/${pack.id}`)}
+                    onClick={() => navigate(`/admin/pack/${pack.id}`)}
                   >
                     Edit Pack Cards
                   </Button>

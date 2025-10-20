@@ -1,5 +1,5 @@
 import { Button, TextField, Typography } from '@mui/material'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { privateApi } from '../api'
 import React, { useState } from 'react'
 import axios from 'axios'
@@ -7,7 +7,7 @@ import { useSnackbar } from 'notistack'
 import { useBetaEnvironment } from '../hooks/useBetaEnvironment'
 
 export function AdminView(): JSX.Element {
-  const history = useHistory()
+  const navigate = useNavigate()
   const [packId, setPackId] = useState('')
   const { enqueueSnackbar } = useSnackbar()
   const [betaEnvironment] = useBetaEnvironment()
@@ -42,23 +42,23 @@ export function AdminView(): JSX.Element {
       <Button
         variant="contained"
         color="secondary"
-        onClick={() => history.push('/card/create/new')}
+        onClick={() => navigate('/card/create/new')}
       >
         Create a new card
       </Button>
       <br />
       <br />
-      <Button variant="contained" color="secondary" onClick={() => history.push('/admin/cycles')}>
+      <Button variant="contained" color="secondary" onClick={() => navigate('/admin/cycles')}>
         Manage Cycles And Packs
       </Button>
       <br />
       <br />
-      <Button variant="contained" color="secondary" onClick={() => history.push('/admin/traits')}>
+      <Button variant="contained" color="secondary" onClick={() => navigate('/admin/traits')}>
         Manage Traits
       </Button>
       <br />
       <br />
-      <Button variant="contained" color="secondary" onClick={() => history.push('/admin/formats')}>
+      <Button variant="contained" color="secondary" onClick={() => navigate('/admin/formats')}>
         Manage Formats
       </Button>
       <br />
