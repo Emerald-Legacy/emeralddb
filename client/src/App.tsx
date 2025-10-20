@@ -50,7 +50,7 @@ export default function App(): JSX.Element {
                     <UserProvider>
                       <HeaderBar audience={audience} scope={scope} />
                       <Toolbar variant="dense" />
-                      <Container maxWidth={false} style={{ paddingTop: 15, minHeight: '97vh' }}>
+                      <Container maxWidth={false} style={{ paddingTop: 15 }}>
                         <Grid container justifyContent="center">
                           <Grid size={{ xs: 12, md: 12, lg: is1440PxOrBigger ? 10 : 12, xl: 10 }}>
                             <Routes />
