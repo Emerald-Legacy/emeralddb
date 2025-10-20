@@ -1,6 +1,6 @@
 import { PublishedDecklist } from '@5rdb/api'
+import { styled } from '@mui/material/styles';
 import { Paper, useMediaQuery } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import { DataGrid, GridColDef } from '@mui/x-data-grid'
 import { useEffect, useState } from 'react'
 import { publicApi } from '../api'
@@ -10,14 +10,25 @@ import { capitalize } from '../utils/stringUtils'
 import { EmeraldDBLink } from '../components/EmeraldDBLink'
 import { useUiStore } from "../providers/UiStoreProvider";
 
-const useStyles = makeStyles((theme) => ({
-  table: {
+const PREFIX = 'DecksView';
+
+const classes = {
+  table: `${PREFIX}-table`
+};
+
+// TODO jss-to-styled codemod: The Fragment root was replaced by div. Change the tag if needed.
+const Root = styled('div')((
+  {
+    theme
+  }
+) => ({
+  [`& .${classes.table}`]: {
     marginTop: theme.spacing(1),
-  },
-}))
+  }
+}));
 
 export function DecksView(): JSX.Element {
-  const classes = useStyles()
+
   const { formats } = useUiStore()
   const [decks, setDecks] = useState<PublishedDecklist[]>([])
   const [filter, setFilter] = useState<DeckFilterState | undefined>(undefined)
@@ -104,7 +115,7 @@ export function DecksView(): JSX.Element {
   ]
 
   return (
-    <>
+    <Root>
       <DeckFilter onFilterChanged={setFilter} filterState={filter} />
       <Paper className={classes.table}>
         <DataGrid
@@ -124,6 +135,6 @@ export function DecksView(): JSX.Element {
           }}
         />
       </Paper>
-    </>
-  )
+    </Root>
+  );
 }

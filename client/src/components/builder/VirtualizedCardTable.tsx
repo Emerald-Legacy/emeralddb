@@ -1,14 +1,61 @@
 import React from 'react'
+import { styled } from '@mui/material/styles';
 import clsx from 'clsx'
-import { Theme } from '@mui/material/styles';
-import { WithStyles } from '@mui/styles';
-import createStyles from '@mui/styles/createStyles';
-import withStyles from '@mui/styles/withStyles';
 import TableCell from '@mui/material/TableCell'
 import { AutoSizer, Column, Table, TableCellRenderer, TableHeaderProps } from 'react-virtualized'
 import { CardQuantitySelector } from './CardQuantitySelector'
 import { CardLink } from '../card/CardLink'
 import { InfluenceElement } from '../card/InfluenceElement'
+
+const PREFIX = 'VirtualizedCardTable';
+
+const classes = {
+  flexContainer: `${PREFIX}-flexContainer`,
+  table: `${PREFIX}-table`,
+  tableRow: `${PREFIX}-tableRow`,
+  tableRowHover: `${PREFIX}-tableRowHover`,
+  tableCell: `${PREFIX}-tableCell`,
+  noClick: `${PREFIX}-noClick`
+};
+
+const StyledAutoSizer = styled(AutoSizer)(({
+  theme
+}) => ({
+  [`& .${classes.flexContainer}`]: {
+    display: 'flex',
+    alignItems: 'center',
+    boxSizing: 'border-box',
+  },
+
+  [`& .${classes.table}`]: {
+    // temporary right-to-left patch, waiting for
+    // https://github.com/bvaughn/react-virtualized/issues/454
+    '& .ReactVirtualized__Table__headerRow': {
+      flip: false,
+      paddingRight: theme.direction === 'rtl' ? '0 !important' : undefined,
+    },
+  },
+
+  [`& .${classes.tableRow}`]: {
+    cursor: 'pointer',
+  },
+
+  [`& .${classes.tableRowHover}`]: {
+    '&:hover': {
+      backgroundColor: theme.palette.grey[200],
+    },
+  },
+
+  [`& .${classes.tableCell}`]: {
+    flex: 1,
+    padding: 0,
+    paddingLeft: 8,
+  },
+
+  [`& .${classes.noClick}`]: {
+    cursor: 'initial',
+  }
+}));
 
 declare module '@mui/material/styles/withStyles' {
   // Augment the BaseCSSProperties so that we can control jss-rtl
@@ -19,39 +66,6 @@ declare module '@mui/material/styles/withStyles' {
     flip?: boolean
   }
 }
-
-const styles = (theme: Theme) =>
-  createStyles({
-    flexContainer: {
-      display: 'flex',
-      alignItems: 'center',
-      boxSizing: 'border-box',
-    },
-    table: {
-      // temporary right-to-left patch, waiting for
-      // https://github.com/bvaughn/react-virtualized/issues/454
-      '& .ReactVirtualized__Table__headerRow': {
-        flip: false,
-        paddingRight: theme.direction === 'rtl' ? '0 !important' : undefined,
-      },
-    },
-    tableRow: {
-      cursor: 'pointer',
-    },
-    tableRowHover: {
-      '&:hover': {
-        backgroundColor: theme.palette.grey[200],
-      },
-    },
-    tableCell: {
-      flex: 1,
-      padding: 0,
-      paddingLeft: 8,
-    },
-    noClick: {
-      cursor: 'initial',
-    },
-  })
 
 export interface ColumnData {
   columnType:
@@ -72,7 +86,7 @@ interface Row {
   index: number
 }
 
-interface MuiVirtualizedTableProps extends WithStyles<typeof styles> {
+interface MuiVirtualizedTableProps {
   columns: ColumnData[]
   headerHeight?: number
   onRowClick?: () => void
@@ -88,7 +102,7 @@ class MuiVirtualizedTable extends React.PureComponent<MuiVirtualizedTableProps> 
   }
 
   getRowClassName = ({ index }: Row) => {
-    const { classes, onRowClick } = this.props
+    const {  onRowClick } = this.props
 
     return clsx(classes.tableRow, classes.flexContainer, {
       [classes.tableRowHover]: index !== -1 && onRowClick != null,
@@ -96,7 +110,7 @@ class MuiVirtualizedTable extends React.PureComponent<MuiVirtualizedTableProps> 
   }
 
   cellRenderer: TableCellRenderer = ({ cellData, columnIndex }) => {
-    const { columns, classes, rowHeight, onRowClick } = this.props
+    const { columns,  rowHeight, onRowClick } = this.props
     const columnType = columns[columnIndex].columnType
     const width = columns[columnIndex].width
     let renderComponent = <div />
@@ -195,7 +209,7 @@ class MuiVirtualizedTable extends React.PureComponent<MuiVirtualizedTableProps> 
   }
 
   headerRenderer = ({ label, columnIndex }: TableHeaderProps & { columnIndex: number }) => {
-    const { headerHeight, columns, classes } = this.props
+    const { headerHeight, columns, } = this.props
     const width = columns[columnIndex].width
 
     return (
@@ -212,9 +226,9 @@ class MuiVirtualizedTable extends React.PureComponent<MuiVirtualizedTableProps> 
   }
 
   render() {
-    const { classes, columns, rowHeight, headerHeight, ...tableProps } = this.props
+    const {  columns, rowHeight, headerHeight, ...tableProps } = this.props
     return (
-      <AutoSizer>
+      <StyledAutoSizer>
         {({ height, width }) => (
           <Table
             height={height}
@@ -247,12 +261,12 @@ class MuiVirtualizedTable extends React.PureComponent<MuiVirtualizedTableProps> 
             })}
           </Table>
         )}
-      </AutoSizer>
-    )
+      </StyledAutoSizer>
+    );
   }
 }
 
-export const VirtualizedCardTable = withStyles(styles)(MuiVirtualizedTable)
+export const VirtualizedCardTable = (MuiVirtualizedTable)
 
 export interface TableCardData {
   quantityForId: {

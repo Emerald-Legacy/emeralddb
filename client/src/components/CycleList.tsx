@@ -1,5 +1,5 @@
 import { Checkbox, Collapse, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+import { styled } from '@mui/material/styles';
 import { useUiStore } from '../providers/UiStoreProvider'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import ExpandLessIcon from '@mui/icons-material/ExpandLess'
@@ -8,18 +8,30 @@ import { Cycle, Pack } from '@5rdb/api'
 import { EmeraldDBLink } from './EmeraldDBLink'
 import CachedIcon from '@mui/icons-material/Cached'
 
+const PREFIX = 'CycleList';
+
+const classes = {
+  cycle: `${PREFIX}-cycle`,
+  pack: `${PREFIX}-pack`
+};
+
+const StyledList = styled(List)((
+  {
+    theme
+  }
+) => ({
+  [`& .${classes.cycle}`]: {
+    paddingLeft: theme.spacing(4),
+  },
+
+  [`& .${classes.pack}`]: {
+    paddingLeft: theme.spacing(6),
+  }
+}));
+
 type CycleWithPacks = Cycle & {
   packs: Pack[]
 }
-
-const useStyles = makeStyles((theme) => ({
-  cycle: {
-    paddingLeft: theme.spacing(4),
-  },
-  pack: {
-    paddingLeft: theme.spacing(6),
-  },
-}))
 
 export function CycleList(props: {
   onClick?: (route: string) => void
@@ -37,7 +49,7 @@ export function CycleList(props: {
   const [checkedPackIds, setCheckedPackIds] = useState<string[]>(props.selectedPacks || [])
   const [allChecked, setAllChecked] = useState(false)
   const [expandedElements, setExpandedElements] = useState(['root'])
-  const classes = useStyles()
+
 
   if (
     !allChecked &&
@@ -223,7 +235,7 @@ export function CycleList(props: {
           </List>
         </Collapse>
       </div>
-    )
+    );
   }
 
   function createRootElement(): JSX.Element {

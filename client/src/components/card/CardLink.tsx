@@ -1,5 +1,5 @@
 import { Popover, Theme } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+import { styled } from '@mui/material/styles';
 import React, { useState } from 'react'
 import { useUiStore } from '../../providers/UiStoreProvider'
 import { CardInformation } from './CardInformation'
@@ -13,14 +13,24 @@ import { ElementSymbol } from './ElementSymbol'
 import { EmeraldDBLink } from '../EmeraldDBLink'
 import { CardInPack } from "@5rdb/api";
 
-const useStyles = makeStyles((theme: Theme) => ({
-  popover: {
+const PREFIX = 'CardLink';
+
+const classes = {
+  popover: `${PREFIX}-popover`,
+  popoverText: `${PREFIX}-popoverText`
+};
+
+const Root = styled('span')(({
+  theme
+}) => ({
+  [`& .${classes.popover}`]: {
     pointerEvents: 'none',
   },
-  popoverText: {
+
+  [`& .${classes.popoverText}`]: {
     padding: theme.spacing(1),
-  },
-}))
+  }
+}));
 
 export function DeckbuildingRestrictionIcon(props: {
   label: string
@@ -29,7 +39,7 @@ export function DeckbuildingRestrictionIcon(props: {
 }): JSX.Element {
   const { relevantFormats } = useUiStore()
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
-  const classes = useStyles()
+
   const open = Boolean(anchorEl)
 
   const handlePopoverOpen = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
@@ -46,9 +56,9 @@ export function DeckbuildingRestrictionIcon(props: {
 
   return (
     <>
-      <span onMouseEnter={handlePopoverOpen} onMouseLeave={handlePopoverClose}>
+      <Root onMouseEnter={handlePopoverOpen} onMouseLeave={handlePopoverClose}>
         {props.icon}
-      </span>
+      </Root>
       <Popover
         id="mouse-over-popover"
         className={classes.popover}
@@ -70,7 +80,7 @@ export function DeckbuildingRestrictionIcon(props: {
         </div>
       </Popover>
     </>
-  )
+  );
 }
 
 export function RallyIcon(props: { formats: string[] }): JSX.Element {
@@ -120,7 +130,7 @@ export function CardLink(props: {
 }): JSX.Element {
   const { cards, relevantFormats, validCardVersionForFormat } = useUiStore()
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
-  const classes = useStyles()
+
 
   const card = cards.find((card) => card.id === props.cardId)
   if (!card) {

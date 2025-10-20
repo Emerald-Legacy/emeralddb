@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { styled } from '@mui/material/styles';
 import {
   Button,
   Container,
@@ -12,7 +13,6 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import makeStyles from '@mui/styles/makeStyles';
 import { useNavigate, useParams } from 'react-router-dom'
 import { EmptyState } from '../components/EmptyState'
 import { Loading } from '../components/Loading'
@@ -29,16 +29,28 @@ import { useConfirm } from 'material-ui-confirm'
 import { useSnackbar } from 'notistack'
 import { toSlugId } from '../utils/slugIdUtils'
 
-const useStyles = makeStyles((theme) => ({
-  unselected: {
+const PREFIX = 'CardDetailView';
+
+const classes = {
+  unselected: `${PREFIX}-unselected`,
+  selected: `${PREFIX}-selected`
+};
+
+const StyledContainer = styled(Container)((
+  {
+    theme
+  }
+) => ({
+  [`& .${classes.unselected}`]: {
     borderColor: 'lightgrey',
   },
-  selected: {
+
+  [`& .${classes.selected}`]: {
     borderColor: theme.palette.primary.main,
     backgroundColor: theme.palette.secondary.light,
     color: theme.palette.secondary.contrastText,
   }
-}))
+}));
 
 export function CardDetailView(): JSX.Element {
   const params = useParams<{ id: string }>()
@@ -55,7 +67,7 @@ export function CardDetailView(): JSX.Element {
   const { isDataAdmin } = useCurrentUser()
   const confirm = useConfirm()
   const { enqueueSnackbar } = useSnackbar()
-  const classes = useStyles()
+
   const navigate = useNavigate()
 
 
@@ -148,7 +160,7 @@ export function CardDetailView(): JSX.Element {
   }
 
   return (
-    <Container style={{paddingTop: '5px'}}>
+    <StyledContainer style={{paddingTop: '5px'}}>
       <Grid container spacing={5}>
         <Grid size={{ xs: 12, md: 7 }}>
           <CardInformation
@@ -305,6 +317,6 @@ export function CardDetailView(): JSX.Element {
           </Button>
         </DialogActions>
       </Dialog>
-    </Container>
-  )
+    </StyledContainer>
+  );
 }

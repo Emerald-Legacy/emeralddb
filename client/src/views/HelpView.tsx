@@ -1,26 +1,33 @@
 import { Accordion, AccordionDetails, AccordionSummary, Grid, Typography } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+import { styled } from '@mui/material/styles';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { Theme } from '@mui/material/styles';
 
-import createStyles from '@mui/styles/createStyles';
+const PREFIX = 'HelpView';
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      width: '100%',
-    },
-    heading: {
-      fontSize: theme.typography.pxToRem(15),
-      fontWeight: (theme.typography.fontWeightRegular as number) || 400,
-    },
-  })
-)
+const classes = {
+  root: `${PREFIX}-root`,
+  heading: `${PREFIX}-heading`
+};
+
+// TODO jss-to-styled codemod: The Fragment root was replaced by div. Change the tag if needed.
+const Root = styled('div')(({
+  theme
+}) => ({
+  [`& .${classes.root}`]: {
+    width: '100%',
+  },
+
+  [`& .${classes.heading}`]: {
+    fontSize: theme.typography.pxToRem(15),
+    fontWeight: (theme.typography.fontWeightRegular as number) || 400,
+  }
+}));
 
 export function HelpView(): JSX.Element {
-  const classes = useStyles()
+
   return (
-    <>
+    <Root>
       <Typography variant="h4" align="center">
         Frequently Asked Questions
       </Typography>
@@ -203,6 +210,6 @@ export function HelpView(): JSX.Element {
           </Typography>
         </AccordionDetails>
       </Accordion>
-    </>
-  )
+    </Root>
+  );
 }

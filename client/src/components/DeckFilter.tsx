@@ -1,43 +1,67 @@
 import { useEffect, useReducer, useState } from 'react'
+import { styled } from '@mui/material/styles';
 import { PublishedDecklist } from '@5rdb/api'
 import { Button, lighten, Grid, Paper, TextField } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import { clans } from '../utils/enums'
 import Autocomplete from '@mui/material/Autocomplete'
 import { useUiStore } from "../providers/UiStoreProvider";
 
-const useStyles = makeStyles((theme) => ({
-  filter: {
+const PREFIX = 'DeckFilter';
+
+const classes = {
+  filter: `${PREFIX}-filter`,
+  clearIcon: `${PREFIX}-clearIcon`,
+  clearButton: `${PREFIX}-clearButton`,
+  button: `${PREFIX}-button`,
+  filterGridItem: `${PREFIX}-filterGridItem`,
+  traitTextField: `${PREFIX}-traitTextField`,
+  packDialog: `${PREFIX}-packDialog`,
+  packFilter: `${PREFIX}-packFilter`
+};
+
+const StyledPaper = styled(Paper)((
+  {
+    theme
+  }
+) => ({
+  [`&.${classes.filter}`]: {
     padding: theme.spacing(1),
   },
-  clearIcon: {
+
+  [`& .${classes.clearIcon}`]: {
     color: 'black',
     fontSize: 16,
   },
-  clearButton: {
+
+  [`& .${classes.clearButton}`]: {
     backgroundColor: theme.palette.error.light,
     '&:hover': {
       backgroundColor: lighten(theme.palette.error.light, 0.1),
     },
   },
-  button: {
+
+  [`& .${classes.button}`]: {
     height: 32,
     minWidth: 16,
   },
-  filterGridItem: {
+
+  [`& .${classes.filterGridItem}`]: {
     height: 40,
     margin: '4px 0',
   },
-  traitTextField: {
+
+  [`& .${classes.traitTextField}`]: {
     maxHeight: 32,
   },
-  packDialog: {
+
+  [`& .${classes.packDialog}`]: {
     padding: theme.spacing(2),
   },
-  packFilter: {
+
+  [`& .${classes.packFilter}`]: {
     minWidth: '60%',
-  },
-}))
+  }
+}));
 
 export interface DeckFilterState {
   format: string
@@ -102,14 +126,14 @@ export function DeckFilter(props: {
   filterState: DeckFilterState | undefined
   onFilterChanged: (filter: DeckFilterState) => void
 }): JSX.Element {
-  const classes = useStyles()
+
   const { relevantFormats } = useUiStore()
   const [initialFilterState] = useState<DeckFilterState>(props.filterState || initialState)
   const [filterState, dispatchFilter] = useReducer(filterReducer, initialFilterState)
   useEffect(() => props.onFilterChanged(filterState), [filterState])
 
   return (
-    <Paper className={classes.filter}>
+    <StyledPaper className={classes.filter}>
       <Grid container spacing={1} justifyContent="flex-end">
         <Grid size={{ xs: 12, sm: 6 }}>
           <Autocomplete
@@ -176,6 +200,6 @@ export function DeckFilter(props: {
           </Button>
         </Grid>
       </Grid>
-    </Paper>
+    </StyledPaper>
   );
 }

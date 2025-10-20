@@ -1,6 +1,6 @@
 import { Card, Trait } from '@5rdb/api'
+import { styled } from '@mui/material/styles';
 import { Fab, Grid, Switch, TextField, Typography } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import React, { useState } from 'react'
 import {
   sides,
@@ -22,8 +22,18 @@ import { privateApi } from '../../api'
 import { useNavigate } from 'react-router-dom'
 import { toSlugId } from '../../utils/slugIdUtils'
 
-const useStyles = makeStyles((theme) => ({
-  fab: {
+const PREFIX = 'CardEditor';
+
+const classes = {
+  fab: `${PREFIX}-fab`
+};
+
+const Root = styled('form')((
+  {
+    theme
+  }
+) => ({
+  [`& .${classes.fab}`]: {
     margin: '0px',
     top: 'auto',
     right: theme.spacing(2),
@@ -31,8 +41,8 @@ const useStyles = makeStyles((theme) => ({
     left: 'auto',
     position: 'fixed',
     zIndex: 100,
-  },
-}))
+  }
+}));
 
 export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): JSX.Element {
   const navigate = useNavigate()
@@ -71,7 +81,7 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
 
   const [isSplashable, setIsSplashable] = useState(influence_cost !== null)
   const [influenceRequired, setInfluenceRequired] = useState(isSplashable)
-  const classes = useStyles()
+
   const confirm = useConfirm()
 
   const setIdFromNameAndExtra = (name: string | undefined, name_extra: string | undefined) => {
@@ -363,7 +373,7 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
   }
 
   return (
-    <form>
+    <Root>
       <Grid container spacing={3}>
         <Fab
           variant="extended"
@@ -901,6 +911,6 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
           </Grid>
         )}
       </Grid>
-    </form>
-  )
+    </Root>
+  );
 }

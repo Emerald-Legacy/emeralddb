@@ -10,7 +10,7 @@ import {
   MenuItem,
   Box,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+import { styled } from '@mui/material/styles';
 import { DataGrid, GridColDef } from '@mui/x-data-grid'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useUiStore } from '../providers/UiStoreProvider'
@@ -25,11 +25,22 @@ import { CardLink } from '../components/card/CardLink'
 import { CardImageOrText } from '../components/card/CardImageOrText'
 import { Pagination } from '@mui/material';
 
-const useStyles = makeStyles((theme) => ({
-  table: {
+const PREFIX = 'CardsView';
+
+const classes = {
+  table: `${PREFIX}-table`
+};
+
+// TODO jss-to-styled codemod: The Fragment root was replaced by div. Change the tag if needed.
+const Root = styled('div')((
+  {
+    theme
+  }
+) => ({
+  [`& .${classes.table}`]: {
     marginTop: theme.spacing(1),
-  },
-}))
+  }
+}));
 
 interface NameProps {
   id: string
@@ -82,7 +93,7 @@ function createFilterFromUrlSearchParams(params: URLSearchParams, allPacks: Pack
 export function CardsView(): JSX.Element {
   const PAGE_SIZE = 60
 
-  const classes = useStyles()
+
   const { cards, packs, cycles, traits, formats, validCardVersionForFormat } = useUiStore()
   const navigate = useNavigate()
   const location = useLocation()
@@ -363,7 +374,7 @@ export function CardsView(): JSX.Element {
     ]
 
     return (
-      <>
+      <Root>
         <CardFilter
           onFilterChanged={onFilterChanged}
           fullWidth
@@ -398,8 +409,8 @@ export function CardsView(): JSX.Element {
           />
         </Paper>
         <CardModal />
-      </>
-    )
+      </Root>
+    );
   }
 
   function calculatePackIndex(card: CardWithVersions): { packIndex: string; cardIndex: string } {

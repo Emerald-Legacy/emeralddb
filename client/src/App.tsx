@@ -12,13 +12,6 @@ import { ConfirmProvider } from 'material-ui-confirm'
 import { Routes } from './Routes'
 import { SnackbarProvider } from 'notistack'
 
-
-declare module '@mui/styles/defaultTheme' {
-  // eslint-disable-next-line @typescript-eslint/no-empty-interface
-  interface DefaultTheme extends Theme {}
-}
-
-
 // create our material ui theme using up to date typography variables
 let theme = createTheme({
   palette: {

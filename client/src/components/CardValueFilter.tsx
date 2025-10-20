@@ -1,6 +1,31 @@
 import { Button, ButtonGroup, Grid, TextField } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+import { styled } from '@mui/material/styles';
 import { useEffect, useState } from 'react'
+
+const PREFIX = 'CardValueFilter';
+
+const classes = {
+  buttonGroup: `${PREFIX}-buttonGroup`,
+  button: `${PREFIX}-button`
+};
+
+const StyledGrid = styled(Grid)((
+  {
+    theme
+  }
+) => ({
+  [`& .${classes.buttonGroup}`]: {
+    marginLeft: theme.spacing(2),
+    marginRight: theme.spacing(1),
+  },
+
+  [`& .${classes.button}`]: {
+    height: 24,
+    width: 24,
+    minWidth: 24,
+    padding: 3,
+  }
+}));
 
 export enum ValueFilterType {
   GREATER,
@@ -8,31 +33,18 @@ export enum ValueFilterType {
   LOWER,
 }
 
-const useStyles = makeStyles((theme) => ({
-  buttonGroup: {
-    marginLeft: theme.spacing(2),
-    marginRight: theme.spacing(1),
-  },
-  button: {
-    height: 24,
-    width: 24,
-    minWidth: 24,
-    padding: 3,
-  },
-}))
-
 export function CardValueFilter(props: {
   valueLabel: JSX.Element
   onFilterChange: (type: ValueFilterType, value: string) => void
 }): JSX.Element {
   const [filterType, setFilterType] = useState<ValueFilterType>(ValueFilterType.EQUAL)
   const [filterString, setFilterString] = useState('')
-  const classes = useStyles()
+
 
   useEffect(() => props.onFilterChange(filterType, filterString), [filterType, filterString])
 
   return (
-    <Grid container alignItems="flex-end" alignContent="flex-end">
+    <StyledGrid container alignItems="flex-end" alignContent="flex-end">
       <Grid size={{ xs: 2, md: 1 }}>
         {props.valueLabel}
       </Grid>
@@ -64,6 +76,6 @@ export function CardValueFilter(props: {
       <Grid size={{ xs: 6, md: 7 }}>
         <TextField value={filterString} onChange={(e) => setFilterString(e.target.value)} />
       </Grid>
-    </Grid>
-  )
+    </StyledGrid>
+  );
 }

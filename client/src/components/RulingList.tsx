@@ -1,4 +1,5 @@
 import { Ruling } from '@5rdb/api'
+import { styled } from '@mui/material/styles';
 import {
   Grid,
   Typography,
@@ -10,7 +11,6 @@ import {
   DialogTitle,
   TextField,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import { useConfirm } from 'material-ui-confirm'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
@@ -18,27 +18,43 @@ import ReactMarkdown from 'react-markdown'
 import { privateApi } from '../api'
 import { useCurrentUser } from '../providers/UserProvider'
 
-const useStyles = makeStyles((theme) => ({
-  editButton: {
+const PREFIX = 'RulingList';
+
+const classes = {
+  editButton: `${PREFIX}-editButton`,
+  createButton: `${PREFIX}-createButton`,
+  deleteButton: `${PREFIX}-deleteButton`,
+  input: `${PREFIX}-input`
+};
+
+const StyledGrid = styled(Grid)((
+  {
+    theme
+  }
+) => ({
+  [`& .${classes.editButton}`]: {
     backgroundColor: theme.palette.warning.light,
     marginRight: theme.spacing(1),
     marginLeft: 'auto',
   },
-  createButton: {
+
+  [`& .${classes.createButton}`]: {
     marginRight: theme.spacing(1),
     marginLeft: 'auto',
     marginTop: theme.spacing(2),
   },
-  deleteButton: {
+
+  [`& .${classes.deleteButton}`]: {
     backgroundColor: theme.palette.error.light,
   },
-  input: {
+
+  [`& .${classes.input}`]: {
     marginBottom: theme.spacing(1),
-  },
-}))
+  }
+}));
 
 export function RulingList(props: { cardId: string; rulings: Ruling[] }): JSX.Element {
-  const classes = useStyles()
+
   const { isRulesAdmin } = useCurrentUser()
   const confirm = useConfirm()
   const [rulingModalOpen, setRulingModalOpen] = useState(false)
@@ -146,7 +162,7 @@ export function RulingList(props: { cardId: string; rulings: Ruling[] }): JSX.El
   }
 
   return (
-    <Grid container spacing={1}>
+    <StyledGrid container spacing={1}>
       {props.rulings.map((ruling) => (
         <Grid key={ruling.id} size={12}>
           <Box
@@ -236,6 +252,6 @@ export function RulingList(props: { cardId: string; rulings: Ruling[] }): JSX.El
           </Button>
         </DialogActions>
       </Dialog>
-    </Grid>
+    </StyledGrid>
   );
 }

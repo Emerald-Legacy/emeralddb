@@ -1,6 +1,6 @@
 import { DeckWithVersions } from '@5rdb/api'
+import { styled } from '@mui/material/styles';
 import { Box, Typography, Button, Grid, useMediaQuery } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import { useConfirm } from 'material-ui-confirm'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
@@ -13,27 +13,45 @@ import LinkIcon from '@mui/icons-material/Link'
 import { EmeraldDBLink } from '../EmeraldDBLink'
 import { useUiStore } from "../../providers/UiStoreProvider";
 
-const useStyles = makeStyles((theme) => ({
-  unselectedDeck: {
+const PREFIX = 'DeckTabs';
+
+const classes = {
+  unselectedDeck: `${PREFIX}-unselectedDeck`,
+  selectedDeck: `${PREFIX}-selectedDeck`,
+  newDeckButton: `${PREFIX}-newDeckButton`,
+  format: `${PREFIX}-format`,
+  deleteButton: `${PREFIX}-deleteButton`
+};
+
+const StyledGrid = styled(Grid)((
+  {
+    theme
+  }
+) => ({
+  [`& .${classes.unselectedDeck}`]: {
     borderColor: 'lightgrey',
   },
-  selectedDeck: {
+
+  [`& .${classes.selectedDeck}`]: {
     borderColor: theme.palette.primary.main,
     backgroundColor: theme.palette.secondary.light,
     color: theme.palette.secondary.contrastText,
     borderRightWidth: '3px',
   },
-  newDeckButton: {
+
+  [`& .${classes.newDeckButton}`]: {
     marginBottom: 3,
   },
-  format: {
+
+  [`& .${classes.format}`]: {
     fontSize: 12,
   },
-  deleteButton: {
+
+  [`& .${classes.deleteButton}`]: {
     backgroundColor: theme.palette.error.main,
     color: theme.palette.error.contrastText,
-  },
-}))
+  }
+}));
 
 export function DeckTabs(props: {
   decks: DeckWithVersions[]
@@ -41,7 +59,7 @@ export function DeckTabs(props: {
 }): JSX.Element {
   const { decks } = props
   const { formats } = useUiStore()
-  const classes = useStyles()
+
   const confirm = useConfirm()
   const { enqueueSnackbar } = useSnackbar()
   const [currentDeckId, setCurrentDeckId] = useState<string | undefined>()
@@ -81,7 +99,7 @@ export function DeckTabs(props: {
   )
 
   return (
-    <Grid container spacing={1}>
+    <StyledGrid container spacing={1}>
       <Grid size={{ xs: 12, lg: 3, xl: 4 }}>
         <Grid container>
           <Grid size={12}>
@@ -193,6 +211,6 @@ export function DeckTabs(props: {
           </Grid>
         </Grid>
       </Grid>
-    </Grid>
+    </StyledGrid>
   );
 }

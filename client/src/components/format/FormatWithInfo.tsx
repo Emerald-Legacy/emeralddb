@@ -1,8 +1,7 @@
 import { Format } from '@5rdb/api'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
-import { Box, ClickAwayListener, Link, Popover, Theme, Typography } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
-import React, { useState } from 'react'
+import { Box, Typography } from '@mui/material';
+import { useState } from 'react'
 import { EmeraldDBLink } from '../EmeraldDBLink'
 
 export function FormatWithInfo(props: { format: Format }): JSX.Element {

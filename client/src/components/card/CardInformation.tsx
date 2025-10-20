@@ -1,6 +1,6 @@
 import { Card, CardInPack, CardWithVersions } from "@5rdb/api";
+import { styled } from '@mui/material/styles';
 import { Box, Typography, Grid } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import { useUiStore } from '../../providers/UiStoreProvider'
 import { convertTraitList } from '../../utils/cardTextUtils'
 import { getColorForFactionId } from '../../utils/factionUtils'
@@ -9,37 +9,53 @@ import { CardText } from './CardText'
 import { ElementSymbol } from './ElementSymbol'
 import { useNavigate } from 'react-router-dom'
 
-const useStyles = makeStyles(() => ({
-  clanMon: {
+const PREFIX = 'CardInformation';
+
+const classes = {
+  clanMon: `${PREFIX}-clanMon`,
+  deckLabel: `${PREFIX}-deckLabel`,
+  stats: `${PREFIX}-stats`,
+  packInfo: `${PREFIX}-packInfo`,
+  crossedOutStats: `${PREFIX}-crossedOutStats`,
+  block: `${PREFIX}-block`
+};
+
+const StyledBox = styled(Box)(() => ({
+  [`& .${classes.clanMon}`]: {
     width: 60,
     height: 60,
     float: 'right',
   },
-  deckLabel: {
+
+  [`& .${classes.deckLabel}`]: {
     float: 'right',
     fontSize: 14,
   },
-  stats: {
+
+  [`& .${classes.stats}`]: {
     fontSize: 14,
   },
-  packInfo: {
+
+  [`& .${classes.packInfo}`]: {
     fontSize: 12,
   },
-  crossedOutStats: {
+
+  [`& .${classes.crossedOutStats}`]: {
     fontSize: 14,
     textDecoration: 'line-through',
   },
-  block: {
+
+  [`& .${classes.block}`]: {
     marginBottom: 10,
-  },
-}))
+  }
+}));
 
 export function FormattedValueOrCrossedOut(props: {
   value: string | undefined
   label: string
   icon?: string
 }): JSX.Element {
-  const classes = useStyles()
+
   if (props.value === undefined || props.value === null) {
     return (
       <Typography className={classes.crossedOutStats}>
@@ -121,7 +137,7 @@ const InfluenceElement = (props: { influence: number | undefined }) => {
 }
 
 const ElementsElement = (props: { elements: string[] }) => {
-  const classes = useStyles()
+
   return (
     <Typography className={classes.stats}>
       <b>Elements: </b>
@@ -138,7 +154,7 @@ export function CardInformation(props: {
   clickable?: boolean
 }): JSX.Element {
   const navigate = useNavigate()
-  const classes = useStyles()
+
   const { traits, packs } = useUiStore()
   const card = props.cardWithVersions
   const version = props.currentVersion
@@ -209,7 +225,7 @@ export function CardInformation(props: {
   }
 
   return (
-    <Box border="solid 1px" padding="15px" borderRadius="3px">
+    <StyledBox border="solid 1px" padding="15px" borderRadius="3px">
       <Grid container className={classes.block}>
         <Grid size={10}>
           <Typography
@@ -281,6 +297,6 @@ export function CardInformation(props: {
           </Grid>
         </Grid>
       )}
-    </Box>
-  )
+    </StyledBox>
+  );
 }

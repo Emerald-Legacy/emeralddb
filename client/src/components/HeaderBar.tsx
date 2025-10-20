@@ -14,7 +14,7 @@ import {
   Container,
   List,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+import { styled } from '@mui/material/styles';
 import { UserMenu } from './usermenu/UserMenu'
 import { useNavigate } from 'react-router-dom'
 import { useCurrentUser } from '../providers/UserProvider'
@@ -26,23 +26,35 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess'
 import MenuIcon from '@mui/icons-material/Menu'
 import { EmeraldDBLink } from './EmeraldDBLink'
 
-const useStyles = makeStyles(() => ({
-  title: {
+const PREFIX = 'HeaderBar';
+
+const classes = {
+  title: `${PREFIX}-title`,
+  adminButton: `${PREFIX}-adminButton`,
+  logo: `${PREFIX}-logo`,
+  searchField: `${PREFIX}-searchField`
+};
+
+const StyledAppBar = styled(AppBar)(() => ({
+  [`& .${classes.title}`]: {
     flexGrow: 1,
   },
-  adminButton: {
+
+  [`& .${classes.adminButton}`]: {
     marginRight: 10,
   },
-  logo: {
+
+  [`& .${classes.logo}`]: {
     height: 45,
     marginRight: 5,
   },
-  searchField: {
+
+  [`& .${classes.searchField}`]: {
     backgroundColor: 'white',
     minWidth: 50,
     maxWidth: 200,
-  },
-}))
+  }
+}));
 
 export enum Queries {
   USER = 'USER',
@@ -53,7 +65,7 @@ export enum Queries {
 }
 
 export function HeaderBar(props: { audience: string; scope: string }): JSX.Element {
-  const classes = useStyles()
+
   const navigate = useNavigate()
   const { isDataAdmin } = useCurrentUser()
   const [cardAnchorEl, setCardAnchorEl] = useState<null | HTMLElement>(null)
@@ -90,7 +102,7 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
   }
 
   return (
-    <AppBar position="sticky">
+    <StyledAppBar position="sticky">
       <Toolbar variant="dense">
         <Container maxWidth={false}>
           <Grid container justifyContent={'center'}>
@@ -293,6 +305,6 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
           </Grid>
         </Container>
       </Toolbar>
-    </AppBar>
+    </StyledAppBar>
   );
 }

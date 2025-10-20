@@ -1,4 +1,5 @@
 import { useEffect, useReducer, useState } from 'react'
+import { styled } from '@mui/material/styles';
 import { CardWithVersions, Trait, RoleRestriction, Format } from '@5rdb/api'
 import {
   Button,
@@ -15,7 +16,6 @@ import {
   Typography,
   Collapse,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import {
   factions,
   cardTypes,
@@ -32,41 +32,67 @@ import { isEqual } from 'lodash'
 import { CardValueFilter, ValueFilterType } from './CardValueFilter'
 import { ElementSymbol } from './card/ElementSymbol'
 
-const useStyles = makeStyles((theme) => ({
-  filter: {
+const PREFIX = 'CardFilter';
+
+const classes = {
+  filter: `${PREFIX}-filter`,
+  clearIcon: `${PREFIX}-clearIcon`,
+  clearButton: `${PREFIX}-clearButton`,
+  button: `${PREFIX}-button`,
+  filterGridItem: `${PREFIX}-filterGridItem`,
+  filterGridItemBuilder: `${PREFIX}-filterGridItemBuilder`,
+  traitTextField: `${PREFIX}-traitTextField`,
+  packDialog: `${PREFIX}-packDialog`,
+  packFilter: `${PREFIX}-packFilter`
+};
+
+const StyledPaper = styled(Paper)((
+  {
+    theme
+  }
+) => ({
+  [`&.${classes.filter}`]: {
     padding: theme.spacing(1),
   },
-  clearIcon: {
+
+  [`& .${classes.clearIcon}`]: {
     color: 'black',
     fontSize: 16,
   },
-  clearButton: {
+
+  [`& .${classes.clearButton}`]: {
     backgroundColor: theme.palette.error.light,
     '&:hover': {
       backgroundColor: lighten(theme.palette.error.light, 0.1),
     },
   },
-  button: {
+
+  [`& .${classes.button}`]: {
     height: 32,
     minWidth: 16,
   },
-  filterGridItem: {
+
+  [`& .${classes.filterGridItem}`]: {
     height: 40,
     margin: '4px 0',
   },
-  filterGridItemBuilder: {
+
+  [`& .${classes.filterGridItemBuilder}`]: {
     height: 40,
   },
-  traitTextField: {
+
+  [`& .${classes.traitTextField}`]: {
     maxHeight: 32,
   },
-  packDialog: {
+
+  [`& .${classes.packDialog}`]: {
     padding: theme.spacing(2),
   },
-  packFilter: {
+
+  [`& .${classes.packFilter}`]: {
     minWidth: '60%',
-  },
-}))
+  }
+}));
 
 enum NumericCardValue {
   COST,
@@ -362,7 +388,7 @@ export function CardFilter(props: {
   fullWidth?: boolean
   deckbuilder?: boolean
 }): JSX.Element {
-  const classes = useStyles()
+
   const { traits, relevantFormats } = useUiStore()
   const [initialFilterState, setInitialFilterState] = useState<FilterState>(
     props.filterState || initialState
@@ -496,7 +522,7 @@ export function CardFilter(props: {
   }
 
   return (
-    <Paper className={classes.filter}>
+    <StyledPaper className={classes.filter}>
       <Grid container spacing={1} justifyContent="flex-end">
         <Grid size={{ xs: 12, sm: 8, md: !props.fullWidth ? 6 : 10 }}>
           <TextField
@@ -922,6 +948,6 @@ export function CardFilter(props: {
           </Button>
         </DialogActions>
       </Dialog>
-    </Paper>
+    </StyledPaper>
   );
 }

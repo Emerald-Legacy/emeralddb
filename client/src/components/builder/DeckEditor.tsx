@@ -1,4 +1,5 @@
 import { DecklistViewModel, Decklist as DecklistType, Deck, CardWithVersions, Format } from "@5rdb/api";
+import { styled } from '@mui/material/styles';
 import {
   Box,
   Button,
@@ -13,7 +14,6 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import { useState } from 'react'
 import { useUiStore } from '../../providers/UiStoreProvider'
 import { BuilderCardList } from './BuilderCardList'
@@ -28,16 +28,28 @@ import { Loading } from '../Loading'
 import { VersionPicker } from './VersionPicker'
 import { EmeraldDBLink } from '../EmeraldDBLink'
 
-const useStyles = makeStyles((theme) => ({
-  unselectedList: {
+const PREFIX = 'DeckEditor';
+
+const classes = {
+  unselectedList: `${PREFIX}-unselectedList`,
+  selectedList: `${PREFIX}-selectedList`
+};
+
+const StyledGrid = styled(Grid)((
+  {
+    theme
+  }
+) => ({
+  [`& .${classes.unselectedList}`]: {
     borderColor: 'lightgrey',
   },
-  selectedList: {
+
+  [`& .${classes.selectedList}`]: {
     borderColor: theme.palette.primary.main,
     backgroundColor: theme.palette.secondary.light,
     color: theme.palette.secondary.contrastText,
-  },
-}))
+  }
+}));
 
 function getEmptyDeckList(): DecklistViewModel {
   return {
@@ -103,7 +115,7 @@ enum ViewTypes {
 
 export function DeckEditor(props: { existingDecklist?: DecklistType | undefined }): JSX.Element {
   const { cards, formats, relevantFormats } = useUiStore()
-  const classes = useStyles()
+
   const [decklist, setDecklist] = useState(props.existingDecklist || getEmptyDeckList())
   const { enqueueSnackbar } = useSnackbar()
   const navigate = useNavigate()
@@ -209,7 +221,7 @@ export function DeckEditor(props: { existingDecklist?: DecklistType | undefined 
   }
 
   return (
-    <Grid container spacing={2}>
+    <StyledGrid container spacing={2}>
       <Grid size={{ xs: 12, md: 6 }}>
         <Grid container spacing={1}>
           <Grid size={9}>
@@ -379,6 +391,6 @@ export function DeckEditor(props: { existingDecklist?: DecklistType | undefined 
           </Button>
         </DialogActions>
       </Dialog>
-    </Grid>
-  )
+    </StyledGrid>
+  );
 }

@@ -1,24 +1,36 @@
 import { Fab, Popover, Theme } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+import { styled } from '@mui/material/styles';
 import { useState } from 'react'
 import { useUiStore } from '../../providers/UiStoreProvider'
 import { CardInformation } from './CardInformation'
 import ZoomInIcon from '@mui/icons-material/ZoomIn'
 import { CardInPack } from "@5rdb/api";
 
-const useStyles = makeStyles((theme: Theme) => ({
-  popover: {
+const PREFIX = 'CardImageOrText';
+
+const classes = {
+  popover: `${PREFIX}-popover`,
+  popoverText: `${PREFIX}-popoverText`,
+  fab: `${PREFIX}-fab`
+};
+
+const Root = styled('div')(({
+  theme
+}) => ({
+  [`& .${classes.popover}`]: {
     pointerEvents: 'none',
   },
-  popoverText: {
+
+  [`& .${classes.popoverText}`]: {
     padding: theme.spacing(1),
   },
-  fab: {
+
+  [`& .${classes.fab}`]: {
     position: 'absolute',
     bottom: theme.spacing(4),
     right: theme.spacing(0.5),
-  },
-}))
+  }
+}));
 
 export function CardImageOrText(props: {
   cardId: string
@@ -27,7 +39,7 @@ export function CardImageOrText(props: {
 }): JSX.Element {
   const { cards } = useUiStore()
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
-  const classes = useStyles()
+
 
   const card = cards.find((card) => card.id === props.cardId)
   if (!card) {
@@ -46,7 +58,7 @@ export function CardImageOrText(props: {
   const cardVersion = props.cardVersion || card.versions[0]
   const cardImage = cardVersion && cardVersion.image_url
   return (
-    <div style={{ position: 'relative', height: '95%' }}>
+    <Root style={{ position: 'relative', height: '95%' }}>
       {cardImage ? (
         <img src={cardImage} height={'90%'} width={'100%'} />
       ) : (
@@ -84,6 +96,6 @@ export function CardImageOrText(props: {
           <CardInformation cardWithVersions={card} currentVersion={cardVersion} />
         )}
       </Popover>
-    </div>
-  )
+    </Root>
+  );
 }

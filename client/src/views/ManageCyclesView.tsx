@@ -1,4 +1,5 @@
 import { Pack } from '@5rdb/api'
+import { styled } from '@mui/material/styles';
 import {
   Box,
   Button,
@@ -10,7 +11,6 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import { useConfirm } from 'material-ui-confirm'
 import { useSnackbar } from 'notistack'
 import React, { useState } from 'react'
@@ -21,27 +21,44 @@ import { useUiStore } from '../providers/UiStoreProvider'
 import { toSlugId } from '../utils/slugIdUtils'
 import CachedIcon from '@mui/icons-material/Cached'
 
-const useStyles = makeStyles((theme) => ({
-  editButton: {
+const PREFIX = 'ManageCyclesView';
+
+const classes = {
+  editButton: `${PREFIX}-editButton`,
+  createButton: `${PREFIX}-createButton`,
+  deleteButton: `${PREFIX}-deleteButton`,
+  input: `${PREFIX}-input`
+};
+
+// TODO jss-to-styled codemod: The Fragment root was replaced by div. Change the tag if needed.
+const Root = styled('div')((
+  {
+    theme
+  }
+) => ({
+  [`& .${classes.editButton}`]: {
     backgroundColor: theme.palette.warning.light,
     marginRight: theme.spacing(1),
     marginLeft: 'auto',
   },
-  createButton: {
+
+  [`& .${classes.createButton}`]: {
     marginRight: theme.spacing(1),
     marginLeft: 'auto',
     marginTop: theme.spacing(2),
   },
-  deleteButton: {
+
+  [`& .${classes.deleteButton}`]: {
     backgroundColor: theme.palette.error.light,
   },
-  input: {
+
+  [`& .${classes.input}`]: {
     marginBottom: theme.spacing(1),
-  },
-}))
+  }
+}));
 
 export function ManageCyclesView(): JSX.Element {
-  const classes = useStyles()
+
   const navigate = useNavigate()
   const { packs, cycles } = useUiStore()
   const [packModalOpen, setPackModalOpen] = useState(false)
@@ -184,7 +201,7 @@ export function ManageCyclesView(): JSX.Element {
   }
 
   return (
-    <>
+    <Root>
       <Grid container spacing={1} justifyContent="flex-end">
         <Grid size={12}>
           <Typography variant="h6">Cycles</Typography>
@@ -329,6 +346,6 @@ export function ManageCyclesView(): JSX.Element {
           </Button>
         </DialogActions>
       </Dialog>
-    </>
+    </Root>
   );
 }

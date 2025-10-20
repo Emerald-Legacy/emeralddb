@@ -1,6 +1,6 @@
 import { DeckWithVersions, Decklist as DecklistType } from '@5rdb/api'
+import { styled } from '@mui/material/styles';
 import { Box, Button, Grid, Tab, Tabs, Typography } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import { useConfirm } from 'material-ui-confirm'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
@@ -11,6 +11,40 @@ import LinkIcon from '@mui/icons-material/Link'
 import ShareIcon from '@mui/icons-material/Share'
 import BlockIcon from '@mui/icons-material/Block'
 import { EmeraldDBLink } from '../EmeraldDBLink'
+
+const PREFIX = 'DecklistTabs';
+
+const classes = {
+  newDeckButton: `${PREFIX}-newDeckButton`,
+  unselectedList: `${PREFIX}-unselectedList`,
+  selectedList: `${PREFIX}-selectedList`,
+  deleteButton: `${PREFIX}-deleteButton`
+};
+
+const StyledTabPanel = styled(TabPanel)((
+  {
+    theme
+  }
+) => ({
+  [`& .${classes.newDeckButton}`]: {
+    marginBottom: 3,
+  },
+
+  [`& .${classes.unselectedList}`]: {
+    borderColor: 'lightgrey',
+  },
+
+  [`& .${classes.selectedList}`]: {
+    borderColor: theme.palette.primary.main,
+    backgroundColor: theme.palette.secondary.light,
+    color: theme.palette.secondary.contrastText,
+  },
+
+  [`& .${classes.deleteButton}`]: {
+    backgroundColor: theme.palette.error.main,
+    color: theme.palette.error.contrastText,
+  }
+}));
 
 interface TabPanelProps {
   children?: React.ReactNode
@@ -38,24 +72,6 @@ function TabPanel(props: TabPanelProps): JSX.Element {
   )
 }
 
-const useStyles = makeStyles((theme) => ({
-  newDeckButton: {
-    marginBottom: 3,
-  },
-  unselectedList: {
-    borderColor: 'lightgrey',
-  },
-  selectedList: {
-    borderColor: theme.palette.primary.main,
-    backgroundColor: theme.palette.secondary.light,
-    color: theme.palette.secondary.contrastText,
-  },
-  deleteButton: {
-    backgroundColor: theme.palette.error.main,
-    color: theme.palette.error.contrastText,
-  },
-}))
-
 export function sortedVersionsForDeck(deck: DeckWithVersions): DecklistType[] {
   return deck.versions.sort(
     (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
@@ -75,7 +91,7 @@ export function DecklistTabs(props: {
   const [currentDecklistId, setCurrentDecklistId] = useState(
     latestDecklistForDeck(deck)?.id || undefined
   )
-  const classes = useStyles()
+
   const confirm = useConfirm()
   const { enqueueSnackbar } = useSnackbar()
 
@@ -147,7 +163,7 @@ export function DecklistTabs(props: {
   }
 
   return (
-    <TabPanel value={currentDeckId} index={deck.id}>
+    <StyledTabPanel value={currentDeckId} index={deck.id}>
       <Grid container>
         <Grid size={12}>
           <Tabs
@@ -243,6 +259,6 @@ export function DecklistTabs(props: {
           </Grid>
         </Grid>
       </Grid>
-    </TabPanel>
+    </StyledTabPanel>
   );
 }
