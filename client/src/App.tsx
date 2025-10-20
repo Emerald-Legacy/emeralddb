@@ -1,5 +1,5 @@
 import { Theme } from '@mui/material/styles';
-import { ThemeProvider, createTheme, responsiveFontSizes, adaptV4Theme, StyledEngineProvider } from '@mui/material/styles';
+import { ThemeProvider, createTheme, responsiveFontSizes, StyledEngineProvider } from '@mui/material/styles';
 import { BrowserRouter } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -20,7 +20,7 @@ declare module '@mui/styles/defaultTheme' {
 
 
 // create our material ui theme using up to date typography variables
-let theme = createTheme(adaptV4Theme({
+let theme = createTheme({
   palette: {
     primary: {
       main: '#212121',
@@ -29,7 +29,7 @@ let theme = createTheme(adaptV4Theme({
       main: '#1b5e20',
     },
   },
-}))
+})
 
 theme = responsiveFontSizes(theme)
 
