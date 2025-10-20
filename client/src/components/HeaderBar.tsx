@@ -105,7 +105,7 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
   }
 
   return (
-    <StyledAppBar position="sticky">
+    <StyledAppBar position="fixed">
       <Toolbar variant="dense">
         <Container maxWidth={false}>
           <Grid container justifyContent={'center'}>

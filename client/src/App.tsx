@@ -6,7 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import { HeaderBar } from './components/HeaderBar'
 import { Auth0ProviderWithHistory } from './providers/Auth0ProviderWithHistory'
 import { UiStoreProvider } from './providers/UiStoreProvider'
-import { Container, Grid, useMediaQuery } from '@mui/material'
+import { Container, Grid, Toolbar, useMediaQuery } from '@mui/material'
 import { UserProvider } from './providers/UserProvider'
 import { ConfirmProvider } from 'material-ui-confirm'
 import { Routes } from './Routes'
@@ -49,6 +49,7 @@ export default function App(): JSX.Element {
                   >
                     <UserProvider>
                       <HeaderBar audience={audience} scope={scope} />
+                      <Toolbar variant="dense" />
                       <Container maxWidth={false} style={{ paddingTop: 15, minHeight: '97vh' }}>
                         <Grid container justifyContent="center">
                           <Grid size={{ xs: 12, md: 12, lg: is1440PxOrBigger ? 10 : 12, xl: 10 }}>
