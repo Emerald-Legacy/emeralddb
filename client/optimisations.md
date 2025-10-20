@@ -9,6 +9,7 @@
 - **Task 1 (Optimization): Removed 13 unused dependencies and added clsx**
 - **Task 9 (Optimization): Removed unnecessary React imports from 6 files**
 - **Task 4 (Optimization): Implemented code splitting with React.lazy for all 18 route components**
+- **Task 9 (Optimization): Updated QueryClient configuration with proper cache settings**
 
 ## Remaining High-Impact Optimization Tasks
 
@@ -72,27 +73,6 @@
 - `src/components/CardFilter.tsx` - Complex filter state
 - `src/components/builder/VirtualizedCardTable.tsx` - Uses PureComponent but child components don't
 - `src/components/deck/DeckValidator.ts` - `createDeckStatistics` function (expensive computation)
-
-#### Task 9: Update QueryClient Configuration
-**Impact**: Better cache management, fewer unnecessary refetches
-**Effort**: Small
-**Files**: `src/App.tsx` (line 31)
-
-**Current**: QueryClient created with no configuration
-
-**Should add**:
-```typescript
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 5 * 60 * 1000, // 5 minutes for cards/packs
-      cacheTime: 10 * 60 * 1000, // 10 minutes
-      retry: 1,
-      refetchOnWindowFocus: false,
-    },
-  },
-})
-```
 
 #### Task 7: Improve Accessibility
 **Impact**: Better UX for all users, legal compliance (ADA/WCAG), improved SEO
@@ -171,8 +151,8 @@ Several packages have major version updates available:
 1. ~~**Task 1** (Remove unused dependencies)~~ ✓ Completed
 2. ~~**Task 9** (Remove unnecessary React imports)~~ ✓ Completed
 3. ~~**Task 4** (Code splitting)~~ ✓ Completed
-4. **Task 2** (Remove console.logs) - Quick cleanup
-5. **Task 9** (QueryClient config) - Small but important
+4. ~~**Task 9** (QueryClient config)~~ ✓ Completed
+5. **Task 2** (Remove console.logs) - Quick cleanup
 6. **Task 8** (Optimize UiStoreProvider) - Requires refactoring
 7. **Task 5** (Add memoization) - Prevent re-renders
 8. **Task 7** (Accessibility) - Ongoing improvement

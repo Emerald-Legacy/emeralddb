@@ -28,7 +28,16 @@ theme = responsiveFontSizes(theme)
 export default function App(): JSX.Element {
   const audience = 'http://fiveringsdb.com'
   const scope = 'read:current_user'
-  const queryClient = new QueryClient()
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: 5 * 60 * 1000, // 5 minutes - data stays fresh for 5 minutes
+        gcTime: 10 * 60 * 1000, // 10 minutes - cache persists for 10 minutes
+        retry: 1, // Only retry failed requests once
+        refetchOnWindowFocus: false, // Don't refetch when window regains focus
+      },
+    },
+  })
   const is1440PxOrBigger = useMediaQuery('(min-width:1440px)')
 
   return (
