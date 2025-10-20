@@ -8,6 +8,7 @@
 - Task 13: Fixed type safety issues
 - **Task 1 (Optimization): Removed 13 unused dependencies and added clsx**
 - **Task 9 (Optimization): Removed unnecessary React imports from 6 files**
+- **Task 4 (Optimization): Implemented code splitting with React.lazy for all 18 route components**
 
 ## Remaining High-Impact Optimization Tasks
 
@@ -45,26 +46,6 @@
 - Multiple admin views and form components with error logging
 
 **Action**: Replace with proper error handling or remove entirely for non-error cases.
-
-#### Task 4: Implement Code Splitting with React.lazy
-**Impact**: Massive - reduces initial load from 2.9MB, improves FCP/TTI
-**Effort**: Medium
-**Files**: `src/Routes.tsx`
-
-**Currently NO lazy loading is implemented**. Large components to code-split:
-- `FFGRulesReferenceGuide` (6,606 lines - contains massive embedded content)
-- `ELRulesReferenceGuideNew` (fetches and parses AsciiDoc)
-- Admin views (only loaded for data admins)
-- Deck builder views (authenticated users only)
-- `CardsView` and `DecksView` (data-heavy components)
-
-**Implementation**:
-```typescript
-const FFGRulesReferenceGuide = lazy(() => import('./views/FFGRulesReferenceGuide'))
-const ELRulesReferenceGuideNew = lazy(() => import('./views/ELRulesReferenceGuideNew'))
-const AdminView = lazy(() => import('./views/AdminView'))
-// Wrap with <Suspense fallback={<Loading />}>
-```
 
 #### Task 8: Optimize UiStoreProvider Data Loading
 **Impact**: Faster initial load, better caching
@@ -187,10 +168,11 @@ Several packages have major version updates available:
 
 ## Recommended Implementation Order
 
-1. **Task 1** (Remove unused dependencies) - Quick win, big bundle size reduction
-2. **Task 2** (Remove console.logs) - Quick cleanup
-3. **Task 9** (QueryClient config) - Small but important
-4. **Task 4** (Code splitting) - Biggest performance impact
-5. **Task 8** (Optimize UiStoreProvider) - Requires refactoring
-6. **Task 5** (Add memoization) - Prevent re-renders
-7. **Task 7** (Accessibility) - Ongoing improvement
+1. ~~**Task 1** (Remove unused dependencies)~~ ✓ Completed
+2. ~~**Task 9** (Remove unnecessary React imports)~~ ✓ Completed
+3. ~~**Task 4** (Code splitting)~~ ✓ Completed
+4. **Task 2** (Remove console.logs) - Quick cleanup
+5. **Task 9** (QueryClient config) - Small but important
+6. **Task 8** (Optimize UiStoreProvider) - Requires refactoring
+7. **Task 5** (Add memoization) - Prevent re-renders
+8. **Task 7** (Accessibility) - Ongoing improvement
