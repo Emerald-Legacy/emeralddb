@@ -53,9 +53,20 @@ const StyledAppBar = styled(AppBar)(() => ({
     '& .MuiOutlinedInput-root': {
       backgroundColor: 'white',
       borderRadius: '4px',
+      fontSize: '0.875rem',
+      height: '32px',
+    },
+    '& .MuiOutlinedInput-input': {
+      padding: '4px 8px',
+    },
+    '& .MuiInputAdornment-root': {
+      marginLeft: '4px',
+    },
+    '& .MuiSvgIcon-root': {
+      fontSize: '1.25rem',
     },
     minWidth: 50,
-    maxWidth: 200,
+    maxWidth: 180,
   }
 }));
 
