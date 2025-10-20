@@ -1,11 +1,11 @@
-import React from 'react'
+import type { ReactNode, MouseEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Link } from '@mui/material'
 
 export function EmeraldDBLink(props: {
   href: string
   onClick?: () => void
-  children: React.ReactNode
+  children: ReactNode
   notClickable?: boolean
   openInNewTab?: boolean
 }): JSX.Element {
@@ -17,8 +17,8 @@ export function EmeraldDBLink(props: {
 
   function onLinkClick(
     event:
-      | React.MouseEvent<HTMLSpanElement, MouseEvent>
-      | React.MouseEvent<HTMLAnchorElement, MouseEvent>
+      | MouseEvent<HTMLSpanElement, globalThis.MouseEvent>
+      | MouseEvent<HTMLAnchorElement, globalThis.MouseEvent>
   ) {
     if (!props.openInNewTab) {
       event.preventDefault()

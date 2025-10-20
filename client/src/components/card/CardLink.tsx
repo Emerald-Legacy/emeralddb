@@ -1,6 +1,6 @@
 import { Popover, Theme } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import React, { useState, useEffect } from 'react'
+import { useState, useRef, type MouseEvent } from 'react'
 import { useUiStore } from '../../providers/UiStoreProvider'
 import { CardInformation } from './CardInformation'
 import { CardTypeIcon } from './CardTypeIcon'
@@ -38,7 +38,7 @@ export function DeckbuildingRestrictionIcon(props: {
 
   const open = Boolean(anchorEl)
 
-  const handlePopoverOpen = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+  const handlePopoverOpen = (event: MouseEvent<HTMLElement, globalThis.MouseEvent>) => {
     setAnchorEl(event.currentTarget)
   }
 
@@ -126,7 +126,7 @@ export function CardLink(props: {
   hoveredCardId?: string | null
 }): JSX.Element {
   const { cards, relevantFormats, validCardVersionForFormat } = useUiStore()
-  const spanRef = React.useRef<HTMLSpanElement>(null)
+  const spanRef = useRef<HTMLSpanElement>(null)
 
   const card = cards.find((card) => card.id === props.cardId)
   if (!card) {

@@ -6,6 +6,8 @@
 - Task 10: Updated minor versions
 - Task 11: Migrated to TanStack Query v5
 - Task 13: Fixed type safety issues
+- **Task 1 (Optimization): Removed 13 unused dependencies and added clsx**
+- **Task 9 (Optimization): Removed unnecessary React imports from 6 files**
 
 ## Remaining High-Impact Optimization Tasks
 
