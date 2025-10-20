@@ -55,7 +55,7 @@ export function VersionPicker(props: {
 
   return (
     <Grid container justifyContent="flex-end" alignItems="flex-end">
-      <Grid item xs={3}>
+      <Grid size={3}>
         <TextField
           id="major"
           label="Major"
@@ -65,12 +65,12 @@ export function VersionPicker(props: {
           onChange={(e) => updateMajorVersion(Number.parseInt(e.target.value) || 0)}
         />
       </Grid>
-      <Grid item xs={1}>
+      <Grid size={1}>
         <Typography align="center">
           <b>.</b>
         </Typography>
       </Grid>
-      <Grid item xs={3}>
+      <Grid size={3}>
         <TextField
           id="minor"
           label="Minor"
@@ -80,12 +80,12 @@ export function VersionPicker(props: {
           onChange={(e) => updateMinorVersion(Number.parseInt(e.target.value) || 0)}
         />
       </Grid>
-      <Grid item xs={1}>
+      <Grid size={1}>
         <Typography align="center">
           <b>.</b>
         </Typography>
       </Grid>
-      <Grid item xs={4}>
+      <Grid size={4}>
         <TextField
           id="extra"
           label="Extra"

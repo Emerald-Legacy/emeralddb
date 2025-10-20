@@ -182,7 +182,7 @@ export function Decklist(props: {
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12} hidden={stats.validationErrors.length === 0}>
+      <Grid hidden={stats.validationErrors.length === 0} size={12}>
         <Box
           p={1}
           border="1px solid"
@@ -199,7 +199,7 @@ export function Decklist(props: {
           ))}
         </Box>
       </Grid>
-      <Grid item xs={12} sm={6} lg={6}>
+      <Grid size={{ xs: 12, sm: 6, lg: 6 }}>
         {stats.stronghold && (
           <img
             src={stats.stronghold.versions[0]?.image_url || ''}
@@ -207,9 +207,9 @@ export function Decklist(props: {
           />
         )}
       </Grid>
-      <Grid item xs={12} sm={6} lg={6}>
+      <Grid size={{ xs: 12, sm: 6, lg: 6 }}>
         <Grid container justifyContent="space-between" direction="column" style={{ height: '100%' }}>
-          <Grid item>
+          <Grid>
             {!props.withoutHeader && isLoggedIn() && (
               <Button
                 variant="outlined"
@@ -257,12 +257,12 @@ export function Decklist(props: {
               </div>
             )}
           </Grid>
-          <Grid item>
+          <Grid>
             Influence: {stats.usedInfluence}/{stats.maxInfluence}
           </Grid>
         </Grid>
       </Grid>
-      <Grid item xs={12} sm={6}>
+      <Grid size={{ xs: 12, sm: 6 }}>
         <Typography variant="subtitle1" color={illegalDynastySize ? 'error' : 'inherit'}>
           <b>Dynasty Cards ({stats.dynastyCards.size})</b>
         </Typography>
@@ -270,17 +270,17 @@ export function Decklist(props: {
           Minimum: {stats.dynastyDeckMinimum}, Maximum: {stats.deckMaximum}
         </Typography>
         <Grid component="label" container alignItems="center" spacing={1}>
-          <Grid item>
+          <Grid>
             <Typography variant="subtitle2">Sort By Cost</Typography>
           </Grid>
-          <Grid item>
+          <Grid>
             <Switch
               size="small"
               checked={sortDynByName}
               onChange={() => setSortDynByName(!sortDynByName)}
             />
           </Grid>
-          <Grid item>
+          <Grid>
             <Typography variant="subtitle2">Sort By Name</Typography>
           </Grid>
         </Grid>
@@ -305,7 +305,7 @@ export function Decklist(props: {
           onQuantityChange={props.onQuantityChange}
         />
       </Grid>
-      <Grid item xs={12} sm={6}>
+      <Grid size={{ xs: 12, sm: 6 }}>
         <Typography variant="subtitle1" color={illegalConflictSize ? 'error' : 'inherit'}>
           <b>Conflict Cards ({stats.conflictCards.size})</b>
         </Typography>
@@ -313,17 +313,17 @@ export function Decklist(props: {
           Minimum: {stats.conflictDeckMinimum}, Maximum: {stats.deckMaximum}
         </Typography>
         <Grid component="label" container alignItems="center" spacing={1}>
-          <Grid item>
+          <Grid>
             <Typography variant="subtitle2">Sort By Cost</Typography>
           </Grid>
-          <Grid item>
+          <Grid>
             <Switch
               size="small"
               checked={sortConfByName}
               onChange={() => setSortConfByName(!sortConfByName)}
             />
           </Grid>
-          <Grid item>
+          <Grid>
             <Typography variant="subtitle2">Sort By Name</Typography>
           </Grid>
         </Grid>

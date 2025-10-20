@@ -211,7 +211,7 @@ export function CardInformation(props: {
   return (
     <Box border="solid 1px" padding="15px" borderRadius="3px">
       <Grid container className={classes.block}>
-        <Grid item xs={10}>
+        <Grid size={10}>
           <Typography
             variant="h5"
             style={{ color: color, cursor: props.clickable ? 'pointer' : 'default' }}
@@ -229,17 +229,17 @@ export function CardInformation(props: {
             </em>
           </Typography>
         </Grid>
-        <Grid item xs={2}>
+        <Grid size={2}>
           <img src={`/static/svg/clan/${card.faction}.svg`} className={classes.clanMon} />
         </Grid>
       </Grid>
       <Grid container className={classes.block}>
-        <Grid item xs={12}>
+        <Grid size={12}>
           {getCardStatInfo(card)}
         </Grid>
       </Grid>
       <Grid container>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <Box borderColor={color} borderLeft={5} paddingLeft="10px">
             {textLines.map((line, idx) => (
               <p key={idx}>
@@ -250,7 +250,7 @@ export function CardInformation(props: {
         </Grid>
       </Grid>
       <Grid container className={classes.block}>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <Typography className={classes.deckLabel}>
             <span>{capitalize(card.side)} Deck</span>
             {card.side === 'conflict' && (
@@ -265,7 +265,7 @@ export function CardInformation(props: {
       </Grid>
       {version && version.flavor && (
         <Grid container className={classes.block}>
-          <Grid item xs={12}>
+          <Grid size={12}>
             <Typography align="center" className={classes.stats}>
               <i>{version.flavor}</i>
             </Typography>
@@ -274,7 +274,7 @@ export function CardInformation(props: {
       )}
       {version && (
         <Grid container className={classes.block}>
-          <Grid item xs={12}>
+          <Grid size={12}>
             <Typography className={classes.packInfo}>
               {packName} #{version.position} - Illustrator: {version.illustrator || 'N/A'}
             </Typography>

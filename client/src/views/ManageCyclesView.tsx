@@ -186,16 +186,16 @@ export function ManageCyclesView(): JSX.Element {
   return (
     <>
       <Grid container spacing={1} justifyContent="flex-end">
-        <Grid item xs={12}>
+        <Grid size={12}>
           <Typography variant="h6">Cycles</Typography>
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <Button variant="contained" color="secondary" fullWidth onClick={() => openCycleModal()}>
             Add Cycle
           </Button>
         </Grid>
         {cycles.map((cycle) => (
-          <Grid item xs={12}>
+          <Grid size={12}>
             <Typography>
               {cycle.rotated && <CachedIcon style={{ color: 'red', fontSize: 16 }} />}
               {cycle.name}
@@ -205,14 +205,14 @@ export function ManageCyclesView(): JSX.Element {
             </Button>
             {packsForCycle(cycle.id).map((pack) => (
               <Grid container spacing={1}>
-                <Grid item xs={1} />
-                <Grid item xs={5}>
+                <Grid size={1} />
+                <Grid size={5}>
                   <Typography>
                     {pack.rotated && <CachedIcon style={{ color: 'red', fontSize: 16 }} />}{' '}
                     {pack.name}
                   </Typography>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid size={6}>
                   <Button
                     variant="contained"
                     color="secondary"
@@ -227,8 +227,8 @@ export function ManageCyclesView(): JSX.Element {
               </Grid>
             ))}
             <Grid container>
-              <Grid item xs={1}></Grid>
-              <Grid item xs={11}>
+              <Grid size={1}></Grid>
+              <Grid size={11}>
                 <Button
                   variant="contained"
                   color="secondary"

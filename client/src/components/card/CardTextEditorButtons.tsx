@@ -36,7 +36,7 @@ export function CardTextEditorButtons(props: {
 
   return (
     <Grid container spacing={1} justifyContent="space-between">
-      <Grid item sm={3} xs={12}>
+      <Grid size={{ xs: 12, sm: 3 }}>
         <ButtonGroup variant="outlined" className={classes.buttonGroup}>
           <Button onClick={() => clickTag('br')}>
             <KeyboardReturnIcon />
@@ -49,7 +49,7 @@ export function CardTextEditorButtons(props: {
           </Button>
         </ButtonGroup>
       </Grid>
-      <Grid item sm={9} xs={12}>
+      <Grid size={{ xs: 12, sm: 9 }}>
         <ButtonGroup variant="outlined" className={classes.buttonGroup}>
           <Button onClick={() => clickIcon('element-air')}>
             {getIconForIconName('element-air')}
@@ -68,7 +68,7 @@ export function CardTextEditorButtons(props: {
           </Button>
         </ButtonGroup>
       </Grid>
-      <Grid item sm={3} xs={12}>
+      <Grid size={{ xs: 12, sm: 3 }}>
         <ButtonGroup variant="outlined" className={classes.buttonGroup}>
           <Button onClick={() => clickIcon('conflict-military')}>
             {getIconForIconName('conflict-military')}
@@ -78,7 +78,7 @@ export function CardTextEditorButtons(props: {
           </Button>
         </ButtonGroup>
       </Grid>
-      <Grid item sm={9} xs={12}>
+      <Grid size={{ xs: 12, sm: 9 }}>
         <ButtonGroup variant="outlined" className={classes.buttonGroup}>
           <Button onClick={() => clickIcon('clan-crab')}>{getIconForIconName('clan-crab')}</Button>
           <Button onClick={() => clickIcon('clan-crane')}>

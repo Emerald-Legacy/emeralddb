@@ -149,7 +149,7 @@ export function DecklistTabs(props: {
   return (
     <TabPanel value={currentDeckId} index={deck.id}>
       <Grid container>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <Tabs
             value={versions.findIndex((list) => list.id === currentDecklistId) || 0}
             onChange={(e, newValue) =>
@@ -175,14 +175,14 @@ export function DecklistTabs(props: {
             ))}
           </Tabs>
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <Grid container spacing={1}>
-            <Grid item xs={12}>
+            <Grid size={12}>
               {versions.map((v) => (
                 <div hidden={v.id !== currentDecklistId} key={v.id}>
                   <Box border="1px solid" borderBottom="0" bgcolor="lightgray" p={2}>
                     <Grid container spacing={1} justifyContent="flex-end">
-                      <Grid item xs={6} md={4}>
+                      <Grid size={{ xs: 6, md: 4 }}>
                         <EmeraldDBLink href={`/decks/${v.id}`}>
                           <Button
                             variant="outlined"
@@ -195,7 +195,7 @@ export function DecklistTabs(props: {
                           </Button>
                         </EmeraldDBLink>
                       </Grid>
-                      <Grid item xs={6} md={4}>
+                      <Grid size={{ xs: 6, md: 4 }}>
                         {!v.published_date ? (
                           <Button
                             variant="outlined"
@@ -220,7 +220,7 @@ export function DecklistTabs(props: {
                           </Button>
                         )}
                       </Grid>
-                      <Grid item xs={6} md={4}>
+                      <Grid size={{ xs: 6, md: 4 }}>
                         <Button
                           variant="contained"
                           className={classes.deleteButton}

@@ -74,34 +74,34 @@ export function DeckBuilderWizard(props: {
 
   return (
     <Grid container spacing={2} justifyContent="center" alignItems="center" direction="column">
-      <Grid item xs={12} md={4} hidden={step > -1}>
+      <Grid hidden={step > -1} size={{ xs: 12, md: 4 }}>
         <Typography variant="h4" align="center">
           Create New Deck
         </Typography>
         <Grid container spacing={1}>
-          <Grid item xs={12}>
+          <Grid size={12}>
             <Button fullWidth variant="contained" color="secondary" onClick={() => setStep(0)}>
               Start From Scratch
             </Button>
           </Grid>
-          <Grid item xs={12}>
+          <Grid size={12}>
             <Typography align="center"> --- OR --- </Typography>
           </Grid>
           {!isProduction && (
-            <Grid item xs={12}>
+            <Grid size={12}>
               <EmeraldDBImportButton
                 onImport={(decklist: DecklistViewModel) => props.onImport(decklist)}
               />
             </Grid>
           )}
-          <Grid item xs={12}>
+          <Grid size={12}>
             <BushiBuilderImportButton
               onImport={(decklist: DecklistViewModel) => props.onImport(decklist)}
             />
           </Grid>
         </Grid>
       </Grid>
-      <Grid item xs={12} md={12} hidden={step < 0}>
+      <Grid hidden={step < 0} size={{ xs: 12, md: 12 }}>
         <Typography variant="h4" align="center">
           Create New Deck
         </Typography>
@@ -183,7 +183,7 @@ export function DeckBuilderWizard(props: {
               Choose Role
             </Typography>
             <Grid container spacing={2} style={{ minWidth: 520 }}>
-              <Grid item xs={12} sm={6}>
+              <Grid size={{ xs: 12, sm: 6 }}>
                 <RadioGroup
                   value={role}
                   onChange={(e) => setRole((e.target as HTMLInputElement).value)}
@@ -200,7 +200,7 @@ export function DeckBuilderWizard(props: {
                   ))}
                 </RadioGroup>
               </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid size={{ xs: 12, sm: 6 }}>
                 <RadioGroup
                   value={role}
                   onChange={(e) => setRole((e.target as HTMLInputElement).value)}
@@ -221,7 +221,7 @@ export function DeckBuilderWizard(props: {
           </div>
         )}
       </Grid>
-      <Grid item xs={12} md={6} hidden={step < 0}>
+      <Grid hidden={step < 0} size={{ xs: 12, md: 6 }}>
         <Stepper>
           <Step completed={format !== ''}>
             <StepLabel>Format</StepLabel>
@@ -241,16 +241,16 @@ export function DeckBuilderWizard(props: {
           )}
         </Stepper>
       </Grid>
-      <Grid item xs={12} md={6} hidden={step < 0}>
+      <Grid hidden={step < 0} size={{ xs: 12, md: 6 }}>
         <Grid container spacing={2} direction="row" alignContent="stretch">
-          <Grid item xs={6}>
+          <Grid size={6}>
             {step >= 0 && (
               <Button variant="contained" onClick={() => setStep(step - 1)} fullWidth>
                 Back
               </Button>
             )}
           </Grid>
-          <Grid item xs={6}>
+          <Grid size={6}>
             {step < lastStep && (
               <Button
                 variant="contained"

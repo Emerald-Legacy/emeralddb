@@ -47,7 +47,7 @@ export function CardTextEditor(props: {
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12}>
+      <Grid size={12}>
         <Typography>HTML-Input:</Typography>
         <CardTextEditorButtons onClick={addTagOrIconAroundText} />
         <TextField
@@ -61,7 +61,7 @@ export function CardTextEditor(props: {
           onSelect={updateSelectionStart}
         />
       </Grid>
-      <Grid item xs={12}>
+      <Grid size={12}>
         <Typography>Preview:</Typography>
         <Box borderColor={color} borderLeft={5} paddingLeft="10px">
           <CardText text={text} />

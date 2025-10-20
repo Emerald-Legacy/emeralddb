@@ -196,7 +196,7 @@ export function CardsView(): JSX.Element {
     return (
       <Box paddingBottom={'5px'}>
         <Grid container spacing={1}>
-          <Grid item xs={6} sm={3}>
+          <Grid size={{ xs: 6, sm: 3 }}>
             <Select
               value={displayMode}
               label="Display Mode"
@@ -219,7 +219,7 @@ export function CardsView(): JSX.Element {
               ))}
             </Select>
           </Grid>
-          <Grid item xs={6} sm={3} hidden={displayMode === DisplayMode.LIST}>
+          <Grid hidden={displayMode === DisplayMode.LIST} size={{ xs: 6, sm: 3 }}>
             <Select
               value={sortMode}
               label="Sort Mode"
@@ -242,7 +242,7 @@ export function CardsView(): JSX.Element {
               ))}
             </Select>
           </Grid>
-          <Grid item xs={12} sm={6} hidden={displayMode === DisplayMode.LIST}>
+          <Grid hidden={displayMode === DisplayMode.LIST} size={{ xs: 12, sm: 6 }}>
             <Box style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <Pagination
                 count={pageCount}
@@ -458,7 +458,7 @@ export function CardsView(): JSX.Element {
           <Selectors />
           <Grid container spacing={1}>
             {currentCards.map((card) => (
-              <Grid item xs={6} sm={4} md={3} lg={2} key={card.id}>
+              <Grid key={card.id} size={{ xs: 6, sm: 4, md: 3, lg: 2 }}>
                 <Box maxWidth={'240px'} margin={'0 auto'}>
                   <CardImageOrText
                     cardId={card.id}
@@ -490,8 +490,8 @@ export function CardsView(): JSX.Element {
         <Selectors />
         <Grid container spacing={1}>
           {currentCards.map((card) => (
-            <Grid item xs={12} key={card.id} container spacing={4}>
-              <Grid item xs={12} sm={6}>
+            <Grid key={card.id} container spacing={4} size={12}>
+              <Grid size={{ xs: 12, sm: 6 }}>
                 <CardInformation
                   cardWithVersions={card}
                   clickable
@@ -507,7 +507,7 @@ export function CardsView(): JSX.Element {
                   </Button>
                 </Box>
               </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid size={{ xs: 12, sm: 6 }}>
                 <Box maxWidth={'300px'}>
                   <CardImageOrText
                     cardId={card.id}

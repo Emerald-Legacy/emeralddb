@@ -87,15 +87,15 @@ export function DecklistComments(props: { decklistId: string }): JSX.Element {
 
   return (
     <Grid container spacing={1}>
-      <Grid item xs={12}>
+      <Grid size={12}>
         <Typography>
           <b>Comments:</b>
         </Typography>
       </Grid>
-      <Grid item xs={12} hidden={!isLoggedIn()}>
+      <Grid hidden={!isLoggedIn()} size={12}>
         {isEditMode ? (
           <Grid container spacing={1}>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <TextField
                 multiline
                 value={newComment}
@@ -106,7 +106,7 @@ export function DecklistComments(props: { decklistId: string }): JSX.Element {
                 onChange={(e) => setNewComment(e.target.value)}
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid size={6}>
               <Button
                 variant="contained"
                 onClick={() => {
@@ -119,7 +119,7 @@ export function DecklistComments(props: { decklistId: string }): JSX.Element {
                 Cancel
               </Button>
             </Grid>
-            <Grid item xs={6}>
+            <Grid size={6}>
               <Button
                 variant="contained"
                 color="secondary"
@@ -146,7 +146,7 @@ export function DecklistComments(props: { decklistId: string }): JSX.Element {
         )}
       </Grid>
       {commentsWithChildren.map((comment) => (
-        <Grid item xs={12} key={comment.id}>
+        <Grid key={comment.id} size={12}>
           <DecklistComment comment={comment} onCommentsChange={() => fetchData()} />
         </Grid>
       ))}

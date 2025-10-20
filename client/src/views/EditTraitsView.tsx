@@ -87,7 +87,7 @@ export function EditTraitsView(): JSX.Element {
 
   return (
     <Grid container spacing={2} justifyContent="center">
-      <Grid item xs={12}>
+      <Grid size={12}>
         <Typography variant="h6">Traits</Typography>
         <Button variant="contained" color="secondary" onClick={() => openCreateModal()}>
           Add New Trait
@@ -129,7 +129,7 @@ export function EditTraitsView(): JSX.Element {
         <DialogTitle>Edit Trait</DialogTitle>
         <DialogContent>
           <Grid container spacing={1}>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <TextField
                 value={traitId}
                 multiline

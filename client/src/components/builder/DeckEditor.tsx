@@ -210,9 +210,9 @@ export function DeckEditor(props: { existingDecklist?: DecklistType | undefined 
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12} md={6}>
+      <Grid size={{ xs: 12, md: 6 }}>
         <Grid container spacing={1}>
-          <Grid item xs={9}>
+          <Grid size={9}>
             <TextField
               value={decklist.name}
               fullWidth
@@ -222,7 +222,7 @@ export function DeckEditor(props: { existingDecklist?: DecklistType | undefined 
               onChange={(e) => setDecklist({ ...decklist, name: e.target.value })}
             />
           </Grid>
-          <Grid item xs={3}>
+          <Grid size={3}>
             <TextField
               value={decklist.version_number}
               fullWidth
@@ -233,7 +233,7 @@ export function DeckEditor(props: { existingDecklist?: DecklistType | undefined 
               onChange={(e) => setDecklist({ ...decklist, version_number: e.target.value })}
             />
           </Grid>
-          <Grid item xs={6} lg={9}>
+          <Grid size={{ xs: 6, lg: 9 }}>
             <Autocomplete
               id="combo-box-format"
               autoHighlight
@@ -248,7 +248,7 @@ export function DeckEditor(props: { existingDecklist?: DecklistType | undefined 
               }}
             />
           </Grid>
-          <Grid item xs={6} lg={3}>
+          <Grid size={{ xs: 6, lg: 3 }}>
             <Button
               variant="contained"
               color="secondary"
@@ -258,18 +258,18 @@ export function DeckEditor(props: { existingDecklist?: DecklistType | undefined 
               Custom Version
             </Button>
           </Grid>
-          <Grid item xs={12}>
+          <Grid size={12}>
             <Box border="1px solid" padding={3}>
               <Decklist decklist={decklist} withoutHeader onQuantityChange={changeCardQuantity} />
             </Box>
           </Grid>
-          <Grid item xs={12} md={8}></Grid>
+          <Grid size={{ xs: 12, md: 8 }}></Grid>
         </Grid>
       </Grid>
-      <Grid item xs={12} md={6}>
+      <Grid size={{ xs: 12, md: 6 }}>
         <Paper>
           <Grid container spacing={1}>
-            <Grid item xs={6}>
+            <Grid size={6}>
               {props.existingDecklist && (
                 <EmeraldDBLink href={`/decks/${props.existingDecklist?.deck_id}/`}>
                   <Button variant="contained" fullWidth>
@@ -278,7 +278,7 @@ export function DeckEditor(props: { existingDecklist?: DecklistType | undefined 
                 </EmeraldDBLink>
               )}
             </Grid>
-            <Grid item xs={6}>
+            <Grid size={6}>
               <Button
                 variant="contained"
                 color="secondary"
@@ -288,7 +288,7 @@ export function DeckEditor(props: { existingDecklist?: DecklistType | undefined 
                 Save Deck
               </Button>
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <Tabs
                 value={currentView}
                 onChange={(e, newValue) => setCurrentView(newValue)}

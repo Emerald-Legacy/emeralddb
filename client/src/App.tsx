@@ -58,7 +58,7 @@ export default function App(): JSX.Element {
                       <HeaderBar audience={audience} scope={scope} />
                       <Container maxWidth={false} style={{ paddingTop: 15, minHeight: '97vh' }}>
                         <Grid container justifyContent="center">
-                          <Grid item xs={12} md={12} lg={is1440PxOrBigger ? 10 : 12} xl={10}>
+                          <Grid size={{ xs: 12, md: 12, lg: is1440PxOrBigger ? 10 : 12, xl: 10 }}>
                             <Routes />
                           </Grid>
                         </Grid>

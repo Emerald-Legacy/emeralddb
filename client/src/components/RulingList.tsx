@@ -148,7 +148,7 @@ export function RulingList(props: { cardId: string; rulings: Ruling[] }): JSX.El
   return (
     <Grid container spacing={1}>
       {props.rulings.map((ruling) => (
-        <Grid key={ruling.id} item xs={12}>
+        <Grid key={ruling.id} size={12}>
           <Box
             border="1px solid"
             borderColor="lightgrey"

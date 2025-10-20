@@ -60,7 +60,7 @@ export function ELRulesReferenceGuideNew(): JSX.Element {
 
   return (
     <Grid container spacing={3} direction={isSmOrBigger ? 'row' : 'column-reverse'}>
-      <Grid item sm={8}>
+      <Grid size={{ sm: 8 }}>
         <Box style={{ maxHeight: isSmOrBigger ? '93vh' : '85vh', overflow: 'auto' }} p={1}>
           <Typography variant="h4">Emerald Legacy: Rules Reference</Typography>
           <p>
@@ -73,7 +73,7 @@ export function ELRulesReferenceGuideNew(): JSX.Element {
           <div dangerouslySetInnerHTML={{__html: content}} />
         </Box>
       </Grid>
-      <Grid item sm={4}>
+      <Grid size={{ sm: 4 }}>
         <Box p={1}>
           {!isSmOrBigger ? (
             <>

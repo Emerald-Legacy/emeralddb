@@ -101,7 +101,7 @@ export function EditFormatsView(): JSX.Element {
 
   return (
     <Grid container spacing={2} justifyContent="center">
-      <Grid item xs={12}>
+      <Grid size={12}>
         <Typography variant="h6">Formats</Typography>
         <Button variant="contained" color="secondary" onClick={() => openCreateModal()}>
           Add New Format
@@ -166,7 +166,7 @@ export function EditFormatsView(): JSX.Element {
         <DialogTitle>Edit Format</DialogTitle>
         <DialogContent>
           <Grid container spacing={1}>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <TextField
                 value={position}
                 multiline

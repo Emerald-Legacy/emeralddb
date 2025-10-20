@@ -94,15 +94,15 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
       <Toolbar variant="dense">
         <Container maxWidth={false}>
           <Grid container justifyContent={'center'}>
-            <Grid item xs={12} lg={is1440PxOrBigger ? 10 : 12} xl={10}>
+            <Grid size={{ xs: 12, lg: is1440PxOrBigger ? 10 : 12, xl: 10 }}>
               <Grid container>
-                <Grid item xs={11} sm={11} md={2} lg={3} xl={2}>
+                <Grid size={{ xs: 11, sm: 11, md: 2, lg: 3, xl: 2 }}>
                   <EmeraldDBLink href={'/cards'} onClick={() => closeModalsAndPopUps()}>
                     <img src="/static/logo.png" className={classes.logo} />
                   </EmeraldDBLink>
                 </Grid>
                 {isMdOrSmaller && (
-                  <Grid item xs={1} sm={1}>
+                  <Grid size={{ xs: 1, sm: 1 }}>
                     <IconButton
                       color="inherit"
                       onClick={() => setIsMobileOpen(!isMobileOpen)}
@@ -111,7 +111,7 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
                     </IconButton>
                   </Grid>
                 )}
-                <Grid item xs={12} sm={12} md={10} lg={9} xl={10}>
+                <Grid size={{ xs: 12, sm: 12, md: 10, lg: 9, xl: 10 }}>
                   <Collapse in={!isMdOrSmaller || isMobileOpen}>
                     <Grid
                       direction={isMdOrSmaller ? 'column' : 'row'}
@@ -119,7 +119,7 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
                       justifyContent="flex-end"
                       alignItems={isMdOrSmaller ? 'flex-end' : 'center'}
                     >
-                      <Grid item>
+                      <Grid>
                         <ListItemButton dense={isMdOrSmaller}>
                           <ListItemText
                             primary={
@@ -153,7 +153,7 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
                           </div>
                         </Menu>
                       </Grid>
-                      <Grid item>
+                      <Grid>
                         <ListItemButton dense={isMdOrSmaller}>
                           <ListItemText
                             primary={
@@ -164,7 +164,7 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
                           />
                         </ListItemButton>
                       </Grid>
-                      <Grid item>
+                      <Grid>
                         <ListItemButton dense={isMdOrSmaller}>
                           <ListItemText
                             primary={
@@ -175,7 +175,7 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
                           />
                         </ListItemButton>
                       </Grid>
-                      <Grid item>
+                      <Grid>
                         <ListItemButton dense={isMdOrSmaller} onClick={handleRulesMenuClick}>
                           <ListItemText
                             primary={
@@ -240,7 +240,7 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
                         </Menu>
                       </Grid>
                       {isDataAdmin() && (
-                        <Grid item>
+                        <Grid>
                           <ListItemButton dense={isMdOrSmaller}>
                             <ListItemText
                               primary={
@@ -252,7 +252,7 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
                           </ListItemButton>
                         </Grid>
                       )}
-                      <Grid item>
+                      <Grid>
                         <ListItemButton dense={isMdOrSmaller}>
                           <ListItemText
                             primary={
@@ -263,7 +263,7 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
                           />
                         </ListItemButton>
                       </Grid>
-                      <Grid item>
+                      <Grid>
                         <ListItem dense={isMdOrSmaller}>
                           <TextField
                             className={classes.searchField}
@@ -281,10 +281,10 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
                           />
                         </ListItem>
                       </Grid>
-                      <Grid item>
+                      <Grid>
                         <UserMenu audience={props.audience} scope={props.scope} />
                       </Grid>
-                      <Grid item />
+                      <Grid />
                     </Grid>
                   </Collapse>
                 </Grid>

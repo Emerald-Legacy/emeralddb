@@ -33,10 +33,10 @@ export function CardValueFilter(props: {
 
   return (
     <Grid container alignItems="flex-end" alignContent="flex-end">
-      <Grid item xs={2} md={1}>
+      <Grid size={{ xs: 2, md: 1 }}>
         {props.valueLabel}
       </Grid>
-      <Grid item xs={4} md={4}>
+      <Grid size={{ xs: 4, md: 4 }}>
         <ButtonGroup size="small" className={classes.buttonGroup} variant="contained">
           <Button
             className={classes.button}
@@ -61,7 +61,7 @@ export function CardValueFilter(props: {
           </Button>
         </ButtonGroup>
       </Grid>
-      <Grid item xs={6} md={7}>
+      <Grid size={{ xs: 6, md: 7 }}>
         <TextField value={filterString} onChange={(e) => setFilterString(e.target.value)} />
       </Grid>
     </Grid>

@@ -111,7 +111,7 @@ export function DeckFilter(props: {
   return (
     <Paper className={classes.filter}>
       <Grid container spacing={1} justifyContent="flex-end">
-        <Grid item xs={12} sm={6}>
+        <Grid size={{ xs: 12, sm: 6 }}>
           <Autocomplete
             id="combo-box-primary"
             autoHighlight
@@ -129,7 +129,7 @@ export function DeckFilter(props: {
             }
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid size={{ xs: 12, sm: 6 }}>
           <Autocomplete
             id="combo-box-secondary"
             autoHighlight
@@ -147,7 +147,7 @@ export function DeckFilter(props: {
             }
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid size={{ xs: 12, sm: 6 }}>
           <Autocomplete
             id="combo-box-format"
             autoHighlight
@@ -165,7 +165,7 @@ export function DeckFilter(props: {
             }
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid size={{ xs: 12, sm: 6 }}>
           <Button
             fullWidth
             variant="contained"

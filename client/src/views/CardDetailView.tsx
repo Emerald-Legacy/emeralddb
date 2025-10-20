@@ -150,13 +150,13 @@ export function CardDetailView(): JSX.Element {
   return (
     <Container style={{paddingTop: '5px'}}>
       <Grid container spacing={5}>
-        <Grid item xs={12} md={7}>
+        <Grid size={{ xs: 12, md: 7 }}>
           <CardInformation
             cardWithVersions={card}
             currentVersion={chosenVersion}
           />
           {card.versions.length > 1 && (
-            <Grid item xs={12}>
+            <Grid size={12}>
               <Tabs
                 TabIndicatorProps={{
                   style: {
@@ -185,14 +185,14 @@ export function CardDetailView(): JSX.Element {
           )}
           <RulingList cardId={card.id} rulings={card.rulings} />
         </Grid>
-        <Grid item xs={12} md={5} container spacing={0}>
+        <Grid container spacing={0} size={{ xs: 12, md: 5 }}>
           {chosenVersion && (
-            <Grid item xs={12}>
+            <Grid size={12}>
               <img src={chosenVersion.image_url || ''} style={{ maxWidth: imageWidth }} />
             </Grid>
           )}
           {isDataAdmin() && (
-            <Grid item xs={12}>
+            <Grid size={12}>
               <Button
                 variant="contained"
                 color="secondary"
@@ -205,7 +205,7 @@ export function CardDetailView(): JSX.Element {
             </Grid>
           )}
           {isDataAdmin() && (
-            <Grid item xs={12}>
+            <Grid size={12}>
               <Button
                 variant="contained"
                 color="secondary"
@@ -218,7 +218,7 @@ export function CardDetailView(): JSX.Element {
             </Grid>
           )}
           {isDataAdmin() && (
-            <Grid item xs={12}>
+            <Grid size={12}>
               <Button
                 variant="contained"
                 color="secondary"
@@ -236,7 +236,7 @@ export function CardDetailView(): JSX.Element {
         <DialogTitle>Delete Card {card.name}</DialogTitle>
         <DialogContent>
           <Grid container spacing={1}>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <Autocomplete
                 id="combo-box-cardId"
                 autoHighlight
@@ -266,7 +266,7 @@ export function CardDetailView(): JSX.Element {
         <DialogTitle>Rename Card {card.name}</DialogTitle>
         <DialogContent>
           <Grid container spacing={1}>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 required
                 id="name"
@@ -275,7 +275,7 @@ export function CardDetailView(): JSX.Element {
                 onChange={(e) => setNameAndGenerateId(e.target.value)}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 id="name_extra"
                 label="Name Extra"
@@ -283,7 +283,7 @@ export function CardDetailView(): JSX.Element {
                 onChange={(e) => setNameExtraAndGenerateId(e.target.value)}
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <TextField
                 disabled
                 InputLabelProps={{ shrink: true }}

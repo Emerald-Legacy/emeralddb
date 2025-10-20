@@ -26,12 +26,12 @@ export function DeckDetailView(): JSX.Element {
   document.title = `${decklist.name} (v${decklist.version_number})`
   return (
     <Grid container spacing={5} justifyContent="center">
-      <Grid item xs={12} md={7}>
+      <Grid size={{ xs: 12, md: 7 }}>
         <Decklist decklist={decklist} />
       </Grid>
-      <Grid item xs={12} md={5}>
+      <Grid size={{ xs: 12, md: 5 }}>
         <Grid container spacing={2}>
-          <Grid item xs={12}>
+          <Grid size={12}>
             <Typography component="h6" align="right">
               Created by: <b>{decklist.username}</b>
             </Typography>
@@ -55,7 +55,7 @@ export function DeckDetailView(): JSX.Element {
               )}
             </Box>
           </Grid>
-          <Grid item xs={12} hidden={!decklist.published_date}>
+          <Grid hidden={!decklist.published_date} size={12}>
             <DecklistComments decklistId={decklist.id} />
           </Grid>
         </Grid>

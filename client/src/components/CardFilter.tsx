@@ -498,7 +498,7 @@ export function CardFilter(props: {
   return (
     <Paper className={classes.filter}>
       <Grid container spacing={1} justifyContent="flex-end">
-        <Grid item xs={12} sm={8} md={!props.fullWidth ? 6 : 10}>
+        <Grid size={{ xs: 12, sm: 8, md: !props.fullWidth ? 6 : 10 }}>
           <TextField
             fullWidth
             variant="outlined"
@@ -508,7 +508,7 @@ export function CardFilter(props: {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </Grid>
-        <Grid item xs={12} sm={4} md={!props.fullWidth ? 6 : 2}>
+        <Grid size={{ xs: 12, sm: 4, md: !props.fullWidth ? 6 : 2 }}>
           <Button
             fullWidth
             variant="contained"
@@ -518,18 +518,16 @@ export function CardFilter(props: {
             {showFilters ? 'Hide Filters' : 'Show Filters'}
           </Button>
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <Grid container spacing={1}>
-            <Grid item xs={12} md={props.fullWidth ? 6 : 12}>
+            <Grid size={{ xs: 12, md: props.fullWidth ? 6 : 12 }}>
               <Collapse in={props.deckbuilder || showFilters}>
                 <Grid container spacing={1}>
                   <Grid
-                    item
-                    xs={12}
                     className={
                       props.deckbuilder ? classes.filterGridItemBuilder : classes.filterGridItem
                     }
-                  >
+                   size={12}>
                     <ButtonGroup fullWidth>
                       {visibleFactions.map((faction) => (
                         <Tooltip key={faction.id} title={faction.name}>
@@ -557,12 +555,10 @@ export function CardFilter(props: {
                     </ButtonGroup>
                   </Grid>
                   <Grid
-                    item
-                    xs={12}
                     className={
                       props.deckbuilder ? classes.filterGridItemBuilder : classes.filterGridItem
                     }
-                  >
+                   size={12}>
                     <ButtonGroup fullWidth>
                       {visibleCardtypes.map((type) => (
                         <Tooltip key={type.id} title={type.name}>
@@ -589,12 +585,10 @@ export function CardFilter(props: {
                   </Grid>
                   {filterState.cardTypes.includes('province') && (
                     <Grid
-                      item
-                      xs={12}
                       className={
                         props.deckbuilder ? classes.filterGridItemBuilder : classes.filterGridItem
                       }
-                    >
+                     size={12}>
                       <ButtonGroup fullWidth>
                         {elements.map((element) => (
                           <Tooltip key={element.id} title={element.name}>
@@ -627,12 +621,10 @@ export function CardFilter(props: {
                     </Grid>
                   )}
                   <Grid
-                    item
-                    xs={12}
                     className={
                       props.deckbuilder ? classes.filterGridItemBuilder : classes.filterGridItem
                     }
-                  >
+                   size={12}>
                     <ButtonGroup size="small" fullWidth>
                       {visibleSides.map((side) => (
                         <Tooltip key={side.id} title={side.name}>
@@ -661,10 +653,10 @@ export function CardFilter(props: {
                 </Grid>
               </Collapse>
             </Grid>
-            <Grid item xs={12} md={props.fullWidth ? 6 : 12}>
+            <Grid size={{ xs: 12, md: props.fullWidth ? 6 : 12 }}>
               <Collapse in={showFilters}>
                 <Grid container spacing={1}>
-                  <Grid item xs={12}>
+                  <Grid size={12}>
                     <Autocomplete
                       id="combo-box-traits"
                       autoHighlight
@@ -683,7 +675,7 @@ export function CardFilter(props: {
                       }
                     />
                   </Grid>
-                  <Grid item xs={4}>
+                  <Grid size={4}>
                     <Autocomplete
                       id="combo-box-is-unique"
                       autoHighlight
@@ -701,7 +693,7 @@ export function CardFilter(props: {
                       }
                     />
                   </Grid>
-                  <Grid item xs={4}>
+                  <Grid size={4}>
                     <Autocomplete
                       id="combo-box-role-restriction-in"
                       autoHighlight
@@ -725,7 +717,7 @@ export function CardFilter(props: {
                       }
                     />
                   </Grid>
-                  <Grid item xs={4}>
+                  <Grid size={4}>
                     <Autocomplete
                       id="combo-box-format"
                       autoHighlight
@@ -748,7 +740,7 @@ export function CardFilter(props: {
                       }
                     />
                   </Grid>
-                  <Grid item xs={4}>
+                  <Grid size={4}>
                     <Autocomplete
                       id="combo-box-is-illegal"
                       autoHighlight
@@ -772,7 +764,7 @@ export function CardFilter(props: {
                       }
                     />
                   </Grid>
-                  <Grid item xs={4}>
+                  <Grid size={4}>
                     <Autocomplete
                       id="combo-box-restricted-in"
                       disabled={!filterState.format}
@@ -796,7 +788,7 @@ export function CardFilter(props: {
                       }
                     />
                   </Grid>
-                  <Grid item xs={4}>
+                  <Grid size={4}>
                     <Autocomplete
                       id="combo-box-banned-in"
                       autoHighlight
@@ -820,7 +812,7 @@ export function CardFilter(props: {
                       }
                     />
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid size={12}>
                     <Button
                       fullWidth
                       variant="contained"
@@ -834,15 +826,11 @@ export function CardFilter(props: {
                 </Grid>
               </Collapse>
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <Collapse in={showFilters}>
                 <Grid container spacing={1}>
                   <Grid
-                    item
-                    xs={12}
-                    sm={props.deckbuilder ? 12 : 6}
-                    md={props.deckbuilder ? 6 : 4}
-                  >
+                   size={{ xs: 12, sm: props.deckbuilder ? 12 : 6, md: props.deckbuilder ? 6 : 4 }}>
                     <CardValueFilter
                       valueLabel={<span className={`icon icon-conflict-military`} />}
                       onFilterChange={(type, value) =>
@@ -851,11 +839,7 @@ export function CardFilter(props: {
                     />
                   </Grid>
                   <Grid
-                    item
-                    xs={12}
-                    sm={props.deckbuilder ? 12 : 6}
-                    md={props.deckbuilder ? 6 : 4}
-                  >
+                   size={{ xs: 12, sm: props.deckbuilder ? 12 : 6, md: props.deckbuilder ? 6 : 4 }}>
                     <CardValueFilter
                       valueLabel={<span className={`icon icon-conflict-political`} />}
                       onFilterChange={(type, value) =>
@@ -864,11 +848,7 @@ export function CardFilter(props: {
                     />
                   </Grid>
                   <Grid
-                    item
-                    xs={12}
-                    sm={props.deckbuilder ? 12 : 6}
-                    md={props.deckbuilder ? 6 : 4}
-                  >
+                   size={{ xs: 12, sm: props.deckbuilder ? 12 : 6, md: props.deckbuilder ? 6 : 4 }}>
                     <CardValueFilter
                       valueLabel={<span>Cost:</span>}
                       onFilterChange={(type, value) =>
@@ -877,11 +857,7 @@ export function CardFilter(props: {
                     />
                   </Grid>
                   <Grid
-                    item
-                    xs={12}
-                    sm={props.deckbuilder ? 12 : 6}
-                    md={props.deckbuilder ? 6 : 4}
-                  >
+                   size={{ xs: 12, sm: props.deckbuilder ? 12 : 6, md: props.deckbuilder ? 6 : 4 }}>
                     <CardValueFilter
                       valueLabel={<span>Inf:</span>}
                       onFilterChange={(type, value) =>
@@ -890,11 +866,7 @@ export function CardFilter(props: {
                     />
                   </Grid>
                   <Grid
-                    item
-                    xs={12}
-                    sm={props.deckbuilder ? 12 : 6}
-                    md={props.deckbuilder ? 6 : 4}
-                  >
+                   size={{ xs: 12, sm: props.deckbuilder ? 12 : 6, md: props.deckbuilder ? 6 : 4 }}>
                     <CardValueFilter
                       valueLabel={<span>Glory:</span>}
                       onFilterChange={(type, value) =>
@@ -903,11 +875,7 @@ export function CardFilter(props: {
                     />
                   </Grid>
                   <Grid
-                    item
-                    xs={12}
-                    sm={props.deckbuilder ? 12 : 6}
-                    md={props.deckbuilder ? 6 : 4}
-                  >
+                   size={{ xs: 12, sm: props.deckbuilder ? 12 : 6, md: props.deckbuilder ? 6 : 4 }}>
                     <CardValueFilter
                       valueLabel={<span>Str:</span>}
                       onFilterChange={(type, value) =>
@@ -915,7 +883,7 @@ export function CardFilter(props: {
                       }
                     />
                   </Grid>
-                  <Grid item xs={12} md={12}>
+                  <Grid size={{ xs: 12, md: 12 }}>
                     <Button
                       fullWidth
                       variant="contained"

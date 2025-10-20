@@ -82,9 +82,9 @@ export function DeckTabs(props: {
 
   return (
     <Grid container spacing={1}>
-      <Grid item xs={12} lg={3} xl={4}>
+      <Grid size={{ xs: 12, lg: 3, xl: 4 }}>
         <Grid container>
-          <Grid item xs={12}>
+          <Grid size={12}>
             <EmeraldDBLink href={`/builder/create/new`}>
               <Button
                 variant="contained"
@@ -99,7 +99,7 @@ export function DeckTabs(props: {
           {sortedDecks.map((deck) => {
             const latestList = latestDecklistForDeck(deck)
             return (
-              <Grid key={deck.id} item xs={12}>
+              <Grid key={deck.id} size={12}>
                 <Box
                   padding={1}
                   borderRadius="3px"
@@ -136,12 +136,12 @@ export function DeckTabs(props: {
           })}
         </Grid>
       </Grid>
-      <Grid item xs={12} lg={9} xl={8}>
+      <Grid size={{ xs: 12, lg: 9, xl: 8 }}>
         <Grid container>
           {currentDeckId && (
-            <Grid item xs={12}>
+            <Grid size={12}>
               <Grid container spacing={1} justifyContent="flex-end">
-                <Grid item xs={4}>
+                <Grid size={4}>
                   <EmeraldDBLink href={`/builder/${currentDeckId}/edit`}>
                     <Button
                       variant="contained"
@@ -154,7 +154,7 @@ export function DeckTabs(props: {
                     </Button>
                   </EmeraldDBLink>
                 </Grid>
-                <Grid item xs={4}>
+                <Grid size={4}>
                   <EmeraldDBLink href={`/decks/${currentDeckId}/`}>
                     <Button
                       variant="contained"
@@ -167,7 +167,7 @@ export function DeckTabs(props: {
                     </Button>
                   </EmeraldDBLink>
                 </Grid>
-                <Grid item xs={4}>
+                <Grid size={4}>
                   <Button
                     variant="contained"
                     className={classes.deleteButton}
@@ -181,7 +181,7 @@ export function DeckTabs(props: {
               </Grid>
             </Grid>
           )}
-          <Grid item xs={12}>
+          <Grid size={12}>
             {sortedDecks.map((deck) => (
               <DecklistTabs
                 key={deck.id}

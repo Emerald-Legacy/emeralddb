@@ -81,12 +81,12 @@ export function DecklistComment(props: {
 
   return (
     <Grid container spacing={1}>
-      <Grid item xs={12}>
+      <Grid size={12}>
         <Box border="1px solid" borderRadius="4px" p={2}>
           {isEditMode ? (
             <>
               <Grid container spacing={1}>
-                <Grid item xs={12}>
+                <Grid size={12}>
                   <TextField
                     multiline
                     value={editedComment}
@@ -97,7 +97,7 @@ export function DecklistComment(props: {
                     onChange={(e) => setEditedComment(e.target.value)}
                   />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid size={6}>
                   <Button
                     variant="contained"
                     onClick={() => {
@@ -109,7 +109,7 @@ export function DecklistComment(props: {
                     Cancel
                   </Button>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid size={6}>
                   <Button
                     variant="contained"
                     color="secondary"
@@ -146,10 +146,10 @@ export function DecklistComment(props: {
           )}
         </Box>
       </Grid>
-      <Grid item xs={12} hidden={!isLoggedIn()}>
+      <Grid hidden={!isLoggedIn()} size={12}>
         {isCreateMode ? (
           <Grid container spacing={1}>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <TextField
                 multiline
                 value={newComment}
@@ -160,7 +160,7 @@ export function DecklistComment(props: {
                 onChange={(e) => setNewComment(e.target.value)}
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid size={6}>
               <Button
                 variant="contained"
                 onClick={() => {
@@ -173,7 +173,7 @@ export function DecklistComment(props: {
                 Cancel
               </Button>
             </Grid>
-            <Grid item xs={6}>
+            <Grid size={6}>
               <Button
                 variant="contained"
                 color="secondary"
@@ -188,8 +188,8 @@ export function DecklistComment(props: {
           </Grid>
         ) : (
           <Grid container spacing={1}>
-            <Grid item xs={3} />
-            <Grid item xs={9}>
+            <Grid size={3} />
+            <Grid size={9}>
               <Button
                 variant="outlined"
                 startIcon={<ReplyIcon />}
@@ -204,7 +204,7 @@ export function DecklistComment(props: {
         )}
       </Grid>
       {props.comment.children.map((comment) => (
-        <Grid item xs={12} key={comment.id}>
+        <Grid key={comment.id} size={12}>
           <Box paddingLeft={4}>
             <DecklistComment comment={comment} onCommentsChange={() => props.onCommentsChange()} />
           </Box>
