@@ -18,7 +18,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import { CycleList } from "../components/CycleList";
 
 export function EditFormatsView(): JSX.Element {
-  const { formats, toggleReload } = useUiStore()
+  const { formats, invalidateData } = useUiStore()
   const [formatId, setFormatId] = useState('')
   const [formatName, setFormatName] = useState('')
   const [legalPacks, setLegalPacks] = useState<string[]>([])
@@ -75,7 +75,7 @@ export function EditFormatsView(): JSX.Element {
       },
     })
       .then(() => {
-        toggleReload()
+        invalidateData()
         setFormatId('')
         setFormatName('')
         setLegalPacks([])

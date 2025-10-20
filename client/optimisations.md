@@ -10,6 +10,7 @@
 - **Task 9 (Optimization): Removed unnecessary React imports from 6 files**
 - **Task 4 (Optimization): Implemented code splitting with React.lazy for all 18 route components**
 - **Task 9 (Optimization): Updated QueryClient configuration with proper cache settings**
+- **Task 8 (Optimization): Refactored UiStoreProvider to use TanStack Query with automatic caching**
 
 ## Remaining High-Impact Optimization Tasks
 
@@ -47,18 +48,6 @@
 - Multiple admin views and form components with error logging
 
 **Action**: Replace with proper error handling or remove entirely for non-error cases.
-
-#### Task 8: Optimize UiStoreProvider Data Loading
-**Impact**: Faster initial load, better caching
-**Effort**: Medium
-**Files**: `src/providers/UiStoreProvider.tsx`
-
-**Current issues**:
-- Loads ALL cards, packs, cycles on every mount - causes slow initial load
-- Uses multiple sequential API calls in useEffect (lines 38-48)
-- No caching beyond component lifetime
-- Should integrate with TanStack Query for better caching
-- Consider pagination or virtualization for card lists
 
 ### Medium Priority
 
@@ -152,7 +141,7 @@ Several packages have major version updates available:
 2. ~~**Task 9** (Remove unnecessary React imports)~~ ✓ Completed
 3. ~~**Task 4** (Code splitting)~~ ✓ Completed
 4. ~~**Task 9** (QueryClient config)~~ ✓ Completed
-5. **Task 2** (Remove console.logs) - Quick cleanup
-6. **Task 8** (Optimize UiStoreProvider) - Requires refactoring
+5. ~~**Task 8** (Optimize UiStoreProvider)~~ ✓ Completed
+6. **Task 2** (Remove console.logs) - Quick cleanup
 7. **Task 5** (Add memoization) - Prevent re-renders
 8. **Task 7** (Accessibility) - Ongoing improvement
