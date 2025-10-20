@@ -5,6 +5,7 @@ import {
   Grid,
   InputAdornment,
   ListItem,
+  ListItemButton,
   ListItemText,
   Menu,
   TextField,
@@ -119,7 +120,7 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
                       alignItems={isMdOrSmaller ? 'flex-end' : 'center'}
                     >
                       <Grid item>
-                        <ListItem button dense={isMdOrSmaller}>
+                        <ListItemButton dense={isMdOrSmaller}>
                           <ListItemText
                             primary={
                               <EmeraldDBLink href="/cards" onClick={closeModalsAndPopUps}>
@@ -130,7 +131,7 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
                           <span onClick={handleCardMenuClick}>
                             {cardAnchorEl ? <ExpandLessIcon /> : <ExpandMoreIcon />}
                           </span>
-                        </ListItem>
+                        </ListItemButton>
                         <Menu
                           anchorEl={cardAnchorEl}
                           transformOrigin={{
@@ -153,7 +154,7 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
                         </Menu>
                       </Grid>
                       <Grid item>
-                        <ListItem button dense={isMdOrSmaller}>
+                        <ListItemButton dense={isMdOrSmaller}>
                           <ListItemText
                             primary={
                               <EmeraldDBLink href="/decks" onClick={closeModalsAndPopUps}>
@@ -161,10 +162,10 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
                               </EmeraldDBLink>
                             }
                           />
-                        </ListItem>
+                        </ListItemButton>
                       </Grid>
                       <Grid item>
-                        <ListItem button dense={isMdOrSmaller}>
+                        <ListItemButton dense={isMdOrSmaller}>
                           <ListItemText
                             primary={
                               <EmeraldDBLink href="/builder" onClick={closeModalsAndPopUps}>
@@ -172,10 +173,10 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
                               </EmeraldDBLink>
                             }
                           />
-                        </ListItem>
+                        </ListItemButton>
                       </Grid>
                       <Grid item>
-                        <ListItem button dense={isMdOrSmaller} onClick={handleRulesMenuClick}>
+                        <ListItemButton dense={isMdOrSmaller} onClick={handleRulesMenuClick}>
                           <ListItemText
                             primary={
                               <EmeraldDBLink href="/rules" onClick={closeModalsAndPopUps}>
@@ -184,7 +185,7 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
                             }
                           />
                           <span>{rulesAnchorEl ? <ExpandLessIcon /> : <ExpandMoreIcon />}</span>
-                        </ListItem>
+                        </ListItemButton>
                         <Menu
                           anchorEl={rulesAnchorEl}
                           transformOrigin={{
@@ -240,7 +241,7 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
                       </Grid>
                       {isDataAdmin() && (
                         <Grid item>
-                          <ListItem button dense={isMdOrSmaller}>
+                          <ListItemButton dense={isMdOrSmaller}>
                             <ListItemText
                               primary={
                                 <EmeraldDBLink href="/admin" onClick={closeModalsAndPopUps}>
@@ -248,11 +249,11 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
                                 </EmeraldDBLink>
                               }
                             />
-                          </ListItem>
+                          </ListItemButton>
                         </Grid>
                       )}
                       <Grid item>
-                        <ListItem button dense={isMdOrSmaller}>
+                        <ListItemButton dense={isMdOrSmaller}>
                           <ListItemText
                             primary={
                               <EmeraldDBLink href="/faq" onClick={closeModalsAndPopUps}>
@@ -260,7 +261,7 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
                               </EmeraldDBLink>
                             }
                           />
-                        </ListItem>
+                        </ListItemButton>
                       </Grid>
                       <Grid item>
                         <ListItem dense={isMdOrSmaller}>

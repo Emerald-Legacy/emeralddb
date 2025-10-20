@@ -1,4 +1,4 @@
-import { Checkbox, Collapse, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
+import { Checkbox, Collapse, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import { useUiStore } from '../providers/UiStoreProvider'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
@@ -146,7 +146,7 @@ export function CycleList(props: {
 
   function createPackElement(pack: Pack): JSX.Element {
     return (
-      <ListItem button className={classes.pack} key={pack.id}>
+      <ListItemButton className={classes.pack} key={pack.id}>
         {props.withCheckbox && (
           <ListItemIcon>
             <Checkbox
@@ -169,7 +169,7 @@ export function CycleList(props: {
             </EmeraldDBLink>
           }
         />
-      </ListItem>
+      </ListItemButton>
     )
   }
 
@@ -187,7 +187,7 @@ export function CycleList(props: {
   function createCycleElement(cycle: CycleWithPacks): JSX.Element {
     return (
       <div key={cycle.id}>
-        <ListItem button onClick={() => toggleElementExpanded(cycle.id)} className={classes.cycle}>
+        <ListItemButton onClick={() => toggleElementExpanded(cycle.id)} className={classes.cycle}>
           {props.withCheckbox && (
             <ListItemIcon>
               <Checkbox
@@ -216,7 +216,7 @@ export function CycleList(props: {
             }
           />
           {expandedElements.includes(cycle.id) ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-        </ListItem>
+        </ListItemButton>
         <Collapse in={expandedElements.includes(cycle.id)} timeout="auto" unmountOnExit>
           <List component="div" disablePadding dense>
             {cycle.packs.map((pack) => createPackElement(pack))}
@@ -229,7 +229,7 @@ export function CycleList(props: {
   function createRootElement(): JSX.Element {
     return (
       <List dense>
-        <ListItem button onClick={() => toggleElementExpanded('root')}>
+        <ListItemButton onClick={() => toggleElementExpanded('root')}>
           {props.withCheckbox && (
             <ListItemIcon>
               <Checkbox
@@ -251,7 +251,7 @@ export function CycleList(props: {
             }
           />
           {expandedElements.includes('root') ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-        </ListItem>
+        </ListItemButton>
         <Collapse in={expandedElements.includes('root')} timeout="auto" unmountOnExit>
           <List component="div" disablePadding dense>
             {cyclesWithPacks.map((cycle) => createCycleElement(cycle))}
