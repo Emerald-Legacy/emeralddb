@@ -1,5 +1,6 @@
 import { Card, Trait } from '@5rdb/api'
-import { Fab, Grid, makeStyles, Switch, TextField, Typography } from '@material-ui/core'
+import { Fab, Grid, Switch, TextField, Typography } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import React, { useState } from 'react'
 import {
   sides,
@@ -11,11 +12,11 @@ import {
   roleRestrictions,
   elements as allElements,
 } from '../../utils/enums'
-import Autocomplete from '@material-ui/lab/Autocomplete'
+import Autocomplete from '@mui/material/Autocomplete'
 import { CardTextEditor } from '../card/CardTextEditor'
 import { MultiCheckbox } from '../card/FormatCheckbox'
 import { useUiStore } from '../../providers/UiStoreProvider'
-import SaveIcon from '@material-ui/icons/Save'
+import SaveIcon from '@mui/icons-material/Save'
 import { useConfirm } from 'material-ui-confirm'
 import { privateApi } from '../../api'
 import { useHistory } from 'react-router-dom'

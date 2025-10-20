@@ -1,13 +1,9 @@
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Grid,
-  makeStyles,
-  Typography,
-} from '@material-ui/core'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import { createStyles, Theme } from '@material-ui/core/styles'
+import { Accordion, AccordionDetails, AccordionSummary, Grid, Typography } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import { Theme } from '@mui/material/styles';
+
+import createStyles from '@mui/styles/createStyles';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

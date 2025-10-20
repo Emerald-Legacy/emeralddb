@@ -1,5 +1,6 @@
 import { Card, CardInPack, CardWithVersions } from "@5rdb/api";
-import { Box, Typography, Grid, makeStyles } from '@material-ui/core'
+import { Box, Typography, Grid } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { useUiStore } from '../../providers/UiStoreProvider'
 import { convertTraitList } from '../../utils/cardTextUtils'
 import { getColorForFactionId } from '../../utils/factionUtils'

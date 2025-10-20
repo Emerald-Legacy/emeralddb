@@ -1,8 +1,9 @@
 import { useEffect, useReducer, useState } from 'react'
 import { PublishedDecklist } from '@5rdb/api'
-import { Button, lighten, Grid, makeStyles, Paper, TextField } from '@material-ui/core'
+import { Button, lighten, Grid, Paper, TextField } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { clans } from '../utils/enums'
-import Autocomplete from '@material-ui/lab/Autocomplete'
+import Autocomplete from '@mui/material/Autocomplete'
 import { useUiStore } from "../providers/UiStoreProvider";
 
 const useStyles = makeStyles((theme) => ({
@@ -109,7 +110,7 @@ export function DeckFilter(props: {
 
   return (
     <Paper className={classes.filter}>
-      <Grid container spacing={1} justify="flex-end">
+      <Grid container spacing={1} justifyContent="flex-end">
         <Grid item xs={12} sm={6}>
           <Autocomplete
             id="combo-box-primary"
@@ -176,5 +177,5 @@ export function DeckFilter(props: {
         </Grid>
       </Grid>
     </Paper>
-  )
+  );
 }

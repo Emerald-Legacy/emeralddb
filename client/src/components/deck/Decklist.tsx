@@ -1,5 +1,5 @@
 import { Deck, DecklistViewModel } from '@5rdb/api'
-import { Box, Button, Grid, Switch, Typography } from '@material-ui/core'
+import { Box, Button, Grid, Switch, Typography } from '@mui/material'
 import { useHistory } from 'react-router-dom'
 import { privateApi } from '../../api'
 import { useUiStore } from '../../providers/UiStoreProvider'
@@ -187,7 +187,7 @@ export function Decklist(props: {
           p={1}
           border="1px solid"
           borderColor="red"
-          borderRadius={4}
+          borderRadius="4px"
           bgcolor="pink"
           fontSize={12}
         >
@@ -208,7 +208,7 @@ export function Decklist(props: {
         )}
       </Grid>
       <Grid item xs={12} sm={6} lg={6}>
-        <Grid container justify="space-between" direction="column" style={{ height: '100%' }}>
+        <Grid container justifyContent="space-between" direction="column" style={{ height: '100%' }}>
           <Grid item>
             {!props.withoutHeader && isLoggedIn() && (
               <Button
@@ -353,5 +353,5 @@ export function Decklist(props: {
         />
       </Grid>
     </Grid>
-  )
+  );
 }

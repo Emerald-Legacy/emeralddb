@@ -1,14 +1,15 @@
 import { DeckWithVersions, Decklist as DecklistType } from '@5rdb/api'
-import { Box, Button, Grid, makeStyles, Tab, Tabs, Typography } from '@material-ui/core'
+import { Box, Button, Grid, Tab, Tabs, Typography } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { useConfirm } from 'material-ui-confirm'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
 import { privateApi } from '../../api'
 import { Decklist } from './Decklist'
-import DeleteIcon from '@material-ui/icons/Delete'
-import LinkIcon from '@material-ui/icons/Link'
-import ShareIcon from '@material-ui/icons/Share'
-import BlockIcon from '@material-ui/icons/Block'
+import DeleteIcon from '@mui/icons-material/Delete'
+import LinkIcon from '@mui/icons-material/Link'
+import ShareIcon from '@mui/icons-material/Share'
+import BlockIcon from '@mui/icons-material/Block'
 import { EmeraldDBLink } from '../EmeraldDBLink'
 
 interface TabPanelProps {
@@ -180,7 +181,7 @@ export function DecklistTabs(props: {
               {versions.map((v) => (
                 <div hidden={v.id !== currentDecklistId} key={v.id}>
                   <Box border="1px solid" borderBottom="0" bgcolor="lightgray" p={2}>
-                    <Grid container spacing={1} justify="flex-end">
+                    <Grid container spacing={1} justifyContent="flex-end">
                       <Grid item xs={6} md={4}>
                         <EmeraldDBLink href={`/decks/${v.id}`}>
                           <Button
@@ -243,5 +244,5 @@ export function DecklistTabs(props: {
         </Grid>
       </Grid>
     </TabPanel>
-  )
+  );
 }

@@ -9,7 +9,7 @@ import {
   StepLabel,
   Stepper,
   Typography,
-} from '@material-ui/core'
+} from '@mui/material'
 import { useState } from 'react'
 import { useUiStore } from '../../providers/UiStoreProvider'
 import { clans } from '../../utils/enums'
@@ -73,7 +73,7 @@ export function DeckBuilderWizard(props: {
   }
 
   return (
-    <Grid container spacing={2} justify="center" alignItems="center" direction="column">
+    <Grid container spacing={2} justifyContent="center" alignItems="center" direction="column">
       <Grid item xs={12} md={4} hidden={step > -1}>
         <Typography variant="h4" align="center">
           Create New Deck
@@ -277,5 +277,5 @@ export function DeckBuilderWizard(props: {
         </Grid>
       </Grid>
     </Grid>
-  )
+  );
 }

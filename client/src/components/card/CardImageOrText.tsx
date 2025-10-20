@@ -1,8 +1,9 @@
-import { Fab, makeStyles, Popover, Theme } from '@material-ui/core'
+import { Fab, Popover, Theme } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { useState } from 'react'
 import { useUiStore } from '../../providers/UiStoreProvider'
 import { CardInformation } from './CardInformation'
-import ZoomInIcon from '@material-ui/icons/ZoomIn'
+import ZoomInIcon from '@mui/icons-material/ZoomIn'
 import { CardInPack } from "@5rdb/api";
 
 const useStyles = makeStyles((theme: Theme) => ({

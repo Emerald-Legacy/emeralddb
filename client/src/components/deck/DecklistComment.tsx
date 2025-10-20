@@ -1,12 +1,12 @@
-import { Box, Button, Grid, IconButton, TextField, Typography } from '@material-ui/core'
+import { Box, Button, Grid, IconButton, TextField, Typography } from '@mui/material'
 import { DecklistCommentWithChildren } from './DecklistComments'
 import { useState } from 'react'
 import { privateApi } from '../../api'
 import { useSnackbar } from 'notistack'
-import ReplyIcon from '@material-ui/icons/Reply'
+import ReplyIcon from '@mui/icons-material/Reply'
 import { useCurrentUser } from '../../providers/UserProvider'
-import EditIcon from '@material-ui/icons/Edit'
-import DeleteIcon from '@material-ui/icons/Delete'
+import EditIcon from '@mui/icons-material/Edit'
+import DeleteIcon from '@mui/icons-material/Delete'
 import { useConfirm } from 'material-ui-confirm'
 
 export function DecklistComment(props: {

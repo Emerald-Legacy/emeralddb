@@ -1,14 +1,15 @@
 import { DeckWithVersions } from '@5rdb/api'
-import { makeStyles, Box, Typography, Button, Grid, useMediaQuery } from '@material-ui/core'
+import { Box, Typography, Button, Grid, useMediaQuery } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { useConfirm } from 'material-ui-confirm'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
 import { privateApi } from '../../api'
 import { CardFactionIcon } from '../card/CardFactionIcon'
 import { DecklistTabs, latestDecklistForDeck } from './DecklistTabs'
-import EditIcon from '@material-ui/icons/Edit'
-import DeleteIcon from '@material-ui/icons/Delete'
-import LinkIcon from '@material-ui/icons/Link'
+import EditIcon from '@mui/icons-material/Edit'
+import DeleteIcon from '@mui/icons-material/Delete'
+import LinkIcon from '@mui/icons-material/Link'
 import { EmeraldDBLink } from '../EmeraldDBLink'
 import { useUiStore } from "../../providers/UiStoreProvider";
 
@@ -101,7 +102,7 @@ export function DeckTabs(props: {
               <Grid key={deck.id} item xs={12}>
                 <Box
                   padding={1}
-                  borderRadius={3}
+                  borderRadius="3px"
                   border="1px solid"
                   hidden={!isSmOrBigger && currentDeckId !== undefined && deck.id !== currentDeckId}
                   className={
@@ -131,7 +132,7 @@ export function DeckTabs(props: {
                   </Typography>
                 </Box>
               </Grid>
-            )
+            );
           })}
         </Grid>
       </Grid>
@@ -139,7 +140,7 @@ export function DeckTabs(props: {
         <Grid container>
           {currentDeckId && (
             <Grid item xs={12}>
-              <Grid container spacing={1} justify="flex-end">
+              <Grid container spacing={1} justifyContent="flex-end">
                 <Grid item xs={4}>
                   <EmeraldDBLink href={`/builder/${currentDeckId}/edit`}>
                     <Button
@@ -193,5 +194,5 @@ export function DeckTabs(props: {
         </Grid>
       </Grid>
     </Grid>
-  )
+  );
 }

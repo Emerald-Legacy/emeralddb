@@ -1,4 +1,6 @@
-import { makeStyles, ButtonGroup, Button } from '@material-ui/core'
+import { ButtonGroup, Button } from '@mui/material';
+
+import makeStyles from '@mui/styles/makeStyles';
 
 const useStyles = makeStyles(() => ({
   buttonGroup: {

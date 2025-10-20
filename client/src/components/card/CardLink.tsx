@@ -1,13 +1,14 @@
-import { makeStyles, Popover, Theme } from '@material-ui/core'
+import { Popover, Theme } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import React, { useState } from 'react'
 import { useUiStore } from '../../providers/UiStoreProvider'
 import { CardInformation } from './CardInformation'
 import { CardTypeIcon } from './CardTypeIcon'
-import BlockIcon from '@material-ui/icons/Block'
-import WarningIcon from '@material-ui/icons/Warning'
-import LinkOffIcon from '@material-ui/icons/LinkOff'
-import Looks5Icon from '@material-ui/icons/Looks5'
-import CachedIcon from '@material-ui/icons/Cached'
+import BlockIcon from '@mui/icons-material/Block'
+import WarningIcon from '@mui/icons-material/Warning'
+import LinkOffIcon from '@mui/icons-material/LinkOff'
+import Looks5Icon from '@mui/icons-material/Looks5'
+import CachedIcon from '@mui/icons-material/Cached'
 import { ElementSymbol } from './ElementSymbol'
 import { EmeraldDBLink } from '../EmeraldDBLink'
 import { CardInPack } from "@5rdb/api";

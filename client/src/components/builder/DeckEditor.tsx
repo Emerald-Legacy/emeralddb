@@ -7,20 +7,20 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
-  makeStyles,
   Paper,
   Tab,
   Tabs,
   TextField,
   Typography,
-} from '@material-ui/core'
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { useState } from 'react'
 import { useUiStore } from '../../providers/UiStoreProvider'
 import { BuilderCardList } from './BuilderCardList'
 import { Decklist } from '../deck/Decklist'
 import { privateApi } from '../../api'
 import { DeckBuilderWizard } from './DeckBuilderWizard'
-import Autocomplete from '@material-ui/lab/Autocomplete'
+import Autocomplete from '@mui/material/Autocomplete'
 import { useSnackbar } from 'notistack'
 import { useHistory } from 'react-router-dom'
 import { createDeckStatistics } from '../deck/DeckValidator'

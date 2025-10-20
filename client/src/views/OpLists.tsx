@@ -1,8 +1,8 @@
 import { useUiStore } from '../providers/UiStoreProvider'
 import { useState } from 'react'
-import { Box, Grid, List, ListItem, TextField, Typography } from '@material-ui/core'
+import { Box, Grid, List, ListItem, TextField, Typography } from '@mui/material'
 import { Loading } from '../components/Loading'
-import Autocomplete from '@material-ui/lab/Autocomplete'
+import Autocomplete from '@mui/material/Autocomplete'
 import { clans } from '../utils/enums'
 import { OrganizedPlayList } from '../components/OrganizedPlayList'
 import { CardWithVersions } from '@5rdb/api'
@@ -177,7 +177,7 @@ export function OpLists(): JSX.Element {
                 lg={3}
                 hidden={rotatedCardsOfCycle.length === 0}
               >
-                <Box border="1px solid gray" borderRadius={4} p={2}>
+                <Box border="1px solid gray" borderRadius="4px" p={2}>
                   <Typography>
                     <b>Cycle: {cycle.name}</b> ({rotatedCardsOfCycle.length})
                   </Typography>
@@ -190,9 +190,9 @@ export function OpLists(): JSX.Element {
                   </List>
                 </Box>
               </Grid>
-            )})}
+            );})}
         </Grid>
       </Grid>
     </>
-  )
+  );
 }

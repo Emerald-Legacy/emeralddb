@@ -6,23 +6,23 @@ import {
   InputAdornment,
   ListItem,
   ListItemText,
-  makeStyles,
   Menu,
   TextField,
   Toolbar,
   useMediaQuery,
   Container,
   List,
-} from '@material-ui/core'
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { UserMenu } from './usermenu/UserMenu'
 import { useHistory } from 'react-router-dom'
 import { useCurrentUser } from '../providers/UserProvider'
 import { useState } from 'react'
 import { CycleList } from './CycleList'
-import SearchIcon from '@material-ui/icons/Search'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import ExpandLessIcon from '@material-ui/icons/ExpandLess'
-import MenuIcon from '@material-ui/icons/Menu'
+import SearchIcon from '@mui/icons-material/Search'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import ExpandLessIcon from '@mui/icons-material/ExpandLess'
+import MenuIcon from '@mui/icons-material/Menu'
 import { EmeraldDBLink } from './EmeraldDBLink'
 
 const useStyles = makeStyles(() => ({
@@ -92,7 +92,7 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
     <AppBar position="sticky">
       <Toolbar variant="dense">
         <Container maxWidth={false}>
-          <Grid container justify={'center'}>
+          <Grid container justifyContent={'center'}>
             <Grid item xs={12} lg={is1440PxOrBigger ? 10 : 12} xl={10}>
               <Grid container>
                 <Grid item xs={11} sm={11} md={2} lg={3} xl={2}>
@@ -102,7 +102,10 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
                 </Grid>
                 {isMdOrSmaller && (
                   <Grid item xs={1} sm={1}>
-                    <IconButton color="inherit" onClick={() => setIsMobileOpen(!isMobileOpen)}>
+                    <IconButton
+                      color="inherit"
+                      onClick={() => setIsMobileOpen(!isMobileOpen)}
+                      size="large">
                       <MenuIcon />
                     </IconButton>
                   </Grid>
@@ -112,7 +115,7 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
                     <Grid
                       direction={isMdOrSmaller ? 'column' : 'row'}
                       container
-                      justify="flex-end"
+                      justifyContent="flex-end"
                       alignItems={isMdOrSmaller ? 'flex-end' : 'center'}
                     >
                       <Grid item>
@@ -290,5 +293,5 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
         </Container>
       </Toolbar>
     </AppBar>
-  )
+  );
 }

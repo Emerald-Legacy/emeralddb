@@ -1,4 +1,4 @@
-import { Button, TextField, Typography } from '@material-ui/core'
+import { Button, TextField, Typography } from '@mui/material'
 import { useHistory } from 'react-router-dom'
 import { privateApi } from '../api'
 import React, { useState } from 'react'

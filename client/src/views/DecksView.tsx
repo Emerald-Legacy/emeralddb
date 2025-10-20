@@ -1,6 +1,7 @@
 import { PublishedDecklist } from '@5rdb/api'
-import { makeStyles, Paper, useMediaQuery } from '@material-ui/core'
-import { DataGrid, GridColumns } from '@material-ui/data-grid'
+import { Paper, useMediaQuery } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import { DataGrid, GridColDef } from '@mui/x-data-grid'
 import { useEffect, useState } from 'react'
 import { publicApi } from '../api'
 import { applyDeckFilters, DeckFilter, DeckFilterState } from '../components/DeckFilter'
@@ -34,7 +35,7 @@ export function DecksView(): JSX.Element {
     sortedDecks = applyDeckFilters(sortedDecks, filter)
   }
 
-  const columns: GridColumns = [
+  const columns: GridColDef[] = [
     {
       field: 'name',
       headerName: 'Name',
@@ -83,7 +84,6 @@ export function DecksView(): JSX.Element {
       headerName: 'Format',
       disableColumnMenu: true,
       flex: 2,
-      hide: !isMdOrBigger,
       renderCell: (params) => (
         <span>{formats.find((format) => format.id === params.row.format)?.name}</span>
       ),
@@ -93,14 +93,12 @@ export function DecksView(): JSX.Element {
       headerName: 'Creator',
       disableColumnMenu: true,
       flex: 2,
-      hide: !isMdOrBigger,
     },
     {
       field: 'published_date',
       headerName: 'Published',
       disableColumnMenu: true,
       flex: 2,
-      hide: !isMdOrBigger,
       renderCell: (params) => <span>{new Date(params.row.published_date).toLocaleString()}</span>,
     },
   ]
@@ -110,12 +108,20 @@ export function DecksView(): JSX.Element {
       <DeckFilter onFilterChanged={setFilter} filterState={filter} />
       <Paper className={classes.table}>
         <DataGrid
-          disableSelectionOnClick
+          disableRowSelectionOnClick
           columns={columns}
           rows={sortedDecks}
-          pageSize={50}
+          pageSizeOptions={[50]}
+          initialState={{
+            pagination: { paginationModel: { pageSize: 50 } },
+          }}
           autoHeight
           density="compact"
+          columnVisibilityModel={{
+            format: isMdOrBigger,
+            username: isMdOrBigger,
+            published_date: isMdOrBigger,
+          }}
         />
       </Paper>
     </>

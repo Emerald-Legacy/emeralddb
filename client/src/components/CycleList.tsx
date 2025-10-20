@@ -1,19 +1,12 @@
-import {
-  Checkbox,
-  Collapse,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  makeStyles,
-} from '@material-ui/core'
+import { Checkbox, Collapse, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { useUiStore } from '../providers/UiStoreProvider'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import ExpandLessIcon from '@material-ui/icons/ExpandLess'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import ExpandLessIcon from '@mui/icons-material/ExpandLess'
 import React, { useState } from 'react'
 import { Cycle, Pack } from '@5rdb/api'
 import { EmeraldDBLink } from './EmeraldDBLink'
-import CachedIcon from '@material-ui/icons/Cached'
+import CachedIcon from '@mui/icons-material/Cached'
 
 type CycleWithPacks = Cycle & {
   packs: Pack[]

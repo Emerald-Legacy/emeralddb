@@ -1,7 +1,9 @@
-import FormatItalicIcon from '@material-ui/icons/FormatItalic'
-import FormatBoldIcon from '@material-ui/icons/FormatBold'
-import KeyboardReturnIcon from '@material-ui/icons/KeyboardReturn'
-import { Button, ButtonGroup, makeStyles, Grid } from '@material-ui/core'
+import FormatItalicIcon from '@mui/icons-material/FormatItalic'
+import FormatBoldIcon from '@mui/icons-material/FormatBold'
+import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn'
+import { Button, ButtonGroup, Grid } from '@mui/material';
+
+import makeStyles from '@mui/styles/makeStyles';
 
 const useStyles = makeStyles(() => ({
   buttonGroup: {
@@ -33,7 +35,7 @@ export function CardTextEditorButtons(props: {
   }
 
   return (
-    <Grid container spacing={1} justify="space-between">
+    <Grid container spacing={1} justifyContent="space-between">
       <Grid item sm={3} xs={12}>
         <ButtonGroup variant="outlined" className={classes.buttonGroup}>
           <Button onClick={() => clickTag('br')}>
@@ -101,5 +103,5 @@ export function CardTextEditorButtons(props: {
         </ButtonGroup>
       </Grid>
     </Grid>
-  )
+  );
 }

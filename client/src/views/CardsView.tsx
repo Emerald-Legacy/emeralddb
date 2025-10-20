@@ -1,6 +1,5 @@
 import {
   Paper,
-  makeStyles,
   useMediaQuery,
   Button,
   Dialog,
@@ -10,8 +9,9 @@ import {
   Select,
   MenuItem,
   Box,
-} from '@material-ui/core'
-import { DataGrid, GridColumns } from '@material-ui/data-grid'
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import { DataGrid, GridColDef } from '@mui/x-data-grid'
 import { useHistory, useLocation } from 'react-router-dom'
 import { useUiStore } from '../providers/UiStoreProvider'
 import { convertTraitList } from '../utils/cardTextUtils'
@@ -23,7 +23,7 @@ import { CardInformation } from '../components/card/CardInformation'
 import { Loading } from '../components/Loading'
 import { CardLink } from '../components/card/CardLink'
 import { CardImageOrText } from '../components/card/CardImageOrText'
-import { Pagination } from '@material-ui/lab'
+import { Pagination } from '@mui/material';
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -299,7 +299,7 @@ export function CardsView(): JSX.Element {
       }
     })
 
-    const columns: GridColumns = [
+    const columns: GridColDef[] = [
       {
         field: 'name',
         headerName: 'Name',
@@ -327,43 +327,38 @@ export function CardsView(): JSX.Element {
           </em>
         ),
       },
-      { field: 'type', headerName: 'Type', disableColumnMenu: true, flex: 2, hide: !isMdOrBigger },
+      { field: 'type', headerName: 'Type', disableColumnMenu: true, flex: 2 },
       {
         field: 'faction',
         headerName: 'Faction',
         disableColumnMenu: true,
         flex: 2,
-        hide: !isMdOrBigger,
       },
-      { field: 'deck', headerName: 'Deck', disableColumnMenu: true, flex: 1, hide: !isMdOrBigger },
-      { field: 'cost', headerName: 'Cost', disableColumnMenu: true, flex: 1, hide: !isMdOrBigger },
+      { field: 'deck', headerName: 'Deck', disableColumnMenu: true, flex: 1 },
+      { field: 'cost', headerName: 'Cost', disableColumnMenu: true, flex: 1 },
       {
         field: 'military',
         headerName: 'Mil',
         disableColumnMenu: true,
         flex: 1,
-        hide: !isMdOrBigger,
       },
       {
         field: 'political',
         headerName: 'Pol',
         disableColumnMenu: true,
         flex: 1,
-        hide: !isMdOrBigger,
       },
       {
         field: 'glory',
         headerName: 'Glory',
         disableColumnMenu: true,
         flex: 1,
-        hide: !isMdOrBigger,
       },
       {
         field: 'strength',
         headerName: 'Str',
         disableColumnMenu: true,
         flex: 1,
-        hide: !isMdOrBigger,
       },
     ]
 
@@ -377,12 +372,25 @@ export function CardsView(): JSX.Element {
         <Paper className={classes.table}>
           <Selectors />
           <DataGrid
-            disableSelectionOnClick
+            disableRowSelectionOnClick
             columns={columns}
             rows={tableCards}
-            pageSize={50}
+            pageSizeOptions={[50]}
+            initialState={{
+              pagination: { paginationModel: { pageSize: 50 } },
+            }}
             autoHeight
             density="compact"
+            columnVisibilityModel={{
+              type: isMdOrBigger,
+              faction: isMdOrBigger,
+              deck: isMdOrBigger,
+              cost: isMdOrBigger,
+              military: isMdOrBigger,
+              political: isMdOrBigger,
+              glory: isMdOrBigger,
+              strength: isMdOrBigger,
+            }}
             onRowClick={(param) => {
               setModalCard(cards.find((card) => card.id === param.row.id))
               setCardModalOpen(true)

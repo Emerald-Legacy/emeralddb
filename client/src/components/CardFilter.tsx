@@ -9,13 +9,13 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
-  makeStyles,
   Paper,
   TextField,
   Tooltip,
   Typography,
   Collapse,
-} from '@material-ui/core'
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import {
   factions,
   cardTypes,
@@ -24,7 +24,7 @@ import {
   roleRestrictions,
 } from '../utils/enums'
 import { CardTypeIcon } from './card/CardTypeIcon'
-import Autocomplete from '@material-ui/lab/Autocomplete'
+import Autocomplete from '@mui/material/Autocomplete'
 import { useUiStore } from '../providers/UiStoreProvider'
 import { CycleList } from './CycleList'
 import useDebounce from '../hooks/useDebounce'
@@ -497,7 +497,7 @@ export function CardFilter(props: {
 
   return (
     <Paper className={classes.filter}>
-      <Grid container spacing={1} justify="flex-end">
+      <Grid container spacing={1} justifyContent="flex-end">
         <Grid item xs={12} sm={8} md={!props.fullWidth ? 6 : 10}>
           <TextField
             fullWidth
@@ -955,5 +955,5 @@ export function CardFilter(props: {
         </DialogActions>
       </Dialog>
     </Paper>
-  )
+  );
 }

@@ -4,13 +4,13 @@ import {
   Typography,
   Box,
   Button,
-  makeStyles,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
   TextField,
-} from '@material-ui/core'
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { useConfirm } from 'material-ui-confirm'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
@@ -154,7 +154,7 @@ export function RulingList(props: { cardId: string; rulings: Ruling[] }): JSX.El
             borderColor="lightgrey"
             marginTop={1}
             padding={2}
-            borderRadius={3}
+            borderRadius="3px"
           >
             <ReactMarkdown>
               {`${replaceLinkTo5rdb(ruling.text)} \n\n ~ [${ruling.source}](${replaceLinkTo5rdb(
@@ -237,5 +237,5 @@ export function RulingList(props: { cardId: string; rulings: Ruling[] }): JSX.El
         </DialogActions>
       </Dialog>
     </Grid>
-  )
+  );
 }

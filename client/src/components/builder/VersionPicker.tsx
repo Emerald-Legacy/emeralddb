@@ -1,4 +1,4 @@
-import { Grid, TextField, Typography } from '@material-ui/core'
+import { Grid, TextField, Typography } from '@mui/material'
 import { useState } from 'react'
 
 function splitVersion(version: string): { major: string; minor: string; extra: string } {
@@ -54,7 +54,7 @@ export function VersionPicker(props: {
   }
 
   return (
-    <Grid container justify="flex-end" alignItems="flex-end">
+    <Grid container justifyContent="flex-end" alignItems="flex-end">
       <Grid item xs={3}>
         <TextField
           id="major"
@@ -95,5 +95,5 @@ export function VersionPicker(props: {
         />
       </Grid>
     </Grid>
-  )
+  );
 }

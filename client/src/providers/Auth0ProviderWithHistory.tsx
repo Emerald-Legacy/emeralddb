@@ -2,7 +2,7 @@ import React, { createContext, ReactNode } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Auth0Provider } from '@auth0/auth0-react'
 import { useAuth0Config } from '../hooks/useAuth0Config'
-import { Paper, Typography } from '@material-ui/core'
+import { Paper, Typography } from '@mui/material'
 
 export const Auth0Context = createContext<{ domain: string; clientId: string }>({
   domain: 'undefined',

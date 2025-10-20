@@ -10,14 +10,14 @@ import {
   Grid,
   TextField,
   Typography,
-} from '@material-ui/core'
+} from '@mui/material'
 import { useParams } from 'react-router-dom'
 import { Loading } from '../components/Loading'
 import { useUiStore } from '../providers/UiStoreProvider'
 import { RequestError } from '../components/RequestError'
 import { useEffect, useState } from "react";
 import { CardInPack } from '@5rdb/api'
-import Autocomplete from '@material-ui/lab/Autocomplete'
+import Autocomplete from '@mui/material/Autocomplete'
 import { privateApi } from '../api'
 import { useSnackbar } from 'notistack'
 import { useConfirm } from "material-ui-confirm";
@@ -145,7 +145,7 @@ export function EditPackView(): JSX.Element {
   }
 
   return (
-    <Grid container spacing={2} justify="center">
+    <Grid container spacing={2} justifyContent="center">
       <Grid item xs={12}>
         <Typography>{pack.name}</Typography>
       </Grid>
@@ -274,5 +274,5 @@ export function EditPackView(): JSX.Element {
         </DialogActions>
       </Dialog>
     </Grid>
-  )
+  );
 }

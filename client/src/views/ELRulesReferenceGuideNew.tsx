@@ -10,8 +10,8 @@ import {
   Grid,
   Typography,
   useMediaQuery
-} from "@material-ui/core";
-import TocIcon from "@material-ui/icons/Toc";
+} from "@mui/material";
+import TocIcon from "@mui/icons-material/Toc";
 
 export function ELRulesReferenceGuideNew(): JSX.Element {
   const [content, setContent] = useState('Loading')

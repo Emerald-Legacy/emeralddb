@@ -1,13 +1,16 @@
 import React from 'react'
 import clsx from 'clsx'
-import { createStyles, Theme, withStyles, WithStyles } from '@material-ui/core/styles'
-import TableCell from '@material-ui/core/TableCell'
+import { Theme } from '@mui/material/styles';
+import { WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
+import TableCell from '@mui/material/TableCell'
 import { AutoSizer, Column, Table, TableCellRenderer, TableHeaderProps } from 'react-virtualized'
 import { CardQuantitySelector } from './CardQuantitySelector'
 import { CardLink } from '../card/CardLink'
 import { InfluenceElement } from '../card/InfluenceElement'
 
-declare module '@material-ui/core/styles/withStyles' {
+declare module '@mui/material/styles/withStyles' {
   // Augment the BaseCSSProperties so that we can control jss-rtl
   interface BaseCSSProperties {
     /*

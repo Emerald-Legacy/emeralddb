@@ -6,9 +6,13 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  Grid, makeStyles, Tab, Tabs,
-  TextField, Typography
-} from "@material-ui/core";
+  Grid,
+  Tab,
+  Tabs,
+  TextField,
+  Typography,
+} from "@mui/material";
+import makeStyles from '@mui/styles/makeStyles';
 import { useHistory, useParams } from 'react-router-dom'
 import { EmptyState } from '../components/EmptyState'
 import { Loading } from '../components/Loading'
@@ -18,7 +22,7 @@ import { CardInformation } from '../components/card/CardInformation'
 import { CardInPack } from '@5rdb/api'
 import { useCurrentUser } from '../providers/UserProvider'
 import { RulingList } from '../components/RulingList'
-import Autocomplete from '@material-ui/lab/Autocomplete'
+import Autocomplete from '@mui/material/Autocomplete'
 import { useUiStore } from '../providers/UiStoreProvider'
 import { privateApi } from '../api'
 import { useConfirm } from 'material-ui-confirm'

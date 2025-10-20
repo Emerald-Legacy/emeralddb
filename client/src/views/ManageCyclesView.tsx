@@ -7,10 +7,10 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
-  makeStyles,
   TextField,
   Typography,
-} from '@material-ui/core'
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { useConfirm } from 'material-ui-confirm'
 import { useSnackbar } from 'notistack'
 import React, { useState } from 'react'
@@ -19,7 +19,7 @@ import { privateApi } from '../api'
 import { Loading } from '../components/Loading'
 import { useUiStore } from '../providers/UiStoreProvider'
 import { toSlugId } from '../utils/slugIdUtils'
-import CachedIcon from '@material-ui/icons/Cached'
+import CachedIcon from '@mui/icons-material/Cached'
 
 const useStyles = makeStyles((theme) => ({
   editButton: {
@@ -185,7 +185,7 @@ export function ManageCyclesView(): JSX.Element {
 
   return (
     <>
-      <Grid container spacing={1} justify="flex-end">
+      <Grid container spacing={1} justifyContent="flex-end">
         <Grid item xs={12}>
           <Typography variant="h6">Cycles</Typography>
         </Grid>
@@ -330,5 +330,5 @@ export function ManageCyclesView(): JSX.Element {
         </DialogActions>
       </Dialog>
     </>
-  )
+  );
 }

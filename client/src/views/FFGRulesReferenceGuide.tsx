@@ -1,6 +1,5 @@
 import {
   Grid,
-  makeStyles,
   Typography,
   useMediaQuery,
   Box,
@@ -9,10 +8,11 @@ import {
   DialogContent,
   DialogActions,
   Button,
-} from '@material-ui/core'
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { useEffect, useState } from 'react'
 import { HashLink as Link } from 'react-router-hash-link'
-import TocIcon from '@material-ui/icons/Toc'
+import TocIcon from '@mui/icons-material/Toc'
 
 interface Heading {
   href: string

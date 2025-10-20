@@ -7,7 +7,7 @@ import {
   DialogTitle,
   TextField,
   useMediaQuery,
-} from '@material-ui/core'
+} from '@mui/material'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
 
