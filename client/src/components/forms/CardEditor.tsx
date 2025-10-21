@@ -337,7 +337,7 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
             const newCard = assembleCard()
             privateApi.Card.update({ cardId: newCard.id, body: newCard })
               .then(() => {
-                uiStore.toggleReload()
+                uiStore.invalidateData()
                 navigate(`/card/${newCard.id}`)
               })
               .catch((error) => {
@@ -358,7 +358,7 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
           const newCard = assembleCard()
           privateApi.Card.create({ body: newCard })
             .then(() => {
-              uiStore.toggleReload()
+              uiStore.invalidateData()
               navigate(`/card/${newCard.id}`)
             })
             .catch((error) => {

@@ -220,12 +220,12 @@ export function BuilderCardList(props: {
 
   const columns: ColumnData[] = [
     {
-      width: 140,
+      width: 100,
       label: 'Quantity',
       columnType: 'quantityForId',
     },
     {
-      width: 240,
+      width: 280,
       label: 'Card',
       columnType: 'nameFactionType',
     },
@@ -282,9 +282,9 @@ export function BuilderCardList(props: {
           deckbuilder
         />
       )}
-      <Paper style={{ paddingTop: 10 }}>
-        <Grid container>
-          <Grid style={{ padding: '0 5px' }} size={{ xs: 12, md: 4 }}>
+      <Paper style={{ padding: '10px 16px', marginTop: showFilters ? 8 : 0 }}>
+        <Grid container spacing={1.5}>
+          <Grid size={{ xs: 12, md: 4 }}>
             <Autocomplete
               id="combo-box-displayMode"
               autoHighlight
@@ -302,7 +302,7 @@ export function BuilderCardList(props: {
               onChange={(e, value) => setDisplayMode(value?.mode || DisplayMode.LIST)}
             />
           </Grid>
-          <Grid style={{ padding: '0 5px' }} size={{ xs: 12, md: 4 }}>
+          <Grid size={{ xs: 12, md: 4 }}>
             {showFilters ? (
               <Button
                 variant="contained"
@@ -323,7 +323,7 @@ export function BuilderCardList(props: {
               </Button>
             )}
           </Grid>
-          <Grid style={{ padding: '0 5px' }} size={{ xs: 12, md: 4 }}>
+          <Grid size={{ xs: 12, md: 4 }}>
             <FormControlLabel
               control={
                 <Checkbox
@@ -332,10 +332,10 @@ export function BuilderCardList(props: {
                   name="checkedA"
                 />
               }
-              label="Show Illegal Deck Cards"
+              label="Show Illegal Cards"
             />
           </Grid>
-          <Grid style={{ padding: '0 5px' }} size={{ xs: 12, md: 4 }}>
+          <Grid size={{ xs: 12, md: 4 }}>
             <Autocomplete
               id="combo-box-sortMode"
               autoHighlight
@@ -353,7 +353,7 @@ export function BuilderCardList(props: {
               onChange={(e, value) => setSortMode(value?.mode || SortMode.NAME)}
             />
           </Grid>
-          <Grid style={{ padding: '0 5px' }} size={{ xs: 12, md: 4 }}>
+          <Grid size={{ xs: 12, md: 4 }}>
             <Autocomplete
               id="combo-box-sortOrder"
               options={['Ascending', 'Descending']}
@@ -366,7 +366,7 @@ export function BuilderCardList(props: {
             />
           </Grid>
           {!isSmOrSmaller && displayMode === DisplayMode.LIST && (
-            <Grid style={{ padding: '0 5px' }} size={{ xs: 12, md: 4 }}>
+            <Grid size={{ xs: 12, md: 4 }}>
               {showTraits ? (
                 <Button
                   variant="contained"

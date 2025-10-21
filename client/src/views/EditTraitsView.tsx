@@ -20,7 +20,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 export function EditTraitsView(): JSX.Element {
-  const { traits, toggleReload } = useUiStore()
+  const { traits, invalidateData } = useUiStore()
   const navigate = useNavigate()
   const [editIndex, setEditIndex] = useState(-1)
   const [traitId, setTraitId] = useState('')
@@ -54,7 +54,7 @@ export function EditTraitsView(): JSX.Element {
       },
     })
       .then(() => {
-        toggleReload()
+        invalidateData()
         setModalOpen(false)
         enqueueSnackbar('Successfully posted trait!', { variant: 'success' })
       })
@@ -73,7 +73,7 @@ export function EditTraitsView(): JSX.Element {
           },
         })
           .then(() => {
-            toggleReload()
+            invalidateData()
             enqueueSnackbar('Successfully deleted trait!', { variant: 'success' })
           })
           .catch((error) => {

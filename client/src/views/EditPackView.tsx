@@ -23,7 +23,7 @@ import { useSnackbar } from 'notistack'
 import { useConfirm } from "material-ui-confirm";
 
 export function EditPackView(): JSX.Element {
-  const { cards, packs, toggleReload } = useUiStore()
+  const { cards, packs, invalidateData } = useUiStore()
   const params = useParams<{ id: string }>()
   const [cardId, setCardId] = useState('')
   const [flavor, setFlavor] = useState('')
@@ -92,7 +92,7 @@ export function EditPackView(): JSX.Element {
         cardInPack: newCard
       }
     }).then(() => {
-      toggleReload()
+      invalidateData()
       setCardsInPack([])
       enqueueSnackbar('Successfully posted pack card!', { variant: 'success' })
       setModalOpen(false)
@@ -111,7 +111,7 @@ export function EditPackView(): JSX.Element {
             cardInPack: cardInPack
           }
         }).then(() => {
-          toggleReload()
+          invalidateData()
           setModalOpen(false)
           setCardsInPack([])
           enqueueSnackbar('Successfully deleted card from pack!', { variant: 'success' })

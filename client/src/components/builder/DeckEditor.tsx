@@ -75,7 +75,7 @@ function getNextVersionNumber(versionNumber: string): string {
   return versionParts.join('.')
 }
 
-function prefilterCards(cards: CardWithVersions[], decklist: DecklistViewModel, formats: Format[]) {
+function prefilterCards(cards: CardWithVersions[], decklist: DecklistViewModel, formats: Format[], showIllegal: boolean = false) {
   const stats = createDeckStatistics(decklist.cards, decklist.format, cards, formats)
   let filteredCards = decklist.primary_clan
     ? cards.filter((card) => card.allowed_clans?.includes(decklist.primary_clan || ''))
@@ -103,6 +103,17 @@ function prefilterCards(cards: CardWithVersions[], decklist: DecklistViewModel, 
     )
   }
   filteredCards = filteredCards.filter((c) => !c.banned_in?.includes(decklist.format))
+
+  // Filter out illegal cards (cards not in legal packs) unless showIllegal is true
+  if (!showIllegal) {
+    const chosenFormat = formats.find((f) => f.id === decklist.format)
+    if (chosenFormat && chosenFormat.legal_packs) {
+      const legalPacksOfFormat = chosenFormat.legal_packs
+      filteredCards = filteredCards.filter((c) =>
+        c.versions.some((version) => legalPacksOfFormat.includes(version.pack_id))
+      )
+    }
+  }
 
   return filteredCards
 }
@@ -177,7 +188,7 @@ export function DeckEditor(props: { existingDecklist?: DecklistType | undefined 
     )
   }
 
-  const filteredCards = showAllCards ? cards : prefilterCards(cards, decklist, formats)
+  const filteredCards = showAllCards ? cards : prefilterCards(cards, decklist, formats, true)
 
   function updateDeck(decklist: DecklistViewModel, deckId: string) {
     privateApi.Decklist.create({

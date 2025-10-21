@@ -8,6 +8,9 @@
 - Task 13: Fixed type safety issues
 - **Task 1 (Optimization): Removed 13 unused dependencies and added clsx**
 - **Task 9 (Optimization): Removed unnecessary React imports from 6 files**
+- **Task 4 (Optimization): Implemented code splitting with React.lazy for all 18 route components**
+- **Task 9 (Optimization): Updated QueryClient configuration with proper cache settings**
+- **Task 8 (Optimization): Refactored UiStoreProvider to use TanStack Query with automatic caching**
 
 ## Remaining High-Impact Optimization Tasks
 
@@ -46,38 +49,6 @@
 
 **Action**: Replace with proper error handling or remove entirely for non-error cases.
 
-#### Task 4: Implement Code Splitting with React.lazy
-**Impact**: Massive - reduces initial load from 2.9MB, improves FCP/TTI
-**Effort**: Medium
-**Files**: `src/Routes.tsx`
-
-**Currently NO lazy loading is implemented**. Large components to code-split:
-- `FFGRulesReferenceGuide` (6,606 lines - contains massive embedded content)
-- `ELRulesReferenceGuideNew` (fetches and parses AsciiDoc)
-- Admin views (only loaded for data admins)
-- Deck builder views (authenticated users only)
-- `CardsView` and `DecksView` (data-heavy components)
-
-**Implementation**:
-```typescript
-const FFGRulesReferenceGuide = lazy(() => import('./views/FFGRulesReferenceGuide'))
-const ELRulesReferenceGuideNew = lazy(() => import('./views/ELRulesReferenceGuideNew'))
-const AdminView = lazy(() => import('./views/AdminView'))
-// Wrap with <Suspense fallback={<Loading />}>
-```
-
-#### Task 8: Optimize UiStoreProvider Data Loading
-**Impact**: Faster initial load, better caching
-**Effort**: Medium
-**Files**: `src/providers/UiStoreProvider.tsx`
-
-**Current issues**:
-- Loads ALL cards, packs, cycles on every mount - causes slow initial load
-- Uses multiple sequential API calls in useEffect (lines 38-48)
-- No caching beyond component lifetime
-- Should integrate with TanStack Query for better caching
-- Consider pagination or virtualization for card lists
-
 ### Medium Priority
 
 #### Task 5: Add React.memo, useMemo, and useCallback for Performance
@@ -91,27 +62,6 @@ const AdminView = lazy(() => import('./views/AdminView'))
 - `src/components/CardFilter.tsx` - Complex filter state
 - `src/components/builder/VirtualizedCardTable.tsx` - Uses PureComponent but child components don't
 - `src/components/deck/DeckValidator.ts` - `createDeckStatistics` function (expensive computation)
-
-#### Task 9: Update QueryClient Configuration
-**Impact**: Better cache management, fewer unnecessary refetches
-**Effort**: Small
-**Files**: `src/App.tsx` (line 31)
-
-**Current**: QueryClient created with no configuration
-
-**Should add**:
-```typescript
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 5 * 60 * 1000, // 5 minutes for cards/packs
-      cacheTime: 10 * 60 * 1000, // 10 minutes
-      retry: 1,
-      refetchOnWindowFocus: false,
-    },
-  },
-})
-```
 
 #### Task 7: Improve Accessibility
 **Impact**: Better UX for all users, legal compliance (ADA/WCAG), improved SEO
@@ -187,10 +137,11 @@ Several packages have major version updates available:
 
 ## Recommended Implementation Order
 
-1. **Task 1** (Remove unused dependencies) - Quick win, big bundle size reduction
-2. **Task 2** (Remove console.logs) - Quick cleanup
-3. **Task 9** (QueryClient config) - Small but important
-4. **Task 4** (Code splitting) - Biggest performance impact
-5. **Task 8** (Optimize UiStoreProvider) - Requires refactoring
-6. **Task 5** (Add memoization) - Prevent re-renders
-7. **Task 7** (Accessibility) - Ongoing improvement
+1. ~~**Task 1** (Remove unused dependencies)~~ ✓ Completed
+2. ~~**Task 9** (Remove unnecessary React imports)~~ ✓ Completed
+3. ~~**Task 4** (Code splitting)~~ ✓ Completed
+4. ~~**Task 9** (QueryClient config)~~ ✓ Completed
+5. ~~**Task 8** (Optimize UiStoreProvider)~~ ✓ Completed
+6. **Task 2** (Remove console.logs) - Quick cleanup
+7. **Task 5** (Add memoization) - Prevent re-renders
+8. **Task 7** (Accessibility) - Ongoing improvement

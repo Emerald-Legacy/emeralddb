@@ -78,7 +78,8 @@ const StyledPaper = styled(Paper)((
   },
 
   [`& .${classes.filterGridItemBuilder}`]: {
-    height: 40,
+    height: 32,
+    margin: '2px 0',
   },
 
   [`& .${classes.traitTextField}`]: {
@@ -548,7 +549,7 @@ export function CardFilter(props: {
           <Grid container spacing={1}>
             <Grid size={{ xs: 12, md: props.fullWidth ? 6 : 12 }}>
               <Collapse in={props.deckbuilder || showFilters}>
-                <Grid container spacing={1}>
+                <Grid container spacing={props.deckbuilder ? 0.75 : 1}>
                   <Grid
                     className={
                       props.deckbuilder ? classes.filterGridItemBuilder : classes.filterGridItem

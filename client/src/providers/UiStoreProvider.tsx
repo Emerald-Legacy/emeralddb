@@ -1,5 +1,6 @@
 import { Pack, Cycle, Trait, CardWithVersions, Format, CardInPack } from "@5rdb/api";
-import { createContext, ReactNode, useEffect, useState, useContext } from 'react'
+import { createContext, ReactNode, useContext, useMemo } from 'react'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { publicApi } from '../api'
 
 export interface UiStore {
@@ -10,7 +11,8 @@ export interface UiStore {
   formats: Format[]
   relevantFormats: Format[]
   validCardVersionForFormat: (cardId: string, formatId: string) => Omit<CardInPack, 'card_id'> | undefined
-  toggleReload: () => void
+  invalidateData: () => void
+  isLoading: boolean
 }
 
 export const UiStoreContext = createContext<UiStore>({
@@ -21,34 +23,82 @@ export const UiStoreContext = createContext<UiStore>({
   formats: [],
   relevantFormats: [],
   validCardVersionForFormat: () => undefined,
-  toggleReload: () => {},
+  invalidateData: () => {},
+  isLoading: false,
 })
 
+// Query keys for TanStack Query
+export const UiStoreQueries = {
+  CARDS: ['cards'] as const,
+  PACKS: ['packs'] as const,
+  CYCLES: ['cycles'] as const,
+  TRAITS: ['traits'] as const,
+  FORMATS: ['formats'] as const,
+}
+
 export function UiStoreProvider(props: { children: ReactNode }): JSX.Element {
-  const [cards, setCards] = useState<CardWithVersions[]>([])
-  const [packs, setPacks] = useState<Pack[]>([])
-  const [cycles, setCycles] = useState<Cycle[]>([])
-  const [traits, setTraits] = useState<Trait[]>([])
-  const [formats, setFormats] = useState<Format[]>([])
-  const [relevantFormats, setRelevantFormats] = useState<Format[]>([])
-  const [reload, setReload] = useState(false)
+  const queryClient = useQueryClient()
 
-  const toggleReload = () => setReload(!reload)
+  // Use TanStack Query for all data fetching with automatic caching
+  const { data: cards = [] } = useQuery<CardWithVersions[]>({
+    queryKey: UiStoreQueries.CARDS,
+    queryFn: async () => {
+      const response = await publicApi.Card.findAll()
+      return response.data() as CardWithVersions[]
+    },
+  })
 
-  useEffect(() => {
-    publicApi.Pack.findAll().then((packs) => setPacks(packs.data()))
-    publicApi.Card.findAll().then((cards) => setCards(cards.data()))
-    publicApi.Cycle.findAll().then((cycles) => setCycles(cycles.data()))
-    publicApi.Trait.findAll().then((traits) => setTraits(traits.data()))
-    publicApi.Format.findAll().then((response) => {
-      const formats = response.data() as Format[];
-      setFormats(formats)
-      setRelevantFormats(formats.filter(format => format.supported))
-    })
-  }, [reload])
+  const { data: packs = [] } = useQuery<Pack[]>({
+    queryKey: UiStoreQueries.PACKS,
+    queryFn: async () => {
+      const response = await publicApi.Pack.findAll()
+      return response.data() as Pack[]
+    },
+  })
 
-  const validVersionForFormat = (cardId: string, formatId: string) => {
-    console.log(cardId, formatId)
+  const { data: cycles = [] } = useQuery<Cycle[]>({
+    queryKey: UiStoreQueries.CYCLES,
+    queryFn: async () => {
+      const response = await publicApi.Cycle.findAll()
+      return response.data() as Cycle[]
+    },
+  })
+
+  const { data: traits = [] } = useQuery<Trait[]>({
+    queryKey: UiStoreQueries.TRAITS,
+    queryFn: async () => {
+      const response = await publicApi.Trait.findAll()
+      return response.data() as Trait[]
+    },
+  })
+
+  const { data: formats = [], isLoading: formatsLoading } = useQuery<Format[]>({
+    queryKey: UiStoreQueries.FORMATS,
+    queryFn: async () => {
+      const response = await publicApi.Format.findAll()
+      return response.data() as Format[]
+    },
+  })
+
+  // Compute relevant formats
+  const relevantFormats = useMemo(
+    () => formats.filter(format => format.supported),
+    [formats]
+  )
+
+  // Check if any query is loading
+  const isLoading = formatsLoading
+
+  // Replace toggleReload with query invalidation
+  const invalidateData = () => {
+    queryClient.invalidateQueries({ queryKey: UiStoreQueries.CARDS })
+    queryClient.invalidateQueries({ queryKey: UiStoreQueries.PACKS })
+    queryClient.invalidateQueries({ queryKey: UiStoreQueries.CYCLES })
+    queryClient.invalidateQueries({ queryKey: UiStoreQueries.TRAITS })
+    queryClient.invalidateQueries({ queryKey: UiStoreQueries.FORMATS })
+  }
+
+  const validCardVersionForFormat = (cardId: string, formatId: string) => {
     const format = formats.find(f => f.id === formatId)
     const card = cards.find(c => c.id === cardId)
     if (!format || !card) {
@@ -60,14 +110,15 @@ export function UiStoreProvider(props: { children: ReactNode }): JSX.Element {
   return (
     <UiStoreContext.Provider
       value={{
-        cards: cards,
-        packs: packs,
-        cycles: cycles,
-        traits: traits,
-        formats: formats,
-        relevantFormats: relevantFormats,
-        validCardVersionForFormat: validVersionForFormat,
-        toggleReload: toggleReload,
+        cards,
+        packs,
+        cycles,
+        traits,
+        formats,
+        relevantFormats,
+        validCardVersionForFormat,
+        invalidateData,
+        isLoading,
       }}
     >
       {props.children}
