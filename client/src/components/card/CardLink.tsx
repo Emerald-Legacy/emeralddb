@@ -24,7 +24,7 @@ const Root = styled('span')(({
   theme
 }) => ({
   [`& .${classes.popoverText}`]: {
-    padding: theme.spacing(1),
+    padding: theme.spacing(2),
   }
 }));
 
@@ -39,10 +39,14 @@ export function DeckbuildingRestrictionIcon(props: {
   const open = Boolean(anchorEl)
 
   const handlePopoverOpen = (event: MouseEvent<HTMLElement, globalThis.MouseEvent>) => {
+    event.stopPropagation()
     setAnchorEl(event.currentTarget)
   }
 
-  const handlePopoverClose = () => {
+  const handlePopoverClose = (event?: MouseEvent<HTMLElement, globalThis.MouseEvent>) => {
+    if (event) {
+      event.stopPropagation()
+    }
     setAnchorEl(null)
   }
 
@@ -52,7 +56,11 @@ export function DeckbuildingRestrictionIcon(props: {
 
   return (
     <>
-      <Root onMouseEnter={handlePopoverOpen} onMouseLeave={handlePopoverClose}>
+      <Root
+        onMouseEnter={handlePopoverOpen}
+        onMouseLeave={(e) => handlePopoverClose(e)}
+        style={{ display: 'inline-block', verticalAlign: 'middle' }}
+      >
         {props.icon}
       </Root>
       <Popover
@@ -68,11 +76,17 @@ export function DeckbuildingRestrictionIcon(props: {
           vertical: 'top',
           horizontal: 'left',
         }}
-        onClose={handlePopoverClose}
+        onClose={() => handlePopoverClose()}
         disableRestoreFocus
         disableScrollLock
+        sx={{ pointerEvents: 'none' }}
+        slotProps={{
+          paper: {
+            sx: { pointerEvents: 'none', padding: 2 }
+          }
+        }}
       >
-        <div className={classes.popoverText}>
+        <div>
           {props.label}: {formatString}
         </div>
       </Popover>
@@ -206,12 +220,12 @@ export function CardLink(props: {
         {card.elements?.map((element) => (
           <ElementSymbol element={element} key={element} withoutName />
         ))}
-        {bannedFormats.length > 0 && <BannedIcon formats={bannedFormats} />}
-        {restrictedFormats.length > 0 && <RestrictedIcon formats={restrictedFormats} />}
-        {splashBannedFormats.length > 0 && <SplashBannedIcon formats={splashBannedFormats} />}
-        {rallyFormats.length > 0 && <RallyIcon formats={rallyFormats} />}
-        {format && !legalVersion && <RotatedIcon formats={[format.id]} />}
       </EmeraldDBLink>
+      {bannedFormats.length > 0 && <BannedIcon formats={bannedFormats} />}
+      {restrictedFormats.length > 0 && <RestrictedIcon formats={restrictedFormats} />}
+      {splashBannedFormats.length > 0 && <SplashBannedIcon formats={splashBannedFormats} />}
+      {rallyFormats.length > 0 && <RallyIcon formats={rallyFormats} />}
+      {format && !legalVersion && <RotatedIcon formats={[format.id]} />}
       <Popover
         id="mouse-over-popover"
         open={open}
