@@ -28,7 +28,9 @@ export function CardTypeIcon(props: {
   defaultColor?: string
 }): JSX.Element {
   const color = props.defaultColor || getColorForFactionId(props.faction || '')
-  const style = color ? { color: color, fontSize: 16 } : { fontSize: 16 }
+  const style = color
+    ? { color: color, fontSize: 16, verticalAlign: 'middle' }
+    : { fontSize: 16, verticalAlign: 'middle' }
   const Icon = icons.find((icon) => icon.type === props.type)?.icon || HelpOutlineIcon
 
   return <Icon style={style} />

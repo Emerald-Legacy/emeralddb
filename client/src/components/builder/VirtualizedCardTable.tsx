@@ -138,9 +138,7 @@ class MuiVirtualizedTable extends React.PureComponent<MuiVirtualizedTableProps> 
         format: string
       }
       renderComponent = (
-        <span>
-          <CardLink cardId={nameData.cardId} format={nameData.format} />
-        </span>
+        <CardLink cardId={nameData.cardId} format={nameData.format} />
       )
     }
     if (columnType === 'traits') {

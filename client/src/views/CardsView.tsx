@@ -228,7 +228,7 @@ export function CardsView(): JSX.Element {
       return <div />
     }
     return (
-      <Dialog open={cardModalOpen} onClose={() => setCardModalOpen(false)}>
+      <Dialog open={cardModalOpen} onClose={() => setCardModalOpen(false)} disableScrollLock>
         <DialogContent>
           <CardInformation cardWithVersions={modalCard} clickable currentVersion={findCardVersion(modalCard)}/>
         </DialogContent>

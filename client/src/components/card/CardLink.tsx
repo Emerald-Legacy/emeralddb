@@ -1,6 +1,6 @@
 import { Popover, Theme } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { useState, useRef, type MouseEvent } from 'react'
+import { useState, useEffect, type MouseEvent } from 'react'
 import { useUiStore } from '../../providers/UiStoreProvider'
 import { CardInformation } from './CardInformation'
 import { CardTypeIcon } from './CardTypeIcon'
@@ -24,7 +24,7 @@ const Root = styled('span')(({
   theme
 }) => ({
   [`& .${classes.popoverText}`]: {
-    padding: theme.spacing(1),
+    padding: theme.spacing(2),
   }
 }));
 
@@ -39,10 +39,14 @@ export function DeckbuildingRestrictionIcon(props: {
   const open = Boolean(anchorEl)
 
   const handlePopoverOpen = (event: MouseEvent<HTMLElement, globalThis.MouseEvent>) => {
+    event.stopPropagation()
     setAnchorEl(event.currentTarget)
   }
 
-  const handlePopoverClose = () => {
+  const handlePopoverClose = (event?: MouseEvent<HTMLElement, globalThis.MouseEvent>) => {
+    if (event) {
+      event.stopPropagation()
+    }
     setAnchorEl(null)
   }
 
@@ -52,7 +56,11 @@ export function DeckbuildingRestrictionIcon(props: {
 
   return (
     <>
-      <Root onMouseEnter={handlePopoverOpen} onMouseLeave={handlePopoverClose}>
+      <Root
+        onMouseEnter={handlePopoverOpen}
+        onMouseLeave={(e) => handlePopoverClose(e)}
+        style={{ display: 'inline-flex', alignItems: 'center' }}
+      >
         {props.icon}
       </Root>
       <Popover
@@ -68,10 +76,17 @@ export function DeckbuildingRestrictionIcon(props: {
           vertical: 'top',
           horizontal: 'left',
         }}
-        onClose={handlePopoverClose}
+        onClose={() => handlePopoverClose()}
         disableRestoreFocus
+        disableScrollLock
+        sx={{ pointerEvents: 'none' }}
+        slotProps={{
+          paper: {
+            sx: { pointerEvents: 'none', padding: 1.5 }
+          }
+        }}
       >
-        <div className={classes.popoverText}>
+        <div>
           {props.label}: {formatString}
         </div>
       </Popover>
@@ -126,15 +141,14 @@ export function CardLink(props: {
   hoveredCardId?: string | null
 }): JSX.Element {
   const { cards, relevantFormats, validCardVersionForFormat } = useUiStore()
-  const spanRef = useRef<HTMLSpanElement>(null)
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
 
   const card = cards.find((card) => card.id === props.cardId)
   if (!card) {
     return <span>Unknown Card ID</span>
   }
 
-  // Determine if popover should be open based on external hover state
-  const open = props.hoveredCardId === props.cardId
+  const open = Boolean(anchorEl)
 
   let legalVersion: Omit<CardInPack, 'card_id'> | undefined = card.versions[0]
   const format = relevantFormats.find(f => f.id === props.format)
@@ -165,46 +179,67 @@ export function CardLink(props: {
     rallyFormats = ['emerald', 'obsidian']
   }
 
+  useEffect(() => {
+    return () => {
+      setAnchorEl(null)
+    }
+  }, [])
+
+  const handleMouseEnter = (event: MouseEvent<HTMLAnchorElement>) => {
+    setAnchorEl(event.currentTarget)
+  }
+
+  const handleMouseLeave = () => {
+    setAnchorEl(null)
+  }
+
+  const handleClick = () => {
+    setAnchorEl(null)
+  }
+
   return (
-    <span ref={spanRef} style={{ display: 'inline-block' }}>
+    <span style={{ display: 'inline-flex', alignItems: 'center' }}>
       <EmeraldDBLink
         href={`/card/${card.id}`}
+        onClick={handleClick}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
         notClickable={props.notClickable}
         openInNewTab={!props.sameTab}
       >
         <CardTypeIcon type={card.type} faction={card.faction} />
         {card.is_unique && (
-          <>
+          <span>
             {' '}
             <span className={`icon icon-unique`} style={{ fontSize: 12 }} />
-          </>
-        )}{' '}
-        {card.name}{' '}
+          </span>
+        )}
+        {' '}
+        {card.name}
+        {' '}
         {card.elements?.map((element) => (
           <ElementSymbol element={element} key={element} withoutName />
         ))}
-        {bannedFormats.length > 0 && <BannedIcon formats={bannedFormats} />}
-        {restrictedFormats.length > 0 && <RestrictedIcon formats={restrictedFormats} />}
-        {splashBannedFormats.length > 0 && <SplashBannedIcon formats={splashBannedFormats} />}
-        {rallyFormats.length > 0 && <RallyIcon formats={rallyFormats} />}
-        {format && !legalVersion && (
-          <RotatedIcon formats={[format.id]} />
-        )}
       </EmeraldDBLink>
+      {bannedFormats.length > 0 && <BannedIcon formats={bannedFormats} />}
+      {restrictedFormats.length > 0 && <RestrictedIcon formats={restrictedFormats} />}
+      {splashBannedFormats.length > 0 && <SplashBannedIcon formats={splashBannedFormats} />}
+      {rallyFormats.length > 0 && <RallyIcon formats={rallyFormats} />}
+      {format && !legalVersion && <RotatedIcon formats={[format.id]} />}
       <Popover
         id="mouse-over-popover"
-        className={classes.popover}
         open={open}
-        anchorEl={spanRef.current}
+        anchorEl={anchorEl}
         anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        transformOrigin={{
           vertical: 'bottom',
           horizontal: 'left',
         }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'left',
+        }}
         disableRestoreFocus
+        disableScrollLock
         sx={{ pointerEvents: 'none' }}
         slotProps={{
           paper: {

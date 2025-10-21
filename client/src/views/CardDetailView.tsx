@@ -244,7 +244,7 @@ export function CardDetailView(): JSX.Element {
           )}
         </Grid>
       </Grid>
-      <Dialog open={deletionModalOpen} onClose={() => setDeletionModalOpen(false)}>
+      <Dialog open={deletionModalOpen} onClose={() => setDeletionModalOpen(false)} disableScrollLock>
         <DialogTitle>Delete Card {card.name}</DialogTitle>
         <DialogContent>
           <Grid container spacing={1}>
@@ -274,7 +274,7 @@ export function CardDetailView(): JSX.Element {
           </Button>
         </DialogActions>
       </Dialog>
-      <Dialog open={renameModalOpen} onClose={() => setRenameModalOpen(false)}>
+      <Dialog open={renameModalOpen} onClose={() => setRenameModalOpen(false)} disableScrollLock>
         <DialogTitle>Rename Card {card.name}</DialogTitle>
         <DialogContent>
           <Grid container spacing={1}>
