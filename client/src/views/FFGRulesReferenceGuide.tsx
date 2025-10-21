@@ -1,6 +1,5 @@
 import {
   Grid,
-  makeStyles,
   Typography,
   useMediaQuery,
   Box,
@@ -9,38 +8,58 @@ import {
   DialogContent,
   DialogActions,
   Button,
-} from '@material-ui/core'
+} from '@mui/material';
+import { styled } from '@mui/material/styles';
 import { useEffect, useState } from 'react'
 import { HashLink as Link } from 'react-router-hash-link'
-import TocIcon from '@material-ui/icons/Toc'
+import TocIcon from '@mui/icons-material/Toc'
+
+const PREFIX = 'FFGRulesReferenceGuide';
+
+const classes = {
+  li: `${PREFIX}-li`,
+  level1: `${PREFIX}-level1`,
+  level2: `${PREFIX}-level2`,
+  level3: `${PREFIX}-level3`,
+  fab: `${PREFIX}-fab`
+};
+
+// TODO jss-to-styled codemod: The Fragment root was replaced by div. Change the tag if needed.
+const Root = styled('div')((
+  {
+    theme
+  }
+) => ({
+  [`& .${classes.li}`]: {
+    listStyle: 'none',
+  },
+
+  [`& .${classes.level1}`]: {
+    fontSize: '14px',
+  },
+
+  [`& .${classes.level2}`]: {
+    fontSize: '12px',
+    paddingLeft: '1em',
+  },
+
+  [`& .${classes.level3}`]: {
+    fontSize: '10px',
+    paddingLeft: '2em',
+  },
+
+  [`& .${classes.fab}`]: {
+    position: 'absolute',
+    bottom: theme.spacing(0.5),
+    right: theme.spacing(0.5),
+  }
+}));
 
 interface Heading {
   href: string
   text: string
   level: '1' | '2' | '3'
 }
-
-const useStyles = makeStyles((theme) => ({
-  li: {
-    listStyle: 'none',
-  },
-  level1: {
-    fontSize: '14px',
-  },
-  level2: {
-    fontSize: '12px',
-    paddingLeft: '1em',
-  },
-  level3: {
-    fontSize: '10px',
-    paddingLeft: '2em',
-  },
-  fab: {
-    position: 'absolute',
-    bottom: theme.spacing(0.5),
-    right: theme.spacing(0.5),
-  },
-}))
 
 function AnchoredHeading(props: {
   level: '1' | '2' | '3'
@@ -70,7 +89,7 @@ function AnchoredHeading(props: {
 }
 
 export function FFGRulesReferenceGuide(): JSX.Element {
-  const classes = useStyles()
+
   const currentHost = window.location.host
   const currentProtocol = window.location.protocol
   const host = currentProtocol + '//' + currentHost
@@ -112,9 +131,9 @@ export function FFGRulesReferenceGuide(): JSX.Element {
     )
   }
   return (
-    <>
+    <Root>
       <Grid container spacing={3} direction={isSmOrBigger ? 'row' : 'column-reverse'}>
-        <Grid sm={8}>
+        <Grid size={{ sm: 8 }}>
           <Box style={{ maxHeight: isSmOrBigger ? '93vh' : '85vh', overflow: 'auto' }} p={1}>
             <Typography variant="h4">Fantasy Flight Games: Rules Reference</Typography>
             <p>
@@ -6550,7 +6569,7 @@ export function FFGRulesReferenceGuide(): JSX.Element {
             </section>
           </Box>
         </Grid>
-        <Grid sm={4}>
+        <Grid size={{ sm: 4 }}>
           <Box p={1}>
             {!isSmOrBigger ? (
               <>
@@ -6582,6 +6601,6 @@ export function FFGRulesReferenceGuide(): JSX.Element {
           </Box>
         </Grid>
       </Grid>
-    </>
-  )
+    </Root>
+  );
 }

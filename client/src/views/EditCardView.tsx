@@ -7,7 +7,7 @@ import { CardEditor } from '../components/forms/CardEditor'
 
 export function EditCardView(): JSX.Element {
   const params = useParams<{ id: string }>()
-  const [data] = useCard(params.id)
+  const [data] = useCard(params.id!)
 
   if (data.loading) {
     return <Loading />

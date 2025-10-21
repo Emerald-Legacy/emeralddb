@@ -1,4 +1,5 @@
 import { DecklistViewModel, Decklist as DecklistType, Deck, CardWithVersions, Format } from "@5rdb/api";
+import { styled } from '@mui/material/styles';
 import {
   Box,
   Button,
@@ -7,37 +8,48 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
-  makeStyles,
   Paper,
   Tab,
   Tabs,
   TextField,
   Typography,
-} from '@material-ui/core'
+} from '@mui/material';
 import { useState } from 'react'
 import { useUiStore } from '../../providers/UiStoreProvider'
 import { BuilderCardList } from './BuilderCardList'
 import { Decklist } from '../deck/Decklist'
 import { privateApi } from '../../api'
 import { DeckBuilderWizard } from './DeckBuilderWizard'
-import Autocomplete from '@material-ui/lab/Autocomplete'
+import Autocomplete from '@mui/material/Autocomplete'
 import { useSnackbar } from 'notistack'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { createDeckStatistics } from '../deck/DeckValidator'
 import { Loading } from '../Loading'
 import { VersionPicker } from './VersionPicker'
 import { EmeraldDBLink } from '../EmeraldDBLink'
 
-const useStyles = makeStyles((theme) => ({
-  unselectedList: {
+const PREFIX = 'DeckEditor';
+
+const classes = {
+  unselectedList: `${PREFIX}-unselectedList`,
+  selectedList: `${PREFIX}-selectedList`
+};
+
+const StyledGrid = styled(Grid)((
+  {
+    theme
+  }
+) => ({
+  [`& .${classes.unselectedList}`]: {
     borderColor: 'lightgrey',
   },
-  selectedList: {
+
+  [`& .${classes.selectedList}`]: {
     borderColor: theme.palette.primary.main,
     backgroundColor: theme.palette.secondary.light,
     color: theme.palette.secondary.contrastText,
-  },
-}))
+  }
+}));
 
 function getEmptyDeckList(): DecklistViewModel {
   return {
@@ -103,10 +115,10 @@ enum ViewTypes {
 
 export function DeckEditor(props: { existingDecklist?: DecklistType | undefined }): JSX.Element {
   const { cards, formats, relevantFormats } = useUiStore()
-  const classes = useStyles()
+
   const [decklist, setDecklist] = useState(props.existingDecklist || getEmptyDeckList())
   const { enqueueSnackbar } = useSnackbar()
-  const history = useHistory()
+  const navigate = useNavigate()
   const [versionModalOpen, setVersionModalOpen] = useState(false)
   const [description, setDescription] = useState(props.existingDecklist?.description || '')
   const [newVersion, setNewVersion] = useState(decklist.version_number || '0.1')
@@ -176,7 +188,7 @@ export function DeckEditor(props: { existingDecklist?: DecklistType | undefined 
       },
     }).then(() => {
       setDecklist({ ...decklist, version_number: getNextVersionNumber(decklist.version_number) })
-      history.push(`/builder/${deckId}/edit`)
+      navigate(`/builder/${deckId}/edit`)
       enqueueSnackbar('Successfully created deck', { variant: 'success' })
       setVersionModalOpen(false)
     })
@@ -209,10 +221,10 @@ export function DeckEditor(props: { existingDecklist?: DecklistType | undefined 
   }
 
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={12} md={6}>
+    <StyledGrid container spacing={2}>
+      <Grid size={{ xs: 12, md: 6 }}>
         <Grid container spacing={1}>
-          <Grid item xs={9}>
+          <Grid size={9}>
             <TextField
               value={decklist.name}
               fullWidth
@@ -222,7 +234,7 @@ export function DeckEditor(props: { existingDecklist?: DecklistType | undefined 
               onChange={(e) => setDecklist({ ...decklist, name: e.target.value })}
             />
           </Grid>
-          <Grid item xs={3}>
+          <Grid size={3}>
             <TextField
               value={decklist.version_number}
               fullWidth
@@ -233,7 +245,7 @@ export function DeckEditor(props: { existingDecklist?: DecklistType | undefined 
               onChange={(e) => setDecklist({ ...decklist, version_number: e.target.value })}
             />
           </Grid>
-          <Grid item xs={6} lg={9}>
+          <Grid size={{ xs: 6, lg: 9 }}>
             <Autocomplete
               id="combo-box-format"
               autoHighlight
@@ -248,7 +260,7 @@ export function DeckEditor(props: { existingDecklist?: DecklistType | undefined 
               }}
             />
           </Grid>
-          <Grid item xs={6} lg={3}>
+          <Grid size={{ xs: 6, lg: 3 }}>
             <Button
               variant="contained"
               color="secondary"
@@ -258,18 +270,18 @@ export function DeckEditor(props: { existingDecklist?: DecklistType | undefined 
               Custom Version
             </Button>
           </Grid>
-          <Grid item xs={12}>
+          <Grid size={12}>
             <Box border="1px solid" padding={3}>
               <Decklist decklist={decklist} withoutHeader onQuantityChange={changeCardQuantity} />
             </Box>
           </Grid>
-          <Grid item xs={12} md={8}></Grid>
+          <Grid size={{ xs: 12, md: 8 }}></Grid>
         </Grid>
       </Grid>
-      <Grid item xs={12} md={6}>
+      <Grid size={{ xs: 12, md: 6 }}>
         <Paper>
           <Grid container spacing={1}>
-            <Grid item xs={6}>
+            <Grid size={6}>
               {props.existingDecklist && (
                 <EmeraldDBLink href={`/decks/${props.existingDecklist?.deck_id}/`}>
                   <Button variant="contained" fullWidth>
@@ -278,7 +290,7 @@ export function DeckEditor(props: { existingDecklist?: DecklistType | undefined 
                 </EmeraldDBLink>
               )}
             </Grid>
-            <Grid item xs={6}>
+            <Grid size={6}>
               <Button
                 variant="contained"
                 color="secondary"
@@ -288,7 +300,7 @@ export function DeckEditor(props: { existingDecklist?: DecklistType | undefined 
                 Save Deck
               </Button>
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <Tabs
                 value={currentView}
                 onChange={(e, newValue) => setCurrentView(newValue)}
@@ -379,6 +391,6 @@ export function DeckEditor(props: { existingDecklist?: DecklistType | undefined 
           </Button>
         </DialogActions>
       </Dialog>
-    </Grid>
-  )
+    </StyledGrid>
+  );
 }

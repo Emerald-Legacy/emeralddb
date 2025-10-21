@@ -1,4 +1,4 @@
-import { Grid, TextField, Typography } from '@material-ui/core'
+import { Grid, TextField, Typography } from '@mui/material'
 import { useState } from 'react'
 
 function splitVersion(version: string): { major: string; minor: string; extra: string } {
@@ -54,8 +54,8 @@ export function VersionPicker(props: {
   }
 
   return (
-    <Grid container justify="flex-end" alignItems="flex-end">
-      <Grid item xs={3}>
+    <Grid container justifyContent="flex-end" alignItems="flex-end">
+      <Grid size={3}>
         <TextField
           id="major"
           label="Major"
@@ -65,12 +65,12 @@ export function VersionPicker(props: {
           onChange={(e) => updateMajorVersion(Number.parseInt(e.target.value) || 0)}
         />
       </Grid>
-      <Grid item xs={1}>
+      <Grid size={1}>
         <Typography align="center">
           <b>.</b>
         </Typography>
       </Grid>
-      <Grid item xs={3}>
+      <Grid size={3}>
         <TextField
           id="minor"
           label="Minor"
@@ -80,12 +80,12 @@ export function VersionPicker(props: {
           onChange={(e) => updateMinorVersion(Number.parseInt(e.target.value) || 0)}
         />
       </Grid>
-      <Grid item xs={1}>
+      <Grid size={1}>
         <Typography align="center">
           <b>.</b>
         </Typography>
       </Grid>
-      <Grid item xs={4}>
+      <Grid size={4}>
         <TextField
           id="extra"
           label="Extra"
@@ -95,5 +95,5 @@ export function VersionPicker(props: {
         />
       </Grid>
     </Grid>
-  )
+  );
 }

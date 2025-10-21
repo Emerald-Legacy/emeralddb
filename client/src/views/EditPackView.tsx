@@ -10,14 +10,14 @@ import {
   Grid,
   TextField,
   Typography,
-} from '@material-ui/core'
+} from '@mui/material'
 import { useParams } from 'react-router-dom'
 import { Loading } from '../components/Loading'
 import { useUiStore } from '../providers/UiStoreProvider'
 import { RequestError } from '../components/RequestError'
 import { useEffect, useState } from "react";
 import { CardInPack } from '@5rdb/api'
-import Autocomplete from '@material-ui/lab/Autocomplete'
+import Autocomplete from '@mui/material/Autocomplete'
 import { privateApi } from '../api'
 import { useSnackbar } from 'notistack'
 import { useConfirm } from "material-ui-confirm";
@@ -69,7 +69,7 @@ export function EditPackView(): JSX.Element {
     return <Loading />
   }
 
-  const packId = params.id
+  const packId = params.id!
   const pack = packs.find((p) => p.id === packId)
 
   if (!pack) {
@@ -145,19 +145,19 @@ export function EditPackView(): JSX.Element {
   }
 
   return (
-    <Grid container spacing={2} justify="center">
-      <Grid item xs={12}>
+    <Grid container spacing={2} justifyContent="center">
+      <Grid size={12}>
         <Typography>{pack.name}</Typography>
       </Grid>
-      <Grid item xs={12}>
+      <Grid size={12}>
         <Button variant="contained" color="secondary" onClick={() => openCreateModal()}>
           Add Card
         </Button>
       </Grid>
       {cardsInPack.map((card, index) => (
-        <Grid item xs={6}>
+        <Grid size={6}>
           <Grid container spacing={1}>
-            <Grid item xs={8}>
+            <Grid size={8}>
               <Box border="1px solid lightgrey">
                 <Typography>Card: {card.card_id}</Typography>
                 <Typography>Flavor: {card.flavor}</Typography>
@@ -180,7 +180,7 @@ export function EditPackView(): JSX.Element {
                 </Button>
               </Box>
             </Grid>
-            <Grid item xs={4}>
+            <Grid size={4}>
               <img src={card.image_url || ''} style={{ maxWidth: 150 }} />
             </Grid>
           </Grid>
@@ -190,7 +190,7 @@ export function EditPackView(): JSX.Element {
         <DialogTitle>Edit Pack Card</DialogTitle>
         <DialogContent>
           <Grid container spacing={1}>
-            <Grid item xs={8}>
+            <Grid size={8}>
               <Autocomplete
                 id="combo-box-cardId"
                 autoHighlight
@@ -259,7 +259,7 @@ export function EditPackView(): JSX.Element {
                 labelPlacement="start"
               />
             </Grid>
-            <Grid item xs={4}>
+            <Grid size={4}>
               <img src={imageUrl} style={{ maxWidth: 150 }} />
             </Grid>
           </Grid>
@@ -274,5 +274,5 @@ export function EditPackView(): JSX.Element {
         </DialogActions>
       </Dialog>
     </Grid>
-  )
+  );
 }

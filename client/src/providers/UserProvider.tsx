@@ -1,6 +1,6 @@
 import { User } from '@5rdb/api'
 import { createContext, ReactNode, useState, useContext } from 'react'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 import { privateApi } from '../api'
 import { Queries } from '../components/HeaderBar'
 import { getToken } from '../utils/auth'
@@ -33,10 +33,16 @@ export function UserProvider(props: { children: ReactNode }): JSX.Element {
     return currentUser !== undefined
   }
 
-  useQuery(Queries.USER, () => {
-    const token = getToken()
-    if (token) {
-      privateApi.User.current().then((user) => setCurrentUser(user.data()))
+  useQuery({
+    queryKey: [Queries.USER],
+    queryFn: async () => {
+      const token = getToken()
+      if (token) {
+        const user = await privateApi.User.current()
+        setCurrentUser(user.data())
+        return user.data()
+      }
+      return null
     }
   })
 

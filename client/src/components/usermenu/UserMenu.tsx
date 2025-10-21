@@ -10,16 +10,16 @@ import {
   Menu,
   MenuItem,
   TextField,
-} from '@material-ui/core'
+} from '@mui/material'
 import { useState } from 'react'
-import { useQueryClient } from 'react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import { privateApi } from '../../api'
 import { getToken, hasAuth0Token, setToken } from '../../utils/auth'
 import { Queries } from '../HeaderBar'
 import { LoginButton } from './LoginButton'
 import { LogoutButton } from './LogoutButton'
 import { useCurrentUser } from '../../providers/UserProvider'
-import AccountCircle from '@material-ui/icons/AccountCircle'
+import AccountCircle from '@mui/icons-material/AccountCircle'
 
 export function UserMenu(props: { audience: string; scope: string }): JSX.Element {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -51,7 +51,7 @@ export function UserMenu(props: { audience: string; scope: string }): JSX.Elemen
           },
         }).then(accessToken => {
           setToken(accessToken)
-          queryClient.invalidateQueries(Queries.USER)
+          queryClient.invalidateQueries({ queryKey: [Queries.USER] })
         })
       }
     } catch (e) {
@@ -79,7 +79,7 @@ export function UserMenu(props: { audience: string; scope: string }): JSX.Elemen
           aria-haspopup="true"
           onClick={handleMenu}
           color="inherit"
-        >
+          size="large">
           <AccountCircle />
         </IconButton>
         <Menu
@@ -132,7 +132,7 @@ export function UserMenu(props: { audience: string; scope: string }): JSX.Elemen
           </DialogActions>
         </Dialog>
       </div>
-    )
+    );
   }
 
   return (

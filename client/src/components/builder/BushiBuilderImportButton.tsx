@@ -7,8 +7,8 @@ import {
   DialogTitle,
   TextField,
   useMediaQuery,
-} from '@material-ui/core'
-import Autocomplete from '@material-ui/lab/Autocomplete'
+} from '@mui/material'
+import Autocomplete from '@mui/material/Autocomplete'
 import { useState } from 'react'
 import { useUiStore } from '../../providers/UiStoreProvider'
 
@@ -102,7 +102,7 @@ export function BushiBuilderImportButton(props: {
           <TextField
             value={deckString}
             multiline
-            rowsMax={10}
+            maxRows={10}
             variant="outlined"
             fullWidth
             onChange={(e) => setDeckString(e.target.value)}
@@ -125,5 +125,5 @@ export function BushiBuilderImportButton(props: {
         </DialogActions>
       </Dialog>
     </>
-  )
+  );
 }

@@ -1,12 +1,12 @@
 import { useUiStore } from '../providers/UiStoreProvider'
 import { useState } from 'react'
-import { Box, Grid, List, ListItem, TextField, Typography } from '@material-ui/core'
+import { Box, Grid, List, ListItem, TextField, Typography } from '@mui/material'
 import { Loading } from '../components/Loading'
-import Autocomplete from '@material-ui/lab/Autocomplete'
+import Autocomplete from '@mui/material/Autocomplete'
 import { clans } from '../utils/enums'
 import { OrganizedPlayList } from '../components/OrganizedPlayList'
 import { CardWithVersions } from '@5rdb/api'
-import { useHistory, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { CardLink } from '../components/card/CardLink'
 
 const formats = [
@@ -32,15 +32,15 @@ function isSplashBanned(card: CardWithVersions, format: string, filterClan: stri
 export function OpLists(): JSX.Element {
   const params = useParams<{ format: string }>()
   const { cards, cycles, packs } = useUiStore()
-  const [format, setFormat] = useState(params.format || '')
+  const [format, setFormat] = useState(params.format! || '')
   const [filterClan, setFilterClan] = useState('')
-  const history = useHistory()
+  const navigate = useNavigate()
 
   if (!cards) {
     return <Loading />
   }
-  if (params.format && params.format !== format) {
-    setFormat(params.format)
+  if (params.format! && params.format! !== format) {
+    setFormat(params.format!)
   }
   const formatName = formats.find((f) => f.id === format)?.name || ''
   const formatLink = formats.find((f) => f.id === format)?.link || ''
@@ -78,14 +78,14 @@ export function OpLists(): JSX.Element {
   return (
     <>
       <Grid container spacing={4}>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <Typography variant="h4">Organized Play: Restricted and Banned Lists</Typography>
           <Typography>
             Below you can find the current Restricted and Banned Lists for the Legend of the Five
             Rings LCG.
           </Typography>
         </Grid>
-        <Grid item xs={6}>
+        <Grid size={6}>
           <Typography style={{ marginBottom: 5 }}>
             Please select the set of rules you are interested in:
           </Typography>
@@ -99,11 +99,11 @@ export function OpLists(): JSX.Element {
             onChange={(e, value) => {
               const newPathParam = value?.id || ''
               setFormat(newPathParam)
-              history.push(`/rules/organized-play/${newPathParam}`)
+              navigate(`/rules/organized-play/${newPathParam}`)
             }}
           />
         </Grid>
-        <Grid item xs={6} hidden={!format}>
+        <Grid hidden={!format} size={6}>
           <Typography style={{ marginBottom: 5 }}>
             Only show cards playable by this clan:
           </Typography>
@@ -117,9 +117,9 @@ export function OpLists(): JSX.Element {
             onChange={(e, value) => setFilterClan(value?.id || '')}
           />
         </Grid>
-        <Grid item xs={12} hidden={!format}>
+        <Grid hidden={!format} size={12}>
           <Grid container spacing={2}>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <Typography variant={'h5'}>{formatName}</Typography>
               {formatLink && (
                 <Typography component={'a'} href={formatLink} target={'_blank'}>
@@ -127,7 +127,7 @@ export function OpLists(): JSX.Element {
                 </Typography>
               )}
             </Grid>
-            <Grid item xs={12} md={6} lg={4} hidden={bannedCards.length === 0}>
+            <Grid hidden={bannedCards.length === 0} size={{ xs: 12, md: 6, lg: 4 }}>
               <OrganizedPlayList
                 cards={bannedCards}
                 format={format}
@@ -135,7 +135,7 @@ export function OpLists(): JSX.Element {
                 description="You may not include any banned cards in your deck."
               />
             </Grid>
-            <Grid item xs={12} md={6} lg={4} hidden={restrictedCards.length === 0}>
+            <Grid hidden={restrictedCards.length === 0} size={{ xs: 12, md: 6, lg: 4 }}>
               <OrganizedPlayList
                 cards={restrictedCards}
                 format={format}
@@ -143,7 +143,7 @@ export function OpLists(): JSX.Element {
                 description="You may only include one restricted card in your deck."
               />
             </Grid>
-            <Grid item xs={12} md={6} lg={4} hidden={splashBannedCards.length === 0}>
+            <Grid hidden={splashBannedCards.length === 0} size={{ xs: 12, md: 6, lg: 4 }}>
               <OrganizedPlayList
                 cards={splashBannedCards}
                 format={format}
@@ -153,8 +153,8 @@ export function OpLists(): JSX.Element {
             </Grid>
           </Grid>
         </Grid>
-        <Grid item container xs={12} spacing={2} hidden={format !== 'emerald'}>
-          <Grid item xs={12}>
+        <Grid container spacing={2} hidden={format !== 'emerald'} size={12}>
+          <Grid size={12}>
             <Typography>
               <b>Rotated Cards</b>
             </Typography>
@@ -170,14 +170,9 @@ export function OpLists(): JSX.Element {
             return (
               <Grid
                 key={cycle.id}
-                item
-                xs={12}
-                sm={6}
-                md={4}
-                lg={3}
                 hidden={rotatedCardsOfCycle.length === 0}
-              >
-                <Box border="1px solid gray" borderRadius={4} p={2}>
+               size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
+                <Box border="1px solid gray" borderRadius="4px" p={2}>
                   <Typography>
                     <b>Cycle: {cycle.name}</b> ({rotatedCardsOfCycle.length})
                   </Typography>
@@ -190,9 +185,9 @@ export function OpLists(): JSX.Element {
                   </List>
                 </Box>
               </Grid>
-            )})}
+            );})}
         </Grid>
       </Grid>
     </>
-  )
+  );
 }

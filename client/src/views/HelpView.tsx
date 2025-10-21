@@ -1,30 +1,33 @@
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Grid,
-  makeStyles,
-  Typography,
-} from '@material-ui/core'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import { createStyles, Theme } from '@material-ui/core/styles'
+import { Accordion, AccordionDetails, AccordionSummary, Grid, Typography } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import { Theme } from '@mui/material/styles';
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      width: '100%',
-    },
-    heading: {
-      fontSize: theme.typography.pxToRem(15),
-      fontWeight: (theme.typography.fontWeightRegular as number) || 400,
-    },
-  })
-)
+const PREFIX = 'HelpView';
+
+const classes = {
+  root: `${PREFIX}-root`,
+  heading: `${PREFIX}-heading`
+};
+
+// TODO jss-to-styled codemod: The Fragment root was replaced by div. Change the tag if needed.
+const Root = styled('div')(({
+  theme
+}) => ({
+  [`& .${classes.root}`]: {
+    width: '100%',
+  },
+
+  [`& .${classes.heading}`]: {
+    fontSize: theme.typography.pxToRem(15),
+    fontWeight: (theme.typography.fontWeightRegular as number) || 400,
+  }
+}));
 
 export function HelpView(): JSX.Element {
-  const classes = useStyles()
+
   return (
-    <>
+    <Root>
       <Typography variant="h4" align="center">
         Frequently Asked Questions
       </Typography>
@@ -36,7 +39,7 @@ export function HelpView(): JSX.Element {
         </AccordionSummary>
         <AccordionDetails>
           <Grid container spacing={1}>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <Typography component={'div'}>
                 The Log In button uses a popup window, which might be blocked by your browser or ad
                 blocker. Please make sure that you allow EmeraldDB to open popups.
@@ -53,7 +56,7 @@ export function HelpView(): JSX.Element {
         </AccordionSummary>
         <AccordionDetails>
           <Grid container spacing={1}>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <Typography component={'div'}>
                 This usually happens when there already is an account for the e-mail address you try
                 to sign up with. Please try the "Forgot password?" link in the log in mask to reset
@@ -72,16 +75,16 @@ export function HelpView(): JSX.Element {
         </AccordionSummary>
         <AccordionDetails>
           <Grid container spacing={1}>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <Typography component={'div'}>
                 To export your deck to Jigoku, save it and select it in the "Builder" section. Use
                 one of the two highlighted buttons to get a permalink to your deck list.
               </Typography>
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <img style={{ width: '75%' }} src="./static/images/ExportLinks.png" />
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <Typography component={'div'}>
                 Once you are on Jigoku, create a new deck and use the "Import Deck". Paste your
                 permalink in the text field and click on "Import". This should fill the name,
@@ -89,7 +92,7 @@ export function HelpView(): JSX.Element {
                 deck!
               </Typography>
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <img style={{ width: '75%' }} src="./static/images/ImportJigoku.png" />
             </Grid>
           </Grid>
@@ -103,7 +106,7 @@ export function HelpView(): JSX.Element {
         </AccordionSummary>
         <AccordionDetails>
           <Grid container spacing={1}>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <Typography component={'div'}>
                 To import an existing deck from FiveRingsDB, click on the "Create Deck" button in
                 the Builder section. Click on the "Import from FiveRingsDB" Button and paste the
@@ -111,7 +114,7 @@ export function HelpView(): JSX.Element {
                 your deck in the deckbuilder view afterwards.
               </Typography>
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <img style={{ width: '30%' }} src="./static/images/Import5RDBAndBB.png" />
             </Grid>
           </Grid>
@@ -125,7 +128,7 @@ export function HelpView(): JSX.Element {
         </AccordionSummary>
         <AccordionDetails>
           <Grid container spacing={1}>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <Typography component={'div'}>
                 To import an existing deck from BushiBuilder, click on the "Create Deck" button in
                 the Builder section. Click on the "Import from BushiBuilder" Button. In the pop up
@@ -133,10 +136,10 @@ export function HelpView(): JSX.Element {
                 of the "Jigoku Export" from BushiBuilder in the text field.
               </Typography>
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <img style={{ width: '30%' }} src="./static/images/Import5RDBAndBB.png" />
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <Typography component={'div'}>
                 Complete the import by clicking on the "Import Deck" button and don't forget to save
                 your deck in the deckbuilder view afterwards.
@@ -153,7 +156,7 @@ export function HelpView(): JSX.Element {
         </AccordionSummary>
         <AccordionDetails>
           <Grid container spacing={1}>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <Typography component={'div'}>
                 EmeraldDB supports deckbuilding for the following formats:
                 <ul>
@@ -165,7 +168,7 @@ export function HelpView(): JSX.Element {
                 </ul>
               </Typography>
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <Typography component={'div'}>
                 Of these formats, Jigoku supports:
                 <ul>
@@ -207,6 +210,6 @@ export function HelpView(): JSX.Element {
           </Typography>
         </AccordionDetails>
       </Accordion>
-    </>
-  )
+    </Root>
+  );
 }

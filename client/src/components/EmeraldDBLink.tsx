@@ -1,24 +1,24 @@
-import React from 'react'
-import { useHistory } from 'react-router-dom'
-import { Link } from '@material-ui/core'
+import type { ReactNode, MouseEvent } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { Link } from '@mui/material'
 
 export function EmeraldDBLink(props: {
   href: string
   onClick?: () => void
-  children: React.ReactNode
+  children: ReactNode
   notClickable?: boolean
   openInNewTab?: boolean
 }): JSX.Element {
-  const history = useHistory()
+  const navigate = useNavigate()
 
   function goTo(route: string) {
-    history.push(route)
+    navigate(route)
   }
 
   function onLinkClick(
     event:
-      | React.MouseEvent<HTMLSpanElement, MouseEvent>
-      | React.MouseEvent<HTMLAnchorElement, MouseEvent>
+      | MouseEvent<HTMLSpanElement, globalThis.MouseEvent>
+      | MouseEvent<HTMLAnchorElement, globalThis.MouseEvent>
   ) {
     if (!props.openInNewTab) {
       event.preventDefault()

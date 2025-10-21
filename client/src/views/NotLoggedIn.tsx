@@ -1,4 +1,4 @@
-import { Typography } from '@material-ui/core'
+import { Typography } from '@mui/material'
 
 export function NotLoggedIn(): JSX.Element {
   return (

@@ -1,38 +1,57 @@
 import { DeckWithVersions } from '@5rdb/api'
-import { makeStyles, Box, Typography, Button, Grid, useMediaQuery } from '@material-ui/core'
+import { styled } from '@mui/material/styles';
+import { Box, Typography, Button, Grid, useMediaQuery } from '@mui/material';
 import { useConfirm } from 'material-ui-confirm'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
 import { privateApi } from '../../api'
 import { CardFactionIcon } from '../card/CardFactionIcon'
 import { DecklistTabs, latestDecklistForDeck } from './DecklistTabs'
-import EditIcon from '@material-ui/icons/Edit'
-import DeleteIcon from '@material-ui/icons/Delete'
-import LinkIcon from '@material-ui/icons/Link'
+import EditIcon from '@mui/icons-material/Edit'
+import DeleteIcon from '@mui/icons-material/Delete'
+import LinkIcon from '@mui/icons-material/Link'
 import { EmeraldDBLink } from '../EmeraldDBLink'
 import { useUiStore } from "../../providers/UiStoreProvider";
 
-const useStyles = makeStyles((theme) => ({
-  unselectedDeck: {
+const PREFIX = 'DeckTabs';
+
+const classes = {
+  unselectedDeck: `${PREFIX}-unselectedDeck`,
+  selectedDeck: `${PREFIX}-selectedDeck`,
+  newDeckButton: `${PREFIX}-newDeckButton`,
+  format: `${PREFIX}-format`,
+  deleteButton: `${PREFIX}-deleteButton`
+};
+
+const StyledGrid = styled(Grid)((
+  {
+    theme
+  }
+) => ({
+  [`& .${classes.unselectedDeck}`]: {
     borderColor: 'lightgrey',
   },
-  selectedDeck: {
+
+  [`& .${classes.selectedDeck}`]: {
     borderColor: theme.palette.primary.main,
     backgroundColor: theme.palette.secondary.light,
     color: theme.palette.secondary.contrastText,
     borderRightWidth: '3px',
   },
-  newDeckButton: {
+
+  [`& .${classes.newDeckButton}`]: {
     marginBottom: 3,
   },
-  format: {
+
+  [`& .${classes.format}`]: {
     fontSize: 12,
   },
-  deleteButton: {
+
+  [`& .${classes.deleteButton}`]: {
     backgroundColor: theme.palette.error.main,
     color: theme.palette.error.contrastText,
-  },
-}))
+  }
+}));
 
 export function DeckTabs(props: {
   decks: DeckWithVersions[]
@@ -40,7 +59,7 @@ export function DeckTabs(props: {
 }): JSX.Element {
   const { decks } = props
   const { formats } = useUiStore()
-  const classes = useStyles()
+
   const confirm = useConfirm()
   const { enqueueSnackbar } = useSnackbar()
   const [currentDeckId, setCurrentDeckId] = useState<string | undefined>()
@@ -80,10 +99,10 @@ export function DeckTabs(props: {
   )
 
   return (
-    <Grid container spacing={1}>
-      <Grid item xs={12} lg={3} xl={4}>
+    <StyledGrid container spacing={1}>
+      <Grid size={{ xs: 12, lg: 3, xl: 4 }}>
         <Grid container>
-          <Grid item xs={12}>
+          <Grid size={12}>
             <EmeraldDBLink href={`/builder/create/new`}>
               <Button
                 variant="contained"
@@ -98,10 +117,10 @@ export function DeckTabs(props: {
           {sortedDecks.map((deck) => {
             const latestList = latestDecklistForDeck(deck)
             return (
-              <Grid key={deck.id} item xs={12}>
+              <Grid key={deck.id} size={12}>
                 <Box
                   padding={1}
-                  borderRadius={3}
+                  borderRadius="3px"
                   border="1px solid"
                   hidden={!isSmOrBigger && currentDeckId !== undefined && deck.id !== currentDeckId}
                   className={
@@ -131,16 +150,16 @@ export function DeckTabs(props: {
                   </Typography>
                 </Box>
               </Grid>
-            )
+            );
           })}
         </Grid>
       </Grid>
-      <Grid item xs={12} lg={9} xl={8}>
+      <Grid size={{ xs: 12, lg: 9, xl: 8 }}>
         <Grid container>
           {currentDeckId && (
-            <Grid item xs={12}>
-              <Grid container spacing={1} justify="flex-end">
-                <Grid item xs={4}>
+            <Grid size={12}>
+              <Grid container spacing={1} justifyContent="flex-end">
+                <Grid size={4}>
                   <EmeraldDBLink href={`/builder/${currentDeckId}/edit`}>
                     <Button
                       variant="contained"
@@ -153,7 +172,7 @@ export function DeckTabs(props: {
                     </Button>
                   </EmeraldDBLink>
                 </Grid>
-                <Grid item xs={4}>
+                <Grid size={4}>
                   <EmeraldDBLink href={`/decks/${currentDeckId}/`}>
                     <Button
                       variant="contained"
@@ -166,7 +185,7 @@ export function DeckTabs(props: {
                     </Button>
                   </EmeraldDBLink>
                 </Grid>
-                <Grid item xs={4}>
+                <Grid size={4}>
                   <Button
                     variant="contained"
                     className={classes.deleteButton}
@@ -180,7 +199,7 @@ export function DeckTabs(props: {
               </Grid>
             </Grid>
           )}
-          <Grid item xs={12}>
+          <Grid size={12}>
             {sortedDecks.map((deck) => (
               <DecklistTabs
                 key={deck.id}
@@ -192,6 +211,6 @@ export function DeckTabs(props: {
           </Grid>
         </Grid>
       </Grid>
-    </Grid>
-  )
+    </StyledGrid>
+  );
 }

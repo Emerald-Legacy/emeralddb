@@ -5,19 +5,19 @@ import {
   Checkbox,
   FormControlLabel,
   Grid,
-  GridList,
-  GridListTile,
+  ImageList,
+  ImageListItem,
   Paper,
   TextField,
   useMediaQuery,
-} from '@material-ui/core'
+} from '@mui/material'
 import lodash from 'lodash'
 import { useState } from 'react'
 import { useUiStore } from '../../providers/UiStoreProvider'
 import { convertTraitList } from '../../utils/cardTextUtils'
 import { applyFilters, CardFilter, FilterState } from '../CardFilter'
 import { ColumnData, TableCardData, VirtualizedCardTable } from './VirtualizedCardTable'
-import Autocomplete from '@material-ui/lab/Autocomplete'
+import Autocomplete from '@mui/material/Autocomplete'
 import { CardQuantitySelector } from './CardQuantitySelector'
 import { CardImageOrText } from '../card/CardImageOrText'
 
@@ -284,7 +284,7 @@ export function BuilderCardList(props: {
       )}
       <Paper style={{ paddingTop: 10 }}>
         <Grid container>
-          <Grid item xs={12} md={4} style={{ padding: '0 5px' }}>
+          <Grid style={{ padding: '0 5px' }} size={{ xs: 12, md: 4 }}>
             <Autocomplete
               id="combo-box-displayMode"
               autoHighlight
@@ -302,7 +302,7 @@ export function BuilderCardList(props: {
               onChange={(e, value) => setDisplayMode(value?.mode || DisplayMode.LIST)}
             />
           </Grid>
-          <Grid item xs={12} md={4} style={{ padding: '0 5px' }}>
+          <Grid style={{ padding: '0 5px' }} size={{ xs: 12, md: 4 }}>
             {showFilters ? (
               <Button
                 variant="contained"
@@ -323,7 +323,7 @@ export function BuilderCardList(props: {
               </Button>
             )}
           </Grid>
-          <Grid item xs={12} md={4} style={{ padding: '0 5px' }}>
+          <Grid style={{ padding: '0 5px' }} size={{ xs: 12, md: 4 }}>
             <FormControlLabel
               control={
                 <Checkbox
@@ -335,7 +335,7 @@ export function BuilderCardList(props: {
               label="Show Illegal Deck Cards"
             />
           </Grid>
-          <Grid item xs={12} md={4} style={{ padding: '0 5px' }}>
+          <Grid style={{ padding: '0 5px' }} size={{ xs: 12, md: 4 }}>
             <Autocomplete
               id="combo-box-sortMode"
               autoHighlight
@@ -353,7 +353,7 @@ export function BuilderCardList(props: {
               onChange={(e, value) => setSortMode(value?.mode || SortMode.NAME)}
             />
           </Grid>
-          <Grid item xs={12} md={4} style={{ padding: '0 5px' }}>
+          <Grid style={{ padding: '0 5px' }} size={{ xs: 12, md: 4 }}>
             <Autocomplete
               id="combo-box-sortOrder"
               options={['Ascending', 'Descending']}
@@ -366,7 +366,7 @@ export function BuilderCardList(props: {
             />
           </Grid>
           {!isSmOrSmaller && displayMode === DisplayMode.LIST && (
-            <Grid item xs={12} md={4} style={{ padding: '0 5px' }}>
+            <Grid style={{ padding: '0 5px' }} size={{ xs: 12, md: 4 }}>
               {showTraits ? (
                 <Button
                   variant="contained"
@@ -388,7 +388,7 @@ export function BuilderCardList(props: {
               )}
             </Grid>
           )}
-          <Grid item xs={12} style={{ height: 830 }}>
+          <Grid style={{ height: 830 }} size={12}>
             {displayMode === DisplayMode.LIST && (
               <VirtualizedCardTable
                 rowCount={filteredCards.length}
@@ -397,14 +397,14 @@ export function BuilderCardList(props: {
               />
             )}
             {displayMode === DisplayMode.IMAGES && (
-              <GridList
+              <ImageList
                 cols={isSmOrSmaller ? 2 : 4}
-                cellHeight={270}
+                rowHeight={270}
                 style={{ height: '100%', marginTop: 10 }}
               >
                 {tableData.map((card) => {
                   return (
-                    <GridListTile key={card.nameFactionType.cardId} cols={1}>
+                    <ImageListItem key={card.nameFactionType.cardId} cols={1}>
                       <CardImageOrText cardId={card.nameFactionType.cardId} cardVersion={validCardVersionForFormat(card.nameFactionType.cardId, props.format)}/>
                       <Box
                         marginTop={'-20px'}
@@ -416,10 +416,10 @@ export function BuilderCardList(props: {
                           onQuantityChange={card.quantityForId.onQuantityChange}
                         />
                       </Box>
-                    </GridListTile>
+                    </ImageListItem>
                   )
                 })}
-              </GridList>
+              </ImageList>
             )}
           </Grid>
         </Grid>

@@ -1,4 +1,4 @@
-import { FormControl, FormLabel, FormGroup, FormControlLabel, Checkbox } from '@material-ui/core'
+import { FormControl, FormLabel, FormGroup, FormControlLabel, Checkbox } from '@mui/material'
 
 export function MultiCheckbox(props: {
   label: string

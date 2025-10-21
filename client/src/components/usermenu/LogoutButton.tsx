@@ -1,5 +1,5 @@
 import { useAuth0 } from '@auth0/auth0-react'
-import { Button } from '@material-ui/core'
+import { Button } from '@mui/material'
 import { useContext } from 'react'
 import { Auth0Context } from '../../providers/Auth0ProviderWithHistory'
 import { unsetToken } from '../../utils/auth'

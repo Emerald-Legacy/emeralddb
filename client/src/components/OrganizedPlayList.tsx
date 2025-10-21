@@ -1,6 +1,6 @@
 import { CardWithVersions } from '@5rdb/api'
 import { factions } from '../utils/enums'
-import { Box, Typography } from '@material-ui/core'
+import { Box, Typography } from '@mui/material'
 import { CardLink } from './card/CardLink'
 import { getColorForFactionId } from '../utils/factionUtils'
 
@@ -29,7 +29,7 @@ export function OrganizedPlayList(props: {
   })
 
   return (
-    <Box border="1px solid gray" borderRadius={4} p={2}>
+    <Box border="1px solid gray" borderRadius="4px" p={2}>
       <Typography>
         <b>{props.title}</b>
       </Typography>
@@ -49,5 +49,5 @@ export function OrganizedPlayList(props: {
         </div>
       ))}
     </Box>
-  )
+  );
 }

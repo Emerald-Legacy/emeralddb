@@ -1,15 +1,50 @@
 import { DeckWithVersions, Decklist as DecklistType } from '@5rdb/api'
-import { Box, Button, Grid, makeStyles, Tab, Tabs, Typography } from '@material-ui/core'
+import { styled } from '@mui/material/styles';
+import { Box, Button, Grid, Tab, Tabs, Typography } from '@mui/material';
 import { useConfirm } from 'material-ui-confirm'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
 import { privateApi } from '../../api'
 import { Decklist } from './Decklist'
-import DeleteIcon from '@material-ui/icons/Delete'
-import LinkIcon from '@material-ui/icons/Link'
-import ShareIcon from '@material-ui/icons/Share'
-import BlockIcon from '@material-ui/icons/Block'
+import DeleteIcon from '@mui/icons-material/Delete'
+import LinkIcon from '@mui/icons-material/Link'
+import ShareIcon from '@mui/icons-material/Share'
+import BlockIcon from '@mui/icons-material/Block'
 import { EmeraldDBLink } from '../EmeraldDBLink'
+
+const PREFIX = 'DecklistTabs';
+
+const classes = {
+  newDeckButton: `${PREFIX}-newDeckButton`,
+  unselectedList: `${PREFIX}-unselectedList`,
+  selectedList: `${PREFIX}-selectedList`,
+  deleteButton: `${PREFIX}-deleteButton`
+};
+
+const StyledTabPanel = styled(TabPanel)((
+  {
+    theme
+  }
+) => ({
+  [`& .${classes.newDeckButton}`]: {
+    marginBottom: 3,
+  },
+
+  [`& .${classes.unselectedList}`]: {
+    borderColor: 'lightgrey',
+  },
+
+  [`& .${classes.selectedList}`]: {
+    borderColor: theme.palette.primary.main,
+    backgroundColor: theme.palette.secondary.light,
+    color: theme.palette.secondary.contrastText,
+  },
+
+  [`& .${classes.deleteButton}`]: {
+    backgroundColor: theme.palette.error.main,
+    color: theme.palette.error.contrastText,
+  }
+}));
 
 interface TabPanelProps {
   children?: React.ReactNode
@@ -37,24 +72,6 @@ function TabPanel(props: TabPanelProps): JSX.Element {
   )
 }
 
-const useStyles = makeStyles((theme) => ({
-  newDeckButton: {
-    marginBottom: 3,
-  },
-  unselectedList: {
-    borderColor: 'lightgrey',
-  },
-  selectedList: {
-    borderColor: theme.palette.primary.main,
-    backgroundColor: theme.palette.secondary.light,
-    color: theme.palette.secondary.contrastText,
-  },
-  deleteButton: {
-    backgroundColor: theme.palette.error.main,
-    color: theme.palette.error.contrastText,
-  },
-}))
-
 export function sortedVersionsForDeck(deck: DeckWithVersions): DecklistType[] {
   return deck.versions.sort(
     (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
@@ -74,7 +91,7 @@ export function DecklistTabs(props: {
   const [currentDecklistId, setCurrentDecklistId] = useState(
     latestDecklistForDeck(deck)?.id || undefined
   )
-  const classes = useStyles()
+
   const confirm = useConfirm()
   const { enqueueSnackbar } = useSnackbar()
 
@@ -146,9 +163,9 @@ export function DecklistTabs(props: {
   }
 
   return (
-    <TabPanel value={currentDeckId} index={deck.id}>
+    <StyledTabPanel value={currentDeckId} index={deck.id}>
       <Grid container>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <Tabs
             value={versions.findIndex((list) => list.id === currentDecklistId) || 0}
             onChange={(e, newValue) =>
@@ -174,14 +191,14 @@ export function DecklistTabs(props: {
             ))}
           </Tabs>
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <Grid container spacing={1}>
-            <Grid item xs={12}>
+            <Grid size={12}>
               {versions.map((v) => (
                 <div hidden={v.id !== currentDecklistId} key={v.id}>
                   <Box border="1px solid" borderBottom="0" bgcolor="lightgray" p={2}>
-                    <Grid container spacing={1} justify="flex-end">
-                      <Grid item xs={6} md={4}>
+                    <Grid container spacing={1} justifyContent="flex-end">
+                      <Grid size={{ xs: 6, md: 4 }}>
                         <EmeraldDBLink href={`/decks/${v.id}`}>
                           <Button
                             variant="outlined"
@@ -194,7 +211,7 @@ export function DecklistTabs(props: {
                           </Button>
                         </EmeraldDBLink>
                       </Grid>
-                      <Grid item xs={6} md={4}>
+                      <Grid size={{ xs: 6, md: 4 }}>
                         {!v.published_date ? (
                           <Button
                             variant="outlined"
@@ -219,7 +236,7 @@ export function DecklistTabs(props: {
                           </Button>
                         )}
                       </Grid>
-                      <Grid item xs={6} md={4}>
+                      <Grid size={{ xs: 6, md: 4 }}>
                         <Button
                           variant="contained"
                           className={classes.deleteButton}
@@ -242,6 +259,6 @@ export function DecklistTabs(props: {
           </Grid>
         </Grid>
       </Grid>
-    </TabPanel>
-  )
+    </StyledTabPanel>
+  );
 }

@@ -7,8 +7,8 @@ import {
   Grid, IconButton, Table, TableBody, TableCell, TableHead, TableRow,
   TextField,
   Typography
-} from "@material-ui/core";
-import { useHistory} from 'react-router-dom'
+} from "@mui/material";
+import { useNavigate} from 'react-router-dom'
 import { Loading } from '../components/Loading'
 import { useUiStore } from '../providers/UiStoreProvider'
 import React, { useState } from 'react'
@@ -16,12 +16,12 @@ import { Trait } from "@5rdb/api";
 import { privateApi } from '../api'
 import { useSnackbar } from 'notistack'
 import { useConfirm } from "material-ui-confirm";
-import EditIcon from "@material-ui/icons/Edit";
-import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 export function EditTraitsView(): JSX.Element {
   const { traits, toggleReload } = useUiStore()
-  const history = useHistory()
+  const navigate = useNavigate()
   const [editIndex, setEditIndex] = useState(-1)
   const [traitId, setTraitId] = useState('')
   const [traitName, setTraitName] = useState('')
@@ -86,8 +86,8 @@ export function EditTraitsView(): JSX.Element {
   const sortedTraits = traits.sort((a, b) => a.id.localeCompare(b.id))
 
   return (
-    <Grid container spacing={2} justify="center">
-      <Grid item xs={12}>
+    <Grid container spacing={2} justifyContent="center">
+      <Grid size={12}>
         <Typography variant="h6">Traits</Typography>
         <Button variant="contained" color="secondary" onClick={() => openCreateModal()}>
           Add New Trait
@@ -111,10 +111,13 @@ export function EditTraitsView(): JSX.Element {
               <TableCell>{trait.id}</TableCell>
               <TableCell>{trait.name}</TableCell>
               <TableCell>
-                <IconButton color='secondary' onClick={() => openEditModal(trait, index)}>
+                <IconButton
+                  color='secondary'
+                  onClick={() => openEditModal(trait, index)}
+                  size="large">
                   <EditIcon />
                 </IconButton>
-                <IconButton onClick={() => deleteTrait(trait)}>
+                <IconButton onClick={() => deleteTrait(trait)} size="large">
                   <DeleteIcon />
                 </IconButton>
               </TableCell>
@@ -126,7 +129,7 @@ export function EditTraitsView(): JSX.Element {
         <DialogTitle>Edit Trait</DialogTitle>
         <DialogContent>
           <Grid container spacing={1}>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <TextField
                 value={traitId}
                 multiline
@@ -157,5 +160,5 @@ export function EditTraitsView(): JSX.Element {
         </DialogActions>
       </Dialog>
     </Grid>
-  )
+  );
 }

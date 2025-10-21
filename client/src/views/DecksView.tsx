@@ -1,6 +1,7 @@
 import { PublishedDecklist } from '@5rdb/api'
-import { makeStyles, Paper, useMediaQuery } from '@material-ui/core'
-import { DataGrid, GridColumns } from '@material-ui/data-grid'
+import { styled } from '@mui/material/styles';
+import { Paper, useMediaQuery } from '@mui/material';
+import { DataGrid, GridColDef } from '@mui/x-data-grid'
 import { useEffect, useState } from 'react'
 import { publicApi } from '../api'
 import { applyDeckFilters, DeckFilter, DeckFilterState } from '../components/DeckFilter'
@@ -9,14 +10,25 @@ import { capitalize } from '../utils/stringUtils'
 import { EmeraldDBLink } from '../components/EmeraldDBLink'
 import { useUiStore } from "../providers/UiStoreProvider";
 
-const useStyles = makeStyles((theme) => ({
-  table: {
+const PREFIX = 'DecksView';
+
+const classes = {
+  table: `${PREFIX}-table`
+};
+
+// TODO jss-to-styled codemod: The Fragment root was replaced by div. Change the tag if needed.
+const Root = styled('div')((
+  {
+    theme
+  }
+) => ({
+  [`& .${classes.table}`]: {
     marginTop: theme.spacing(1),
-  },
-}))
+  }
+}));
 
 export function DecksView(): JSX.Element {
-  const classes = useStyles()
+
   const { formats } = useUiStore()
   const [decks, setDecks] = useState<PublishedDecklist[]>([])
   const [filter, setFilter] = useState<DeckFilterState | undefined>(undefined)
@@ -34,7 +46,7 @@ export function DecksView(): JSX.Element {
     sortedDecks = applyDeckFilters(sortedDecks, filter)
   }
 
-  const columns: GridColumns = [
+  const columns: GridColDef[] = [
     {
       field: 'name',
       headerName: 'Name',
@@ -83,7 +95,6 @@ export function DecksView(): JSX.Element {
       headerName: 'Format',
       disableColumnMenu: true,
       flex: 2,
-      hide: !isMdOrBigger,
       renderCell: (params) => (
         <span>{formats.find((format) => format.id === params.row.format)?.name}</span>
       ),
@@ -93,31 +104,37 @@ export function DecksView(): JSX.Element {
       headerName: 'Creator',
       disableColumnMenu: true,
       flex: 2,
-      hide: !isMdOrBigger,
     },
     {
       field: 'published_date',
       headerName: 'Published',
       disableColumnMenu: true,
       flex: 2,
-      hide: !isMdOrBigger,
       renderCell: (params) => <span>{new Date(params.row.published_date).toLocaleString()}</span>,
     },
   ]
 
   return (
-    <>
+    <Root>
       <DeckFilter onFilterChanged={setFilter} filterState={filter} />
       <Paper className={classes.table}>
         <DataGrid
-          disableSelectionOnClick
+          disableRowSelectionOnClick
           columns={columns}
           rows={sortedDecks}
-          pageSize={50}
+          pageSizeOptions={[50]}
+          initialState={{
+            pagination: { paginationModel: { pageSize: 50 } },
+          }}
           autoHeight
           density="compact"
+          columnVisibilityModel={{
+            format: isMdOrBigger,
+            username: isMdOrBigger,
+            published_date: isMdOrBigger,
+          }}
         />
       </Paper>
-    </>
-  )
+    </Root>
+  );
 }

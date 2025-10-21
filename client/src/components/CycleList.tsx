@@ -1,32 +1,37 @@
-import {
-  Checkbox,
-  Collapse,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  makeStyles,
-} from '@material-ui/core'
+import { Checkbox, Collapse, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import { useUiStore } from '../providers/UiStoreProvider'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import ExpandLessIcon from '@material-ui/icons/ExpandLess'
-import React, { useState } from 'react'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import ExpandLessIcon from '@mui/icons-material/ExpandLess'
+import { useState } from 'react'
 import { Cycle, Pack } from '@5rdb/api'
 import { EmeraldDBLink } from './EmeraldDBLink'
-import CachedIcon from '@material-ui/icons/Cached'
+import CachedIcon from '@mui/icons-material/Cached'
+
+const PREFIX = 'CycleList';
+
+const classes = {
+  cycle: `${PREFIX}-cycle`,
+  pack: `${PREFIX}-pack`
+};
+
+const StyledList = styled(List)((
+  {
+    theme
+  }
+) => ({
+  [`& .${classes.cycle}`]: {
+    paddingLeft: theme.spacing(4),
+  },
+
+  [`& .${classes.pack}`]: {
+    paddingLeft: theme.spacing(6),
+  }
+}));
 
 type CycleWithPacks = Cycle & {
   packs: Pack[]
 }
-
-const useStyles = makeStyles((theme) => ({
-  cycle: {
-    paddingLeft: theme.spacing(4),
-  },
-  pack: {
-    paddingLeft: theme.spacing(6),
-  },
-}))
 
 export function CycleList(props: {
   onClick?: (route: string) => void
@@ -44,7 +49,7 @@ export function CycleList(props: {
   const [checkedPackIds, setCheckedPackIds] = useState<string[]>(props.selectedPacks || [])
   const [allChecked, setAllChecked] = useState(false)
   const [expandedElements, setExpandedElements] = useState(['root'])
-  const classes = useStyles()
+
 
   if (
     !allChecked &&
@@ -153,7 +158,7 @@ export function CycleList(props: {
 
   function createPackElement(pack: Pack): JSX.Element {
     return (
-      <ListItem button className={classes.pack} key={pack.id}>
+      <ListItemButton className={classes.pack} key={pack.id}>
         {props.withCheckbox && (
           <ListItemIcon>
             <Checkbox
@@ -176,7 +181,7 @@ export function CycleList(props: {
             </EmeraldDBLink>
           }
         />
-      </ListItem>
+      </ListItemButton>
     )
   }
 
@@ -194,7 +199,7 @@ export function CycleList(props: {
   function createCycleElement(cycle: CycleWithPacks): JSX.Element {
     return (
       <div key={cycle.id}>
-        <ListItem button onClick={() => toggleElementExpanded(cycle.id)} className={classes.cycle}>
+        <ListItemButton onClick={() => toggleElementExpanded(cycle.id)} className={classes.cycle}>
           {props.withCheckbox && (
             <ListItemIcon>
               <Checkbox
@@ -223,20 +228,20 @@ export function CycleList(props: {
             }
           />
           {expandedElements.includes(cycle.id) ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-        </ListItem>
+        </ListItemButton>
         <Collapse in={expandedElements.includes(cycle.id)} timeout="auto" unmountOnExit>
           <List component="div" disablePadding dense>
             {cycle.packs.map((pack) => createPackElement(pack))}
           </List>
         </Collapse>
       </div>
-    )
+    );
   }
 
   function createRootElement(): JSX.Element {
     return (
       <List dense>
-        <ListItem button onClick={() => toggleElementExpanded('root')}>
+        <ListItemButton onClick={() => toggleElementExpanded('root')}>
           {props.withCheckbox && (
             <ListItemIcon>
               <Checkbox
@@ -258,7 +263,7 @@ export function CycleList(props: {
             }
           />
           {expandedElements.includes('root') ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-        </ListItem>
+        </ListItemButton>
         <Collapse in={expandedElements.includes('root')} timeout="auto" unmountOnExit>
           <List component="div" disablePadding dense>
             {cyclesWithPacks.map((cycle) => createCycleElement(cycle))}

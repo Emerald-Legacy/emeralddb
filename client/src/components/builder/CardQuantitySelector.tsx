@@ -1,32 +1,45 @@
-import { makeStyles, ButtonGroup, Button } from '@material-ui/core'
+import { ButtonGroup, Button } from '@mui/material';
 
-const useStyles = makeStyles(() => ({
-  buttonGroup: {
+import { styled } from '@mui/material/styles';
+const PREFIX = 'CardQuantitySelector';
+
+const classes = {
+  buttonGroup: `${PREFIX}-buttonGroup`,
+  buttonSelected: `${PREFIX}-buttonSelected`,
+  buttonUnselected: `${PREFIX}-buttonUnselected`,
+  button: `${PREFIX}-button`
+};
+
+const StyledButtonGroup = styled(ButtonGroup)(() => ({
+  [`&.${classes.buttonGroup}`]: {
     margin: 1,
   },
-  buttonSelected: {
+
+  [`& .${classes.buttonSelected}`]: {
     backgroundColor: 'gray',
     color: 'white',
     borderColor: 'gray',
   },
-  buttonUnselected: {
+
+  [`& .${classes.buttonUnselected}`]: {
     backgroundColor: 'white',
     color: 'gray',
   },
-  button: {
+
+  [`& .${classes.button}`]: {
     height: 24,
     width: 18,
     minWidth: 18,
     padding: 3,
-  },
-}))
+  }
+}));
 
 export function CardQuantitySelector(props: {
   deckLimit: number
   quantity: number
   onQuantityChange: (newQuantity: number) => void
 }): JSX.Element {
-  const classes = useStyles()
+
   const quantity = props.quantity
 
   function select(newQuantity: number) {
@@ -34,7 +47,7 @@ export function CardQuantitySelector(props: {
   }
 
   return (
-    <ButtonGroup size="small" variant="outlined" color="inherit" className={classes.buttonGroup}>
+    <StyledButtonGroup size="small" variant="outlined" color="inherit" className={classes.buttonGroup}>
       <Button
         disableTouchRipple
         className={`${classes.button} ${
@@ -81,6 +94,6 @@ export function CardQuantitySelector(props: {
           3
         </Button>
       )}
-    </ButtonGroup>
-  )
+    </StyledButtonGroup>
+  );
 }
