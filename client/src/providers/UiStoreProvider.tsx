@@ -98,13 +98,34 @@ export function UiStoreProvider(props: { children: ReactNode }): JSX.Element {
     queryClient.invalidateQueries({ queryKey: UiStoreQueries.FORMATS })
   }
 
+  // Memoized cache for card version lookups - O(1) instead of O(n)
+  const cardVersionCache = useMemo(() => {
+    const cache = new Map<string, Map<string, Omit<CardInPack, 'card_id'>>>()
+
+    // Build lookup table for each format
+    formats.forEach(format => {
+      const formatCache = new Map<string, Omit<CardInPack, 'card_id'>>()
+      const legalPacks = format.legal_packs || []
+
+      cards.forEach(card => {
+        const validVersion = card.versions.find(v => legalPacks.includes(v.pack_id))
+        if (validVersion) {
+          formatCache.set(card.id, validVersion)
+        }
+      })
+
+      cache.set(format.id, formatCache)
+    })
+
+    return cache
+  }, [cards, formats])
+
   const validCardVersionForFormat = (cardId: string, formatId: string) => {
-    const format = formats.find(f => f.id === formatId)
-    const card = cards.find(c => c.id === cardId)
-    if (!format || !card) {
+    const formatCache = cardVersionCache.get(formatId)
+    if (!formatCache) {
       return undefined
     }
-    return card.versions.find(v => (format.legal_packs || []).includes(v.pack_id)) || undefined
+    return formatCache.get(cardId)
   }
 
   return (
