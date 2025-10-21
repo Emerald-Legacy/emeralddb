@@ -12,7 +12,7 @@ import {
   useMediaQuery,
 } from '@mui/material'
 import min from 'lodash/min'
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { useUiStore } from '../../providers/UiStoreProvider'
 import { convertTraitList } from '../../utils/cardTextUtils'
 import { applyFilters, CardFilter, FilterState } from '../CardFilter'
@@ -99,10 +99,13 @@ export function BuilderCardList(props: {
 
   const defaultDeckLimit = props.format === 'skirmish' || props.format === 'obsidian' ? 2 : 3
 
-  let filteredCards = props.prefilteredCards
-  if (filter) {
-    filteredCards = applyFilters(filteredCards, relevantFormats, filter)
-  }
+  const filteredAndSortedCards = useMemo(() => {
+    let filtered = props.prefilteredCards
+    if (filter) {
+      filtered = applyFilters(props.prefilteredCards, relevantFormats, filter)
+    }
+    return sortCards(filtered)
+  }, [props.prefilteredCards, relevantFormats, filter, sortMode, order])
 
   function changeCardQuantity(cardId: string, quantity: number) {
     if (quantity > 0) {
@@ -159,9 +162,7 @@ export function BuilderCardList(props: {
     })
   }
 
-  filteredCards = sortCards(filteredCards)
-
-  const tableData: TableCardData[] = filteredCards.map((card) => {
+  const tableData: TableCardData[] = filteredAndSortedCards.map((card) => {
     return {
       quantityForId: {
         quantity: selectedCards[card.id] || 0,
@@ -391,7 +392,7 @@ export function BuilderCardList(props: {
           <Grid style={{ height: 830 }} size={12}>
             {displayMode === DisplayMode.LIST && (
               <VirtualizedCardTable
-                rowCount={filteredCards.length}
+                rowCount={filteredAndSortedCards.length}
                 rowGetter={({ index }) => tableData[index]}
                 columns={columns}
               />
