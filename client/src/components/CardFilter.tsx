@@ -39,6 +39,7 @@ const classes = {
   clearIcon: `${PREFIX}-clearIcon`,
   clearButton: `${PREFIX}-clearButton`,
   button: `${PREFIX}-button`,
+  buttonGroup: `${PREFIX}-buttonGroup`,
   filterGridItem: `${PREFIX}-filterGridItem`,
   filterGridItemBuilder: `${PREFIX}-filterGridItemBuilder`,
   traitTextField: `${PREFIX}-traitTextField`,
@@ -68,22 +69,28 @@ const StyledPaper = styled(Paper)((
   },
 
   [`& .${classes.button}`]: {
-    height: 32,
+    minHeight: 40,
     minWidth: 16,
   },
 
+  [`& .${classes.buttonGroup}`]: {
+    height: '100%',
+  },
+
   [`& .${classes.filterGridItem}`]: {
-    height: 32,
-    margin: '2px 0',
+    minHeight: 40,
+    display: 'flex',
+    alignItems: 'stretch',
   },
 
   [`& .${classes.filterGridItemBuilder}`]: {
-    height: 32,
-    margin: '2px 0',
+    minHeight: 40,
+    display: 'flex',
+    alignItems: 'stretch',
   },
 
   [`& .${classes.traitTextField}`]: {
-    maxHeight: 32,
+    maxHeight: 40,
   },
 
   [`& .${classes.packDialog}`]: {
@@ -555,7 +562,7 @@ export function CardFilter(props: {
                       props.deckbuilder ? classes.filterGridItemBuilder : classes.filterGridItem
                     }
                    size={12}>
-                    <ButtonGroup fullWidth>
+                    <ButtonGroup fullWidth className={classes.buttonGroup}>
                       {visibleFactions.map((faction) => (
                         <Tooltip key={faction.id} title={faction.name}>
                           <Button
@@ -586,7 +593,7 @@ export function CardFilter(props: {
                       props.deckbuilder ? classes.filterGridItemBuilder : classes.filterGridItem
                     }
                    size={12}>
-                    <ButtonGroup fullWidth>
+                    <ButtonGroup fullWidth className={classes.buttonGroup}>
                       {visibleCardtypes.map((type) => (
                         <Tooltip key={type.id} title={type.name}>
                           <Button
@@ -616,7 +623,7 @@ export function CardFilter(props: {
                         props.deckbuilder ? classes.filterGridItemBuilder : classes.filterGridItem
                       }
                      size={12}>
-                      <ButtonGroup fullWidth>
+                      <ButtonGroup fullWidth className={classes.buttonGroup}>
                         {elements.map((element) => (
                           <Tooltip key={element.id} title={element.name}>
                             <Button
@@ -652,7 +659,7 @@ export function CardFilter(props: {
                       props.deckbuilder ? classes.filterGridItemBuilder : classes.filterGridItem
                     }
                    size={12}>
-                    <ButtonGroup size="small" fullWidth>
+                    <ButtonGroup fullWidth className={classes.buttonGroup}>
                       {visibleSides.map((side) => (
                         <Tooltip key={side.id} title={side.name}>
                           <Button
@@ -663,6 +670,7 @@ export function CardFilter(props: {
                                 ? 'dimgrey'
                                 : 'white',
                             }}
+                            className={classes.button}
                           >
                             <Typography
                               variant="inherit"
