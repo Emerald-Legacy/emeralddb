@@ -235,7 +235,7 @@ export function DeckEditor(props: { existingDecklist?: DecklistType | undefined 
     <StyledGrid container spacing={2}>
       <Grid size={{ xs: 12, md: 6 }}>
         <Grid container spacing={1}>
-          <Grid size={9}>
+          <Grid size={12}>
             <TextField
               value={decklist.name}
               fullWidth
@@ -245,18 +245,7 @@ export function DeckEditor(props: { existingDecklist?: DecklistType | undefined 
               onChange={(e) => setDecklist({ ...decklist, name: e.target.value })}
             />
           </Grid>
-          <Grid size={3}>
-            <TextField
-              value={decklist.version_number}
-              fullWidth
-              disabled
-              size="small"
-              label="Version"
-              variant="outlined"
-              onChange={(e) => setDecklist({ ...decklist, version_number: e.target.value })}
-            />
-          </Grid>
-          <Grid size={{ xs: 6, lg: 9 }}>
+          <Grid size={{ xs: 6, lg: 5 }}>
             <Autocomplete
               id="combo-box-format"
               autoHighlight
@@ -271,7 +260,18 @@ export function DeckEditor(props: { existingDecklist?: DecklistType | undefined 
               }}
             />
           </Grid>
-          <Grid size={{ xs: 6, lg: 3 }}>
+          <Grid size={{ xs: 3, lg: 3 }}>
+            <TextField
+              value={decklist.version_number}
+              fullWidth
+              disabled
+              size="small"
+              label="Version"
+              variant="outlined"
+              onChange={(e) => setDecklist({ ...decklist, version_number: e.target.value })}
+            />
+          </Grid>
+          <Grid size={{ xs: 3, lg: 4 }}>
             <Button
               variant="contained"
               color="secondary"
