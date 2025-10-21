@@ -378,7 +378,7 @@ export function DeckEditor(props: { existingDecklist?: DecklistType | undefined 
           </Grid>
         </Paper>
       </Grid>
-      <Dialog open={versionModalOpen} onClose={() => setVersionModalOpen(false)}>
+      <Dialog open={versionModalOpen} onClose={() => setVersionModalOpen(false)} disableScrollLock>
         <DialogTitle>Specify Version</DialogTitle>
         <DialogContent>
           <VersionPicker
@@ -386,7 +386,7 @@ export function DeckEditor(props: { existingDecklist?: DecklistType | undefined 
             onVersionChange={(version) => setNewVersion(version)}
           />
         </DialogContent>
-        <DialogActions>
+        <DialogActions sx={{ justifyContent: 'flex-end', pb: 3, pr: 3 }}>
           <Button onClick={() => setVersionModalOpen(false)} color="secondary" variant="contained">
             Close
           </Button>

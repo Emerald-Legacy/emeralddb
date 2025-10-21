@@ -86,7 +86,7 @@ export function BushiBuilderImportButton(props: {
       <Button variant="contained" color="secondary" fullWidth onClick={() => setModalOpen(true)}>
         Import from BushiBuilder
       </Button>
-      <Dialog open={modalOpen} onClose={() => setModalOpen(false)}>
+      <Dialog open={modalOpen} onClose={() => setModalOpen(false)} disableScrollLock>
         <DialogTitle>Import from BushiBuilder</DialogTitle>
         <DialogContent>
           <Autocomplete
