@@ -34,11 +34,16 @@ export function DeckBuilderWizard(props: {
   const [primaryClan, setPrimaryClan] = useState('')
   const [stronghold, setStronghold] = useState('')
   const [role, setRole] = useState('')
+  const [hoveredCardId, setHoveredCardId] = useState<string | null>(null)
 
   const chosenFormat = format && relevantFormats.find((f) => f.id === format)
   const strongholds = cards
     .filter((c) => c.faction === primaryClan && c.type === 'stronghold')
-    .filter((c) => !chosenFormat || chosenFormat.legal_packs?.some(packId => c.versions.some(v => v.pack_id === packId)))
+    .filter((c) => {
+      if (!chosenFormat) return true
+      if (!chosenFormat.legal_packs || chosenFormat.legal_packs.length === 0) return true
+      return chosenFormat.legal_packs.some(packId => c.versions.some(v => v.pack_id === packId))
+    })
   const roles = cards.filter((c) => c.type === 'role' && !c.text?.includes('Draft format only.'))
 
   const host = window.location.host
@@ -68,6 +73,22 @@ export function DeckBuilderWizard(props: {
     props.onComplete(format, primaryClan, strongholdAndRole)
   }
 
+  const handleBack = () => {
+    const newStep = step - 1
+    setStep(newStep)
+
+    // Clear the selection from the step we're leaving
+    if (step === 0) {
+      setFormat('')
+    } else if (step === 1) {
+      setPrimaryClan('')
+    } else if (step === 2) {
+      setStronghold('')
+    } else if (step === 3) {
+      setRole('')
+    }
+  }
+
   function sortFormats(a: Format, b: Format): number {
     return a.position - b.position || a.id.localeCompare(b.id)
   }
@@ -75,7 +96,7 @@ export function DeckBuilderWizard(props: {
   return (
     <Grid container spacing={2} justifyContent="center" alignItems="center" direction="column">
       <Grid hidden={step > -1} size={{ xs: 12, md: 4 }}>
-        <Typography variant="h4" align="center">
+        <Typography variant="h4" align="center" sx={{ mb: 2 }}>
           Create New Deck
         </Typography>
         <Grid container spacing={1}>
@@ -102,11 +123,11 @@ export function DeckBuilderWizard(props: {
         </Grid>
       </Grid>
       <Grid hidden={step < 0} size={{ xs: 12, md: 12 }}>
-        <Typography variant="h4" align="center">
+        <Typography variant="h4" align="center" sx={{ mb: 2 }}>
           Create New Deck
         </Typography>
         {step === 0 && (
-          <div>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <Typography variant="h6" align="center">
               Choose Format
             </Typography>
@@ -116,7 +137,6 @@ export function DeckBuilderWizard(props: {
             >
               {relevantFormats.sort(sortFormats).map((format) => (
                 <FormControlLabel
-                  style={{ margin: '0 0 0 -11' }}
                   key={format.id}
                   value={format.id}
                   control={<Radio />}
@@ -128,7 +148,7 @@ export function DeckBuilderWizard(props: {
           </div>
         )}
         {step === 1 && (
-          <div>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <Typography variant="h6" align="center">
               Choose Clan
             </Typography>
@@ -138,7 +158,6 @@ export function DeckBuilderWizard(props: {
             >
               {clans.map((clan) => (
                 <FormControlLabel
-                  style={{ margin: '0 0 0 -11' }}
                   key={clan.id}
                   value={clan.id}
                   control={<Radio />}
@@ -154,22 +173,33 @@ export function DeckBuilderWizard(props: {
           </div>
         )}
         {step === 2 && (
-          <div>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <Typography variant="h6" align="center">
               Choose Stronghold
             </Typography>
             <RadioGroup
               value={stronghold}
               onChange={(e) => setStronghold((e.target as HTMLInputElement).value)}
+              onMouseLeave={() => setHoveredCardId(null)}
             >
               {strongholds.map((thisStronghold) => (
                 <FormControlLabel
-                  style={{ margin: '0 0 0 -11' }}
                   key={thisStronghold.id}
                   value={thisStronghold.id}
                   control={<Radio />}
                   label={
-                    <CardLink cardId={thisStronghold.id} format={format} notClickable sameTab />
+                    <div
+                      onMouseEnter={() => setHoveredCardId(thisStronghold.id)}
+                      onMouseLeave={() => setHoveredCardId(null)}
+                    >
+                      <CardLink
+                        cardId={thisStronghold.id}
+                        format={format}
+                        notClickable
+                        sameTab
+                        hoveredCardId={hoveredCardId}
+                      />
+                    </div>
                   }
                   onClick={() => setStronghold(thisStronghold.id)}
                 />
@@ -178,11 +208,11 @@ export function DeckBuilderWizard(props: {
           </div>
         )}
         {step === 3 && (
-          <div>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <Typography variant="h6" align="center">
               Choose Role
             </Typography>
-            <Grid container spacing={2} style={{ minWidth: 520 }}>
+            <Grid container spacing={2} style={{ minWidth: 520 }} onMouseLeave={() => setHoveredCardId(null)}>
               <Grid size={{ xs: 12, sm: 6 }}>
                 <RadioGroup
                   value={role}
@@ -190,11 +220,23 @@ export function DeckBuilderWizard(props: {
                 >
                   {roles.slice(0, 10).map((thisRole) => (
                     <FormControlLabel
-                      style={{ margin: '0 0 0 -11' }}
                       key={thisRole.id}
                       value={thisRole.id}
                       control={<Radio />}
-                      label={<CardLink cardId={thisRole.id} format={format} notClickable sameTab />}
+                      label={
+                        <div
+                          onMouseEnter={() => setHoveredCardId(thisRole.id)}
+                          onMouseLeave={() => setHoveredCardId(null)}
+                        >
+                          <CardLink
+                            cardId={thisRole.id}
+                            format={format}
+                            notClickable
+                            sameTab
+                            hoveredCardId={hoveredCardId}
+                          />
+                        </div>
+                      }
                       onClick={() => setRole(thisRole.id)}
                     />
                   ))}
@@ -207,11 +249,23 @@ export function DeckBuilderWizard(props: {
                 >
                   {roles.slice(10).map((thisRole) => (
                     <FormControlLabel
-                      style={{ margin: '0 0 0 -11' }}
                       key={thisRole.id}
                       value={thisRole.id}
                       control={<Radio />}
-                      label={<CardLink cardId={thisRole.id} format={format} notClickable sameTab />}
+                      label={
+                        <div
+                          onMouseEnter={() => setHoveredCardId(thisRole.id)}
+                          onMouseLeave={() => setHoveredCardId(null)}
+                        >
+                          <CardLink
+                            cardId={thisRole.id}
+                            format={format}
+                            notClickable
+                            sameTab
+                            hoveredCardId={hoveredCardId}
+                          />
+                        </div>
+                      }
                       onClick={() => setRole(thisRole.id)}
                     />
                   ))}
@@ -221,41 +275,44 @@ export function DeckBuilderWizard(props: {
           </div>
         )}
       </Grid>
+      {step >= 0 && (
+        <Grid size={{ xs: 12, md: 12 }} container justifyContent="center">
+          <Grid size="auto">
+            <Stepper connector={null} sx={{ gap: 1 }}>
+              <Step completed={format !== ''}>
+                <StepLabel>Format</StepLabel>
+              </Step>
+              <Step completed={primaryClan !== ''}>
+                <StepLabel>Clan</StepLabel>
+              </Step>
+              {lastStep > 1 && (
+                <Step completed={stronghold !== ''}>
+                  <StepLabel>Stronghold</StepLabel>
+                </Step>
+              )}
+              {lastStep > 1 && (
+                <Step completed={role !== ''}>
+                  <StepLabel>Role</StepLabel>
+                </Step>
+              )}
+            </Stepper>
+          </Grid>
+        </Grid>
+      )}
       <Grid hidden={step < 0} size={{ xs: 12, md: 6 }}>
-        <Stepper>
-          <Step completed={format !== ''}>
-            <StepLabel>Format</StepLabel>
-          </Step>
-          <Step completed={primaryClan !== ''}>
-            <StepLabel>Clan</StepLabel>
-          </Step>
-          {lastStep > 1 && (
-            <Step completed={stronghold !== ''}>
-              <StepLabel>Stronghold</StepLabel>
-            </Step>
-          )}
-          {lastStep > 1 && (
-            <Step completed={role !== ''}>
-              <StepLabel>Role</StepLabel>
-            </Step>
-          )}
-        </Stepper>
-      </Grid>
-      <Grid hidden={step < 0} size={{ xs: 12, md: 6 }}>
-        <Grid container spacing={2} direction="row" alignContent="stretch">
-          <Grid size={6}>
+        <Grid container spacing={2} direction="row" justifyContent="center">
+          <Grid size="auto">
             {step >= 0 && (
-              <Button variant="contained" onClick={() => setStep(step - 1)} fullWidth>
+              <Button variant="contained" onClick={handleBack}>
                 Back
               </Button>
             )}
           </Grid>
-          <Grid size={6}>
+          <Grid size="auto">
             {step < lastStep && (
               <Button
                 variant="contained"
                 color="secondary"
-                fullWidth
                 onClick={() => setStep(step + 1)}
                 disabled={isButtonDisabled()}
               >
@@ -266,7 +323,6 @@ export function DeckBuilderWizard(props: {
               <Button
                 variant="contained"
                 color="secondary"
-                fullWidth
                 onClick={() => completeWizard()}
                 disabled={isButtonDisabled()}
               >
