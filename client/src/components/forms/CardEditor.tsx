@@ -527,7 +527,7 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
                     id="combo-box-traits"
                     autoHighlight
                     multiple
-                    options={allTraits}
+                    options={[...allTraits].sort((a, b) => a.name.localeCompare(b.name))}
                     getOptionLabel={(option) => option.name}
                     value={findTraits(traits)}
                     renderInput={(params) => (

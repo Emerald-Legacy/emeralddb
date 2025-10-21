@@ -249,7 +249,7 @@ export function DeckEditor(props: { existingDecklist?: DecklistType | undefined 
             <Autocomplete
               id="combo-box-format"
               autoHighlight
-              options={relevantFormats}
+              options={[...relevantFormats].sort((a, b) => a.name.localeCompare(b.name))}
               getOptionLabel={(option) => option.name}
               value={relevantFormats.find((item) => item.id === decklist.format) || null}
               renderInput={(params) => (

@@ -1,18 +1,18 @@
 export const cardTypes: { id: string; name: string }[] = [
-  { id: 'character', name: 'Character' },
   { id: 'attachment', name: 'Attachment' },
+  { id: 'character', name: 'Character' },
   { id: 'event', name: 'Event' },
   { id: 'holding', name: 'Holding' },
-  { id: 'stronghold', name: 'Stronghold' },
   { id: 'province', name: 'Province' },
-  { id: 'treaty', name: 'Treaty' },
   { id: 'role', name: 'Role' },
+  { id: 'stronghold', name: 'Stronghold' },
+  { id: 'treaty', name: 'Treaty' },
   { id: 'warlord', name: 'Warlord' },
 ]
 
 export const sides: { id: string; name: string }[] = [
-  { id: 'dynasty', name: 'Dynasty' },
   { id: 'conflict', name: 'Conflict' },
+  { id: 'dynasty', name: 'Dynasty' },
   { id: 'province', name: 'Province' },
   { id: 'role', name: 'Role' },
   { id: 'treaty', name: 'Treaty' },
@@ -22,10 +22,10 @@ export const roleRestrictions: { id: string; name: string }[] = [
   { id: 'air', name: 'Air' },
   { id: 'earth', name: 'Earth' },
   { id: 'fire', name: 'Fire' },
-  { id: 'void', name: 'Void' },
-  { id: 'water', name: 'Water' },
   { id: 'keeper', name: 'Keeper' },
   { id: 'seeker', name: 'Seeker' },
+  { id: 'void', name: 'Void' },
+  { id: 'water', name: 'Water' },
 ]
 
 export const elements: { id: string; name: string }[] = [
@@ -42,11 +42,11 @@ export const factions: { id: string; name: string; color: string }[] = [
   { id: 'dragon', name: 'Dragon', color: '#1d6922' },
   { id: 'lion', name: 'Lion', color: '#dece23' },
   //{ id: 'mantis', name: 'Mantis', color: '#2c8369' },
+  { id: 'neutral', name: 'Neutral', color: '#b1b1b1' },
   { id: 'phoenix', name: 'Phoenix', color: '#de9923' },
   { id: 'scorpion', name: 'Scorpion', color: '#ab1916' },
-  { id: 'unicorn', name: 'Unicorn', color: '#90119e' },
-  { id: 'neutral', name: 'Neutral', color: '#b1b1b1' },
   { id: 'shadowlands', name: 'Shadowlands', color: '#000000' },
+  { id: 'unicorn', name: 'Unicorn', color: '#90119e' },
 ]
 
 export const clans: { id: string; name: string }[] = [
