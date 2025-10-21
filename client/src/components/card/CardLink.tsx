@@ -82,7 +82,7 @@ export function DeckbuildingRestrictionIcon(props: {
         sx={{ pointerEvents: 'none' }}
         slotProps={{
           paper: {
-            sx: { pointerEvents: 'none', padding: 2 }
+            sx: { pointerEvents: 'none', padding: 1.5 }
           }
         }}
       >

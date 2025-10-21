@@ -204,7 +204,10 @@ class MuiVirtualizedTable extends React.PureComponent<MuiVirtualizedTableProps> 
         variant="body"
         style={{
           height: rowHeight,
-          ...(isNameColumn && { display: 'block' })
+          ...(isNameColumn && {
+            display: 'flex',
+            alignItems: 'center'
+          })
         }}
       >
         {renderComponent}
