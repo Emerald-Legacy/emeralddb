@@ -8,12 +8,17 @@ export async function handler(): Promise<CardWithVersions[]> {
     versions: [],
   }))
 
+  // Create a Map for O(1) lookups instead of O(n) array.find()
+  // This improves performance from O(n*m) to O(n+m) where n=cards in packs, m=total cards
+  const cardMap = new Map(allCardsWithVersions.map((card) => [card.id, card]))
+
   const allCardsInPacks = await getAllCardsInPacks()
-  allCardsInPacks.forEach((cardInPack) =>
-    allCardsWithVersions
-      .find((card) => card.id === cardInPack.card_id)
-      ?.versions.push({ ...cardInPack })
-  )
+  allCardsInPacks.forEach((cardInPack) => {
+    const card = cardMap.get(cardInPack.card_id)
+    if (card) {
+      card.versions.push({ ...cardInPack })
+    }
+  })
 
   return allCardsWithVersions
     .map((card) => {

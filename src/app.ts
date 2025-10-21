@@ -1,6 +1,7 @@
 import cors from 'cors'
 import express, { Request, Response } from 'express'
 import helmet from 'helmet'
+import compression from 'compression'
 import { Server } from 'http'
 import path from 'path'
 
@@ -13,6 +14,9 @@ export default async (): Promise<Service> => {
   const app = express()
 
   app.use(helmet({ contentSecurityPolicy: false }))
+  // Enable gzip/brotli compression for all responses
+  // This reduces response sizes by 70-80% for JSON/HTML
+  app.use(compression())
   app.use(express.json({ limit: '50mb' }))
   app.use(express.urlencoded({ extended: true }))
 
