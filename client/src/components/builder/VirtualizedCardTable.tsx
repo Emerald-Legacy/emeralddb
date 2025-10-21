@@ -191,24 +191,15 @@ class MuiVirtualizedTable extends React.PureComponent<MuiVirtualizedTableProps> 
       renderComponent = <span>{strengthData.strength}</span>
     }
 
-    const isNameColumn = columnType === 'nameFactionType'
-
     return (
       <TableCell
         component="div"
         width={width}
-        className={clsx(classes.tableCell, {
-          [classes.flexContainer]: !isNameColumn,
+        className={clsx(classes.tableCell, classes.flexContainer, {
           [classes.noClick]: onRowClick == null,
         })}
         variant="body"
-        style={{
-          height: rowHeight,
-          ...(isNameColumn && {
-            display: 'flex',
-            alignItems: 'center'
-          })
-        }}
+        style={{ height: rowHeight }}
       >
         {renderComponent}
       </TableCell>

@@ -1,6 +1,6 @@
-import { Popover, Tooltip, Theme } from '@mui/material';
+import { Popover, Theme } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { useState, useRef, useEffect, type MouseEvent } from 'react'
+import { useState, useEffect, type MouseEvent } from 'react'
 import { useUiStore } from '../../providers/UiStoreProvider'
 import { CardInformation } from './CardInformation'
 import { CardTypeIcon } from './CardTypeIcon'
@@ -59,7 +59,7 @@ export function DeckbuildingRestrictionIcon(props: {
       <Root
         onMouseEnter={handlePopoverOpen}
         onMouseLeave={(e) => handlePopoverClose(e)}
-        style={{ display: 'inline-block', verticalAlign: 'middle' }}
+        style={{ display: 'inline-flex', alignItems: 'center' }}
       >
         {props.icon}
       </Root>
@@ -198,7 +198,7 @@ export function CardLink(props: {
   }
 
   return (
-    <span style={{ display: 'inline-block', maxWidth: 'fit-content' }}>
+    <span style={{ display: 'inline-flex', alignItems: 'center' }}>
       <EmeraldDBLink
         href={`/card/${card.id}`}
         onClick={handleClick}
