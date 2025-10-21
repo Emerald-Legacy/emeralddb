@@ -11,7 +11,7 @@ import {
   MenuItem,
   TextField,
 } from '@mui/material'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { privateApi } from '../../api'
 import { getToken, hasAuth0Token, setToken } from '../../utils/auth'
@@ -28,7 +28,7 @@ export function UserMenu(props: { audience: string; scope: string }): JSX.Elemen
   const [modalOpen, setModalOpen] = useState(false)
   const [modalUsername, setModalUsername] = useState<string>()
 
-  const { getAccessTokenSilently } = useAuth0();
+  const { getAccessTokenSilently, isAuthenticated, isLoading } = useAuth0();
 
   const { currentUser, setCurrentUser } = useCurrentUser()
 
@@ -41,27 +41,27 @@ export function UserMenu(props: { audience: string; scope: string }): JSX.Elemen
   const handleClose = () => {
     setAnchorEl(null)
   }
-  const getUserToken = () => {
-    try {
-      if (hasAuth0Token()) {
-        getAccessTokenSilently({
-          authorizationParams: {
-            audience: props.audience,
-            scope: props.scope,
-          },
-        }).then(accessToken => {
+
+  useEffect(() => {
+    const getUserToken = async () => {
+      try {
+        if (isAuthenticated && !isLoading && !getToken()) {
+          const accessToken = await getAccessTokenSilently({
+            authorizationParams: {
+              audience: props.audience,
+              scope: props.scope,
+            },
+          })
           setToken(accessToken)
           queryClient.invalidateQueries({ queryKey: [Queries.USER] })
-        })
+        }
+      } catch (e) {
+        console.error('Failed to get access token:', e)
       }
-    } catch (e) {
-      console.log(e)
     }
-  };
 
-  if(hasAuth0Token() && !getToken()) {
     getUserToken()
-  }
+  }, [isAuthenticated, isLoading, getAccessTokenSilently, props.audience, props.scope, queryClient])
 
   if (currentUser !== undefined) {
     const updateUser = () => {
@@ -133,6 +133,10 @@ export function UserMenu(props: { audience: string; scope: string }): JSX.Elemen
         </Dialog>
       </div>
     );
+  }
+
+  if (isLoading || (isAuthenticated && !currentUser)) {
+    return <div>Loading...</div>
   }
 
   return (

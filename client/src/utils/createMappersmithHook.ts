@@ -24,7 +24,7 @@ export function createMapersmithHook<Data, Id>(
   apiCall: ApiCall,
   pm?: (resourceId: Id) => Parameters | undefined
 ) {
-  const initialState: State<Data> = { loading: false }
+  const initialState: State<Data> = { loading: true }
 
   function reducer(state: State<Data>, action: Action<Data>): State<Data> {
     switch (action.type) {

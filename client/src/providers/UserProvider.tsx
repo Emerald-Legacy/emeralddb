@@ -37,13 +37,22 @@ export function UserProvider(props: { children: ReactNode }): JSX.Element {
     queryKey: [Queries.USER],
     queryFn: async () => {
       const token = getToken()
-      if (token) {
+      if (!token) {
+        setCurrentUser(undefined)
+        return null
+      }
+      try {
         const user = await privateApi.User.current()
         setCurrentUser(user.data())
         return user.data()
+      } catch (error) {
+        console.error('Failed to fetch current user:', error)
+        setCurrentUser(undefined)
+        return null
       }
-      return null
-    }
+    },
+    retry: false,
+    refetchOnWindowFocus: false,
   })
 
   return (
