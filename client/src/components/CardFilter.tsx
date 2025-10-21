@@ -685,6 +685,55 @@ export function CardFilter(props: {
                       ))}
                     </ButtonGroup>
                   </Grid>
+                  {/* 6 numeric filters underneath the button filters */}
+                  <Grid size={4}>
+                    <CardValueFilter
+                      valueLabel={<span className={`icon icon-conflict-military`} />}
+                      onFilterChange={(type, value) =>
+                        updateNumericFilter(NumericCardValue.MILITARY, type, value)
+                      }
+                    />
+                  </Grid>
+                  <Grid size={4}>
+                    <CardValueFilter
+                      valueLabel={<span className={`icon icon-conflict-political`} />}
+                      onFilterChange={(type, value) =>
+                        updateNumericFilter(NumericCardValue.POLITICAL, type, value)
+                      }
+                    />
+                  </Grid>
+                  <Grid size={4}>
+                    <CardValueFilter
+                      valueLabel={<span>Cost:</span>}
+                      onFilterChange={(type, value) =>
+                        updateNumericFilter(NumericCardValue.COST, type, value)
+                      }
+                    />
+                  </Grid>
+                  <Grid size={4}>
+                    <CardValueFilter
+                      valueLabel={<span>Inf:</span>}
+                      onFilterChange={(type, value) =>
+                        updateNumericFilter(NumericCardValue.INFLUENCE, type, value)
+                      }
+                    />
+                  </Grid>
+                  <Grid size={4}>
+                    <CardValueFilter
+                      valueLabel={<span>Glory:</span>}
+                      onFilterChange={(type, value) =>
+                        updateNumericFilter(NumericCardValue.GLORY, type, value)
+                      }
+                    />
+                  </Grid>
+                  <Grid size={4}>
+                    <CardValueFilter
+                      valueLabel={<span>Str:</span>}
+                      onFilterChange={(type, value) =>
+                        updateNumericFilter(NumericCardValue.STRENGTH, type, value)
+                      }
+                    />
+                  </Grid>
                 </Grid>
               </Collapse>
             </Grid>
@@ -858,71 +907,11 @@ export function CardFilter(props: {
                       {filterState.packs.length > 0 && ` (Selected: ${filterState.packs.length})`}
                     </Button>
                   </Grid>
-                </Grid>
-              </Collapse>
-            </Grid>
-            <Grid size={12}>
-              <Collapse in={showFilters}>
-                <Grid container spacing={1}>
-                  <Grid
-                   size={{ xs: 12, sm: props.deckbuilder ? 12 : 6, md: props.deckbuilder ? 6 : 4 }}>
-                    <CardValueFilter
-                      valueLabel={<span className={`icon icon-conflict-military`} />}
-                      onFilterChange={(type, value) =>
-                        updateNumericFilter(NumericCardValue.MILITARY, type, value)
-                      }
-                    />
-                  </Grid>
-                  <Grid
-                   size={{ xs: 12, sm: props.deckbuilder ? 12 : 6, md: props.deckbuilder ? 6 : 4 }}>
-                    <CardValueFilter
-                      valueLabel={<span className={`icon icon-conflict-political`} />}
-                      onFilterChange={(type, value) =>
-                        updateNumericFilter(NumericCardValue.POLITICAL, type, value)
-                      }
-                    />
-                  </Grid>
-                  <Grid
-                   size={{ xs: 12, sm: props.deckbuilder ? 12 : 6, md: props.deckbuilder ? 6 : 4 }}>
-                    <CardValueFilter
-                      valueLabel={<span>Cost:</span>}
-                      onFilterChange={(type, value) =>
-                        updateNumericFilter(NumericCardValue.COST, type, value)
-                      }
-                    />
-                  </Grid>
-                  <Grid
-                   size={{ xs: 12, sm: props.deckbuilder ? 12 : 6, md: props.deckbuilder ? 6 : 4 }}>
-                    <CardValueFilter
-                      valueLabel={<span>Inf:</span>}
-                      onFilterChange={(type, value) =>
-                        updateNumericFilter(NumericCardValue.INFLUENCE, type, value)
-                      }
-                    />
-                  </Grid>
-                  <Grid
-                   size={{ xs: 12, sm: props.deckbuilder ? 12 : 6, md: props.deckbuilder ? 6 : 4 }}>
-                    <CardValueFilter
-                      valueLabel={<span>Glory:</span>}
-                      onFilterChange={(type, value) =>
-                        updateNumericFilter(NumericCardValue.GLORY, type, value)
-                      }
-                    />
-                  </Grid>
-                  <Grid
-                   size={{ xs: 12, sm: props.deckbuilder ? 12 : 6, md: props.deckbuilder ? 6 : 4 }}>
-                    <CardValueFilter
-                      valueLabel={<span>Str:</span>}
-                      onFilterChange={(type, value) =>
-                        updateNumericFilter(NumericCardValue.STRENGTH, type, value)
-                      }
-                    />
-                  </Grid>
-                  <Grid size={{ xs: 12, md: 12 }}>
+                  <Grid size={12}>
                     <Button
                       fullWidth
                       variant="contained"
-                      className={`${classes.button} ${classes.clearButton}`}
+                      className={classes.clearButton}
                       onClick={() => dispatchFilter({ type: FilterType.FILTER_RESET })}
                     >
                       Reset filters
