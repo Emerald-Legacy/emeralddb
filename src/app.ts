@@ -13,10 +13,20 @@ export default async (): Promise<Service> => {
   const app = express()
 
   app.use(helmet({ contentSecurityPolicy: false }))
-  app.use(express.json({ limit: '200mb' }))
+  app.use(express.json({ limit: '50mb' }))
   app.use(express.urlencoded({ extended: true }))
 
   app.use(cors())
+
+  // Add Cache-Control headers for API GET requests
+  app.use('/api', (req, res, next) => {
+    if (req.method === 'GET') {
+      // Cache for 5 minutes (300 seconds)
+      res.set('Cache-Control', 'public, max-age=300')
+    }
+    next()
+  })
+
   app.use('/api', api())
   app.use(express.static(path.resolve(__dirname, 'public')))
   app.get('/*path', function (req: Request, res: Response) {
