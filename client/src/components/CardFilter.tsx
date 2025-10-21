@@ -930,6 +930,7 @@ export function CardFilter(props: {
         open={packModalOpen}
         onClose={() => setPackModalOpen(false)}
         className={classes.packDialog}
+        disableScrollLock
       >
         <DialogTitle id="form-dialog-title">Filter Packs</DialogTitle>
         <DialogContent>

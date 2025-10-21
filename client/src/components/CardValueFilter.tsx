@@ -22,7 +22,7 @@ const StyledGrid = styled(Grid)((
   [`& .${classes.button}`]: {
     height: 24,
     width: 24,
-    minWidth: 24,
+    minWidth: '24px !important',
     padding: 2,
   }
 }));
@@ -45,7 +45,7 @@ export function CardValueFilter(props: {
 
   return (
     <StyledGrid container alignItems="flex-end" alignContent="flex-end">
-      <Grid size={{ xs: 2, md: 1 }} sx={{ paddingRight: 1.8 }}>
+      <Grid size={{ xs: 2, md: 1 }} sx={{ paddingRight: 2.5 }}>
         {props.valueLabel}
       </Grid>
       <Grid size={{ xs: 4, md: 4 }}>
