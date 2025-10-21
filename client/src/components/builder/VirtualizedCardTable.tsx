@@ -138,9 +138,7 @@ class MuiVirtualizedTable extends React.PureComponent<MuiVirtualizedTableProps> 
         format: string
       }
       renderComponent = (
-        <span>
-          <CardLink cardId={nameData.cardId} format={nameData.format} />
-        </span>
+        <CardLink cardId={nameData.cardId} format={nameData.format} />
       )
     }
     if (columnType === 'traits') {
@@ -193,15 +191,21 @@ class MuiVirtualizedTable extends React.PureComponent<MuiVirtualizedTableProps> 
       renderComponent = <span>{strengthData.strength}</span>
     }
 
+    const isNameColumn = columnType === 'nameFactionType'
+
     return (
       <TableCell
         component="div"
         width={width}
-        className={clsx(classes.tableCell, classes.flexContainer, {
+        className={clsx(classes.tableCell, {
+          [classes.flexContainer]: !isNameColumn,
           [classes.noClick]: onRowClick == null,
         })}
         variant="body"
-        style={{ height: rowHeight }}
+        style={{
+          height: rowHeight,
+          ...(isNameColumn && { display: 'block' })
+        }}
       >
         {renderComponent}
       </TableCell>

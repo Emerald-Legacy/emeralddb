@@ -1,6 +1,7 @@
-import { Popover, Theme } from '@mui/material';
+import { Popover, Tooltip, Theme } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { useState, useRef, type MouseEvent } from 'react'
+import { useState, useRef, useEffect, type MouseEvent } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useUiStore } from '../../providers/UiStoreProvider'
 import { CardInformation } from './CardInformation'
 import { CardTypeIcon } from './CardTypeIcon'
@@ -17,7 +18,8 @@ const PREFIX = 'CardLink';
 
 const classes = {
   popover: `${PREFIX}-popover`,
-  popoverText: `${PREFIX}-popoverText`
+  popoverText: `${PREFIX}-popoverText`,
+  link: `${PREFIX}-link`
 };
 
 const Root = styled('span')(({
@@ -27,6 +29,15 @@ const Root = styled('span')(({
     padding: theme.spacing(1),
   }
 }));
+
+const StyledLink = styled('a')({
+  color: 'inherit',
+  textDecoration: 'none',
+  display: 'inline',
+  '&:hover': {
+    textDecoration: 'underline'
+  }
+});
 
 export function DeckbuildingRestrictionIcon(props: {
   label: string
@@ -127,18 +138,15 @@ export function CardLink(props: {
   hoveredCardId?: string | null
 }): JSX.Element {
   const { cards, relevantFormats, validCardVersionForFormat } = useUiStore()
-  const spanRef = useRef<HTMLSpanElement>(null)
-  const [internalHover, setInternalHover] = useState(false)
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
+  const navigate = useNavigate()
 
   const card = cards.find((card) => card.id === props.cardId)
   if (!card) {
     return <span>Unknown Card ID</span>
   }
 
-  // Use external hover state if provided, otherwise use internal state
-  const open = props.hoveredCardId !== undefined
-    ? props.hoveredCardId === props.cardId
-    : internalHover
+  const open = Boolean(anchorEl)
 
   let legalVersion: Omit<CardInPack, 'card_id'> | undefined = card.versions[0]
   const format = relevantFormats.find(f => f.id === props.format)
@@ -169,38 +177,53 @@ export function CardLink(props: {
     rallyFormats = ['emerald', 'obsidian']
   }
 
-  const handleMouseEnter = () => {
-    if (props.hoveredCardId === undefined) {
-      setInternalHover(true)
+  useEffect(() => {
+    return () => {
+      setAnchorEl(null)
     }
+  }, [])
+
+  const handleMouseEnter = (event: MouseEvent<HTMLAnchorElement>) => {
+    setAnchorEl(event.currentTarget)
   }
 
   const handleMouseLeave = () => {
-    if (props.hoveredCardId === undefined) {
-      setInternalHover(false)
+    setAnchorEl(null)
+  }
+
+  const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
+    setAnchorEl(null)
+    if (!props.sameTab) {
+      event.preventDefault()
+    }
+    event.stopPropagation()
+    if (!props.notClickable && !props.sameTab) {
+      navigate(`/card/${card.id}`)
     }
   }
 
   return (
-    <span
-      ref={spanRef}
-      style={{ display: 'inline-block' }}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
-      <EmeraldDBLink
+    <span style={{ display: 'inline-block', maxWidth: 'fit-content' }}>
+      <StyledLink
         href={`/card/${card.id}`}
-        notClickable={props.notClickable}
-        openInNewTab={!props.sameTab}
+        onClick={handleClick}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        target={props.sameTab ? '_self' : '_blank'}
+        sx={{
+          cursor: props.notClickable ? 'default' : 'pointer'
+        }}
       >
         <CardTypeIcon type={card.type} faction={card.faction} />
         {card.is_unique && (
-          <>
+          <span>
             {' '}
             <span className={`icon icon-unique`} style={{ fontSize: 12 }} />
-          </>
-        )}{' '}
-        {card.name}{' '}
+          </span>
+        )}
+        {' '}
+        {card.name}
+        {' '}
         {card.elements?.map((element) => (
           <ElementSymbol element={element} key={element} withoutName />
         ))}
@@ -208,21 +231,18 @@ export function CardLink(props: {
         {restrictedFormats.length > 0 && <RestrictedIcon formats={restrictedFormats} />}
         {splashBannedFormats.length > 0 && <SplashBannedIcon formats={splashBannedFormats} />}
         {rallyFormats.length > 0 && <RallyIcon formats={rallyFormats} />}
-        {format && !legalVersion && (
-          <RotatedIcon formats={[format.id]} />
-        )}
-      </EmeraldDBLink>
+        {format && !legalVersion && <RotatedIcon formats={[format.id]} />}
+      </StyledLink>
       <Popover
         id="mouse-over-popover"
-        className={classes.popover}
         open={open}
-        anchorEl={spanRef.current}
+        anchorEl={anchorEl}
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'right',
+          horizontal: 'left',
         }}
         transformOrigin={{
-          vertical: 'bottom',
+          vertical: 'top',
           horizontal: 'left',
         }}
         disableRestoreFocus
