@@ -70,6 +70,7 @@ export function DeckbuildingRestrictionIcon(props: {
         }}
         onClose={handlePopoverClose}
         disableRestoreFocus
+        disableScrollLock
       >
         <div className={classes.popoverText}>
           {props.label}: {formatString}
@@ -127,14 +128,17 @@ export function CardLink(props: {
 }): JSX.Element {
   const { cards, relevantFormats, validCardVersionForFormat } = useUiStore()
   const spanRef = useRef<HTMLSpanElement>(null)
+  const [internalHover, setInternalHover] = useState(false)
 
   const card = cards.find((card) => card.id === props.cardId)
   if (!card) {
     return <span>Unknown Card ID</span>
   }
 
-  // Determine if popover should be open based on external hover state
-  const open = props.hoveredCardId === props.cardId
+  // Use external hover state if provided, otherwise use internal state
+  const open = props.hoveredCardId !== undefined
+    ? props.hoveredCardId === props.cardId
+    : internalHover
 
   let legalVersion: Omit<CardInPack, 'card_id'> | undefined = card.versions[0]
   const format = relevantFormats.find(f => f.id === props.format)
@@ -165,8 +169,25 @@ export function CardLink(props: {
     rallyFormats = ['emerald', 'obsidian']
   }
 
+  const handleMouseEnter = () => {
+    if (props.hoveredCardId === undefined) {
+      setInternalHover(true)
+    }
+  }
+
+  const handleMouseLeave = () => {
+    if (props.hoveredCardId === undefined) {
+      setInternalHover(false)
+    }
+  }
+
   return (
-    <span ref={spanRef} style={{ display: 'inline-block' }}>
+    <span
+      ref={spanRef}
+      style={{ display: 'inline-block' }}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       <EmeraldDBLink
         href={`/card/${card.id}`}
         notClickable={props.notClickable}
@@ -205,6 +226,7 @@ export function CardLink(props: {
           horizontal: 'left',
         }}
         disableRestoreFocus
+        disableScrollLock
         sx={{ pointerEvents: 'none' }}
         slotProps={{
           paper: {

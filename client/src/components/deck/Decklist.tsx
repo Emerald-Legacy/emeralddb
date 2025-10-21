@@ -203,7 +203,8 @@ export function Decklist(props: {
         {stats.stronghold && (
           <img
             src={stats.stronghold.versions[0]?.image_url || ''}
-            style={{ width: '80%', maxWidth: '250px' }}
+            style={{ width: '80%', maxWidth: '250px', height: 'auto' }}
+            alt={stats.stronghold.name}
           />
         )}
       </Grid>
