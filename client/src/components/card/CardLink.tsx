@@ -1,7 +1,6 @@
 import { Popover, Tooltip, Theme } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useState, useRef, useEffect, type MouseEvent } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { useUiStore } from '../../providers/UiStoreProvider'
 import { CardInformation } from './CardInformation'
 import { CardTypeIcon } from './CardTypeIcon'
@@ -18,8 +17,7 @@ const PREFIX = 'CardLink';
 
 const classes = {
   popover: `${PREFIX}-popover`,
-  popoverText: `${PREFIX}-popoverText`,
-  link: `${PREFIX}-link`
+  popoverText: `${PREFIX}-popoverText`
 };
 
 const Root = styled('span')(({
@@ -29,15 +27,6 @@ const Root = styled('span')(({
     padding: theme.spacing(1),
   }
 }));
-
-const StyledLink = styled('a')({
-  color: 'inherit',
-  textDecoration: 'none',
-  display: 'inline',
-  '&:hover': {
-    textDecoration: 'underline'
-  }
-});
 
 export function DeckbuildingRestrictionIcon(props: {
   label: string
@@ -139,7 +128,6 @@ export function CardLink(props: {
 }): JSX.Element {
   const { cards, relevantFormats, validCardVersionForFormat } = useUiStore()
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
-  const navigate = useNavigate()
 
   const card = cards.find((card) => card.id === props.cardId)
   if (!card) {
@@ -191,28 +179,19 @@ export function CardLink(props: {
     setAnchorEl(null)
   }
 
-  const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
+  const handleClick = () => {
     setAnchorEl(null)
-    if (!props.sameTab) {
-      event.preventDefault()
-    }
-    event.stopPropagation()
-    if (!props.notClickable && !props.sameTab) {
-      navigate(`/card/${card.id}`)
-    }
   }
 
   return (
     <span style={{ display: 'inline-block', maxWidth: 'fit-content' }}>
-      <StyledLink
+      <EmeraldDBLink
         href={`/card/${card.id}`}
         onClick={handleClick}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        target={props.sameTab ? '_self' : '_blank'}
-        sx={{
-          cursor: props.notClickable ? 'default' : 'pointer'
-        }}
+        notClickable={props.notClickable}
+        openInNewTab={!props.sameTab}
       >
         <CardTypeIcon type={card.type} faction={card.faction} />
         {card.is_unique && (
@@ -232,7 +211,7 @@ export function CardLink(props: {
         {splashBannedFormats.length > 0 && <SplashBannedIcon formats={splashBannedFormats} />}
         {rallyFormats.length > 0 && <RallyIcon formats={rallyFormats} />}
         {format && !legalVersion && <RotatedIcon formats={[format.id]} />}
-      </StyledLink>
+      </EmeraldDBLink>
       <Popover
         id="mouse-over-popover"
         open={open}

@@ -1,15 +1,25 @@
 import type { ReactNode, MouseEvent } from 'react'
-import { forwardRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Link } from '@mui/material'
+import { styled } from '@mui/material/styles'
 
-export const EmeraldDBLink = forwardRef<HTMLAnchorElement, {
+const StyledLink = styled('a')({
+  color: 'inherit',
+  textDecoration: 'none',
+  display: 'inline',
+  '&:hover': {
+    textDecoration: 'underline'
+  }
+})
+
+export function EmeraldDBLink(props: {
   href: string
   onClick?: () => void
   children: ReactNode
   notClickable?: boolean
   openInNewTab?: boolean
-}>(function EmeraldDBLink(props, ref) {
+  onMouseEnter?: (event: MouseEvent<HTMLAnchorElement>) => void
+  onMouseLeave?: (event: MouseEvent<HTMLAnchorElement>) => void
+}): JSX.Element {
   const navigate = useNavigate()
 
   function goTo(route: string) {
@@ -17,9 +27,7 @@ export const EmeraldDBLink = forwardRef<HTMLAnchorElement, {
   }
 
   function onLinkClick(
-    event:
-      | MouseEvent<HTMLSpanElement, globalThis.MouseEvent>
-      | MouseEvent<HTMLAnchorElement, globalThis.MouseEvent>
+    event: MouseEvent<HTMLAnchorElement, globalThis.MouseEvent>
   ) {
     if (!props.openInNewTab) {
       event.preventDefault()
@@ -34,22 +42,17 @@ export const EmeraldDBLink = forwardRef<HTMLAnchorElement, {
   }
 
   return (
-    <Link
-      ref={ref}
-      component="a"
+    <StyledLink
       href={props.href}
       onClick={onLinkClick}
+      onMouseEnter={props.onMouseEnter}
+      onMouseLeave={props.onMouseLeave}
       target={props.openInNewTab ? '_blank' : '_self'}
-      color="inherit"
-      underline="none"
-      sx={{
-        display: 'inline',
-        width: 'auto',
-        padding: 0,
-        margin: 0
+      style={{
+        cursor: props.notClickable ? 'default' : 'pointer'
       }}
     >
       {props.children}
-    </Link>
+    </StyledLink>
   )
-})
+}
