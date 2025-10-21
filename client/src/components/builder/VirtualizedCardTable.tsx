@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { styled } from '@mui/material/styles';
 import clsx from 'clsx'
 import TableCell from '@mui/material/TableCell'
-import { AutoSizer, Column, Table, TableCellRenderer, TableHeaderProps } from 'react-virtualized'
+import { useVirtualizer } from '@tanstack/react-virtual'
 import { CardQuantitySelector } from './CardQuantitySelector'
 import { CardLink } from '../card/CardLink'
 import { InfluenceElement } from '../card/InfluenceElement'
@@ -15,12 +15,18 @@ const classes = {
   tableRow: `${PREFIX}-tableRow`,
   tableRowHover: `${PREFIX}-tableRowHover`,
   tableCell: `${PREFIX}-tableCell`,
-  noClick: `${PREFIX}-noClick`
+  noClick: `${PREFIX}-noClick`,
+  container: `${PREFIX}-container`,
+  header: `${PREFIX}-header`,
 };
 
-const StyledAutoSizer = styled(AutoSizer)(({
+const StyledContainer = styled('div')(({
   theme
 }) => ({
+  height: '100%',
+  width: '100%',
+  overflow: 'auto',
+
   [`& .${classes.flexContainer}`]: {
     display: 'flex',
     alignItems: 'center',
@@ -28,16 +34,22 @@ const StyledAutoSizer = styled(AutoSizer)(({
   },
 
   [`& .${classes.table}`]: {
-    // temporary right-to-left patch, waiting for
-    // https://github.com/bvaughn/react-virtualized/issues/454
-    '& .ReactVirtualized__Table__headerRow': {
-      flip: false,
-      paddingRight: theme.direction === 'rtl' ? '0 !important' : undefined,
-    },
+    width: '100%',
+  },
+
+  [`& .${classes.header}`]: {
+    display: 'flex',
+    position: 'sticky',
+    top: 0,
+    backgroundColor: theme.palette.background.paper,
+    zIndex: 1,
+    borderBottom: `1px solid ${theme.palette.divider}`,
   },
 
   [`& .${classes.tableRow}`]: {
+    display: 'flex',
     cursor: 'pointer',
+    borderBottom: `1px solid ${theme.palette.divider}`,
   },
 
   [`& .${classes.tableRowHover}`]: {
@@ -56,16 +68,6 @@ const StyledAutoSizer = styled(AutoSizer)(({
     cursor: 'initial',
   }
 }));
-
-declare module '@mui/material/styles/withStyles' {
-  // Augment the BaseCSSProperties so that we can control jss-rtl
-  interface BaseCSSProperties {
-    /*
-     * Used to control if the rule-set should be affected by rtl transformation
-     */
-    flip?: boolean
-  }
-}
 
 export interface ColumnData {
   columnType:
@@ -95,176 +97,186 @@ interface MuiVirtualizedTableProps {
   rowHeight?: number
 }
 
-class MuiVirtualizedTable extends React.PureComponent<MuiVirtualizedTableProps> {
-  static defaultProps = {
-    headerHeight: 40,
-    rowHeight: 40,
-  }
+const cellRenderer = (
+  cellData: any,
+  columnType: string,
+  width: number,
+  rowHeight: number,
+  onRowClick?: () => void
+): JSX.Element => {
+  let renderComponent = <div />
 
-  getRowClassName = ({ index }: Row) => {
-    const {  onRowClick } = this.props
-
-    return clsx(classes.tableRow, classes.flexContainer, {
-      [classes.tableRowHover]: index !== -1 && onRowClick != null,
-    })
-  }
-
-  cellRenderer: TableCellRenderer = ({ cellData, columnIndex }) => {
-    const { columns,  rowHeight, onRowClick } = this.props
-    const columnType = columns[columnIndex].columnType
-    const width = columns[columnIndex].width
-    let renderComponent = <div />
-    if (columnType === 'quantityForId') {
-      const quantityData = cellData as {
-        quantity: number
-        cardId: string
-        deckLimit: number
-        onQuantityChange: (newQuantity: number) => void
-      }
-      renderComponent = (
-        <CardQuantitySelector
-          deckLimit={quantityData.deckLimit}
-          quantity={quantityData.quantity}
-          onQuantityChange={quantityData.onQuantityChange}
-        />
-      )
+  if (columnType === 'quantityForId') {
+    const quantityData = cellData as {
+      quantity: number
+      cardId: string
+      deckLimit: number
+      onQuantityChange: (newQuantity: number) => void
     }
-    if (columnType === 'nameFactionType') {
-      const nameData = cellData as {
-        name: string
-        faction: string
-        type: string
-        cardId: string
-        format: string
-      }
-      renderComponent = (
-        <CardLink cardId={nameData.cardId} format={nameData.format} />
-      )
-    }
-    if (columnType === 'traits') {
-      const traitsData = cellData as {
-        traits: string
-      }
-      renderComponent = (
-        <span style={{ fontSize: 12 }}>
-          <i>{traitsData.traits}</i>
-        </span>
-      )
-    }
-    if (columnType === 'influenceAndFaction') {
-      const influenceData = cellData as {
-        influence: number
-        faction: string
-      }
-      renderComponent = (
-        <InfluenceElement faction={influenceData.faction} influence={influenceData.influence} />
-      )
-    }
-    if (columnType === 'cost') {
-      const costData = cellData as {
-        cost: string
-      }
-      renderComponent = <span>{costData.cost}</span>
-    }
-    if (columnType === 'mil') {
-      const milData = cellData as {
-        mil: string
-      }
-      renderComponent = <span>{milData.mil}</span>
-    }
-    if (columnType === 'pol') {
-      const polData = cellData as {
-        pol: string
-      }
-      renderComponent = <span>{polData.pol}</span>
-    }
-    if (columnType === 'glory') {
-      const gloryData = cellData as {
-        glory: string
-      }
-      renderComponent = <span>{gloryData.glory}</span>
-    }
-    if (columnType === 'strength') {
-      const strengthData = cellData as {
-        strength: string
-      }
-      renderComponent = <span>{strengthData.strength}</span>
-    }
-
-    return (
-      <TableCell
-        component="div"
-        width={width}
-        className={clsx(classes.tableCell, classes.flexContainer, {
-          [classes.noClick]: onRowClick == null,
-        })}
-        variant="body"
-        style={{ height: rowHeight }}
-      >
-        {renderComponent}
-      </TableCell>
+    renderComponent = (
+      <CardQuantitySelector
+        deckLimit={quantityData.deckLimit}
+        quantity={quantityData.quantity}
+        onQuantityChange={quantityData.onQuantityChange}
+      />
     )
   }
-
-  headerRenderer = ({ label, columnIndex }: TableHeaderProps & { columnIndex: number }) => {
-    const { headerHeight, columns, } = this.props
-    const width = columns[columnIndex].width
-
-    return (
-      <TableCell
-        component="div"
-        className={clsx(classes.flexContainer, classes.tableCell, classes.noClick)}
-        variant="head"
-        width={width}
-        style={{ height: headerHeight }}
-      >
-        <span>{label}</span>
-      </TableCell>
+  if (columnType === 'nameFactionType') {
+    const nameData = cellData as {
+      name: string
+      faction: string
+      type: string
+      cardId: string
+      format: string
+    }
+    renderComponent = (
+      <CardLink cardId={nameData.cardId} format={nameData.format} />
     )
   }
-
-  render() {
-    const {  columns, rowHeight, headerHeight, ...tableProps } = this.props
-    return (
-      <StyledAutoSizer>
-        {({ height, width }) => (
-          <Table
-            height={height}
-            width={width}
-            rowHeight={rowHeight!}
-            gridStyle={{
-              direction: 'inherit',
-            }}
-            headerHeight={headerHeight!}
-            className={classes.table}
-            {...tableProps}
-            rowClassName={this.getRowClassName}
-          >
-            {columns.map(({ columnType, ...other }, index) => {
-              return (
-                <Column
-                  key={columnType}
-                  headerRenderer={(headerProps) =>
-                    this.headerRenderer({
-                      ...headerProps,
-                      columnIndex: index,
-                    })
-                  }
-                  className={classes.flexContainer}
-                  cellRenderer={this.cellRenderer}
-                  dataKey={columnType}
-                  {...other}
-                />
-              )
-            })}
-          </Table>
-        )}
-      </StyledAutoSizer>
-    );
+  if (columnType === 'traits') {
+    const traitsData = cellData as {
+      traits: string
+    }
+    renderComponent = (
+      <span style={{ fontSize: 12 }}>
+        <i>{traitsData.traits}</i>
+      </span>
+    )
   }
+  if (columnType === 'influenceAndFaction') {
+    const influenceData = cellData as {
+      influence: number
+      faction: string
+    }
+    renderComponent = (
+      <InfluenceElement faction={influenceData.faction} influence={influenceData.influence} />
+    )
+  }
+  if (columnType === 'cost') {
+    const costData = cellData as {
+      cost: string
+    }
+    renderComponent = <span>{costData.cost}</span>
+  }
+  if (columnType === 'mil') {
+    const milData = cellData as {
+      mil: string
+    }
+    renderComponent = <span>{milData.mil}</span>
+  }
+  if (columnType === 'pol') {
+    const polData = cellData as {
+      pol: string
+    }
+    renderComponent = <span>{polData.pol}</span>
+  }
+  if (columnType === 'glory') {
+    const gloryData = cellData as {
+      glory: string
+    }
+    renderComponent = <span>{gloryData.glory}</span>
+  }
+  if (columnType === 'strength') {
+    const strengthData = cellData as {
+      strength: string
+    }
+    renderComponent = <span>{strengthData.strength}</span>
+  }
+
+  return (
+    <TableCell
+      component="div"
+      width={width}
+      className={clsx(classes.tableCell, classes.flexContainer, {
+        [classes.noClick]: onRowClick == null,
+      })}
+      variant="body"
+      style={{ height: rowHeight }}
+    >
+      {renderComponent}
+    </TableCell>
+  )
 }
 
-export const VirtualizedCardTable = (MuiVirtualizedTable)
+export const VirtualizedCardTable: React.FC<MuiVirtualizedTableProps> = ({
+  columns,
+  headerHeight = 40,
+  onRowClick,
+  rowCount,
+  rowGetter,
+  rowHeight = 40,
+}) => {
+  const parentRef = useRef<HTMLDivElement>(null)
+
+  const rowVirtualizer = useVirtualizer({
+    count: rowCount,
+    getScrollElement: () => parentRef.current,
+    estimateSize: () => rowHeight,
+    overscan: 5,
+  })
+
+  const virtualItems = rowVirtualizer.getVirtualItems()
+
+  return (
+    <StyledContainer ref={parentRef}>
+      {/* Header */}
+      <div className={classes.header} style={{ height: headerHeight }}>
+        {columns.map((column, columnIndex) => (
+          <TableCell
+            key={column.columnType}
+            component="div"
+            className={clsx(classes.flexContainer, classes.tableCell, classes.noClick)}
+            variant="head"
+            width={column.width}
+            style={{ height: headerHeight }}
+          >
+            <span>{column.label}</span>
+          </TableCell>
+        ))}
+      </div>
+
+      {/* Virtual rows */}
+      <div
+        style={{
+          height: `${rowVirtualizer.getTotalSize()}px`,
+          width: '100%',
+          position: 'relative',
+        }}
+      >
+        {virtualItems.map((virtualRow) => {
+          const rowData = rowGetter({ index: virtualRow.index })
+
+          return (
+            <div
+              key={virtualRow.key}
+              className={clsx(classes.tableRow, classes.flexContainer, {
+                [classes.tableRowHover]: onRowClick != null,
+              })}
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: `${virtualRow.size}px`,
+                transform: `translateY(${virtualRow.start}px)`,
+              }}
+              onClick={onRowClick}
+            >
+              {columns.map((column) => {
+                const cellData = rowData[column.columnType as keyof TableCardData]
+                return (
+                  <React.Fragment key={column.columnType}>
+                    {cellRenderer(cellData, column.columnType, column.width, rowHeight, onRowClick)}
+                  </React.Fragment>
+                )
+              })}
+            </div>
+          )
+        })}
+      </div>
+    </StyledContainer>
+  );
+}
 
 export interface TableCardData {
   quantityForId: {
