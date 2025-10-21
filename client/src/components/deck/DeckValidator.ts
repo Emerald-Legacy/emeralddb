@@ -1,5 +1,5 @@
 import { CardWithVersions, Format } from '@5rdb/api'
-import lodash from 'lodash'
+import uniq from 'lodash/uniq'
 
 export type CardWithQuantity = CardWithVersions & {
   quantity: number
@@ -179,8 +179,7 @@ function validateDecklist(
       }
     })
   if (
-    lodash
-      .uniq(allDeckCards.map((c) => c.faction))
+    uniq(allDeckCards.map((c) => c.faction))
       .some(
         (faction) =>
           faction !== 'neutral' && faction !== stats.primaryClan && faction !== stats.secondaryClan
@@ -296,7 +295,7 @@ function validateDecklist(
     let legal = false
 
     for (const permutation of permutations) {
-      const uniqueElements = lodash.uniq(permutation)
+      const uniqueElements = uniq(permutation)
       if (uniqueElements.length === 5) {
         legal = true
       } else if (
@@ -398,7 +397,7 @@ export function createDeckStatistics(
     secondaryClan: secondaryClan,
     bannedCards: bannedCards,
     restrictedCards: restrictedCards,
-    rotatedCards: formatId === 'emerald' ? lodash.uniq([...illegalCards, ...rotatedCards]) : illegalCards,
+    rotatedCards: formatId === 'emerald' ? uniq([...illegalCards, ...rotatedCards]) : illegalCards,
     validationErrors: [],
   }
 
