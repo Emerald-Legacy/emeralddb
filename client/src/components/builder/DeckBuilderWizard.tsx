@@ -217,8 +217,8 @@ export function DeckBuilderWizard(props: {
             <Typography variant="h6" align="center">
               Choose Role
             </Typography>
-            <Grid container spacing={2} style={{ minWidth: 550 }} onMouseLeave={() => setHoveredCardId(null)}>
-              <Grid size={{ xs: 12, sm: 6 }}>
+            <Grid container spacing={{ xs: 0, sm: 2 }} style={{ minWidth: 550 }} justifyContent={{ xs: 'center', sm: 'flex-start' }} onMouseLeave={() => setHoveredCardId(null)}>
+              <Grid size={{ xs: 12, sm: 6 }} display="flex" justifyContent={{ xs: 'center', sm: 'flex-start' }}>
                 <RadioGroup
                   value={role}
                   onChange={(e) => setRole((e.target as HTMLInputElement).value)}
@@ -259,7 +259,7 @@ export function DeckBuilderWizard(props: {
                   ))}
                 </RadioGroup>
               </Grid>
-              <Grid size={{ xs: 12, sm: 6 }}>
+              <Grid size={{ xs: 12, sm: 6 }} display="flex" justifyContent={{ xs: 'center', sm: 'flex-start' }}>
                 <RadioGroup
                   value={role}
                   onChange={(e) => setRole((e.target as HTMLInputElement).value)}
