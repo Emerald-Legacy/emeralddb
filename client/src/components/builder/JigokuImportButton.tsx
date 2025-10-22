@@ -56,7 +56,7 @@ function mapDeckStringToCards(
   return newCards
 }
 
-export function BushiBuilderImportButton(props: {
+export function JigokuImportButton(props: {
   onImport: (decklist: DecklistViewModel) => void
 }): JSX.Element {
   const { cards, packs, formats } = useUiStore()
@@ -66,7 +66,7 @@ export function BushiBuilderImportButton(props: {
   const [loading, setLoading] = useState(false)
   const isSmOrSmaller = useMediaQuery('(max-width:400px)')
 
-  function importBushiBuilderDeck() {
+  function importJigokuDeck() {
     setLoading(true)
     const cardsInDeck = mapDeckStringToCards(deckString, cards, packs)
     if (cardsInDeck) {
@@ -84,10 +84,10 @@ export function BushiBuilderImportButton(props: {
   return (
     <>
       <Button variant="contained" color="secondary" fullWidth onClick={() => setModalOpen(true)}>
-        Import from BushiBuilder
+        Import from Jigoku
       </Button>
       <Dialog open={modalOpen} onClose={() => setModalOpen(false)} disableScrollLock>
-        <DialogTitle>Import from BushiBuilder</DialogTitle>
+        <DialogTitle>Import from Jigoku</DialogTitle>
         <DialogContent>
           <Autocomplete
             id="combo-box-format"
@@ -106,7 +106,7 @@ export function BushiBuilderImportButton(props: {
             variant="outlined"
             fullWidth
             onChange={(e) => setDeckString(e.target.value)}
-            label="BushiBuilder Jigoku Export"
+            label="Jigoku Export"
             style={{ minWidth: isSmOrSmaller ? 250 : 400 }}
           />
         </DialogContent>
@@ -118,7 +118,7 @@ export function BushiBuilderImportButton(props: {
             variant="contained"
             color="secondary"
             disabled={deckString === '' || format === '' || loading}
-            onClick={() => importBushiBuilderDeck()}
+            onClick={() => importJigokuDeck()}
           >
             Import Deck
           </Button>

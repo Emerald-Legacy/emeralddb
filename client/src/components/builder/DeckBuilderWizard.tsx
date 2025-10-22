@@ -14,7 +14,7 @@ import { useState } from 'react'
 import { useUiStore } from '../../providers/UiStoreProvider'
 import { clans } from '../../utils/enums'
 import { CardLink } from '../card/CardLink'
-import { BushiBuilderImportButton } from './BushiBuilderImportButton'
+import { JigokuImportButton } from './JigokuImportButton'
 import { EmeraldDBImportButton } from './EmeraldDBImportButton'
 import { CardFactionIcon } from '../card/CardFactionIcon'
 import { FormatWithInfo } from '../format/FormatWithInfo'
@@ -116,7 +116,7 @@ export function DeckBuilderWizard(props: {
             </Grid>
           )}
           <Grid size={12}>
-            <BushiBuilderImportButton
+            <JigokuImportButton
               onImport={(decklist: DecklistViewModel) => props.onImport(decklist)}
             />
           </Grid>
