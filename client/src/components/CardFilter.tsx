@@ -538,7 +538,7 @@ export function CardFilter(props: {
             fullWidth
             variant="outlined"
             size="small"
-            label={props.deckbuilder ? 'Search...' : 'Search for card name, ability text...'}
+            label={props.deckbuilder ? 'Search...' : 'Search for card name, ability text, artist...'}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
