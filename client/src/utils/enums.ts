@@ -4,10 +4,10 @@ export const cardTypes: { id: string; name: string }[] = [
   { id: 'event', name: 'Event' },
   { id: 'holding', name: 'Holding' },
   { id: 'province', name: 'Province' },
-  { id: 'role', name: 'Role' },
   { id: 'stronghold', name: 'Stronghold' },
-  { id: 'treaty', name: 'Treaty' },
+  { id: 'role', name: 'Role' },
   { id: 'warlord', name: 'Warlord' },
+  { id: 'treaty', name: 'Treaty' },
 ]
 
 export const sides: { id: string; name: string }[] = [
