@@ -140,7 +140,7 @@ export function DeckBuilderWizard(props: {
                   key={format.id}
                   value={format.id}
                   control={<Radio />}
-                  label={<FormatWithInfo format={format} />}
+                  label={<div onClick={() => setFormat(format.id)} style={{ cursor: 'pointer' }}><FormatWithInfo format={format} /></div>}
                   onClick={() => setFormat(format.id)}
                 />
               ))}
@@ -162,7 +162,7 @@ export function DeckBuilderWizard(props: {
                   value={clan.id}
                   control={<Radio />}
                   label={
-                    <span style={{ fontSize: 18 }}>
+                    <span onClick={() => setPrimaryClan(clan.id)} style={{ fontSize: 18, cursor: 'pointer' }}>
                       <CardFactionIcon faction={clan.id} colored /> {clan.name}
                     </span>
                   }
@@ -191,6 +191,11 @@ export function DeckBuilderWizard(props: {
                     <div
                       onMouseEnter={() => setHoveredCardId(thisStronghold.id)}
                       onMouseLeave={() => setHoveredCardId(null)}
+                      onMouseDown={(e) => {
+                        e.preventDefault()
+                        setStronghold(thisStronghold.id)
+                      }}
+                      style={{ cursor: 'pointer' }}
                     >
                       <CardLink
                         cardId={thisStronghold.id}
@@ -227,6 +232,11 @@ export function DeckBuilderWizard(props: {
                         <div
                           onMouseEnter={() => setHoveredCardId(thisRole.id)}
                           onMouseLeave={() => setHoveredCardId(null)}
+                          onMouseDown={(e) => {
+                            e.preventDefault()
+                            setRole(thisRole.id)
+                          }}
+                          style={{ cursor: 'pointer' }}
                         >
                           <CardLink
                             cardId={thisRole.id}
@@ -256,6 +266,11 @@ export function DeckBuilderWizard(props: {
                         <div
                           onMouseEnter={() => setHoveredCardId(thisRole.id)}
                           onMouseLeave={() => setHoveredCardId(null)}
+                          onMouseDown={(e) => {
+                            e.preventDefault()
+                            setRole(thisRole.id)
+                          }}
+                          style={{ cursor: 'pointer' }}
                         >
                           <CardLink
                             cardId={thisRole.id}
