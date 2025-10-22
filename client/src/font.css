@@ -7,7 +7,7 @@
   url('assets/fonts/emeralddb.svg?ifct3w#emeralddb') format('svg');
   font-weight: normal;
   font-style: normal;
-  font-display: block;
+  font-display: optional;
 }
 
 [class^="icon-"], [class*=" icon-"] {
