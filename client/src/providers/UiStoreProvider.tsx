@@ -11,7 +11,7 @@ export interface UiStore {
   formats: Format[]
   relevantFormats: Format[]
   validCardVersionForFormat: (cardId: string, formatId: string) => Omit<CardInPack, 'card_id'> | undefined
-  invalidateData: () => void
+  invalidateData: () => Promise<void>
   isLoading: boolean
 }
 
@@ -23,7 +23,7 @@ export const UiStoreContext = createContext<UiStore>({
   formats: [],
   relevantFormats: [],
   validCardVersionForFormat: () => undefined,
-  invalidateData: () => {},
+  invalidateData: async () => {},
   isLoading: false,
 })
 
@@ -43,8 +43,15 @@ export function UiStoreProvider(props: { children: ReactNode }): JSX.Element {
   const { data: cards = [] } = useQuery<CardWithVersions[]>({
     queryKey: UiStoreQueries.CARDS,
     queryFn: async () => {
-      const response = await publicApi.Card.findAll()
-      return response.data() as CardWithVersions[]
+      // Add cache-busting timestamp to bypass browser cache
+      const timestamp = Date.now()
+      const response = await fetch(`/api/cards?_t=${timestamp}`, {
+        cache: 'no-store',
+        headers: {
+          'Cache-Control': 'no-cache'
+        }
+      })
+      return await response.json() as CardWithVersions[]
     },
   })
 
@@ -90,12 +97,20 @@ export function UiStoreProvider(props: { children: ReactNode }): JSX.Element {
   const isLoading = formatsLoading
 
   // Replace toggleReload with query invalidation
-  const invalidateData = () => {
+  const invalidateData = async () => {
     queryClient.invalidateQueries({ queryKey: UiStoreQueries.CARDS })
     queryClient.invalidateQueries({ queryKey: UiStoreQueries.PACKS })
     queryClient.invalidateQueries({ queryKey: UiStoreQueries.CYCLES })
     queryClient.invalidateQueries({ queryKey: UiStoreQueries.TRAITS })
     queryClient.invalidateQueries({ queryKey: UiStoreQueries.FORMATS })
+
+    await Promise.all([
+      queryClient.refetchQueries({ queryKey: UiStoreQueries.CARDS, exact: true }),
+      queryClient.refetchQueries({ queryKey: UiStoreQueries.PACKS, exact: true }),
+      queryClient.refetchQueries({ queryKey: UiStoreQueries.CYCLES, exact: true }),
+      queryClient.refetchQueries({ queryKey: UiStoreQueries.TRAITS, exact: true }),
+      queryClient.refetchQueries({ queryKey: UiStoreQueries.FORMATS, exact: true })
+    ])
   }
 
   // Memoized cache for card version lookups - O(1) instead of O(n)
