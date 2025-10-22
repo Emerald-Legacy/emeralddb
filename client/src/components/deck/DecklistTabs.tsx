@@ -65,7 +65,7 @@ function TabPanel(props: TabPanelProps): JSX.Element {
     >
       {value === index && (
         <Box>
-          <Typography>{children}</Typography>
+          {children}
         </Box>
       )}
     </div>
@@ -178,6 +178,7 @@ export function DecklistTabs(props: {
           >
             {versions.map((v) => (
               <Tab
+                key={v.id}
                 label={
                   <Typography>
                     {v.published_date && <ShareIcon />}

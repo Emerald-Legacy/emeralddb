@@ -130,10 +130,10 @@ export function HelpView(): JSX.Element {
           <Grid container spacing={1}>
             <Grid size={12}>
               <Typography component={'div'}>
-                To import an existing deck from BushiBuilder, click on the "Create Deck" button in
-                the Builder section. Click on the "Import from BushiBuilder" Button. In the pop up
+                To import an existing deck from Jigoku, click on the "Create Deck" button in
+                the Builder section. Click on the "Import from Jigoku" Button. In the pop up
                 that opens, select the format of the deck you want to import and paste the contents
-                of the "Jigoku Export" from BushiBuilder in the text field.
+                of the "Jigoku Export" from Jigoku in the text field.
               </Typography>
             </Grid>
             <Grid size={12}>

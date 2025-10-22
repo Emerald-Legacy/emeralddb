@@ -59,9 +59,7 @@ const StyledContainer = styled('div')(({
   },
 
   [`& .${classes.tableCell}`]: {
-    flex: 1,
     padding: 0,
-    paddingLeft: 8,
   },
 
   [`& .${classes.noClick}`]: {
@@ -149,14 +147,16 @@ const cellRenderer = (
       faction: string
     }
     renderComponent = (
-      <InfluenceElement faction={influenceData.faction} influence={influenceData.influence} />
+      <div style={{ textAlign: 'right', width: '100%', paddingRight: '10px' }}>
+        <InfluenceElement faction={influenceData.faction} influence={influenceData.influence} />
+      </div>
     )
   }
   if (columnType === 'cost') {
     const costData = cellData as {
       cost: string
     }
-    renderComponent = <span>{costData.cost}</span>
+    renderComponent = <div style={{ textAlign: 'center', width: '100%' }}>{costData.cost}</div>
   }
   if (columnType === 'mil') {
     const milData = cellData as {
@@ -191,7 +191,10 @@ const cellRenderer = (
         [classes.noClick]: onRowClick == null,
       })}
       variant="body"
-      style={{ height: rowHeight }}
+      style={{
+        height: rowHeight,
+        ...(width > 0 ? { flexGrow: 0, flexShrink: 0, width: `${width}px` } : { flex: 1 })
+      }}
     >
       {renderComponent}
     </TableCell>
@@ -228,7 +231,10 @@ export const VirtualizedCardTable: React.FC<MuiVirtualizedTableProps> = ({
             className={clsx(classes.flexContainer, classes.tableCell, classes.noClick)}
             variant="head"
             width={column.width}
-            style={{ height: headerHeight }}
+            style={{
+              height: headerHeight,
+              ...(column.width > 0 ? { flexGrow: 0, flexShrink: 0, width: `${column.width}px` } : { flex: 1 })
+            }}
           >
             <span>{column.label}</span>
           </TableCell>

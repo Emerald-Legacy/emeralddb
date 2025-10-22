@@ -1,4 +1,3 @@
-import { Parameters, Response } from 'mappersmith'
 import { useCallback, useEffect, useReducer } from 'react'
 
 interface State<D> {
@@ -12,17 +11,24 @@ type Action<D> =
   | { type: 'success'; payload: D }
   | { type: 'error'; error: string }
 
-type ApiCall = (params?: Parameters) => Promise<Response>
+// Generic response interface for API calls
+interface ApiResponse<T = any> {
+  data: () => T
+  status: () => number
+  error: () => string
+}
+
+type ApiCall = (params?: any) => Promise<ApiResponse>
 type HookResult<Data> = [State<Data>, () => void]
 
-export function createMapersmithHook<Data>(apiCall: ApiCall): () => HookResult<Data>
-export function createMapersmithHook<Data, Id>(
+export function createApiHook<Data>(apiCall: ApiCall): () => HookResult<Data>
+export function createApiHook<Data, Id>(
   apiCall: ApiCall,
-  pm: (resourceId: Id) => Parameters | undefined
+  pm: (resourceId: Id) => any | undefined
 ): (resourceId: Id) => HookResult<Data>
-export function createMapersmithHook<Data, Id>(
+export function createApiHook<Data, Id>(
   apiCall: ApiCall,
-  pm?: (resourceId: Id) => Parameters | undefined
+  pm?: (resourceId: Id) => any | undefined
 ) {
   const initialState: State<Data> = { loading: true }
 
@@ -46,7 +52,7 @@ export function createMapersmithHook<Data, Id>(
     const fetchData = useCallback(() => {
       dispatch({ type: 'startRequest' })
       apiCall(pm ? pm(resourceId) : undefined)
-        .then((response) => dispatch({ type: 'success', payload: response.data<Data>() }))
+        .then((response) => dispatch({ type: 'success', payload: response.data() }))
         .catch((response) => {
           console.log(response)
           dispatch({ type: 'error', error: response.error() })

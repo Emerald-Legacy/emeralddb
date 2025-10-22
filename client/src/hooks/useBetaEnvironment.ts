@@ -1,4 +1,4 @@
 import { privateApi } from '../api'
-import { createMapersmithHook } from '../utils/createMappersmithHook'
+import { createApiHook } from '../utils/createApiHook'
 
-export const useBetaEnvironment = createMapersmithHook<{ betaUrl: string }>(privateApi.Beta.url)
+export const useBetaEnvironment = createApiHook<{ betaUrl: string }>(privateApi.Beta.url)
