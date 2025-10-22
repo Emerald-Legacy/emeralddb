@@ -18,7 +18,6 @@ export const sides: { id: string; name: string }[] = [
   { id: 'treaty', name: 'Treaty' },
 ]
 
-// Elements first, then Keeper and Seeker
 export const roleRestrictions: { id: string; name: string }[] = [
   { id: 'air', name: 'Air' },
   { id: 'earth', name: 'Earth' },
@@ -37,7 +36,6 @@ export const elements: { id: string; name: string }[] = [
   { id: 'water', name: 'Water' },
 ]
 
-// Seven clans, then neutral, then shadowlands
 export const factions: { id: string; name: string; color: string }[] = [
   { id: 'crab', name: 'Crab', color: '#163078' },
   { id: 'crane', name: 'Crane', color: '#44c2bc' },
