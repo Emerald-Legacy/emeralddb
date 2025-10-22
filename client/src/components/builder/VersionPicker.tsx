@@ -1,4 +1,4 @@
-import { Grid, TextField, Typography } from '@material-ui/core'
+import { Grid, TextField, Typography } from '@mui/material'
 import { useState } from 'react'
 
 function splitVersion(version: string): { major: string; minor: string; extra: string } {
@@ -54,46 +54,52 @@ export function VersionPicker(props: {
   }
 
   return (
-    <Grid container justify="flex-end" alignItems="flex-end">
-      <Grid item xs={3}>
+    <Grid container spacing={0.5} alignItems="center" sx={{ mt: 1 }}>
+      <Grid size={3.5}>
         <TextField
           id="major"
           label="Major"
           variant="outlined"
+          size="small"
           value={majorVersion}
           type="number"
+          fullWidth
           onChange={(e) => updateMajorVersion(Number.parseInt(e.target.value) || 0)}
         />
       </Grid>
-      <Grid item xs={1}>
+      <Grid size={0.5}>
         <Typography align="center">
           <b>.</b>
         </Typography>
       </Grid>
-      <Grid item xs={3}>
+      <Grid size={3.5}>
         <TextField
           id="minor"
           label="Minor"
           variant="outlined"
+          size="small"
           value={minorVersion}
           type="number"
+          fullWidth
           onChange={(e) => updateMinorVersion(Number.parseInt(e.target.value) || 0)}
         />
       </Grid>
-      <Grid item xs={1}>
+      <Grid size={0.5}>
         <Typography align="center">
           <b>.</b>
         </Typography>
       </Grid>
-      <Grid item xs={4}>
+      <Grid size={4}>
         <TextField
           id="extra"
           label="Extra"
           variant="outlined"
+          size="small"
           value={extraVersion}
+          fullWidth
           onChange={(e) => updateExtraVersion(e.target.value)}
         />
       </Grid>
     </Grid>
-  )
+  );
 }

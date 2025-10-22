@@ -5,12 +5,7 @@ export function setToken(token: string): void {
 }
 
 export function unsetToken(): void {
-  for (let i = 0; i < window.localStorage.length; i++) {
-    let key = window.localStorage.key(i)
-    if (key) {
-      window.localStorage.removeItem(key)
-    }
-  }
+  window.localStorage.removeItem(AUTH_TOKEN)
 }
 
 export function getToken(): string | null {

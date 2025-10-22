@@ -5,43 +5,70 @@ import {
   Grid,
   InputAdornment,
   ListItem,
+  ListItemButton,
   ListItemText,
-  makeStyles,
   Menu,
   TextField,
   Toolbar,
   useMediaQuery,
   Container,
   List,
-} from '@material-ui/core'
+} from '@mui/material';
+import { styled } from '@mui/material/styles';
 import { UserMenu } from './usermenu/UserMenu'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useCurrentUser } from '../providers/UserProvider'
 import { useState } from 'react'
 import { CycleList } from './CycleList'
-import SearchIcon from '@material-ui/icons/Search'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import ExpandLessIcon from '@material-ui/icons/ExpandLess'
-import MenuIcon from '@material-ui/icons/Menu'
+import SearchIcon from '@mui/icons-material/Search'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import ExpandLessIcon from '@mui/icons-material/ExpandLess'
+import MenuIcon from '@mui/icons-material/Menu'
 import { EmeraldDBLink } from './EmeraldDBLink'
 
-const useStyles = makeStyles(() => ({
-  title: {
+const PREFIX = 'HeaderBar';
+
+const classes = {
+  title: `${PREFIX}-title`,
+  adminButton: `${PREFIX}-adminButton`,
+  logo: `${PREFIX}-logo`,
+  searchField: `${PREFIX}-searchField`
+};
+
+const StyledAppBar = styled(AppBar)(() => ({
+  [`& .${classes.title}`]: {
     flexGrow: 1,
   },
-  adminButton: {
+
+  [`& .${classes.adminButton}`]: {
     marginRight: 10,
   },
-  logo: {
+
+  [`& .${classes.logo}`]: {
     height: 45,
     marginRight: 5,
   },
-  searchField: {
-    backgroundColor: 'white',
+
+  [`& .${classes.searchField}`]: {
+    '& .MuiOutlinedInput-root': {
+      backgroundColor: 'white',
+      borderRadius: '4px',
+      fontSize: '0.875rem',
+      height: '32px',
+    },
+    '& .MuiOutlinedInput-input': {
+      padding: '4px 8px',
+    },
+    '& .MuiInputAdornment-root': {
+      marginLeft: '4px',
+    },
+    '& .MuiSvgIcon-root': {
+      fontSize: '1.25rem',
+    },
     minWidth: 50,
-    maxWidth: 200,
-  },
-}))
+    maxWidth: 180,
+  }
+}));
 
 export enum Queries {
   USER = 'USER',
@@ -52,8 +79,8 @@ export enum Queries {
 }
 
 export function HeaderBar(props: { audience: string; scope: string }): JSX.Element {
-  const classes = useStyles()
-  const history = useHistory()
+
+  const navigate = useNavigate()
   const { isDataAdmin } = useCurrentUser()
   const [cardAnchorEl, setCardAnchorEl] = useState<null | HTMLElement>(null)
   const [rulesAnchorEl, setRulesAnchorEl] = useState<null | HTMLElement>(null)
@@ -78,7 +105,7 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
 
   const goTo = (route: string) => {
     closeModalsAndPopUps()
-    history.push(route)
+    navigate(route)
   }
 
   const listenToEnterDown = (event: React.KeyboardEvent) => {
@@ -89,34 +116,37 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
   }
 
   return (
-    <AppBar position="sticky">
+    <StyledAppBar position="fixed">
       <Toolbar variant="dense">
         <Container maxWidth={false}>
-          <Grid container justify={'center'}>
-            <Grid item xs={12} lg={is1440PxOrBigger ? 10 : 12} xl={10}>
+          <Grid container justifyContent={'center'}>
+            <Grid size={{ xs: 12, lg: is1440PxOrBigger ? 10 : 12, xl: 10 }}>
               <Grid container>
-                <Grid item xs={11} sm={11} md={2} lg={3} xl={2}>
+                <Grid size={{ xs: 11, sm: 11, md: 2, lg: 3, xl: 2 }}>
                   <EmeraldDBLink href={'/cards'} onClick={() => closeModalsAndPopUps()}>
-                    <img src="/static/logo.png" className={classes.logo} />
+                    <img src="/static/logo.webp" className={classes.logo} alt="Emerald Legacy Logo" />
                   </EmeraldDBLink>
                 </Grid>
                 {isMdOrSmaller && (
-                  <Grid item xs={1} sm={1}>
-                    <IconButton color="inherit" onClick={() => setIsMobileOpen(!isMobileOpen)}>
+                  <Grid size={{ xs: 1, sm: 1 }}>
+                    <IconButton
+                      color="inherit"
+                      onClick={() => setIsMobileOpen(!isMobileOpen)}
+                      size="large">
                       <MenuIcon />
                     </IconButton>
                   </Grid>
                 )}
-                <Grid item xs={12} sm={12} md={10} lg={9} xl={10}>
+                <Grid size={{ xs: 12, sm: 12, md: 10, lg: 9, xl: 10 }}>
                   <Collapse in={!isMdOrSmaller || isMobileOpen}>
                     <Grid
                       direction={isMdOrSmaller ? 'column' : 'row'}
                       container
-                      justify="flex-end"
+                      justifyContent="flex-end"
                       alignItems={isMdOrSmaller ? 'flex-end' : 'center'}
                     >
-                      <Grid item>
-                        <ListItem button dense={isMdOrSmaller}>
+                      <Grid>
+                        <ListItemButton dense={isMdOrSmaller}>
                           <ListItemText
                             primary={
                               <EmeraldDBLink href="/cards" onClick={closeModalsAndPopUps}>
@@ -127,7 +157,7 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
                           <span onClick={handleCardMenuClick}>
                             {cardAnchorEl ? <ExpandLessIcon /> : <ExpandMoreIcon />}
                           </span>
-                        </ListItem>
+                        </ListItemButton>
                         <Menu
                           anchorEl={cardAnchorEl}
                           transformOrigin={{
@@ -149,8 +179,8 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
                           </div>
                         </Menu>
                       </Grid>
-                      <Grid item>
-                        <ListItem button dense={isMdOrSmaller}>
+                      <Grid>
+                        <ListItemButton dense={isMdOrSmaller}>
                           <ListItemText
                             primary={
                               <EmeraldDBLink href="/decks" onClick={closeModalsAndPopUps}>
@@ -158,10 +188,10 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
                               </EmeraldDBLink>
                             }
                           />
-                        </ListItem>
+                        </ListItemButton>
                       </Grid>
-                      <Grid item>
-                        <ListItem button dense={isMdOrSmaller}>
+                      <Grid>
+                        <ListItemButton dense={isMdOrSmaller}>
                           <ListItemText
                             primary={
                               <EmeraldDBLink href="/builder" onClick={closeModalsAndPopUps}>
@@ -169,10 +199,10 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
                               </EmeraldDBLink>
                             }
                           />
-                        </ListItem>
+                        </ListItemButton>
                       </Grid>
-                      <Grid item>
-                        <ListItem button dense={isMdOrSmaller} onClick={handleRulesMenuClick}>
+                      <Grid>
+                        <ListItemButton dense={isMdOrSmaller} onClick={handleRulesMenuClick}>
                           <ListItemText
                             primary={
                               <EmeraldDBLink href="/rules" onClick={closeModalsAndPopUps}>
@@ -181,7 +211,7 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
                             }
                           />
                           <span>{rulesAnchorEl ? <ExpandLessIcon /> : <ExpandMoreIcon />}</span>
-                        </ListItem>
+                        </ListItemButton>
                         <Menu
                           anchorEl={rulesAnchorEl}
                           transformOrigin={{
@@ -236,8 +266,8 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
                         </Menu>
                       </Grid>
                       {isDataAdmin() && (
-                        <Grid item>
-                          <ListItem button dense={isMdOrSmaller}>
+                        <Grid>
+                          <ListItemButton dense={isMdOrSmaller}>
                             <ListItemText
                               primary={
                                 <EmeraldDBLink href="/admin" onClick={closeModalsAndPopUps}>
@@ -245,11 +275,11 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
                                 </EmeraldDBLink>
                               }
                             />
-                          </ListItem>
+                          </ListItemButton>
                         </Grid>
                       )}
-                      <Grid item>
-                        <ListItem button dense={isMdOrSmaller}>
+                      <Grid>
+                        <ListItemButton dense={isMdOrSmaller}>
                           <ListItemText
                             primary={
                               <EmeraldDBLink href="/faq" onClick={closeModalsAndPopUps}>
@@ -257,13 +287,15 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
                               </EmeraldDBLink>
                             }
                           />
-                        </ListItem>
+                        </ListItemButton>
                       </Grid>
-                      <Grid item>
+                      <Grid>
                         <ListItem dense={isMdOrSmaller}>
                           <TextField
                             className={classes.searchField}
                             placeholder="Search Card..."
+                            size="small"
+                            variant="outlined"
                             InputProps={{
                               startAdornment: (
                                 <InputAdornment position="start">
@@ -277,10 +309,10 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
                           />
                         </ListItem>
                       </Grid>
-                      <Grid item>
+                      <Grid>
                         <UserMenu audience={props.audience} scope={props.scope} />
                       </Grid>
-                      <Grid item />
+                      <Grid />
                     </Grid>
                   </Collapse>
                 </Grid>
@@ -289,6 +321,6 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
           </Grid>
         </Container>
       </Toolbar>
-    </AppBar>
-  )
+    </StyledAppBar>
+  );
 }

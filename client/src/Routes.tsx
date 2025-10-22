@@ -1,113 +1,72 @@
-import { Redirect, Route, Switch, useHistory } from 'react-router-dom'
+import { Navigate, Route, Routes as RouterRoutes, useLocation } from 'react-router-dom'
 import { useCurrentUser } from './providers/UserProvider'
-import { AdminView } from './views/AdminView'
-import { BuilderView } from './views/BuilderView'
-import { CardDetailView } from './views/CardDetailView'
-import { CardsView } from './views/CardsView'
-import { CreateCardView } from './views/CreateCardView'
-import { CreateDeckView } from './views/CreateDeckView'
-import { DeckDetailView } from './views/DeckDetailView'
-import { DecksView } from './views/DecksView'
-import { EditCardView } from './views/EditCardView'
-import { EditDeckView } from './views/EditDeckView'
-import { EditPackView } from './views/EditPackView'
-import { ManageCyclesView } from './views/ManageCyclesView'
-import { NotLoggedIn } from './views/NotLoggedIn'
-import { NotPermitted } from './views/NotPermitted'
-import { FFGRulesReferenceGuide } from './views/FFGRulesReferenceGuide'
-import { OpLists } from './views/OpLists'
-import { HelpView } from './views/HelpView'
-import { EditTraitsView } from './views/EditTraitsView'
-import { useEffect } from 'react'
-import { EditFormatsView } from "./views/EditFormatsView";
-import { ELRulesReferenceGuideNew } from "./views/ELRulesReferenceGuideNew";
+import { lazy, Suspense, useEffect } from 'react'
+import { Loading } from './components/Loading'
 
-const AuthenticatedRoute = (props: { children: JSX.Element; path: string }) => {
+// Lazy load all route components for code splitting
+const AdminView = lazy(() => import('./views/AdminView').then(m => ({ default: m.AdminView })))
+const BuilderView = lazy(() => import('./views/BuilderView').then(m => ({ default: m.BuilderView })))
+const CardDetailView = lazy(() => import('./views/CardDetailView').then(m => ({ default: m.CardDetailView })))
+const CardsView = lazy(() => import('./views/CardsView').then(m => ({ default: m.CardsView })))
+const CreateCardView = lazy(() => import('./views/CreateCardView').then(m => ({ default: m.CreateCardView })))
+const CreateDeckView = lazy(() => import('./views/CreateDeckView').then(m => ({ default: m.CreateDeckView })))
+const DeckDetailView = lazy(() => import('./views/DeckDetailView').then(m => ({ default: m.DeckDetailView })))
+const DecksView = lazy(() => import('./views/DecksView').then(m => ({ default: m.DecksView })))
+const EditCardView = lazy(() => import('./views/EditCardView').then(m => ({ default: m.EditCardView })))
+const EditDeckView = lazy(() => import('./views/EditDeckView').then(m => ({ default: m.EditDeckView })))
+const EditPackView = lazy(() => import('./views/EditPackView').then(m => ({ default: m.EditPackView })))
+const ManageCyclesView = lazy(() => import('./views/ManageCyclesView').then(m => ({ default: m.ManageCyclesView })))
+const NotLoggedIn = lazy(() => import('./views/NotLoggedIn').then(m => ({ default: m.NotLoggedIn })))
+const NotPermitted = lazy(() => import('./views/NotPermitted').then(m => ({ default: m.NotPermitted })))
+const FFGRulesReferenceGuide = lazy(() => import('./views/FFGRulesReferenceGuide').then(m => ({ default: m.FFGRulesReferenceGuide })))
+const OpLists = lazy(() => import('./views/OpLists').then(m => ({ default: m.OpLists })))
+const HelpView = lazy(() => import('./views/HelpView').then(m => ({ default: m.HelpView })))
+const EditTraitsView = lazy(() => import('./views/EditTraitsView').then(m => ({ default: m.EditTraitsView })))
+const EditFormatsView = lazy(() => import('./views/EditFormatsView').then(m => ({ default: m.EditFormatsView })))
+const ELRulesReferenceGuideNew = lazy(() => import('./views/ELRulesReferenceGuideNew').then(m => ({ default: m.ELRulesReferenceGuideNew })))
+
+const AuthenticatedRoute = (props: { children: JSX.Element }) => {
   const { isLoggedIn } = useCurrentUser()
-  return (
-    <Route path={props.path} render={() => (isLoggedIn() ? props.children : <NotLoggedIn />)} />
-  )
+  return isLoggedIn() ? props.children : <NotLoggedIn />
 }
 
-const DataAdminRoute = (props: { children: JSX.Element; path: string }) => {
+const DataAdminRoute = (props: { children: JSX.Element }) => {
   const { isDataAdmin } = useCurrentUser()
-  return (
-    <Route path={props.path} render={() => (isDataAdmin() ? props.children : <NotPermitted />)} />
-  )
+  return isDataAdmin() ? props.children : <NotPermitted />
 }
 
 export function Routes(): JSX.Element {
-  const history = useHistory()
+  const location = useLocation()
   useEffect(() => {
-    history.listen(() => {
-      const host = window.location.host
-      const prefix = host.includes('localhost') ? 'LOCAL' : host.includes('beta-') ? 'BETA' : ''
-      const title = `${prefix} EmeraldDB`
-      document.title = title
-    })
-  }, [])
+    const host = window.location.host
+    const prefix = host.includes('localhost') ? 'LOCAL' : host.includes('beta-') ? 'BETA' : ''
+    const title = `${prefix} EmeraldDB`
+    document.title = title
+  }, [location])
   return (
-    <Switch>
-      <Route path="/cards">
-        <CardsView />
-      </Route>
-      <Route path="/rules/imperial">
-        <FFGRulesReferenceGuide />
-      </Route>
-      <Route path="/rules/emerald">
-        <ELRulesReferenceGuideNew />
-      </Route>
-      <Route path="/rules/organized-play/:format">
-        <OpLists />
-      </Route>
-      <Route path="/rules/organized-play">
-        <OpLists />
-      </Route>
-      <Route path="/rules">
-        <Redirect to="/rules/emerald" />
-      </Route>
-      <Route path="/faq">
-        <HelpView />
-      </Route>
-      <Route path="/decks/:id">
-        <DeckDetailView />
-      </Route>
-      <Route path="/decks">
-        <DecksView />
-      </Route>
-      <AuthenticatedRoute path="/builder/create/new">
-        <CreateDeckView />
-      </AuthenticatedRoute>
-      <AuthenticatedRoute path="/builder/:id/edit">
-        <EditDeckView />
-      </AuthenticatedRoute>
-      <AuthenticatedRoute path="/builder">
-        <BuilderView />
-      </AuthenticatedRoute>
-      <DataAdminRoute path="/card/:id/edit">
-        <EditCardView />
-      </DataAdminRoute>
-      <DataAdminRoute path="/card/create/new">
-        <CreateCardView />
-      </DataAdminRoute>
-      <DataAdminRoute path="/admin/pack/:id">
-        <EditPackView />
-      </DataAdminRoute>
-      <DataAdminRoute path="/admin/cycles">
-        <ManageCyclesView />
-      </DataAdminRoute>
-      <DataAdminRoute path="/admin/traits">
-        <EditTraitsView />
-      </DataAdminRoute>
-      <DataAdminRoute path="/admin/formats">
-        <EditFormatsView />
-      </DataAdminRoute>
-      <DataAdminRoute path="/admin">
-        <AdminView />
-      </DataAdminRoute>
-      <Route path="/card/:id">
-        <CardDetailView />
-      </Route>
-    </Switch>
+    <Suspense fallback={<Loading />}>
+      <RouterRoutes>
+        <Route path="/cards" element={<CardsView />} />
+        <Route path="/rules/imperial" element={<FFGRulesReferenceGuide />} />
+        <Route path="/rules/emerald" element={<ELRulesReferenceGuideNew />} />
+        <Route path="/rules/organized-play/:format" element={<OpLists />} />
+        <Route path="/rules/organized-play" element={<OpLists />} />
+        <Route path="/rules" element={<Navigate to="/rules/emerald" replace />} />
+        <Route path="/faq" element={<HelpView />} />
+        <Route path="/decks/:id" element={<DeckDetailView />} />
+        <Route path="/decks" element={<DecksView />} />
+        <Route path="/builder/create/new" element={<AuthenticatedRoute><CreateDeckView /></AuthenticatedRoute>} />
+        <Route path="/builder/:id/edit" element={<AuthenticatedRoute><EditDeckView /></AuthenticatedRoute>} />
+        <Route path="/builder" element={<AuthenticatedRoute><BuilderView /></AuthenticatedRoute>} />
+        <Route path="/card/:id/edit" element={<DataAdminRoute><EditCardView /></DataAdminRoute>} />
+        <Route path="/card/create/new" element={<DataAdminRoute><CreateCardView /></DataAdminRoute>} />
+        <Route path="/admin/pack/:id" element={<DataAdminRoute><EditPackView /></DataAdminRoute>} />
+        <Route path="/admin/cycles" element={<DataAdminRoute><ManageCyclesView /></DataAdminRoute>} />
+        <Route path="/admin/traits" element={<DataAdminRoute><EditTraitsView /></DataAdminRoute>} />
+        <Route path="/admin/formats" element={<DataAdminRoute><EditFormatsView /></DataAdminRoute>} />
+        <Route path="/admin" element={<DataAdminRoute><AdminView /></DataAdminRoute>} />
+        <Route path="/card/:id" element={<CardDetailView />} />
+      </RouterRoutes>
+    </Suspense>
   )
 }

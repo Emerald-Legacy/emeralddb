@@ -2,6 +2,12 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" href="%PUBLIC_URL%/static/media/emeralddb.woff2" as="font" type="font/woff2" crossorigin>
+    <style>@font-face{font-family:'emeralddb';src:url('%PUBLIC_URL%/static/media/emeralddb.woff2') format('woff2');font-weight:normal;font-style:normal;font-display:optional}</style>
+
     <link rel="apple-touch-icon" sizes="57x57" href="%PUBLIC_URL%/static/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="%PUBLIC_URL%/static/apple-icon-60x60.png">
     <link rel="apple-touch-icon" sizes="72x72" href="%PUBLIC_URL%/static/apple-icon-72x72.png">
@@ -21,7 +27,8 @@
     <meta name="theme-color" content="#ffffff">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="A database and deckbuilder for Legend of the Five Rings" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="preload" href="https://fonts.googleapis.com/icon?family=Material+Icons" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"></noscript>
     <title>EmeraldDB</title>
   </head>
   <body style="background-color: #ffffff">

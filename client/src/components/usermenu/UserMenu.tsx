@@ -10,16 +10,16 @@ import {
   Menu,
   MenuItem,
   TextField,
-} from '@material-ui/core'
-import { useState } from 'react'
-import { useQueryClient } from 'react-query'
+} from '@mui/material'
+import { useState, useEffect } from 'react'
+import { useQueryClient } from '@tanstack/react-query'
 import { privateApi } from '../../api'
 import { getToken, hasAuth0Token, setToken } from '../../utils/auth'
 import { Queries } from '../HeaderBar'
 import { LoginButton } from './LoginButton'
 import { LogoutButton } from './LogoutButton'
 import { useCurrentUser } from '../../providers/UserProvider'
-import AccountCircle from '@material-ui/icons/AccountCircle'
+import AccountCircle from '@mui/icons-material/AccountCircle'
 
 export function UserMenu(props: { audience: string; scope: string }): JSX.Element {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -28,7 +28,7 @@ export function UserMenu(props: { audience: string; scope: string }): JSX.Elemen
   const [modalOpen, setModalOpen] = useState(false)
   const [modalUsername, setModalUsername] = useState<string>()
 
-  const { getAccessTokenSilently } = useAuth0();
+  const { getAccessTokenSilently, isAuthenticated, isLoading } = useAuth0();
 
   const { currentUser, setCurrentUser } = useCurrentUser()
 
@@ -41,27 +41,27 @@ export function UserMenu(props: { audience: string; scope: string }): JSX.Elemen
   const handleClose = () => {
     setAnchorEl(null)
   }
-  const getUserToken = () => {
-    try {
-      if (hasAuth0Token()) {
-        getAccessTokenSilently({
-          authorizationParams: {
-            audience: props.audience,
-            scope: props.scope,
-          },
-        }).then(accessToken => {
-          setToken(accessToken)
-          queryClient.invalidateQueries(Queries.USER)
-        })
-      }
-    } catch (e) {
-      console.log(e)
-    }
-  };
 
-  if(hasAuth0Token() && !getToken()) {
+  useEffect(() => {
+    const getUserToken = async () => {
+      try {
+        if (isAuthenticated && !isLoading && !getToken()) {
+          const accessToken = await getAccessTokenSilently({
+            authorizationParams: {
+              audience: props.audience,
+              scope: props.scope,
+            },
+          })
+          setToken(accessToken)
+          queryClient.invalidateQueries({ queryKey: [Queries.USER] })
+        }
+      } catch (e) {
+        console.error('Failed to get access token:', e)
+      }
+    }
+
     getUserToken()
-  }
+  }, [isAuthenticated, isLoading, getAccessTokenSilently, props.audience, props.scope, queryClient])
 
   if (currentUser !== undefined) {
     const updateUser = () => {
@@ -79,7 +79,7 @@ export function UserMenu(props: { audience: string; scope: string }): JSX.Elemen
           aria-haspopup="true"
           onClick={handleMenu}
           color="inherit"
-        >
+          size="large">
           <AccountCircle />
         </IconButton>
         <Menu
@@ -132,7 +132,11 @@ export function UserMenu(props: { audience: string; scope: string }): JSX.Elemen
           </DialogActions>
         </Dialog>
       </div>
-    )
+    );
+  }
+
+  if (isLoading || (isAuthenticated && !currentUser)) {
+    return <div>Loading...</div>
   }
 
   return (

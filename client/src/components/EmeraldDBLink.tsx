@@ -1,24 +1,33 @@
-import React from 'react'
-import { useHistory } from 'react-router-dom'
-import { Link } from '@material-ui/core'
+import type { ReactNode, MouseEvent } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { styled } from '@mui/material/styles'
+
+const StyledLink = styled('a')({
+  color: 'inherit',
+  textDecoration: 'none',
+  display: 'inline',
+  '&:hover': {
+    textDecoration: 'underline'
+  }
+})
 
 export function EmeraldDBLink(props: {
   href: string
   onClick?: () => void
-  children: React.ReactNode
+  children: ReactNode
   notClickable?: boolean
   openInNewTab?: boolean
+  onMouseEnter?: (event: MouseEvent<HTMLAnchorElement>) => void
+  onMouseLeave?: (event: MouseEvent<HTMLAnchorElement>) => void
 }): JSX.Element {
-  const history = useHistory()
+  const navigate = useNavigate()
 
   function goTo(route: string) {
-    history.push(route)
+    navigate(route)
   }
 
   function onLinkClick(
-    event:
-      | React.MouseEvent<HTMLSpanElement, MouseEvent>
-      | React.MouseEvent<HTMLAnchorElement, MouseEvent>
+    event: MouseEvent<HTMLAnchorElement, globalThis.MouseEvent>
   ) {
     if (!props.openInNewTab) {
       event.preventDefault()
@@ -33,14 +42,17 @@ export function EmeraldDBLink(props: {
   }
 
   return (
-    <Link
+    <StyledLink
       href={props.href}
       onClick={onLinkClick}
+      onMouseEnter={props.onMouseEnter}
+      onMouseLeave={props.onMouseLeave}
       target={props.openInNewTab ? '_blank' : '_self'}
-      color="inherit"
-      underline="none"
+      style={{
+        cursor: props.notClickable ? 'default' : 'pointer'
+      }}
     >
       {props.children}
-    </Link>
+    </StyledLink>
   )
 }

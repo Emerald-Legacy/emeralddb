@@ -5,19 +5,20 @@ import {
   Checkbox,
   FormControlLabel,
   Grid,
-  GridList,
-  GridListTile,
+  ImageList,
+  ImageListItem,
   Paper,
   TextField,
   useMediaQuery,
-} from '@material-ui/core'
-import lodash from 'lodash'
-import { useState } from 'react'
+} from '@mui/material'
+import min from 'lodash/min'
+import { useState, useMemo, useRef } from 'react'
+import { useVirtualizer } from '@tanstack/react-virtual'
 import { useUiStore } from '../../providers/UiStoreProvider'
 import { convertTraitList } from '../../utils/cardTextUtils'
 import { applyFilters, CardFilter, FilterState } from '../CardFilter'
 import { ColumnData, TableCardData, VirtualizedCardTable } from './VirtualizedCardTable'
-import Autocomplete from '@material-ui/lab/Autocomplete'
+import Autocomplete from '@mui/material/Autocomplete'
 import { CardQuantitySelector } from './CardQuantitySelector'
 import { CardImageOrText } from '../card/CardImageOrText'
 
@@ -99,10 +100,13 @@ export function BuilderCardList(props: {
 
   const defaultDeckLimit = props.format === 'skirmish' || props.format === 'obsidian' ? 2 : 3
 
-  let filteredCards = props.prefilteredCards
-  if (filter) {
-    filteredCards = applyFilters(filteredCards, relevantFormats, filter)
-  }
+  const filteredAndSortedCards = useMemo(() => {
+    let filtered = props.prefilteredCards
+    if (filter) {
+      filtered = applyFilters(props.prefilteredCards, relevantFormats, filter)
+    }
+    return sortCards(filtered)
+  }, [props.prefilteredCards, relevantFormats, filter, sortMode, order])
 
   function changeCardQuantity(cardId: string, quantity: number) {
     if (quantity > 0) {
@@ -159,13 +163,11 @@ export function BuilderCardList(props: {
     })
   }
 
-  filteredCards = sortCards(filteredCards)
-
-  const tableData: TableCardData[] = filteredCards.map((card) => {
+  const tableData: TableCardData[] = filteredAndSortedCards.map((card) => {
     return {
       quantityForId: {
         quantity: selectedCards[card.id] || 0,
-        deckLimit: lodash.min([card.deck_limit, defaultDeckLimit]) || defaultDeckLimit,
+        deckLimit: min([card.deck_limit, defaultDeckLimit]) || defaultDeckLimit,
         onQuantityChange: (newQuantity: number) => changeCardQuantity(card.id, newQuantity),
       },
       nameFactionType: {
@@ -220,7 +222,7 @@ export function BuilderCardList(props: {
 
   const columns: ColumnData[] = [
     {
-      width: 140,
+      width: 90,
       label: 'Quantity',
       columnType: 'quantityForId',
     },
@@ -230,12 +232,12 @@ export function BuilderCardList(props: {
       columnType: 'nameFactionType',
     },
     {
-      width: 45,
+      width: 30,
       label: '',
       columnType: 'influenceAndFaction',
     },
     {
-      width: 70,
+      width: 50,
       label: 'Cost',
       columnType: 'cost',
     },
@@ -243,7 +245,7 @@ export function BuilderCardList(props: {
 
   if (!isSmOrSmaller && showTraits) {
     columns.push({
-      width: 280,
+      width: 0,
       label: 'Traits',
       columnType: 'traits',
     })
@@ -282,9 +284,9 @@ export function BuilderCardList(props: {
           deckbuilder
         />
       )}
-      <Paper style={{ paddingTop: 10 }}>
-        <Grid container>
-          <Grid item xs={12} md={4} style={{ padding: '0 5px' }}>
+      <Paper style={{ padding: '10px 16px', marginTop: showFilters ? 8 : 0 }}>
+        <Grid container spacing={1.5}>
+          <Grid size={{ xs: 12, md: 4 }}>
             <Autocomplete
               id="combo-box-displayMode"
               autoHighlight
@@ -302,7 +304,7 @@ export function BuilderCardList(props: {
               onChange={(e, value) => setDisplayMode(value?.mode || DisplayMode.LIST)}
             />
           </Grid>
-          <Grid item xs={12} md={4} style={{ padding: '0 5px' }}>
+          <Grid size={{ xs: 12, md: 4 }}>
             {showFilters ? (
               <Button
                 variant="contained"
@@ -323,7 +325,7 @@ export function BuilderCardList(props: {
               </Button>
             )}
           </Grid>
-          <Grid item xs={12} md={4} style={{ padding: '0 5px' }}>
+          <Grid size={{ xs: 12, md: 4 }}>
             <FormControlLabel
               control={
                 <Checkbox
@@ -332,10 +334,10 @@ export function BuilderCardList(props: {
                   name="checkedA"
                 />
               }
-              label="Show Illegal Deck Cards"
+              label="Show Illegal Cards"
             />
           </Grid>
-          <Grid item xs={12} md={4} style={{ padding: '0 5px' }}>
+          <Grid size={{ xs: 12, md: 4 }}>
             <Autocomplete
               id="combo-box-sortMode"
               autoHighlight
@@ -353,7 +355,7 @@ export function BuilderCardList(props: {
               onChange={(e, value) => setSortMode(value?.mode || SortMode.NAME)}
             />
           </Grid>
-          <Grid item xs={12} md={4} style={{ padding: '0 5px' }}>
+          <Grid size={{ xs: 12, md: 4 }}>
             <Autocomplete
               id="combo-box-sortOrder"
               options={['Ascending', 'Descending']}
@@ -366,7 +368,7 @@ export function BuilderCardList(props: {
             />
           </Grid>
           {!isSmOrSmaller && displayMode === DisplayMode.LIST && (
-            <Grid item xs={12} md={4} style={{ padding: '0 5px' }}>
+            <Grid size={{ xs: 12, md: 4 }}>
               {showTraits ? (
                 <Button
                   variant="contained"
@@ -388,42 +390,117 @@ export function BuilderCardList(props: {
               )}
             </Grid>
           )}
-          <Grid item xs={12} style={{ height: 830 }}>
+          <Grid style={{ height: 830 }} size={12}>
             {displayMode === DisplayMode.LIST && (
               <VirtualizedCardTable
-                rowCount={filteredCards.length}
+                rowCount={filteredAndSortedCards.length}
                 rowGetter={({ index }) => tableData[index]}
                 columns={columns}
               />
             )}
-            {displayMode === DisplayMode.IMAGES && (
-              <GridList
-                cols={isSmOrSmaller ? 2 : 4}
-                cellHeight={270}
-                style={{ height: '100%', marginTop: 10 }}
-              >
-                {tableData.map((card) => {
-                  return (
-                    <GridListTile key={card.nameFactionType.cardId} cols={1}>
-                      <CardImageOrText cardId={card.nameFactionType.cardId} cardVersion={validCardVersionForFormat(card.nameFactionType.cardId, props.format)}/>
-                      <Box
-                        marginTop={'-20px'}
-                        style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-                      >
-                        <CardQuantitySelector
-                          deckLimit={card.quantityForId.deckLimit}
-                          quantity={card.quantityForId.quantity}
-                          onQuantityChange={card.quantityForId.onQuantityChange}
-                        />
-                      </Box>
-                    </GridListTile>
-                  )
-                })}
-              </GridList>
-            )}
+            {displayMode === DisplayMode.IMAGES && <VirtualizedCardImages tableData={tableData} isSmOrSmaller={isSmOrSmaller} format={props.format} validCardVersionForFormat={validCardVersionForFormat} />}
           </Grid>
         </Grid>
       </Paper>
     </>
+  )
+}
+
+// Virtualized card images component for better performance with large card lists
+function VirtualizedCardImages(props: {
+  tableData: TableCardData[]
+  isSmOrSmaller: boolean
+  format: string
+  validCardVersionForFormat: (cardId: string, formatId: string) => any
+}): JSX.Element {
+  const parentRef = useRef<HTMLDivElement>(null)
+  const cols = props.isSmOrSmaller ? 2 : 4
+  const cardWidth = 200
+  const cardHeight = 290 // 270 + 20 for quantity selector
+
+  // Create virtual rows based on number of columns
+  const rowCount = Math.ceil(props.tableData.length / cols)
+
+  const rowVirtualizer = useVirtualizer({
+    count: rowCount,
+    getScrollElement: () => parentRef.current,
+    estimateSize: () => cardHeight,
+    overscan: 2, // Render 2 extra rows as buffer for smooth scrolling
+  })
+
+  return (
+    <div
+      ref={parentRef}
+      style={{
+        height: '100%',
+        width: '100%',
+        overflow: 'auto',
+        marginTop: 10,
+      }}
+    >
+      <div
+        style={{
+          height: `${rowVirtualizer.getTotalSize()}px`,
+          width: '100%',
+          position: 'relative',
+        }}
+      >
+        {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+          const startIdx = virtualRow.index * cols
+          const rowCards = props.tableData.slice(startIdx, startIdx + cols)
+
+          return (
+            <div
+              key={virtualRow.key}
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: `${virtualRow.size}px`,
+                transform: `translateY(${virtualRow.start}px)`,
+                display: 'grid',
+                gridTemplateColumns: `repeat(${cols}, 1fr)`,
+                gap: '8px',
+                padding: '0 8px',
+              }}
+            >
+              {rowCards.map((card) => (
+                <div
+                  key={card.nameFactionType.cardId}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                  }}
+                >
+                  <CardImageOrText
+                    cardId={card.nameFactionType.cardId}
+                    cardVersion={props.validCardVersionForFormat(
+                      card.nameFactionType.cardId,
+                      props.format
+                    )}
+                  />
+                  <Box
+                    marginTop={'-20px'}
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <CardQuantitySelector
+                      deckLimit={card.quantityForId.deckLimit}
+                      quantity={card.quantityForId.quantity}
+                      onQuantityChange={card.quantityForId.onQuantityChange}
+                    />
+                  </Box>
+                </div>
+              ))}
+            </div>
+          )
+        })}
+      </div>
+    </div>
   )
 }

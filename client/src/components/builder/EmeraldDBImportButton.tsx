@@ -7,7 +7,7 @@ import {
   DialogTitle,
   TextField,
   useMediaQuery,
-} from '@material-ui/core'
+} from '@mui/material'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
 
@@ -57,7 +57,7 @@ export function EmeraldDBImportButton(props: {
       <Button variant="contained" color="secondary" fullWidth onClick={() => setModalOpen(true)}>
         Import from EmeraldDB
       </Button>
-      <Dialog open={modalOpen} onClose={() => setModalOpen(false)}>
+      <Dialog open={modalOpen} onClose={() => setModalOpen(false)} disableScrollLock>
         <DialogTitle>Import from EmeraldDB</DialogTitle>
         <DialogContent>
           <TextField

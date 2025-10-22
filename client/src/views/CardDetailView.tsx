@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { styled } from '@mui/material/styles';
 import {
   Button,
   Container,
@@ -6,10 +7,13 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  Grid, makeStyles, Tab, Tabs,
-  TextField, Typography
-} from "@material-ui/core";
-import { useHistory, useParams } from 'react-router-dom'
+  Grid,
+  Tab,
+  Tabs,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { useNavigate, useParams } from 'react-router-dom'
 import { EmptyState } from '../components/EmptyState'
 import { Loading } from '../components/Loading'
 import { RequestError } from '../components/RequestError'
@@ -18,28 +22,40 @@ import { CardInformation } from '../components/card/CardInformation'
 import { CardInPack } from '@5rdb/api'
 import { useCurrentUser } from '../providers/UserProvider'
 import { RulingList } from '../components/RulingList'
-import Autocomplete from '@material-ui/lab/Autocomplete'
+import Autocomplete from '@mui/material/Autocomplete'
 import { useUiStore } from '../providers/UiStoreProvider'
 import { privateApi } from '../api'
 import { useConfirm } from 'material-ui-confirm'
 import { useSnackbar } from 'notistack'
 import { toSlugId } from '../utils/slugIdUtils'
 
-const useStyles = makeStyles((theme) => ({
-  unselected: {
+const PREFIX = 'CardDetailView';
+
+const classes = {
+  unselected: `${PREFIX}-unselected`,
+  selected: `${PREFIX}-selected`
+};
+
+const StyledContainer = styled(Container)((
+  {
+    theme
+  }
+) => ({
+  [`& .${classes.unselected}`]: {
     borderColor: 'lightgrey',
   },
-  selected: {
+
+  [`& .${classes.selected}`]: {
     borderColor: theme.palette.primary.main,
     backgroundColor: theme.palette.secondary.light,
     color: theme.palette.secondary.contrastText,
   }
-}))
+}));
 
 export function CardDetailView(): JSX.Element {
   const params = useParams<{ id: string }>()
   const { cards, packs } = useUiStore()
-  const [data] = useCard(params.id)
+  const [data] = useCard(params.id!)
   const [chosenVersionIndex, setChosenVersionIndex] = useState(0)
   const [chosenVersion, setChosenVersion] = useState<Omit<CardInPack, 'card_id'>>()
   const [deletionModalOpen, setDeletionModalOpen] = useState(false)
@@ -51,8 +67,8 @@ export function CardDetailView(): JSX.Element {
   const { isDataAdmin } = useCurrentUser()
   const confirm = useConfirm()
   const { enqueueSnackbar } = useSnackbar()
-  const classes = useStyles()
-  const history = useHistory()
+
+  const navigate = useNavigate()
 
 
   useEffect(() => {
@@ -101,9 +117,9 @@ export function CardDetailView(): JSX.Element {
         })
           .then(() => {
             if (deletionReplacementCardId) {
-              history.push(`/card/${deletionReplacementCardId}`)
+              navigate(`/card/${deletionReplacementCardId}`)
             } else {
-              history.push('/cards')
+              navigate('/cards')
             }
             setDeletionModalOpen(false)
           })
@@ -130,7 +146,7 @@ export function CardDetailView(): JSX.Element {
           },
         })
           .then(() => {
-            history.push(`/card/${newCardId}`)
+            navigate(`/card/${newCardId}`)
             setRenameModalOpen(false)
           })
           .catch((error) => {
@@ -144,15 +160,15 @@ export function CardDetailView(): JSX.Element {
   }
 
   return (
-    <Container style={{paddingTop: '5px'}}>
+    <StyledContainer style={{paddingTop: '5px'}}>
       <Grid container spacing={5}>
-        <Grid item xs={12} md={7}>
+        <Grid size={{ xs: 12, md: 7 }}>
           <CardInformation
             cardWithVersions={card}
             currentVersion={chosenVersion}
           />
           {card.versions.length > 1 && (
-            <Grid item xs={12}>
+            <Grid size={12}>
               <Tabs
                 TabIndicatorProps={{
                   style: {
@@ -181,19 +197,19 @@ export function CardDetailView(): JSX.Element {
           )}
           <RulingList cardId={card.id} rulings={card.rulings} />
         </Grid>
-        <Grid item xs={12} md={5} container spacing={0}>
+        <Grid container spacing={0} size={{ xs: 12, md: 5 }}>
           {chosenVersion && (
-            <Grid item xs={12}>
+            <Grid size={12}>
               <img src={chosenVersion.image_url || ''} style={{ maxWidth: imageWidth }} />
             </Grid>
           )}
           {isDataAdmin() && (
-            <Grid item xs={12}>
+            <Grid size={12}>
               <Button
                 variant="contained"
                 color="secondary"
                 fullWidth
-                onClick={() => history.push(`/card/${card.id}/edit`)}
+                onClick={() => navigate(`/card/${card.id}/edit`)}
                 style={{ marginTop: 10, maxWidth: imageWidth }}
               >
                 Edit this Card
@@ -201,7 +217,7 @@ export function CardDetailView(): JSX.Element {
             </Grid>
           )}
           {isDataAdmin() && (
-            <Grid item xs={12}>
+            <Grid size={12}>
               <Button
                 variant="contained"
                 color="secondary"
@@ -214,7 +230,7 @@ export function CardDetailView(): JSX.Element {
             </Grid>
           )}
           {isDataAdmin() && (
-            <Grid item xs={12}>
+            <Grid size={12}>
               <Button
                 variant="contained"
                 color="secondary"
@@ -228,15 +244,15 @@ export function CardDetailView(): JSX.Element {
           )}
         </Grid>
       </Grid>
-      <Dialog open={deletionModalOpen} onClose={() => setDeletionModalOpen(false)}>
+      <Dialog open={deletionModalOpen} onClose={() => setDeletionModalOpen(false)} disableScrollLock>
         <DialogTitle>Delete Card {card.name}</DialogTitle>
         <DialogContent>
           <Grid container spacing={1}>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <Autocomplete
                 id="combo-box-cardId"
                 autoHighlight
-                options={cards}
+                options={[...cards].sort((a, b) => a.id.localeCompare(b.id))}
                 getOptionLabel={(option) => `${option.id}`}
                 value={cards.find((item) => item.id === deletionReplacementCardId) || null}
                 renderInput={(params) => (
@@ -258,11 +274,11 @@ export function CardDetailView(): JSX.Element {
           </Button>
         </DialogActions>
       </Dialog>
-      <Dialog open={renameModalOpen} onClose={() => setRenameModalOpen(false)}>
+      <Dialog open={renameModalOpen} onClose={() => setRenameModalOpen(false)} disableScrollLock>
         <DialogTitle>Rename Card {card.name}</DialogTitle>
         <DialogContent>
           <Grid container spacing={1}>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 required
                 id="name"
@@ -271,7 +287,7 @@ export function CardDetailView(): JSX.Element {
                 onChange={(e) => setNameAndGenerateId(e.target.value)}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 id="name_extra"
                 label="Name Extra"
@@ -279,7 +295,7 @@ export function CardDetailView(): JSX.Element {
                 onChange={(e) => setNameExtraAndGenerateId(e.target.value)}
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <TextField
                 disabled
                 InputLabelProps={{ shrink: true }}
@@ -301,6 +317,6 @@ export function CardDetailView(): JSX.Element {
           </Button>
         </DialogActions>
       </Dialog>
-    </Container>
-  )
+    </StyledContainer>
+  );
 }

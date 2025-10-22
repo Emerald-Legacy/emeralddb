@@ -1,5 +1,6 @@
 import { Card, Trait } from '@5rdb/api'
-import { Fab, Grid, makeStyles, Switch, TextField, Typography } from '@material-ui/core'
+import { styled } from '@mui/material/styles';
+import { Fab, Grid, Switch, TextField, Typography } from '@mui/material';
 import React, { useState } from 'react'
 import {
   sides,
@@ -11,18 +12,28 @@ import {
   roleRestrictions,
   elements as allElements,
 } from '../../utils/enums'
-import Autocomplete from '@material-ui/lab/Autocomplete'
+import Autocomplete from '@mui/material/Autocomplete'
 import { CardTextEditor } from '../card/CardTextEditor'
 import { MultiCheckbox } from '../card/FormatCheckbox'
 import { useUiStore } from '../../providers/UiStoreProvider'
-import SaveIcon from '@material-ui/icons/Save'
+import SaveIcon from '@mui/icons-material/Save'
 import { useConfirm } from 'material-ui-confirm'
 import { privateApi } from '../../api'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { toSlugId } from '../../utils/slugIdUtils'
 
-const useStyles = makeStyles((theme) => ({
-  fab: {
+const PREFIX = 'CardEditor';
+
+const classes = {
+  fab: `${PREFIX}-fab`
+};
+
+const Root = styled('form')((
+  {
+    theme
+  }
+) => ({
+  [`& .${classes.fab}`]: {
     margin: '0px',
     top: 'auto',
     right: theme.spacing(2),
@@ -30,11 +41,11 @@ const useStyles = makeStyles((theme) => ({
     left: 'auto',
     position: 'fixed',
     zIndex: 100,
-  },
-}))
+  }
+}));
 
 export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): JSX.Element {
-  const history = useHistory()
+  const navigate = useNavigate()
   const existingCard = props.existingCard
   const uiStore = useUiStore()
   const allTraits = uiStore.traits
@@ -70,7 +81,7 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
 
   const [isSplashable, setIsSplashable] = useState(influence_cost !== null)
   const [influenceRequired, setInfluenceRequired] = useState(isSplashable)
-  const classes = useStyles()
+
   const confirm = useConfirm()
 
   const setIdFromNameAndExtra = (name: string | undefined, name_extra: string | undefined) => {
@@ -326,8 +337,8 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
             const newCard = assembleCard()
             privateApi.Card.update({ cardId: newCard.id, body: newCard })
               .then(() => {
-                uiStore.toggleReload()
-                history.push(`/card/${newCard.id}`)
+                uiStore.invalidateData()
+                navigate(`/card/${newCard.id}`)
               })
               .catch((error) => {
                 console.log(error)
@@ -347,8 +358,8 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
           const newCard = assembleCard()
           privateApi.Card.create({ body: newCard })
             .then(() => {
-              uiStore.toggleReload()
-              history.push(`/card/${newCard.id}`)
+              uiStore.invalidateData()
+              navigate(`/card/${newCard.id}`)
             })
             .catch((error) => {
               console.log(error)
@@ -362,7 +373,7 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
   }
 
   return (
-    <form>
+    <Root>
       <Grid container spacing={3}>
         <Fab
           variant="extended"
@@ -373,12 +384,12 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
           <SaveIcon />
           Save Changes
         </Fab>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <Typography variant="h6">Name and ID</Typography>
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 disabled={props.editMode}
                 required
@@ -388,7 +399,7 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
                 onChange={(e) => setNameAndGenerateId(e.target.value)}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 disabled={props.editMode}
                 id="name_extra"
@@ -397,7 +408,7 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
                 onChange={(e) => setNameExtraAndGenerateId(e.target.value)}
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <TextField
                 disabled
                 InputLabelProps={{ shrink: true }}
@@ -411,14 +422,14 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
           </Grid>
         </Grid>
 
-        <Grid item xs={12}>
+        <Grid size={12}>
           <Typography variant="h6">General Card Information</Typography>
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <Grid container spacing={3}>
-            <Grid item xs={12} md={6}>
+            <Grid size={{ xs: 12, md: 6 }}>
               <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
+                <Grid size={{ xs: 12, sm: 6 }}>
                   <Autocomplete
                     id="combo-box-faction"
                     autoHighlight
@@ -437,7 +448,7 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
                     }}
                   />
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                <Grid size={{ xs: 12, sm: 6 }}>
                   <Autocomplete
                     id="combo-box-type"
                     autoHighlight
@@ -451,7 +462,7 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
                     onChange={(e, value) => setType(value?.id || '')}
                   />
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                <Grid size={{ xs: 12, sm: 6 }}>
                   <Autocomplete
                     id="combo-box-side"
                     autoHighlight
@@ -478,7 +489,7 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
                     }}
                   />
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                <Grid size={{ xs: 12, sm: 6 }}>
                   <Autocomplete
                     id="combo-box-role-restrictions"
                     autoHighlight
@@ -492,13 +503,13 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
                     onChange={(e, value) => setRoleRestictions(value.map((item) => item.id))}
                   />
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                <Grid size={{ xs: 12, sm: 6 }}>
                   <Typography>
                     <b>Is Unique:</b>
                     <Switch checked={is_unique} onChange={(e) => setIsUnique(e.target.checked)} />
                   </Typography>
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                <Grid size={{ xs: 12, sm: 6 }}>
                   <TextField
                     required
                     id="deck_limit"
@@ -511,12 +522,12 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
                     onChange={(e) => setDeckLimit(Number.parseInt(e.target.value))}
                   />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid size={12}>
                   <Autocomplete
                     id="combo-box-traits"
                     autoHighlight
                     multiple
-                    options={allTraits}
+                    options={[...allTraits].sort((a, b) => a.name.localeCompare(b.name))}
                     getOptionLabel={(option) => option.name}
                     value={findTraits(traits)}
                     renderInput={(params) => (
@@ -527,14 +538,14 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
                 </Grid>
               </Grid>
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid size={{ xs: 12, md: 6 }}>
               <CardTextEditor
                 text={text || ''}
                 onChange={(text: string) => setText(text)}
                 faction={faction}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
               <MultiCheckbox
                 label="Restricted In"
                 items={uiStore.relevantFormats}
@@ -542,7 +553,7 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
                 defaultItems={restricted_in}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
               <MultiCheckbox
                 label="Banned In"
                 items={uiStore.relevantFormats}
@@ -550,7 +561,7 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
                 defaultItems={banned_in}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
               <MultiCheckbox
                 label="Playable In"
                 items={clans}
@@ -561,12 +572,12 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
           </Grid>
         </Grid>
         {side === 'conflict' && (
-          <Grid item xs={12}>
+          <Grid size={12}>
             <Grid container spacing={2}>
-              <Grid item xs={12}>
+              <Grid size={12}>
                 <Typography variant="h6">Conflict Card Information</Typography>
               </Grid>
-              <Grid item xs={12} sm={4}>
+              <Grid size={{ xs: 12, sm: 4 }}>
                 <MultiCheckbox
                   label="Splash Banned In"
                   items={uiStore.relevantFormats}
@@ -574,7 +585,7 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
                   defaultItems={splash_banned_in}
                 />
               </Grid>
-              <Grid item xs={12} sm={4}>
+              <Grid size={{ xs: 12, sm: 4 }}>
                 <Typography>
                   <b>Is Splashable:</b>
                   <Switch
@@ -584,7 +595,7 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
                   />
                 </Typography>
               </Grid>
-              <Grid item xs={12} sm={4}>
+              <Grid size={{ xs: 12, sm: 4 }}>
                 <TextField
                   required={influenceRequired}
                   disabled={faction === 'shadowlands' || !isSplashable}
@@ -612,12 +623,12 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
           </Grid>
         )}
         {type === 'event' && (
-          <Grid item xs={12}>
+          <Grid size={12}>
             <Grid container spacing={2}>
-              <Grid item xs={12}>
+              <Grid size={12}>
                 <Typography variant="h6">Event Card Information</Typography>
               </Grid>
-              <Grid item xs={12} sm={3}>
+              <Grid size={{ xs: 12, sm: 3 }}>
                 <TextField
                   id="cost"
                   label="Cost"
@@ -632,12 +643,12 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
           </Grid>
         )}
         {type === 'attachment' && (
-          <Grid item xs={12}>
+          <Grid size={12}>
             <Grid container spacing={2}>
-              <Grid item xs={12}>
+              <Grid size={12}>
                 <Typography variant="h6">Attachment Card Information</Typography>
               </Grid>
-              <Grid item xs={12} sm={3}>
+              <Grid size={{ xs: 12, sm: 3 }}>
                 <TextField
                   id="cost"
                   label="Cost"
@@ -648,7 +659,7 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
                   onChange={(e) => setCost(e.target.value)}
                 />
               </Grid>
-              <Grid item xs={12} sm={3}>
+              <Grid size={{ xs: 12, sm: 3 }}>
                 <TextField
                   id="military_bonus"
                   label="Military Bonus"
@@ -659,7 +670,7 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
                   onChange={(e) => setMilitaryBonus(e.target.value)}
                 />
               </Grid>
-              <Grid item xs={12} sm={3}>
+              <Grid size={{ xs: 12, sm: 3 }}>
                 <TextField
                   id="political_bonus"
                   label="Political Bonus"
@@ -674,12 +685,12 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
           </Grid>
         )}
         {type === 'character' && (
-          <Grid item xs={12}>
+          <Grid size={12}>
             <Grid container spacing={2}>
-              <Grid item xs={12}>
+              <Grid size={12}>
                 <Typography variant="h6">Character Card Information</Typography>
               </Grid>
-              <Grid item xs={12} sm={3}>
+              <Grid size={{ xs: 12, sm: 3 }}>
                 <TextField
                   id="cost"
                   label="Cost"
@@ -690,7 +701,7 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
                   onChange={(e) => setCost(e.target.value)}
                 />
               </Grid>
-              <Grid item xs={12} sm={3}>
+              <Grid size={{ xs: 12, sm: 3 }}>
                 <TextField
                   id="military"
                   label="Military Skill"
@@ -701,7 +712,7 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
                   onChange={(e) => setMilitary(e.target.value)}
                 />
               </Grid>
-              <Grid item xs={12} sm={3}>
+              <Grid size={{ xs: 12, sm: 3 }}>
                 <TextField
                   id="political"
                   label="Political Skill"
@@ -712,7 +723,7 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
                   onChange={(e) => setPolitical(e.target.value)}
                 />
               </Grid>
-              <Grid item xs={12} sm={3}>
+              <Grid size={{ xs: 12, sm: 3 }}>
                 <TextField
                   required
                   id="glory"
@@ -729,12 +740,12 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
           </Grid>
         )}
         {type === 'province' && (
-          <Grid item xs={12}>
+          <Grid size={12}>
             <Grid container spacing={2}>
-              <Grid item xs={12}>
+              <Grid size={12}>
                 <Typography variant="h6">Province Card Information</Typography>
               </Grid>
-              <Grid item xs={12} sm={4}>
+              <Grid size={{ xs: 12, sm: 4 }}>
                 <TextField
                   id="strength"
                   label="Strength"
@@ -745,7 +756,7 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
                   onChange={(e) => setStrength(e.target.value)}
                 />
               </Grid>
-              <Grid item xs={12} sm={4}>
+              <Grid size={{ xs: 12, sm: 4 }}>
                 <MultiCheckbox
                   label="Elements"
                   items={allElements}
@@ -757,12 +768,12 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
           </Grid>
         )}
         {type === 'holding' && (
-          <Grid item xs={12}>
+          <Grid size={12}>
             <Grid container spacing={2}>
-              <Grid item xs={12}>
+              <Grid size={12}>
                 <Typography variant="h6">Holding Card Information</Typography>
               </Grid>
-              <Grid item xs={12} sm={3}>
+              <Grid size={{ xs: 12, sm: 3 }}>
                 <TextField
                   required
                   id="strength_bonus"
@@ -778,12 +789,12 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
           </Grid>
         )}
         {type === 'stronghold' && (
-          <Grid item xs={12}>
+          <Grid size={12}>
             <Grid container spacing={2}>
-              <Grid item xs={12}>
+              <Grid size={12}>
                 <Typography variant="h6">Stronghold Card Information</Typography>
               </Grid>
-              <Grid item xs={12} sm={3}>
+              <Grid size={{ xs: 12, sm: 3 }}>
                 <TextField
                   required
                   id="strength_bonus"
@@ -795,7 +806,7 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
                   onChange={(e) => setStrengthBonus(e.target.value)}
                 />
               </Grid>
-              <Grid item xs={12} sm={3}>
+              <Grid size={{ xs: 12, sm: 3 }}>
                 <TextField
                   required
                   id="fate"
@@ -808,7 +819,7 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
                   onChange={(e) => setFate(Number.parseInt(e.target.value))}
                 />
               </Grid>
-              <Grid item xs={12} sm={3}>
+              <Grid size={{ xs: 12, sm: 3 }}>
                 <TextField
                   required
                   id="influence_pool"
@@ -823,7 +834,7 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
                   onChange={(e) => setInfluencePool(Number.parseInt(e.target.value))}
                 />
               </Grid>
-              <Grid item xs={12} sm={3}>
+              <Grid size={{ xs: 12, sm: 3 }}>
                 <TextField
                   required
                   id="honor"
@@ -840,12 +851,12 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
           </Grid>
         )}
         {type === 'warlord' && (
-          <Grid item xs={12}>
+          <Grid size={12}>
             <Grid container spacing={2}>
-              <Grid item xs={12}>
+              <Grid size={12}>
                 <Typography variant="h6">Warlord Card Information</Typography>
               </Grid>
-              <Grid item xs={12} sm={3}>
+              <Grid size={{ xs: 12, sm: 3 }}>
                 <TextField
                   required
                   id="fate_and_cost"
@@ -861,7 +872,7 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
                   }}
                 />
               </Grid>
-              <Grid item xs={12} sm={3}>
+              <Grid size={{ xs: 12, sm: 3 }}>
                 <TextField
                   id="military"
                   label="Military Skill"
@@ -872,7 +883,7 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
                   onChange={(e) => setMilitary(e.target.value)}
                 />
               </Grid>
-              <Grid item xs={12} sm={3}>
+              <Grid size={{ xs: 12, sm: 3 }}>
                 <TextField
                   id="political"
                   label="Political Skill"
@@ -883,7 +894,7 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
                   onChange={(e) => setPolitical(e.target.value)}
                 />
               </Grid>
-              <Grid item xs={12} sm={3}>
+              <Grid size={{ xs: 12, sm: 3 }}>
                 <TextField
                   required
                   id="glory"
@@ -900,6 +911,6 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
           </Grid>
         )}
       </Grid>
-    </form>
-  )
+    </Root>
+  );
 }

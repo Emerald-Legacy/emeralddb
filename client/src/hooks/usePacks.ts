@@ -1,5 +1,5 @@
-import { createMapersmithHook } from '../utils/createMappersmithHook'
+import { createApiHook } from '../utils/createApiHook'
 import { Packs$findAll } from '@5rdb/api'
 import { publicApi } from '../api'
 
-export const usePacks = createMapersmithHook<Packs$findAll['response']>(publicApi.Pack.findAll)
+export const usePacks = createApiHook<Packs$findAll['response']>(publicApi.Pack.findAll)

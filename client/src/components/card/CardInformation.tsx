@@ -1,44 +1,61 @@
 import { Card, CardInPack, CardWithVersions } from "@5rdb/api";
-import { Box, Typography, Grid, makeStyles } from '@material-ui/core'
+import { styled } from '@mui/material/styles';
+import { Box, Typography, Grid } from '@mui/material';
 import { useUiStore } from '../../providers/UiStoreProvider'
 import { convertTraitList } from '../../utils/cardTextUtils'
 import { getColorForFactionId } from '../../utils/factionUtils'
 import { capitalize } from '../../utils/stringUtils'
 import { CardText } from './CardText'
 import { ElementSymbol } from './ElementSymbol'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
-const useStyles = makeStyles(() => ({
-  clanMon: {
+const PREFIX = 'CardInformation';
+
+const classes = {
+  clanMon: `${PREFIX}-clanMon`,
+  deckLabel: `${PREFIX}-deckLabel`,
+  stats: `${PREFIX}-stats`,
+  packInfo: `${PREFIX}-packInfo`,
+  crossedOutStats: `${PREFIX}-crossedOutStats`,
+  block: `${PREFIX}-block`
+};
+
+const StyledBox = styled(Box)(() => ({
+  [`& .${classes.clanMon}`]: {
     width: 60,
     height: 60,
     float: 'right',
   },
-  deckLabel: {
+
+  [`& .${classes.deckLabel}`]: {
     float: 'right',
     fontSize: 14,
   },
-  stats: {
+
+  [`& .${classes.stats}`]: {
     fontSize: 14,
   },
-  packInfo: {
+
+  [`& .${classes.packInfo}`]: {
     fontSize: 12,
   },
-  crossedOutStats: {
+
+  [`& .${classes.crossedOutStats}`]: {
     fontSize: 14,
     textDecoration: 'line-through',
   },
-  block: {
+
+  [`& .${classes.block}`]: {
     marginBottom: 10,
-  },
-}))
+  }
+}));
 
 export function FormattedValueOrCrossedOut(props: {
   value: string | undefined
   label: string
   icon?: string
 }): JSX.Element {
-  const classes = useStyles()
+
   if (props.value === undefined || props.value === null) {
     return (
       <Typography className={classes.crossedOutStats}>
@@ -120,7 +137,7 @@ const InfluenceElement = (props: { influence: number | undefined }) => {
 }
 
 const ElementsElement = (props: { elements: string[] }) => {
-  const classes = useStyles()
+
   return (
     <Typography className={classes.stats}>
       <b>Elements: </b>
@@ -136,8 +153,8 @@ export function CardInformation(props: {
   currentVersion?: Omit<CardInPack, 'card_id'>
   clickable?: boolean
 }): JSX.Element {
-  const history = useHistory()
-  const classes = useStyles()
+  const navigate = useNavigate()
+
   const { traits, packs } = useUiStore()
   const card = props.cardWithVersions
   const version = props.currentVersion
@@ -147,7 +164,7 @@ export function CardInformation(props: {
   const color = getColorForFactionId(card.faction)
 
   const goToCardPage = (id: string) => {
-    history.push(`/card/${id}`)
+    navigate(`/card/${id}`)
   }
 
   const getCardStatInfo = (card: Card) => {
@@ -208,9 +225,9 @@ export function CardInformation(props: {
   }
 
   return (
-    <Box border="solid 1px" padding="15px" borderRadius="3px">
+    <StyledBox border="solid 1px" padding="15px" borderRadius="3px">
       <Grid container className={classes.block}>
-        <Grid item xs={10}>
+        <Grid size={10}>
           <Typography
             variant="h5"
             style={{ color: color, cursor: props.clickable ? 'pointer' : 'default' }}
@@ -228,17 +245,17 @@ export function CardInformation(props: {
             </em>
           </Typography>
         </Grid>
-        <Grid item xs={2}>
+        <Grid size={2}>
           <img src={`/static/svg/clan/${card.faction}.svg`} className={classes.clanMon} />
         </Grid>
       </Grid>
       <Grid container className={classes.block}>
-        <Grid item xs={12}>
+        <Grid size={12}>
           {getCardStatInfo(card)}
         </Grid>
       </Grid>
       <Grid container>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <Box borderColor={color} borderLeft={5} paddingLeft="10px">
             {textLines.map((line, idx) => (
               <p key={idx}>
@@ -249,7 +266,7 @@ export function CardInformation(props: {
         </Grid>
       </Grid>
       <Grid container className={classes.block}>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <Typography className={classes.deckLabel}>
             <span>{capitalize(card.side)} Deck</span>
             {card.side === 'conflict' && (
@@ -264,7 +281,7 @@ export function CardInformation(props: {
       </Grid>
       {version && version.flavor && (
         <Grid container className={classes.block}>
-          <Grid item xs={12}>
+          <Grid size={12}>
             <Typography align="center" className={classes.stats}>
               <i>{version.flavor}</i>
             </Typography>
@@ -273,13 +290,13 @@ export function CardInformation(props: {
       )}
       {version && (
         <Grid container className={classes.block}>
-          <Grid item xs={12}>
+          <Grid size={12}>
             <Typography className={classes.packInfo}>
               {packName} #{version.position} - Illustrator: {version.illustrator || 'N/A'}
             </Typography>
           </Grid>
         </Grid>
       )}
-    </Box>
-  )
+    </StyledBox>
+  );
 }

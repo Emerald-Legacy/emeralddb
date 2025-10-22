@@ -1,8 +1,8 @@
-import { createMapersmithHook } from '../utils/createMappersmithHook'
+import { createApiHook } from '../utils/createApiHook'
 import { Decks$find } from '@5rdb/api'
 import { publicApi } from '../api'
 
-export const useDeck = createMapersmithHook<Decks$find['response'], string>(
+export const useDeck = createApiHook<Decks$find['response'], string>(
   publicApi.Deck.find,
   (deckId) => ({ deckId })
 )

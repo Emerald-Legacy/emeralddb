@@ -1,24 +1,33 @@
-import FormatItalicIcon from '@material-ui/icons/FormatItalic'
-import FormatBoldIcon from '@material-ui/icons/FormatBold'
-import KeyboardReturnIcon from '@material-ui/icons/KeyboardReturn'
-import { Button, ButtonGroup, makeStyles, Grid } from '@material-ui/core'
+import FormatItalicIcon from '@mui/icons-material/FormatItalic'
+import { styled } from '@mui/material/styles';
+import FormatBoldIcon from '@mui/icons-material/FormatBold'
+import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn'
+import { Button, ButtonGroup, Grid } from '@mui/material';
 
-const useStyles = makeStyles(() => ({
-  buttonGroup: {
+const PREFIX = 'CardTextEditorButtons';
+
+const classes = {
+  buttonGroup: `${PREFIX}-buttonGroup`,
+  icon: `${PREFIX}-icon`
+};
+
+const StyledGrid = styled(Grid)(() => ({
+  [`& .${classes.buttonGroup}`]: {
     height: 26,
     width: 26,
     marginBottom: 5,
   },
-  icon: {
+
+  [`& .${classes.icon}`]: {
     width: 26,
     height: 13,
-  },
-}))
+  }
+}));
 
 export function CardTextEditorButtons(props: {
   onClick: (tagOrNameIcon: string, isIcon: boolean) => void
 }): JSX.Element {
-  const classes = useStyles()
+
 
   const clickIcon = (iconName: string) => {
     props.onClick(iconName, true)
@@ -33,8 +42,8 @@ export function CardTextEditorButtons(props: {
   }
 
   return (
-    <Grid container spacing={1} justify="space-between">
-      <Grid item sm={3} xs={12}>
+    <StyledGrid container spacing={1} justifyContent="space-between">
+      <Grid size={{ xs: 12, sm: 3 }}>
         <ButtonGroup variant="outlined" className={classes.buttonGroup}>
           <Button onClick={() => clickTag('br')}>
             <KeyboardReturnIcon />
@@ -47,7 +56,7 @@ export function CardTextEditorButtons(props: {
           </Button>
         </ButtonGroup>
       </Grid>
-      <Grid item sm={9} xs={12}>
+      <Grid size={{ xs: 12, sm: 9 }}>
         <ButtonGroup variant="outlined" className={classes.buttonGroup}>
           <Button onClick={() => clickIcon('element-air')}>
             {getIconForIconName('element-air')}
@@ -66,7 +75,7 @@ export function CardTextEditorButtons(props: {
           </Button>
         </ButtonGroup>
       </Grid>
-      <Grid item sm={3} xs={12}>
+      <Grid size={{ xs: 12, sm: 3 }}>
         <ButtonGroup variant="outlined" className={classes.buttonGroup}>
           <Button onClick={() => clickIcon('conflict-military')}>
             {getIconForIconName('conflict-military')}
@@ -76,7 +85,7 @@ export function CardTextEditorButtons(props: {
           </Button>
         </ButtonGroup>
       </Grid>
-      <Grid item sm={9} xs={12}>
+      <Grid size={{ xs: 12, sm: 9 }}>
         <ButtonGroup variant="outlined" className={classes.buttonGroup}>
           <Button onClick={() => clickIcon('clan-crab')}>{getIconForIconName('clan-crab')}</Button>
           <Button onClick={() => clickIcon('clan-crane')}>
@@ -100,6 +109,6 @@ export function CardTextEditorButtons(props: {
           </Button>
         </ButtonGroup>
       </Grid>
-    </Grid>
-  )
+    </StyledGrid>
+  );
 }

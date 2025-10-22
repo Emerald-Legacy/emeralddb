@@ -1,5 +1,4 @@
-import React from 'react'
-import { Container } from '@material-ui/core'
+import { Container } from '@mui/material'
 
 export function RequestError(props: { requestError: string }): JSX.Element {
   return (

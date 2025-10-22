@@ -1,14 +1,14 @@
 import { getColorForFactionId } from '../../utils/factionUtils'
-import AttachFileIcon from '@material-ui/icons/AttachFile'
-import PersonIcon from '@material-ui/icons/Person'
-import FlashOnIcon from '@material-ui/icons/FlashOn'
-import HouseIcon from '@material-ui/icons/House'
-import AccountBalanceIcon from '@material-ui/icons/AccountBalance'
-import MapIcon from '@material-ui/icons/Map'
-import FlareIcon from '@material-ui/icons/Flare'
-import GavelIcon from '@material-ui/icons/Gavel'
-import HelpOutlineIcon from '@material-ui/icons/HelpOutline'
-import FlagIcon from '@material-ui/icons/Flag'
+import AttachFileIcon from '@mui/icons-material/AttachFile'
+import PersonIcon from '@mui/icons-material/Person'
+import FlashOnIcon from '@mui/icons-material/FlashOn'
+import HouseIcon from '@mui/icons-material/House'
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance'
+import MapIcon from '@mui/icons-material/Map'
+import FlareIcon from '@mui/icons-material/Flare'
+import GavelIcon from '@mui/icons-material/Gavel'
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline'
+import FlagIcon from '@mui/icons-material/Flag'
 
 const icons = [
   { type: 'attachment', icon: AttachFileIcon },
@@ -28,7 +28,9 @@ export function CardTypeIcon(props: {
   defaultColor?: string
 }): JSX.Element {
   const color = props.defaultColor || getColorForFactionId(props.faction || '')
-  const style = color ? { color: color, fontSize: 16 } : { fontSize: 16 }
+  const style = color
+    ? { color: color, fontSize: 16, verticalAlign: 'middle' }
+    : { fontSize: 16, verticalAlign: 'middle' }
   const Icon = icons.find((icon) => icon.type === props.type)?.icon || HelpOutlineIcon
 
   return <Icon style={style} />

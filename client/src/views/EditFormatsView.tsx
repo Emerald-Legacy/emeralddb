@@ -7,18 +7,18 @@ import {
   Grid, IconButton, Table, TableBody, TableCell, TableHead, TableRow,
   TextField,
   Typography
-} from "@material-ui/core";
+} from "@mui/material";
 import { Loading } from '../components/Loading'
 import { useUiStore } from '../providers/UiStoreProvider'
 import React, { useState } from 'react'
 import { Format } from "@5rdb/api";
 import { privateApi } from '../api'
 import { useSnackbar } from 'notistack'
-import EditIcon from "@material-ui/icons/Edit";
+import EditIcon from "@mui/icons-material/Edit";
 import { CycleList } from "../components/CycleList";
 
 export function EditFormatsView(): JSX.Element {
-  const { formats, toggleReload } = useUiStore()
+  const { formats, invalidateData } = useUiStore()
   const [formatId, setFormatId] = useState('')
   const [formatName, setFormatName] = useState('')
   const [legalPacks, setLegalPacks] = useState<string[]>([])
@@ -75,7 +75,7 @@ export function EditFormatsView(): JSX.Element {
       },
     })
       .then(() => {
-        toggleReload()
+        invalidateData()
         setFormatId('')
         setFormatName('')
         setLegalPacks([])
@@ -100,8 +100,8 @@ export function EditFormatsView(): JSX.Element {
   const sortedFormats = formats.sort(compareFormats)
 
   return (
-    <Grid container spacing={2} justify="center">
-      <Grid item xs={12}>
+    <Grid container spacing={2} justifyContent="center">
+      <Grid size={12}>
         <Typography variant="h6">Formats</Typography>
         <Button variant="contained" color="secondary" onClick={() => openCreateModal()}>
           Add New Format
@@ -154,7 +154,7 @@ export function EditFormatsView(): JSX.Element {
               </TableCell>
               <TableCell>{format.legal_packs?.length || 0}</TableCell>
               <TableCell>
-                <IconButton color='secondary' onClick={() => openEditModal(format)}>
+                <IconButton color='secondary' onClick={() => openEditModal(format)} size="large">
                   <EditIcon />
                 </IconButton>
               </TableCell>
@@ -166,7 +166,7 @@ export function EditFormatsView(): JSX.Element {
         <DialogTitle>Edit Format</DialogTitle>
         <DialogContent>
           <Grid container spacing={1}>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <TextField
                 value={position}
                 multiline
@@ -277,5 +277,5 @@ export function EditFormatsView(): JSX.Element {
         </DialogActions>
       </Dialog>
     </Grid>
-  )
+  );
 }

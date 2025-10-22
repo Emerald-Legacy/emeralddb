@@ -1,5 +1,30 @@
-import { Button, ButtonGroup, Grid, makeStyles, TextField } from '@material-ui/core'
+import { Button, ButtonGroup, Grid, TextField } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import { useEffect, useState } from 'react'
+
+const PREFIX = 'CardValueFilter';
+
+const classes = {
+  buttonGroup: `${PREFIX}-buttonGroup`,
+  button: `${PREFIX}-button`
+};
+
+const StyledGrid = styled(Grid)((
+  {
+    theme
+  }
+) => ({
+  [`& .${classes.buttonGroup}`]: {
+    marginLeft: theme.spacing(1),
+  },
+
+  [`& .${classes.button}`]: {
+    height: 24,
+    width: 24,
+    minWidth: '24px !important',
+    padding: 2,
+  }
+}));
 
 export enum ValueFilterType {
   GREATER,
@@ -7,35 +32,22 @@ export enum ValueFilterType {
   LOWER,
 }
 
-const useStyles = makeStyles((theme) => ({
-  buttonGroup: {
-    marginLeft: theme.spacing(2),
-    marginRight: theme.spacing(1),
-  },
-  button: {
-    height: 24,
-    width: 24,
-    minWidth: 24,
-    padding: 3,
-  },
-}))
-
 export function CardValueFilter(props: {
   valueLabel: JSX.Element
   onFilterChange: (type: ValueFilterType, value: string) => void
 }): JSX.Element {
   const [filterType, setFilterType] = useState<ValueFilterType>(ValueFilterType.EQUAL)
   const [filterString, setFilterString] = useState('')
-  const classes = useStyles()
+
 
   useEffect(() => props.onFilterChange(filterType, filterString), [filterType, filterString])
 
   return (
-    <Grid container alignItems="flex-end" alignContent="flex-end">
-      <Grid item xs={2} md={1}>
+    <StyledGrid container alignItems="center" spacing={1}>
+      <Grid sx={{ minWidth: 40, flexShrink: 0 }}>
         {props.valueLabel}
       </Grid>
-      <Grid item xs={4} md={4}>
+      <Grid sx={{ flexShrink: 0 }}>
         <ButtonGroup size="small" className={classes.buttonGroup} variant="contained">
           <Button
             className={classes.button}
@@ -60,9 +72,14 @@ export function CardValueFilter(props: {
           </Button>
         </ButtonGroup>
       </Grid>
-      <Grid item xs={6} md={7}>
-        <TextField value={filterString} onChange={(e) => setFilterString(e.target.value)} />
+      <Grid sx={{ flex: 1, maxWidth: 60, marginLeft: '10px', marginRight: '20px' }}>
+        <TextField
+          value={filterString}
+          onChange={(e) => setFilterString(e.target.value)}
+          variant="standard"
+          fullWidth
+        />
       </Grid>
-    </Grid>
-  )
+    </StyledGrid>
+  );
 }

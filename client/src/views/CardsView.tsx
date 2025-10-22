@@ -1,6 +1,5 @@
 import {
   Paper,
-  makeStyles,
   useMediaQuery,
   Button,
   Dialog,
@@ -10,26 +9,38 @@ import {
   Select,
   MenuItem,
   Box,
-} from '@material-ui/core'
-import { DataGrid, GridColumns } from '@material-ui/data-grid'
-import { useHistory, useLocation } from 'react-router-dom'
+} from '@mui/material';
+import { styled } from '@mui/material/styles';
+import { DataGrid, GridColDef } from '@mui/x-data-grid'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useUiStore } from '../providers/UiStoreProvider'
 import { convertTraitList } from '../utils/cardTextUtils'
 import { capitalize } from '../utils/stringUtils'
-import { useState } from 'react'
+import { useState, useEffect, useMemo, useCallback } from 'react'
 import { applyFilters, CardFilter, FilterState, initialState } from "../components/CardFilter";
 import { CardWithVersions, Pack } from '@5rdb/api'
 import { CardInformation } from '../components/card/CardInformation'
 import { Loading } from '../components/Loading'
 import { CardLink } from '../components/card/CardLink'
 import { CardImageOrText } from '../components/card/CardImageOrText'
-import { Pagination } from '@material-ui/lab'
+import { Pagination } from '@mui/material';
 
-const useStyles = makeStyles((theme) => ({
-  table: {
+const PREFIX = 'CardsView';
+
+const classes = {
+  table: `${PREFIX}-table`
+};
+
+// TODO jss-to-styled codemod: The Fragment root was replaced by div. Change the tag if needed.
+const Root = styled('div')((
+  {
+    theme
+  }
+) => ({
+  [`& .${classes.table}`]: {
     marginTop: theme.spacing(1),
-  },
-}))
+  }
+}));
 
 interface NameProps {
   id: string
@@ -82,9 +93,9 @@ function createFilterFromUrlSearchParams(params: URLSearchParams, allPacks: Pack
 export function CardsView(): JSX.Element {
   const PAGE_SIZE = 60
 
-  const classes = useStyles()
+
   const { cards, packs, cycles, traits, formats, validCardVersionForFormat } = useUiStore()
-  const history = useHistory()
+  const navigate = useNavigate()
   const location = useLocation()
   const [filter, setFilter] = useState<FilterState | undefined>(undefined)
   const [modalCard, setModalCard] = useState<CardWithVersions | undefined>(undefined)
@@ -93,54 +104,123 @@ export function CardsView(): JSX.Element {
   const [displayMode, setDisplayMode] = useState<DisplayMode>(DisplayMode.LIST)
   const [sortMode, setSortMode] = useState<SortMode>(SortMode.NAME)
   const [page, setPage] = useState(0)
+  const [hoveredCardId, setHoveredCardId] = useState<string | null>(null)
   const isMdOrBigger = useMediaQuery('(min-width:600px)')
 
-  if (cards.length === 0) {
-    return <Loading />
-  }
-  let filteredCards = cards
+  // Handle URL parameter changes in useEffect to prevent render-phase setState
+  useEffect(() => {
+    if (location.search !== urlParams) {
+      const urlSearchParams = new URLSearchParams(location.search)
+      const previousSearchParams = new URLSearchParams(urlParams)
 
-  const urlSearchParams = new URLSearchParams(location.search)
-  let urlParamFilter
-  if (location.search !== urlParams) {
-    const newSearchParams = urlSearchParams
-    const previousSearchParams = new URLSearchParams(urlParams)
-    if (
-      newSearchParams.get('pack') != previousSearchParams.get('pack') ||
-      newSearchParams.get('cycle') != previousSearchParams.get('cycle') ||
-      newSearchParams.get('query') != previousSearchParams.get('query')
-    ){
-      console.log('update Filter')
-      urlParamFilter = createFilterFromUrlSearchParams(newSearchParams, packs, filter || initialState)
-      setFilter(urlParamFilter)
+      // Update filter if pack/cycle/query changed
+      if (
+        urlSearchParams.get('pack') != previousSearchParams.get('pack') ||
+        urlSearchParams.get('cycle') != previousSearchParams.get('cycle') ||
+        urlSearchParams.get('query') != previousSearchParams.get('query')
+      ) {
+        const urlParamFilter = createFilterFromUrlSearchParams(urlSearchParams, packs, filter || initialState)
+        setFilter(urlParamFilter)
 
-      // Only 1 result => Go to card page
-      const urlFilteredCards = applyFilters(cards, formats, urlParamFilter)
-      if (urlFilteredCards.length === 1) {
-        history.push(`/card/${urlFilteredCards[0].id}`)
+        // Only 1 result => Go to card page
+        const urlFilteredCards = applyFilters(cards, formats, urlParamFilter)
+        if (urlFilteredCards.length === 1) {
+          navigate(`/card/${urlFilteredCards[0].id}`)
+        }
       }
+
+      // Update display and sort mode from URL
+      const displayParam = urlSearchParams.get('display')
+      const sortParam = urlSearchParams.get('sort')
+
+      if (displayParam) {
+        setDisplayMode(displayParam as DisplayMode)
+      }
+      if (sortParam) {
+        setSortMode(sortParam as SortMode)
+      }
+
+      setUrlParams(location.search)
     }
-    setUrlParams(location.search)
+    // Only depend on location.search and urlParams to avoid infinite loops
+    // Don't include filter, displayMode, sortMode as they are SET by this effect
+  }, [location.search, urlParams, packs, cards, formats, navigate])
 
-    const displayParam = newSearchParams.get('display') || displayMode
-    const sortParam = newSearchParams.get('sort') || sortMode
+  // Create urlSearchParams for use in render
+  const urlSearchParams = new URLSearchParams(location.search)
 
-    setDisplayMode(displayParam as DisplayMode)
-    setSortMode(sortParam as SortMode)
-  }
+  // ALL HOOKS MUST BE CALLED BEFORE ANY CONDITIONAL RETURNS
+  const filteredCards = useMemo(() => {
+    if (filter) {
+      return applyFilters(cards, formats, filter)
+    }
+    return cards
+  }, [cards, formats, filter])
 
-  if (filter) {
-    filteredCards = applyFilters(cards, formats, filter)
-  }
-
-  const goToCardPage = (id: string) => {
-    history.push(`/card/${id}`)
-  }
-
-  function findCardVersion(card: CardWithVersions) {
+  const findCardVersion = useCallback((card: CardWithVersions) => {
     let versionsWithFilteredPacks = filter?.packs ? card.versions.filter(v => filter.packs.includes(v.pack_id)) : card.versions
     let validFormatVersion = filter?.format && validCardVersionForFormat(card.id, filter.format)
     return validFormatVersion || versionsWithFilteredPacks.length > 0 ? versionsWithFilteredPacks[0] : card.versions[0];
+  }, [filter, validCardVersionForFormat])
+
+  const calculatePackIndex = useCallback((card: CardWithVersions): { packIndex: string; cardIndex: string } => {
+    const dummy = {
+      packIndex: '9999',
+      cardIndex: '999',
+    }
+    const cardVersion = card.versions.filter(() => true)[0]
+    if (!cardVersion) {
+      return dummy
+    }
+    const pack = packs.filter((pack) => pack.id === cardVersion.pack_id)[0]
+    if (!pack) {
+      return dummy
+    }
+    const cycle = cycles.filter((cycle) => cycle.id === pack.cycle_id)[0]
+    const cyclePosition = (cycle?.position || 99) * 100
+    const packPosition = pack.position
+    let cardPosition = cardVersion.position || '999'
+    while (cardPosition.length < 3) {
+      cardPosition = '0' + cardPosition
+    }
+    return {
+      packIndex: (cyclePosition + packPosition).toString(),
+      cardIndex: cardPosition,
+    }
+  }, [packs, cycles])
+
+  const sortCardsByPackIndex = useCallback((cardA: CardWithVersions, cardB: CardWithVersions) => {
+    const aIndex = calculatePackIndex(cardA)
+    const bIndex = calculatePackIndex(cardB)
+
+    const indexCompare = aIndex.packIndex.localeCompare(bIndex.packIndex)
+    return indexCompare === 0 ? aIndex.cardIndex.localeCompare(bIndex.cardIndex) : indexCompare
+  }, [calculatePackIndex])
+
+  const sortedCards = useMemo(() => {
+    const sorted = [...filteredCards]
+    if (sortMode === SortMode.NAME) {
+      return sorted.sort((a, b) => a.id.localeCompare(b.id))
+    } else {
+      return sorted.sort(sortCardsByPackIndex)
+    }
+  }, [filteredCards, sortMode, sortCardsByPackIndex])
+
+  const startIndexInclusive = page * PAGE_SIZE
+  const endIndexExclusive = startIndexInclusive + PAGE_SIZE
+
+  const currentCards = useMemo(
+    () => sortedCards.slice(startIndexInclusive, endIndexExclusive),
+    [sortedCards, startIndexInclusive, endIndexExclusive]
+  )
+
+  // NOW we can do conditional returns after all hooks are called
+  if (cards.length === 0) {
+    return <Loading />
+  }
+
+  const goToCardPage = (id: string) => {
+    navigate(`/card/${id}`)
   }
 
   function CardModal(): JSX.Element {
@@ -148,7 +228,7 @@ export function CardsView(): JSX.Element {
       return <div />
     }
     return (
-      <Dialog open={cardModalOpen} onClose={() => setCardModalOpen(false)}>
+      <Dialog open={cardModalOpen} onClose={() => setCardModalOpen(false)} disableScrollLock>
         <DialogContent>
           <CardInformation cardWithVersions={modalCard} clickable currentVersion={findCardVersion(modalCard)}/>
         </DialogContent>
@@ -196,7 +276,7 @@ export function CardsView(): JSX.Element {
     return (
       <Box paddingBottom={'5px'}>
         <Grid container spacing={1}>
-          <Grid item xs={6} sm={3}>
+          <Grid size={{ xs: 6, sm: 3 }}>
             <Select
               value={displayMode}
               label="Display Mode"
@@ -204,7 +284,7 @@ export function CardsView(): JSX.Element {
                 const newMode = (event.target.value as DisplayMode) || DisplayMode.LIST
                 setDisplayMode(newMode)
                 urlSearchParams.set('display', newMode)
-                history.push({
+                navigate({
                   pathname: '/cards',
                   search: urlSearchParams.toString(),
                 })
@@ -219,7 +299,7 @@ export function CardsView(): JSX.Element {
               ))}
             </Select>
           </Grid>
-          <Grid item xs={6} sm={3} hidden={displayMode === DisplayMode.LIST}>
+          <Grid hidden={displayMode === DisplayMode.LIST} size={{ xs: 6, sm: 3 }}>
             <Select
               value={sortMode}
               label="Sort Mode"
@@ -227,7 +307,7 @@ export function CardsView(): JSX.Element {
                 const newMode = (event.target.value as SortMode) || SortMode.NAME
                 setSortMode(newMode)
                 urlSearchParams.set('sort', newMode)
-                history.push({
+                navigate({
                   pathname: '/cards',
                   search: urlSearchParams.toString(),
                 })
@@ -242,7 +322,7 @@ export function CardsView(): JSX.Element {
               ))}
             </Select>
           </Grid>
-          <Grid item xs={12} sm={6} hidden={displayMode === DisplayMode.LIST}>
+          <Grid hidden={displayMode === DisplayMode.LIST} size={{ xs: 12, sm: 6 }}>
             <Box style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <Pagination
                 count={pageCount}
@@ -299,7 +379,7 @@ export function CardsView(): JSX.Element {
       }
     })
 
-    const columns: GridColumns = [
+    const columns: GridColDef[] = [
       {
         field: 'name',
         headerName: 'Name',
@@ -308,9 +388,18 @@ export function CardsView(): JSX.Element {
         renderCell: (params) => {
           const nameProps = params.value as NameProps
           return (
-            <span style={{ marginLeft: -10, cursor: 'pointer' }}>
-              <CardLink cardId={nameProps.id} sameTab format={filter?.format} />
-            </span>
+            <div
+              style={{ marginLeft: -10 }}
+              onMouseEnter={() => setHoveredCardId(nameProps.id)}
+              onMouseLeave={() => setHoveredCardId(null)}
+            >
+              <CardLink
+                cardId={nameProps.id}
+                sameTab
+                format={filter?.format}
+                hoveredCardId={hoveredCardId}
+              />
+            </div>
           )
         },
         sortComparator: (v1, v2) =>
@@ -327,116 +416,88 @@ export function CardsView(): JSX.Element {
           </em>
         ),
       },
-      { field: 'type', headerName: 'Type', disableColumnMenu: true, flex: 2, hide: !isMdOrBigger },
+      { field: 'type', headerName: 'Type', disableColumnMenu: true, flex: 2 },
       {
         field: 'faction',
         headerName: 'Faction',
         disableColumnMenu: true,
         flex: 2,
-        hide: !isMdOrBigger,
       },
-      { field: 'deck', headerName: 'Deck', disableColumnMenu: true, flex: 1, hide: !isMdOrBigger },
-      { field: 'cost', headerName: 'Cost', disableColumnMenu: true, flex: 1, hide: !isMdOrBigger },
+      { field: 'deck', headerName: 'Deck', disableColumnMenu: true, flex: 1 },
+      { field: 'cost', headerName: 'Cost', disableColumnMenu: true, flex: 1 },
       {
         field: 'military',
         headerName: 'Mil',
         disableColumnMenu: true,
         flex: 1,
-        hide: !isMdOrBigger,
       },
       {
         field: 'political',
         headerName: 'Pol',
         disableColumnMenu: true,
         flex: 1,
-        hide: !isMdOrBigger,
       },
       {
         field: 'glory',
         headerName: 'Glory',
         disableColumnMenu: true,
         flex: 1,
-        hide: !isMdOrBigger,
       },
       {
         field: 'strength',
         headerName: 'Str',
         disableColumnMenu: true,
         flex: 1,
-        hide: !isMdOrBigger,
       },
     ]
 
     return (
-      <>
+      <Root>
         <CardFilter
           onFilterChanged={onFilterChanged}
           fullWidth
-          filterState={filter || urlParamFilter}
+          filterState={filter || initialState}
         />
         <Paper className={classes.table}>
           <Selectors />
-          <DataGrid
-            disableSelectionOnClick
-            columns={columns}
-            rows={tableCards}
-            pageSize={50}
-            autoHeight
-            density="compact"
-            onRowClick={(param) => {
-              setModalCard(cards.find((card) => card.id === param.row.id))
-              setCardModalOpen(true)
-            }}
-          />
+          <div onMouseLeave={() => setHoveredCardId(null)}>
+            <DataGrid
+              disableRowSelectionOnClick
+              columns={columns}
+              rows={tableCards}
+              pageSizeOptions={[50]}
+              initialState={{
+                pagination: { paginationModel: { pageSize: 50 } },
+              }}
+              autoHeight
+              density="compact"
+              columnVisibilityModel={{
+                type: isMdOrBigger,
+                faction: isMdOrBigger,
+                deck: isMdOrBigger,
+                cost: isMdOrBigger,
+                military: isMdOrBigger,
+                political: isMdOrBigger,
+                glory: isMdOrBigger,
+                strength: isMdOrBigger,
+              }}
+              onRowClick={(param, event) => {
+                // Don't open modal if user clicked on a link
+                const target = event.target as HTMLElement
+                if (target.tagName === 'A' || target.closest('a')) {
+                  event.stopPropagation()
+                  return
+                }
+                setModalCard(cards.find((card) => card.id === param.row.id))
+                setCardModalOpen(true)
+              }}
+            />
+          </div>
         </Paper>
         <CardModal />
-      </>
-    )
+      </Root>
+    );
   }
-
-  function calculatePackIndex(card: CardWithVersions): { packIndex: string; cardIndex: string } {
-    const dummy = {
-      packIndex: '9999',
-      cardIndex: '999',
-    }
-    const cardVersion = card.versions.filter(() => true)[0]
-    if (!cardVersion) {
-      return dummy
-    }
-    const pack = packs.filter((pack) => pack.id === cardVersion.pack_id)[0]
-    if (!pack) {
-      return dummy
-    }
-    const cycle = cycles.filter((cycle) => cycle.id === pack.cycle_id)[0]
-    const cyclePosition = (cycle?.position || 99) * 100
-    const packPosition = pack.position
-    let cardPosition = cardVersion.position || '999'
-    while (cardPosition.length < 3) {
-      cardPosition = '0' + cardPosition
-    }
-    return {
-      packIndex: (cyclePosition + packPosition).toString(),
-      cardIndex: cardPosition,
-    }
-  }
-
-  const sortCardsByPackIndex = (cardA: CardWithVersions, cardB: CardWithVersions) => {
-    const aIndex = calculatePackIndex(cardA)
-    const bIndex = calculatePackIndex(cardB)
-
-    const indexCompare = aIndex.packIndex.localeCompare(bIndex.packIndex)
-    return indexCompare === 0 ? aIndex.cardIndex.localeCompare(bIndex.cardIndex) : indexCompare
-  }
-
-  const sortedCards =
-    sortMode === SortMode.NAME
-      ? filteredCards.sort((a, b) => a.id.localeCompare(b.id))
-      : filteredCards.sort(sortCardsByPackIndex)
-
-  const startIndexInclusive = page * PAGE_SIZE
-  const endIndexExclusive = startIndexInclusive + PAGE_SIZE
-
-  const currentCards = sortedCards.slice(startIndexInclusive, endIndexExclusive)
 
   if (displayMode === DisplayMode.IMAGES) {
     return (
@@ -444,13 +505,13 @@ export function CardsView(): JSX.Element {
         <CardFilter
           onFilterChanged={onFilterChanged}
           fullWidth
-          filterState={filter || urlParamFilter}
+          filterState={filter || initialState}
         />
         <Paper className={classes.table}>
           <Selectors />
           <Grid container spacing={1}>
             {currentCards.map((card) => (
-              <Grid item xs={6} sm={4} md={3} lg={2} key={card.id}>
+              <Grid key={card.id} size={{ xs: 6, sm: 4, md: 3, lg: 2 }}>
                 <Box maxWidth={'240px'} margin={'0 auto'}>
                   <CardImageOrText
                     cardId={card.id}
@@ -476,14 +537,14 @@ export function CardsView(): JSX.Element {
       <CardFilter
         onFilterChanged={onFilterChanged}
         fullWidth
-        filterState={filter || urlParamFilter}
+        filterState={filter || initialState}
       />
       <Paper className={classes.table}>
         <Selectors />
         <Grid container spacing={1}>
           {currentCards.map((card) => (
-            <Grid item xs={12} key={card.id} container spacing={4}>
-              <Grid item xs={12} sm={6}>
+            <Grid key={card.id} container spacing={4} size={12}>
+              <Grid size={{ xs: 12, sm: 6 }}>
                 <CardInformation
                   cardWithVersions={card}
                   clickable
@@ -499,7 +560,7 @@ export function CardsView(): JSX.Element {
                   </Button>
                 </Box>
               </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid size={{ xs: 12, sm: 6 }}>
                 <Box maxWidth={'300px'}>
                   <CardImageOrText
                     cardId={card.id}

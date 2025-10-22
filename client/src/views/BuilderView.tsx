@@ -1,5 +1,5 @@
 import { DeckWithVersions } from '@5rdb/api'
-import { Grid, Typography } from '@material-ui/core'
+import { Grid, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { publicApi } from '../api'
 import { DeckTabs } from '../components/deck/DeckTabs'
@@ -24,11 +24,11 @@ export function BuilderView(): JSX.Element {
   return (
     <>
       <Grid container>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <Typography variant="h4">Decks</Typography>
           <br />
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <DeckTabs decks={decks} onDeckUpdated={updateDecks} />
         </Grid>
       </Grid>

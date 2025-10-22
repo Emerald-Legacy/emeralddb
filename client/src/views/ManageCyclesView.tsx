@@ -1,4 +1,5 @@
 import { Pack } from '@5rdb/api'
+import { styled } from '@mui/material/styles';
 import {
   Box,
   Button,
@@ -7,42 +8,58 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
-  makeStyles,
   TextField,
   Typography,
-} from '@material-ui/core'
+} from '@mui/material';
 import { useConfirm } from 'material-ui-confirm'
 import { useSnackbar } from 'notistack'
 import React, { useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { privateApi } from '../api'
 import { Loading } from '../components/Loading'
 import { useUiStore } from '../providers/UiStoreProvider'
 import { toSlugId } from '../utils/slugIdUtils'
-import CachedIcon from '@material-ui/icons/Cached'
+import CachedIcon from '@mui/icons-material/Cached'
 
-const useStyles = makeStyles((theme) => ({
-  editButton: {
+const PREFIX = 'ManageCyclesView';
+
+const classes = {
+  editButton: `${PREFIX}-editButton`,
+  createButton: `${PREFIX}-createButton`,
+  deleteButton: `${PREFIX}-deleteButton`,
+  input: `${PREFIX}-input`
+};
+
+// TODO jss-to-styled codemod: The Fragment root was replaced by div. Change the tag if needed.
+const Root = styled('div')((
+  {
+    theme
+  }
+) => ({
+  [`& .${classes.editButton}`]: {
     backgroundColor: theme.palette.warning.light,
     marginRight: theme.spacing(1),
     marginLeft: 'auto',
   },
-  createButton: {
+
+  [`& .${classes.createButton}`]: {
     marginRight: theme.spacing(1),
     marginLeft: 'auto',
     marginTop: theme.spacing(2),
   },
-  deleteButton: {
+
+  [`& .${classes.deleteButton}`]: {
     backgroundColor: theme.palette.error.light,
   },
-  input: {
+
+  [`& .${classes.input}`]: {
     marginBottom: theme.spacing(1),
-  },
-}))
+  }
+}));
 
 export function ManageCyclesView(): JSX.Element {
-  const classes = useStyles()
-  const history = useHistory()
+
+  const navigate = useNavigate()
   const { packs, cycles } = useUiStore()
   const [packModalOpen, setPackModalOpen] = useState(false)
   const [cycleModalOpen, setCycleModalOpen] = useState(false)
@@ -184,18 +201,18 @@ export function ManageCyclesView(): JSX.Element {
   }
 
   return (
-    <>
-      <Grid container spacing={1} justify="flex-end">
-        <Grid item xs={12}>
+    <Root>
+      <Grid container spacing={1} justifyContent="flex-end">
+        <Grid size={12}>
           <Typography variant="h6">Cycles</Typography>
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <Button variant="contained" color="secondary" fullWidth onClick={() => openCycleModal()}>
             Add Cycle
           </Button>
         </Grid>
         {cycles.map((cycle) => (
-          <Grid item xs={12}>
+          <Grid size={12}>
             <Typography>
               {cycle.rotated && <CachedIcon style={{ color: 'red', fontSize: 16 }} />}
               {cycle.name}
@@ -205,18 +222,18 @@ export function ManageCyclesView(): JSX.Element {
             </Button>
             {packsForCycle(cycle.id).map((pack) => (
               <Grid container spacing={1}>
-                <Grid item xs={1} />
-                <Grid item xs={5}>
+                <Grid size={1} />
+                <Grid size={5}>
                   <Typography>
                     {pack.rotated && <CachedIcon style={{ color: 'red', fontSize: 16 }} />}{' '}
                     {pack.name}
                   </Typography>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid size={6}>
                   <Button
                     variant="contained"
                     color="secondary"
-                    onClick={() => history.push(`/admin/pack/${pack.id}`)}
+                    onClick={() => navigate(`/admin/pack/${pack.id}`)}
                   >
                     Edit Pack Cards
                   </Button>
@@ -227,8 +244,8 @@ export function ManageCyclesView(): JSX.Element {
               </Grid>
             ))}
             <Grid container>
-              <Grid item xs={1}></Grid>
-              <Grid item xs={11}>
+              <Grid size={1}></Grid>
+              <Grid size={11}>
                 <Button
                   variant="contained"
                   color="secondary"
@@ -329,6 +346,6 @@ export function ManageCyclesView(): JSX.Element {
           </Button>
         </DialogActions>
       </Dialog>
-    </>
-  )
+    </Root>
+  );
 }

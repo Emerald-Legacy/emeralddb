@@ -1,4 +1,5 @@
 import { useEffect, useReducer, useState } from 'react'
+import { styled } from '@mui/material/styles';
 import { CardWithVersions, Trait, RoleRestriction, Format } from '@5rdb/api'
 import {
   Button,
@@ -9,13 +10,12 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
-  makeStyles,
   Paper,
   TextField,
   Tooltip,
   Typography,
   Collapse,
-} from '@material-ui/core'
+} from '@mui/material';
 import {
   factions,
   cardTypes,
@@ -24,7 +24,7 @@ import {
   roleRestrictions,
 } from '../utils/enums'
 import { CardTypeIcon } from './card/CardTypeIcon'
-import Autocomplete from '@material-ui/lab/Autocomplete'
+import Autocomplete from '@mui/material/Autocomplete'
 import { useUiStore } from '../providers/UiStoreProvider'
 import { CycleList } from './CycleList'
 import useDebounce from '../hooks/useDebounce'
@@ -32,41 +32,75 @@ import { isEqual } from 'lodash'
 import { CardValueFilter, ValueFilterType } from './CardValueFilter'
 import { ElementSymbol } from './card/ElementSymbol'
 
-const useStyles = makeStyles((theme) => ({
-  filter: {
+const PREFIX = 'CardFilter';
+
+const classes = {
+  filter: `${PREFIX}-filter`,
+  clearIcon: `${PREFIX}-clearIcon`,
+  clearButton: `${PREFIX}-clearButton`,
+  button: `${PREFIX}-button`,
+  buttonGroup: `${PREFIX}-buttonGroup`,
+  filterGridItem: `${PREFIX}-filterGridItem`,
+  filterGridItemBuilder: `${PREFIX}-filterGridItemBuilder`,
+  traitTextField: `${PREFIX}-traitTextField`,
+  packDialog: `${PREFIX}-packDialog`,
+  packFilter: `${PREFIX}-packFilter`
+};
+
+const StyledPaper = styled(Paper)((
+  {
+    theme
+  }
+) => ({
+  [`&.${classes.filter}`]: {
     padding: theme.spacing(1),
   },
-  clearIcon: {
+
+  [`& .${classes.clearIcon}`]: {
     color: 'black',
     fontSize: 16,
   },
-  clearButton: {
+
+  [`& .${classes.clearButton}`]: {
     backgroundColor: theme.palette.error.light,
     '&:hover': {
       backgroundColor: lighten(theme.palette.error.light, 0.1),
     },
   },
-  button: {
-    height: 32,
+
+  [`& .${classes.button}`]: {
+    minHeight: 40,
     minWidth: 16,
   },
-  filterGridItem: {
-    height: 40,
-    margin: '4px 0',
+
+  [`& .${classes.buttonGroup}`]: {
+    height: '100%',
   },
-  filterGridItemBuilder: {
-    height: 40,
+
+  [`& .${classes.filterGridItem}`]: {
+    minHeight: 40,
+    display: 'flex',
+    alignItems: 'stretch',
   },
-  traitTextField: {
-    maxHeight: 32,
+
+  [`& .${classes.filterGridItemBuilder}`]: {
+    minHeight: 40,
+    display: 'flex',
+    alignItems: 'stretch',
   },
-  packDialog: {
+
+  [`& .${classes.traitTextField}`]: {
+    maxHeight: 40,
+  },
+
+  [`& .${classes.packDialog}`]: {
     padding: theme.spacing(2),
   },
-  packFilter: {
+
+  [`& .${classes.packFilter}`]: {
     minWidth: '60%',
-  },
-}))
+  }
+}));
 
 enum NumericCardValue {
   COST,
@@ -289,7 +323,8 @@ export function applyFilters(cards: CardWithVersions[], formats: Format[], filte
         replaceSpecialCharacters(c.name).includes(query) ||
         c.id.toLocaleLowerCase().includes(query) ||
         replaceSpecialCharacters(c.text || '').includes(query) ||
-        c.traits?.some((trait) => trait.toLowerCase().includes(query))
+        c.traits?.some((trait) => trait.toLowerCase().includes(query)) ||
+        c.versions?.some((version) => replaceSpecialCharacters(version.illustrator || '').includes(query))
     )
   }
   return filteredCards
@@ -362,7 +397,7 @@ export function CardFilter(props: {
   fullWidth?: boolean
   deckbuilder?: boolean
 }): JSX.Element {
-  const classes = useStyles()
+
   const { traits, relevantFormats } = useUiStore()
   const [initialFilterState, setInitialFilterState] = useState<FilterState>(
     props.filterState || initialState
@@ -496,19 +531,19 @@ export function CardFilter(props: {
   }
 
   return (
-    <Paper className={classes.filter}>
-      <Grid container spacing={1} justify="flex-end">
-        <Grid item xs={12} sm={8} md={!props.fullWidth ? 6 : 10}>
+    <StyledPaper className={classes.filter}>
+      <Grid container spacing={1} justifyContent="flex-end">
+        <Grid size={{ xs: 12, sm: 8, md: !props.fullWidth ? 6 : 10 }}>
           <TextField
             fullWidth
             variant="outlined"
             size="small"
-            label={props.deckbuilder ? 'Search...' : 'Search for card name, ability text...'}
+            label={props.deckbuilder ? 'Search...' : 'Search for card name, ability text, artist...'}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </Grid>
-        <Grid item xs={12} sm={4} md={!props.fullWidth ? 6 : 2}>
+        <Grid size={{ xs: 12, sm: 4, md: !props.fullWidth ? 6 : 2 }}>
           <Button
             fullWidth
             variant="contained"
@@ -518,19 +553,17 @@ export function CardFilter(props: {
             {showFilters ? 'Hide Filters' : 'Show Filters'}
           </Button>
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <Grid container spacing={1}>
-            <Grid item xs={12} md={props.fullWidth ? 6 : 12}>
+            <Grid size={{ xs: 12, md: props.fullWidth ? 6 : 12 }}>
               <Collapse in={props.deckbuilder || showFilters}>
-                <Grid container spacing={1}>
+                <Grid container spacing={props.deckbuilder ? 0.75 : 1}>
                   <Grid
-                    item
-                    xs={12}
                     className={
                       props.deckbuilder ? classes.filterGridItemBuilder : classes.filterGridItem
                     }
-                  >
-                    <ButtonGroup fullWidth>
+                   size={12}>
+                    <ButtonGroup fullWidth className={classes.buttonGroup}>
                       {visibleFactions.map((faction) => (
                         <Tooltip key={faction.id} title={faction.name}>
                           <Button
@@ -557,13 +590,11 @@ export function CardFilter(props: {
                     </ButtonGroup>
                   </Grid>
                   <Grid
-                    item
-                    xs={12}
                     className={
                       props.deckbuilder ? classes.filterGridItemBuilder : classes.filterGridItem
                     }
-                  >
-                    <ButtonGroup fullWidth>
+                   size={12}>
+                    <ButtonGroup fullWidth className={classes.buttonGroup}>
                       {visibleCardtypes.map((type) => (
                         <Tooltip key={type.id} title={type.name}>
                           <Button
@@ -589,13 +620,11 @@ export function CardFilter(props: {
                   </Grid>
                   {filterState.cardTypes.includes('province') && (
                     <Grid
-                      item
-                      xs={12}
                       className={
                         props.deckbuilder ? classes.filterGridItemBuilder : classes.filterGridItem
                       }
-                    >
-                      <ButtonGroup fullWidth>
+                     size={12}>
+                      <ButtonGroup fullWidth className={classes.buttonGroup}>
                         {elements.map((element) => (
                           <Tooltip key={element.id} title={element.name}>
                             <Button
@@ -627,13 +656,11 @@ export function CardFilter(props: {
                     </Grid>
                   )}
                   <Grid
-                    item
-                    xs={12}
                     className={
                       props.deckbuilder ? classes.filterGridItemBuilder : classes.filterGridItem
                     }
-                  >
-                    <ButtonGroup size="small" fullWidth>
+                   size={12}>
+                    <ButtonGroup fullWidth className={classes.buttonGroup}>
                       {visibleSides.map((side) => (
                         <Tooltip key={side.id} title={side.name}>
                           <Button
@@ -644,6 +671,7 @@ export function CardFilter(props: {
                                 ? 'dimgrey'
                                 : 'white',
                             }}
+                            className={classes.button}
                           >
                             <Typography
                               variant="inherit"
@@ -658,13 +686,62 @@ export function CardFilter(props: {
                       ))}
                     </ButtonGroup>
                   </Grid>
+                  {/* 6 numeric filters underneath the button filters */}
+                  <Grid size={4}>
+                    <CardValueFilter
+                      valueLabel={<span className={`icon icon-conflict-military`} />}
+                      onFilterChange={(type, value) =>
+                        updateNumericFilter(NumericCardValue.MILITARY, type, value)
+                      }
+                    />
+                  </Grid>
+                  <Grid size={4}>
+                    <CardValueFilter
+                      valueLabel={<span className={`icon icon-conflict-political`} />}
+                      onFilterChange={(type, value) =>
+                        updateNumericFilter(NumericCardValue.POLITICAL, type, value)
+                      }
+                    />
+                  </Grid>
+                  <Grid size={4}>
+                    <CardValueFilter
+                      valueLabel={<span>Cost:</span>}
+                      onFilterChange={(type, value) =>
+                        updateNumericFilter(NumericCardValue.COST, type, value)
+                      }
+                    />
+                  </Grid>
+                  <Grid size={4}>
+                    <CardValueFilter
+                      valueLabel={<span>Inf:</span>}
+                      onFilterChange={(type, value) =>
+                        updateNumericFilter(NumericCardValue.INFLUENCE, type, value)
+                      }
+                    />
+                  </Grid>
+                  <Grid size={4}>
+                    <CardValueFilter
+                      valueLabel={<span>Glory:</span>}
+                      onFilterChange={(type, value) =>
+                        updateNumericFilter(NumericCardValue.GLORY, type, value)
+                      }
+                    />
+                  </Grid>
+                  <Grid size={4}>
+                    <CardValueFilter
+                      valueLabel={<span>Str:</span>}
+                      onFilterChange={(type, value) =>
+                        updateNumericFilter(NumericCardValue.STRENGTH, type, value)
+                      }
+                    />
+                  </Grid>
                 </Grid>
               </Collapse>
             </Grid>
-            <Grid item xs={12} md={props.fullWidth ? 6 : 12}>
+            <Grid size={{ xs: 12, md: props.fullWidth ? 6 : 12 }}>
               <Collapse in={showFilters}>
                 <Grid container spacing={1}>
-                  <Grid item xs={12}>
+                  <Grid size={12}>
                     <Autocomplete
                       id="combo-box-traits"
                       autoHighlight
@@ -683,7 +760,7 @@ export function CardFilter(props: {
                       }
                     />
                   </Grid>
-                  <Grid item xs={4}>
+                  <Grid size={4}>
                     <Autocomplete
                       id="combo-box-is-unique"
                       autoHighlight
@@ -701,7 +778,7 @@ export function CardFilter(props: {
                       }
                     />
                   </Grid>
-                  <Grid item xs={4}>
+                  <Grid size={4}>
                     <Autocomplete
                       id="combo-box-role-restriction-in"
                       autoHighlight
@@ -725,7 +802,7 @@ export function CardFilter(props: {
                       }
                     />
                   </Grid>
-                  <Grid item xs={4}>
+                  <Grid size={4}>
                     <Autocomplete
                       id="combo-box-format"
                       autoHighlight
@@ -748,7 +825,7 @@ export function CardFilter(props: {
                       }
                     />
                   </Grid>
-                  <Grid item xs={4}>
+                  <Grid size={4}>
                     <Autocomplete
                       id="combo-box-is-illegal"
                       autoHighlight
@@ -772,7 +849,7 @@ export function CardFilter(props: {
                       }
                     />
                   </Grid>
-                  <Grid item xs={4}>
+                  <Grid size={4}>
                     <Autocomplete
                       id="combo-box-restricted-in"
                       disabled={!filterState.format}
@@ -796,7 +873,7 @@ export function CardFilter(props: {
                       }
                     />
                   </Grid>
-                  <Grid item xs={4}>
+                  <Grid size={4}>
                     <Autocomplete
                       id="combo-box-banned-in"
                       autoHighlight
@@ -820,7 +897,7 @@ export function CardFilter(props: {
                       }
                     />
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid size={12}>
                     <Button
                       fullWidth
                       variant="contained"
@@ -831,95 +908,11 @@ export function CardFilter(props: {
                       {filterState.packs.length > 0 && ` (Selected: ${filterState.packs.length})`}
                     </Button>
                   </Grid>
-                </Grid>
-              </Collapse>
-            </Grid>
-            <Grid item xs={12}>
-              <Collapse in={showFilters}>
-                <Grid container spacing={1}>
-                  <Grid
-                    item
-                    xs={12}
-                    sm={props.deckbuilder ? 12 : 6}
-                    md={props.deckbuilder ? 6 : 4}
-                  >
-                    <CardValueFilter
-                      valueLabel={<span className={`icon icon-conflict-military`} />}
-                      onFilterChange={(type, value) =>
-                        updateNumericFilter(NumericCardValue.MILITARY, type, value)
-                      }
-                    />
-                  </Grid>
-                  <Grid
-                    item
-                    xs={12}
-                    sm={props.deckbuilder ? 12 : 6}
-                    md={props.deckbuilder ? 6 : 4}
-                  >
-                    <CardValueFilter
-                      valueLabel={<span className={`icon icon-conflict-political`} />}
-                      onFilterChange={(type, value) =>
-                        updateNumericFilter(NumericCardValue.POLITICAL, type, value)
-                      }
-                    />
-                  </Grid>
-                  <Grid
-                    item
-                    xs={12}
-                    sm={props.deckbuilder ? 12 : 6}
-                    md={props.deckbuilder ? 6 : 4}
-                  >
-                    <CardValueFilter
-                      valueLabel={<span>Cost:</span>}
-                      onFilterChange={(type, value) =>
-                        updateNumericFilter(NumericCardValue.COST, type, value)
-                      }
-                    />
-                  </Grid>
-                  <Grid
-                    item
-                    xs={12}
-                    sm={props.deckbuilder ? 12 : 6}
-                    md={props.deckbuilder ? 6 : 4}
-                  >
-                    <CardValueFilter
-                      valueLabel={<span>Inf:</span>}
-                      onFilterChange={(type, value) =>
-                        updateNumericFilter(NumericCardValue.INFLUENCE, type, value)
-                      }
-                    />
-                  </Grid>
-                  <Grid
-                    item
-                    xs={12}
-                    sm={props.deckbuilder ? 12 : 6}
-                    md={props.deckbuilder ? 6 : 4}
-                  >
-                    <CardValueFilter
-                      valueLabel={<span>Glory:</span>}
-                      onFilterChange={(type, value) =>
-                        updateNumericFilter(NumericCardValue.GLORY, type, value)
-                      }
-                    />
-                  </Grid>
-                  <Grid
-                    item
-                    xs={12}
-                    sm={props.deckbuilder ? 12 : 6}
-                    md={props.deckbuilder ? 6 : 4}
-                  >
-                    <CardValueFilter
-                      valueLabel={<span>Str:</span>}
-                      onFilterChange={(type, value) =>
-                        updateNumericFilter(NumericCardValue.STRENGTH, type, value)
-                      }
-                    />
-                  </Grid>
-                  <Grid item xs={12} md={12}>
+                  <Grid size={12}>
                     <Button
                       fullWidth
                       variant="contained"
-                      className={`${classes.button} ${classes.clearButton}`}
+                      className={classes.clearButton}
                       onClick={() => dispatchFilter({ type: FilterType.FILTER_RESET })}
                     >
                       Reset filters
@@ -935,6 +928,7 @@ export function CardFilter(props: {
         open={packModalOpen}
         onClose={() => setPackModalOpen(false)}
         className={classes.packDialog}
+        disableScrollLock
       >
         <DialogTitle id="form-dialog-title">Filter Packs</DialogTitle>
         <DialogContent>
@@ -954,6 +948,6 @@ export function CardFilter(props: {
           </Button>
         </DialogActions>
       </Dialog>
-    </Paper>
-  )
+    </StyledPaper>
+  );
 }
