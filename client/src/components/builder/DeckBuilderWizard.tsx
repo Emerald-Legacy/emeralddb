@@ -217,17 +217,24 @@ export function DeckBuilderWizard(props: {
             <Typography variant="h6" align="center">
               Choose Role
             </Typography>
-            <Grid container spacing={2} style={{ minWidth: 520 }} onMouseLeave={() => setHoveredCardId(null)}>
-              <Grid size={{ xs: 12, sm: 6 }}>
+            <Grid container spacing={{ xs: 0, sm: 2 }} style={{ minWidth: 550 }} justifyContent={{ xs: 'center', sm: 'flex-start' }} onMouseLeave={() => setHoveredCardId(null)}>
+              <Grid size={{ xs: 12, sm: 6 }} display="flex" justifyContent={{ xs: 'center', sm: 'flex-start' }}>
                 <RadioGroup
                   value={role}
                   onChange={(e) => setRole((e.target as HTMLInputElement).value)}
+                  sx={{ width: 320 }}
                 >
                   {roles.slice(0, 10).map((thisRole) => (
                     <FormControlLabel
                       key={thisRole.id}
                       value={thisRole.id}
                       control={<Radio />}
+                      sx={{
+                        marginBottom: 1,
+                        marginLeft: 0,
+                        marginRight: 0,
+                        '& .MuiFormControlLabel-label': { paddingLeft: 0 }
+                      }}
                       label={
                         <div
                           onMouseEnter={() => setHoveredCardId(thisRole.id)}
@@ -252,16 +259,23 @@ export function DeckBuilderWizard(props: {
                   ))}
                 </RadioGroup>
               </Grid>
-              <Grid size={{ xs: 12, sm: 6 }}>
+              <Grid size={{ xs: 12, sm: 6 }} display="flex" justifyContent={{ xs: 'center', sm: 'flex-start' }}>
                 <RadioGroup
                   value={role}
                   onChange={(e) => setRole((e.target as HTMLInputElement).value)}
+                  sx={{ width: 320 }}
                 >
                   {roles.slice(10).map((thisRole) => (
                     <FormControlLabel
                       key={thisRole.id}
                       value={thisRole.id}
                       control={<Radio />}
+                      sx={{
+                        marginBottom: 1,
+                        marginLeft: 0,
+                        marginRight: 0,
+                        '& .MuiFormControlLabel-label': { paddingLeft: 0 }
+                      }}
                       label={
                         <div
                           onMouseEnter={() => setHoveredCardId(thisRole.id)}
