@@ -323,7 +323,8 @@ export function applyFilters(cards: CardWithVersions[], formats: Format[], filte
         replaceSpecialCharacters(c.name).includes(query) ||
         c.id.toLocaleLowerCase().includes(query) ||
         replaceSpecialCharacters(c.text || '').includes(query) ||
-        c.traits?.some((trait) => trait.toLowerCase().includes(query))
+        c.traits?.some((trait) => trait.toLowerCase().includes(query)) ||
+        c.versions?.some((version) => replaceSpecialCharacters(version.illustrator || '').includes(query))
     )
   }
   return filteredCards
