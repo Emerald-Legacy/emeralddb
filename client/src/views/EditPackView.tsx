@@ -194,7 +194,7 @@ export function EditPackView(): JSX.Element {
               <Autocomplete
                 id="combo-box-cardId"
                 autoHighlight
-                options={cards}
+                options={[...cards].sort((a, b) => a.id.localeCompare(b.id))}
                 getOptionLabel={(option) => `${option.id}`}
                 value={cards.find((item) => item.id === cardId) || null}
                 renderInput={(params) => (
