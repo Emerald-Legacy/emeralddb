@@ -222,22 +222,22 @@ export function BuilderCardList(props: {
 
   const columns: ColumnData[] = [
     {
-      width: 100,
+      width: 90,
       label: 'Quantity',
       columnType: 'quantityForId',
     },
     {
-      width: 280,
+      width: 240,
       label: 'Card',
       columnType: 'nameFactionType',
     },
     {
-      width: 45,
+      width: 30,
       label: '',
       columnType: 'influenceAndFaction',
     },
     {
-      width: 70,
+      width: 50,
       label: 'Cost',
       columnType: 'cost',
     },
@@ -245,7 +245,7 @@ export function BuilderCardList(props: {
 
   if (!isSmOrSmaller && showTraits) {
     columns.push({
-      width: 280,
+      width: 0,
       label: 'Traits',
       columnType: 'traits',
     })
