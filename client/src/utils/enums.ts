@@ -1,7 +1,7 @@
 export const cardTypes: { id: string; name: string }[] = [
-  { id: 'attachment', name: 'Attachment' },
   { id: 'character', name: 'Character' },
   { id: 'event', name: 'Event' },
+  { id: 'attachment', name: 'Attachment' },
   { id: 'holding', name: 'Holding' },
   { id: 'province', name: 'Province' },
   { id: 'stronghold', name: 'Stronghold' },
