@@ -323,6 +323,38 @@ export function applyFilters(cards: CardWithVersions[], formats: Format[], filte
       filter.traits?.every((trait) => c.traits?.includes(trait))
     )
   }
+  if (filter.action) {
+    filteredCards = filteredCards.filter((c) => {
+      const cardText = c.text?.toLowerCase() || ''
+      const selectedAction = filter.action.toLowerCase()
+
+      // Base actions that should also match their conflict variants
+      const hierarchicalActions = ['action:', 'reaction:', 'interrupt:']
+      const isHierarchicalAction = hierarchicalActions.includes(selectedAction)
+
+      if (isHierarchicalAction) {
+        // Check for base action OR any conflict variants
+        const baseAction = selectedAction
+        const conflictAction = `conflict ${selectedAction}`
+        const militaryConflictAction = `[conflict-military] conflict ${selectedAction}`
+        const politicalConflictAction = `[conflict-political] conflict ${selectedAction}`
+
+        return cardText.includes(baseAction) ||
+               cardText.includes(conflictAction) ||
+               cardText.includes(militaryConflictAction) ||
+               cardText.includes(politicalConflictAction)
+      } else {
+        // For other actions (Forced, Conflict, etc.), just match exactly
+        return cardText.includes(selectedAction)
+      }
+    })
+  }
+  if (filter.keyword) {
+    filteredCards = filteredCards.filter((c) => {
+      const cardText = c.text?.toLowerCase() || ''
+      return cardText.includes(filter.keyword.toLowerCase())
+    })
+  }
   if (filter.elements && filter.elements.length > 0) {
     filteredCards = filteredCards.filter((c) =>
       filter.elements?.find((element) => c.elements?.includes(element))
