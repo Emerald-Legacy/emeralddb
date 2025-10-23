@@ -325,24 +325,24 @@ export function applyFilters(cards: CardWithVersions[], formats: Format[], filte
   }
   if (filter.action) {
     filteredCards = filteredCards.filter((c) => {
-      const cardText = c.text?.toLowerCase() || ''
-      const selectedAction = filter.action.toLowerCase()
+      const cardText = c.text || ''
+      const selectedAction = filter.action
 
-      // Base actions that should also match their conflict variants
-      const hierarchicalActions = ['action:', 'reaction:', 'interrupt:']
-      const isHierarchicalAction = hierarchicalActions.includes(selectedAction)
-
-      if (isHierarchicalAction) {
-        // Check for base action OR any conflict variants
+      // Base actions that should also match their conflict variants and forced variants
+      const hierarchicalActions = ['<b>Action:</b>', '<b>Reaction:</b>', '<b>Interrupt:</b>']
+      if (hierarchicalActions.includes(selectedAction)) {
+        const actionType = selectedAction.replace('<b>', '').replace('</b>', '') // e.g., "Action:", "Reaction:", "Interrupt:"
         const baseAction = selectedAction
-        const conflictAction = `conflict ${selectedAction}`
-        const militaryConflictAction = `[conflict-military] conflict ${selectedAction}`
-        const politicalConflictAction = `[conflict-political] conflict ${selectedAction}`
+        const conflictAction = `<b>Conflict ${actionType}</b>`
+        const militaryConflictAction = `<b>[conflict-military] Conflict ${actionType}</b>`
+        const politicalConflictAction = `<b>[conflict-political] Conflict ${actionType}</b>`
+        const forcedAction = `<b>Forced ${actionType}</b>`
 
         return cardText.includes(baseAction) ||
                cardText.includes(conflictAction) ||
                cardText.includes(militaryConflictAction) ||
-               cardText.includes(politicalConflictAction)
+               cardText.includes(politicalConflictAction) ||
+               cardText.includes(forcedAction)
       } else {
         // For other actions (Forced, Conflict, etc.), just match exactly
         return cardText.includes(selectedAction)
@@ -489,24 +489,24 @@ export function CardFilter(props: {
   ]
 
   const actionOptions: { id: string; name: string; searchText: string; icon?: string }[] = [
-    { id: 'action:', name: 'Action', searchText: 'action:' },
-    { id: 'reaction:', name: 'Reaction', searchText: 'reaction:' },
-    { id: 'interrupt:', name: 'Interrupt', searchText: 'interrupt:' },
-    { id: 'conflict-action:', name: 'Conflict Action', searchText: 'conflict action:' },
+    { id: 'action:', name: 'Action', searchText: '<b>Action:</b>' },
+    { id: 'reaction:', name: 'Reaction', searchText: '<b>Reaction:</b>' },
+    { id: 'interrupt:', name: 'Interrupt', searchText: '<b>Interrupt:</b>' },
+    { id: 'conflict-action:', name: 'Conflict Action', searchText: '<b>Conflict Action:</b>' },
     {
       id: 'conflict-military-action:',
       name: 'Conflict Action',
-      searchText: '[conflict-military] conflict action:',
+      searchText: '<b>[conflict-military] Conflict Action:</b>',
       icon: 'conflict-military',
     },
     {
       id: 'conflict-political-action:',
       name: 'Conflict Action',
-      searchText: '[conflict-political] conflict action:',
+      searchText: '<b>[conflict-political] Conflict Action:</b>',
       icon: 'conflict-political',
     },
-    { id: 'forced-interrupt:', name: 'Forced Interrupt', searchText: 'forced interrupt:' },
-    { id: 'forced-reaction:', name: 'Forced Reaction', searchText: 'forced reaction:' },
+    { id: 'forced-interrupt:', name: 'Forced Interrupt', searchText: '<b>Forced Interrupt:</b>' },
+    { id: 'forced-reaction:', name: 'Forced Reaction', searchText: '<b>Forced Reaction:</b>' },
   ]
 
   const keywordOptions: { id: string; name: string }[] = [
