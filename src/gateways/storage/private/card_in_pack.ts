@@ -23,14 +23,7 @@ export async function insertOrUpdateCardInPack(cardInPack: CardInPack): Promise<
   const result = await pg(TABLE)
     .insert(cardInPack)
     .onConflict(['card_id', 'pack_id'])
-    .merge([
-      'flavor',
-      'illustrator',
-      'image_url',
-      'position',
-      'quantity',
-      'rotated'
-    ])
+    .merge(['flavor', 'illustrator', 'image_url', 'position', 'quantity', 'rotated'])
     .returning('*')
 
   return result[0]
