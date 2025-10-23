@@ -34,6 +34,8 @@ export function EditPackView(): JSX.Element {
   const [rotated, setRotated] = useState(false)
   const [cardsInPack, setCardsInPack] = useState<CardInPack[]>([])
   const [modalOpen, setModalOpen] = useState(false)
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+  const [cardToDelete, setCardToDelete] = useState<CardInPack | null>(null)
   const confirm = useConfirm()
   const { enqueueSnackbar } = useSnackbar()
 
@@ -50,20 +52,20 @@ export function EditPackView(): JSX.Element {
   }
 
   useEffect(() => {
-    if (cards && packId) {
-    const packCards = cards.filter((c) => c.versions.some((v) => v.pack_id === packId))
+    if (cards && params.id) {
+    const packCards = cards.filter((c) => c.versions.some((v) => v.pack_id === params.id))
     const newCardsInPack: CardInPack[] = packCards.map((p) => {
-      const cardVersionInPack = p.versions.find((v) => v.pack_id === packId)
+      const cardVersionInPack = p.versions.find((v) => v.pack_id === params.id)
       return {
         ...cardVersionInPack,
         card_id: p.id,
-        pack_id: packId,
+        pack_id: params.id!,
         rotated: cardVersionInPack?.rotated || false,
       }
     }).sort((a, b) => compareCardsInPack(a, b))
     setCardsInPack(newCardsInPack)
     }
-  }, [cards])
+  }, [cards, params.id])
 
   if (!cards || !packs) {
     return <Loading />
@@ -76,7 +78,7 @@ export function EditPackView(): JSX.Element {
     return <RequestError requestError="No pack for that ID!" />
   }
 
-  function updateCards() {
+  async function updateCards() {
     const newCard: CardInPack = {
       card_id: cardId,
       pack_id: packId,
@@ -87,39 +89,51 @@ export function EditPackView(): JSX.Element {
       quantity: quantity,
       rotated: rotated,
     }
-    privateApi.CardInPack.update({
-      body: {
-        cardInPack: newCard
-      }
-    }).then(() => {
-      invalidateData()
-      setCardsInPack([])
+    try {
+      await privateApi.CardInPack.update({
+        body: {
+          cardInPack: newCard
+        }
+      })
+      await invalidateData()
       enqueueSnackbar('Successfully posted pack card!', { variant: 'success' })
       setModalOpen(false)
-    })
-      .catch((error) => {
-        console.log(error)
-        enqueueSnackbar("The card couldn't be added to the pack!", { variant: 'error' })
-      })
+    } catch (error) {
+      console.log(error)
+      enqueueSnackbar("The card couldn't be added to the pack!", { variant: 'error' })
+    }
   }
 
-  function deleteCard(cardInPack: CardInPack) {
-    confirm({ description: 'Do you really want to delete this card from the pack?' })
-      .then(() => {
-        privateApi.CardInPack.delete({
-          body: {
-            cardInPack: cardInPack
-          }
-        }).then(() => {
-          invalidateData()
-          setModalOpen(false)
-          setCardsInPack([])
-          enqueueSnackbar('Successfully deleted card from pack!', { variant: 'success' })
-        }).catch((error) => {
-            console.log(error)
-            enqueueSnackbar("The card couldn't be deleted from the pack!", { variant: 'error' })
-        })
+  function openDeleteDialog(cardInPack: CardInPack) {
+    console.log('openDeleteDialog called')
+    setCardToDelete(cardInPack)
+    setDeleteDialogOpen(true)
+  }
+
+  function closeDeleteDialog() {
+    console.log('closeDeleteDialog called - cancelling')
+    setDeleteDialogOpen(false)
+    setCardToDelete(null)
+  }
+
+  async function confirmDelete() {
+    console.log('confirmDelete called - deleting')
+    if (!cardToDelete) return
+
+    try {
+      await privateApi.CardInPack.delete({
+        body: {
+          cardInPack: cardToDelete
+        }
       })
+      await invalidateData()
+      enqueueSnackbar('Successfully deleted card from pack!', { variant: 'success' })
+      setDeleteDialogOpen(false)
+      setCardToDelete(null)
+    } catch (error) {
+      console.log(error)
+      enqueueSnackbar("The card couldn't be deleted from the pack!", { variant: 'error' })
+    }
   }
 
   function openEditModal(card: CardInPack, index: number) {
@@ -155,7 +169,7 @@ export function EditPackView(): JSX.Element {
         </Button>
       </Grid>
       {cardsInPack.map((card, index) => (
-        <Grid size={6}>
+        <Grid key={`${card.card_id}-${card.pack_id}`} size={6}>
           <Grid container spacing={1}>
             <Grid size={8}>
               <Box border="1px solid lightgrey">
@@ -174,7 +188,7 @@ export function EditPackView(): JSX.Element {
                 </Button>
                 <Button
                   variant="contained"
-                  onClick={() => deleteCard(card)}
+                  onClick={() => openDeleteDialog(card)}
                 >
                   Delete
                 </Button>
@@ -270,6 +284,25 @@ export function EditPackView(): JSX.Element {
           </Button>
           <Button variant="contained" color="secondary" onClick={() => updateCards()}>
             Update Card
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={deleteDialogOpen} onClose={closeDeleteDialog}>
+        <DialogTitle>Confirm Deletion</DialogTitle>
+        <DialogContent>
+          <Typography>Do you really want to delete this card from the pack?</Typography>
+          {cardToDelete && (
+            <Box mt={2}>
+              <Typography variant="body2">Card: {cardToDelete.card_id}</Typography>
+            </Box>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={closeDeleteDialog} variant="outlined" autoFocus>
+            Cancel
+          </Button>
+          <Button onClick={confirmDelete} variant="contained" color="error">
+            Delete
           </Button>
         </DialogActions>
       </Dialog>

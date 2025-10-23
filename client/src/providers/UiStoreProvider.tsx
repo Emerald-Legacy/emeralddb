@@ -11,7 +11,7 @@ export interface UiStore {
   formats: Format[]
   relevantFormats: Format[]
   validCardVersionForFormat: (cardId: string, formatId: string) => Omit<CardInPack, 'card_id'> | undefined
-  invalidateData: () => void
+  invalidateData: () => Promise<void>
   isLoading: boolean
 }
 
@@ -23,7 +23,7 @@ export const UiStoreContext = createContext<UiStore>({
   formats: [],
   relevantFormats: [],
   validCardVersionForFormat: () => undefined,
-  invalidateData: () => {},
+  invalidateData: async () => {},
   isLoading: false,
 })
 
@@ -36,48 +36,45 @@ export const UiStoreQueries = {
   FORMATS: ['formats'] as const,
 }
 
+// Helper function to fetch data with cache-busting
+async function fetchWithCacheBusting<T>(endpoint: string): Promise<T> {
+  const timestamp = Date.now()
+  const response = await fetch(`${endpoint}?_t=${timestamp}`, {
+    cache: 'no-store',
+    headers: {
+      'Cache-Control': 'no-cache'
+    }
+  })
+  return await response.json() as T
+}
+
 export function UiStoreProvider(props: { children: ReactNode }): JSX.Element {
   const queryClient = useQueryClient()
 
   // Use TanStack Query for all data fetching with automatic caching
   const { data: cards = [] } = useQuery<CardWithVersions[]>({
     queryKey: UiStoreQueries.CARDS,
-    queryFn: async () => {
-      const response = await publicApi.Card.findAll()
-      return response.data() as CardWithVersions[]
-    },
+    queryFn: () => fetchWithCacheBusting<CardWithVersions[]>('/api/cards'),
   })
 
   const { data: packs = [] } = useQuery<Pack[]>({
     queryKey: UiStoreQueries.PACKS,
-    queryFn: async () => {
-      const response = await publicApi.Pack.findAll()
-      return response.data() as Pack[]
-    },
+    queryFn: () => fetchWithCacheBusting<Pack[]>('/api/packs'),
   })
 
   const { data: cycles = [] } = useQuery<Cycle[]>({
     queryKey: UiStoreQueries.CYCLES,
-    queryFn: async () => {
-      const response = await publicApi.Cycle.findAll()
-      return response.data() as Cycle[]
-    },
+    queryFn: () => fetchWithCacheBusting<Cycle[]>('/api/cycles'),
   })
 
   const { data: traits = [] } = useQuery<Trait[]>({
     queryKey: UiStoreQueries.TRAITS,
-    queryFn: async () => {
-      const response = await publicApi.Trait.findAll()
-      return response.data() as Trait[]
-    },
+    queryFn: () => fetchWithCacheBusting<Trait[]>('/api/traits'),
   })
 
   const { data: formats = [], isLoading: formatsLoading } = useQuery<Format[]>({
     queryKey: UiStoreQueries.FORMATS,
-    queryFn: async () => {
-      const response = await publicApi.Format.findAll()
-      return response.data() as Format[]
-    },
+    queryFn: () => fetchWithCacheBusting<Format[]>('/api/formats'),
   })
 
   // Compute relevant formats
@@ -90,12 +87,20 @@ export function UiStoreProvider(props: { children: ReactNode }): JSX.Element {
   const isLoading = formatsLoading
 
   // Replace toggleReload with query invalidation
-  const invalidateData = () => {
+  const invalidateData = async () => {
     queryClient.invalidateQueries({ queryKey: UiStoreQueries.CARDS })
     queryClient.invalidateQueries({ queryKey: UiStoreQueries.PACKS })
     queryClient.invalidateQueries({ queryKey: UiStoreQueries.CYCLES })
     queryClient.invalidateQueries({ queryKey: UiStoreQueries.TRAITS })
     queryClient.invalidateQueries({ queryKey: UiStoreQueries.FORMATS })
+
+    await Promise.all([
+      queryClient.refetchQueries({ queryKey: UiStoreQueries.CARDS, exact: true }),
+      queryClient.refetchQueries({ queryKey: UiStoreQueries.PACKS, exact: true }),
+      queryClient.refetchQueries({ queryKey: UiStoreQueries.CYCLES, exact: true }),
+      queryClient.refetchQueries({ queryKey: UiStoreQueries.TRAITS, exact: true }),
+      queryClient.refetchQueries({ queryKey: UiStoreQueries.FORMATS, exact: true })
+    ])
   }
 
   // Memoized cache for card version lookups - O(1) instead of O(n)
