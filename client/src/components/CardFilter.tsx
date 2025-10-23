@@ -343,8 +343,18 @@ export function applyFilters(cards: CardWithVersions[], formats: Format[], filte
                cardText.includes(militaryConflictAction) ||
                cardText.includes(politicalConflictAction) ||
                cardText.includes(forcedAction)
+      } else if (selectedAction === '<b>Conflict Action:</b>' ||
+                 selectedAction === '<b>Conflict Reaction:</b>' ||
+                 selectedAction === '<b>Conflict Interrupt:</b>') {
+        // Conflict actions should also match their military and political variants
+        const militaryVariant = selectedAction.replace('<b>Conflict ', '<b>[conflict-military] Conflict ')
+        const politicalVariant = selectedAction.replace('<b>Conflict ', '<b>[conflict-political] Conflict ')
+
+        return cardText.includes(selectedAction) ||
+               cardText.includes(militaryVariant) ||
+               cardText.includes(politicalVariant)
       } else {
-        // For other actions (Forced, Conflict, etc.), just match exactly
+        // For other actions (Forced, specific conflict types), just match exactly
         return cardText.includes(selectedAction)
       }
     })
