@@ -202,59 +202,73 @@ export function ManageCyclesView(): JSX.Element {
 
   return (
     <Root>
-      <Grid container spacing={1} justifyContent="flex-end">
+      <Grid container spacing={3}>
         <Grid size={12}>
-          <Typography variant="h6">Cycles</Typography>
-        </Grid>
-        <Grid size={12}>
-          <Button variant="contained" color="secondary" fullWidth onClick={() => openCycleModal()}>
-            Add Cycle
-          </Button>
+          <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+            <Typography variant="h4">Cycles</Typography>
+            <Button variant="contained" color="secondary" size="medium" onClick={() => openCycleModal()}>
+              Add Cycle
+            </Button>
+          </Box>
         </Grid>
         {cycles.map((cycle) => (
-          <Grid size={12}>
-            <Typography>
-              {cycle.rotated && <CachedIcon style={{ color: 'red', fontSize: 16 }} />}
-              {cycle.name}
-            </Typography>
-            <Button variant="contained" color="primary" onClick={() => rotateCycle(cycle.id)}>
-              Rotate Cycle
-            </Button>
-            {packsForCycle(cycle.id).map((pack) => (
-              <Grid container spacing={1}>
-                <Grid size={1} />
-                <Grid size={5}>
-                  <Typography>
-                    {pack.rotated && <CachedIcon style={{ color: 'red', fontSize: 16 }} />}{' '}
+          <Grid size={6} key={cycle.id}>
+            <Box
+              sx={{
+                border: '1px solid',
+                borderColor: 'divider',
+                borderRadius: 1,
+                p: 2,
+                mb: 1,
+              }}
+            >
+              <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+                <Typography variant="subtitle1" fontWeight="bold">
+                  {cycle.rotated && <CachedIcon style={{ color: 'red', fontSize: 16, marginRight: 8 }} />}
+                  {cycle.name}
+                </Typography>
+                <Button variant="contained" color="error" size="small" onClick={() => rotateCycle(cycle.id)}>
+                  Rotate Cycle
+                </Button>
+              </Box>
+              {packsForCycle(cycle.id).map((pack) => (
+                <Box
+                  key={pack.id}
+                  display="flex"
+                  justifyContent="space-between"
+                  alignItems="center"
+                  sx={{ ml: 4, mb: 1, p: 1, bgcolor: 'action.hover', borderRadius: 1 }}
+                >
+                  <Typography variant="body2">
+                    {pack.rotated && <CachedIcon style={{ color: 'red', fontSize: 14, marginRight: 8 }} />}
                     {pack.name}
                   </Typography>
-                </Grid>
-                <Grid size={6}>
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    onClick={() => navigate(`/admin/pack/${pack.id}`)}
-                  >
-                    Edit Pack Cards
-                  </Button>
-                  <Button variant="contained" color="primary" onClick={() => rotatePack(pack.id)}>
-                    Rotate Pack
-                  </Button>
-                </Grid>
-              </Grid>
-            ))}
-            <Grid container>
-              <Grid size={1}></Grid>
-              <Grid size={11}>
+                  <Box sx={{ display: 'flex', gap: 1 }}>
+                    <Button
+                      variant="outlined"
+                      color="secondary"
+                      size="small"
+                      onClick={() => navigate(`/admin/pack/${pack.id}`)}
+                    >
+                      Edit Pack Cards
+                    </Button>
+                    <Button variant="outlined" color="error" size="small" onClick={() => rotatePack(pack.id)}>
+                      Rotate Pack
+                    </Button>
+                  </Box>
+                </Box>
+              ))}
+              <Box sx={{ ml: 4, mt: 2 }}>
                 <Button
                   variant="contained"
                   color="secondary"
+                  size="small"
                   onClick={() => openPackModal(cycle.id)}
                 >
                   Add Pack
                 </Button>
-              </Grid>
-            </Grid>
+              </Box>
+            </Box>
           </Grid>
         ))}
       </Grid>
