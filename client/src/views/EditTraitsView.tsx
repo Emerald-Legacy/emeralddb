@@ -18,7 +18,6 @@ import React, { useState } from 'react'
 import { Trait } from "@5rdb/api";
 import { privateApi } from '../api'
 import { useSnackbar } from 'notistack'
-import { useConfirm } from "material-ui-confirm";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
@@ -29,7 +28,8 @@ export function EditTraitsView(): JSX.Element {
   const [traitId, setTraitId] = useState('')
   const [traitName, setTraitName] = useState('')
   const [modalOpen, setModalOpen] = useState(false)
-  const confirm = useConfirm()
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+  const [traitToDelete, setTraitToDelete] = useState<Trait | null>(null)
   const { enqueueSnackbar } = useSnackbar()
 
   if (!traits) {
@@ -67,29 +67,37 @@ export function EditTraitsView(): JSX.Element {
       })
   }
 
-  function deleteTrait(trait: Trait) {
-    confirm({ description: 'Do you really want to delete this trait?' })
-      .then(() => {
-        privateApi.Trait.delete({
-          body: {
-            trait: trait,
-          },
-        })
-          .then(() => {
-            invalidateData()
-            enqueueSnackbar('Successfully deleted trait!', { variant: 'success' })
-          })
-          .catch((error) => {
-            console.log(error)
-            enqueueSnackbar("The trait couldn't be deleted!", { variant: 'error' })
-          })
+  function openDeleteDialog(trait: Trait) {
+    setTraitToDelete(trait)
+    setDeleteDialogOpen(true)
+  }
+
+  function closeDeleteDialog() {
+    setDeleteDialogOpen(false)
+    setTraitToDelete(null)
+  }
+
+  async function confirmDeleteTrait() {
+    if (!traitToDelete) return
+    try {
+      await privateApi.Trait.delete({
+        body: {
+          trait: traitToDelete,
+        },
       })
+      invalidateData()
+      enqueueSnackbar('Successfully deleted trait!', { variant: 'success' })
+      closeDeleteDialog()
+    } catch (error) {
+      console.log(error)
+      enqueueSnackbar("The trait couldn't be deleted!", { variant: 'error' })
+    }
   }
 
   const sortedTraits = traits.sort((a, b) => a.id.localeCompare(b.id))
 
   return (
-    <Box sx={{ maxWidth: 1200, mx: 'auto', mt: 2, px: 2 }}>
+    <Box sx={{ maxWidth: 1200, mx: 'auto', mt: 2, px: 2, pb: 4 }}>
       <Grid container spacing={3}>
         <Grid size={12}>
           <Card>
@@ -124,7 +132,7 @@ export function EditTraitsView(): JSX.Element {
                   size="large">
                   <EditIcon />
                 </IconButton>
-                <IconButton onClick={() => deleteTrait(trait)} size="large">
+                <IconButton onClick={() => openDeleteDialog(trait)} size="large">
                   <DeleteIcon />
                 </IconButton>
               </TableCell>
@@ -164,6 +172,22 @@ export function EditTraitsView(): JSX.Element {
           </Button>
           <Button variant="contained" color="secondary" onClick={() => saveTrait()}>
             Save Trait
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={deleteDialogOpen} onClose={closeDeleteDialog}>
+        <DialogTitle>Confirm Deletion</DialogTitle>
+        <DialogContent>
+          <Typography>
+            Do you really want to delete the trait "{traitToDelete?.name}" ({traitToDelete?.id})?
+          </Typography>
+        </DialogContent>
+        <DialogActions sx={{ px: 3, pb: 2 }}>
+          <Button onClick={closeDeleteDialog} variant="outlined" autoFocus>
+            Cancel
+          </Button>
+          <Button onClick={confirmDeleteTrait} variant="contained" color="error">
+            Delete Trait
           </Button>
         </DialogActions>
       </Dialog>
