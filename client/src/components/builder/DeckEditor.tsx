@@ -110,7 +110,9 @@ function prefilterCards(cards: CardWithVersions[], decklist: DecklistViewModel, 
     if (chosenFormat && chosenFormat.legal_packs) {
       const legalPacksOfFormat = chosenFormat.legal_packs
       filteredCards = filteredCards.filter((c) =>
-        c.versions.some((version) => legalPacksOfFormat.includes(version.pack_id))
+        c.versions.some((version) =>
+          legalPacksOfFormat.includes(version.pack_id) && !version.rotated
+        )
       )
     }
   }

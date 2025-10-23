@@ -322,7 +322,11 @@ export function applyFilters(cards: CardWithVersions[], formats: Format[], filte
       }
     } else {
       if (filter.illegal === 'false') {
-        filteredCards = filteredCards.filter((c) => c.versions.some((version) => legalPacksOfFormat.some(pack => version.pack_id === pack)))
+        filteredCards = filteredCards.filter((c) =>
+          c.versions.some((version) =>
+            legalPacksOfFormat.some((pack) => version.pack_id === pack) && !version.rotated
+          )
+        )
       }
       if (filter.restricted === 'false') {
         filteredCards = filteredCards.filter((c) => !c.restricted_in?.includes(filter.format))

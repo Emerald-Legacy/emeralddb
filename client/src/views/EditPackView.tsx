@@ -265,7 +265,7 @@ export function EditPackView(): JSX.Element {
               <FormControlLabel
                 control={
                   <Checkbox
-                    value={rotated}
+                    checked={rotated}
                     onChange={(value) => setRotated(value.target.checked)}
                   />
                 }
