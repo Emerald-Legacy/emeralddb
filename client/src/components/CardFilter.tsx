@@ -768,7 +768,7 @@ export function CardFilter(props: {
                       id="combo-box-traits"
                       autoHighlight
                       multiple
-                      options={traits}
+                      options={[...traits].sort((a, b) => a.name.localeCompare(b.name))}
                       getOptionLabel={(option) => option.name}
                       value={findTraits(filterState.traits)}
                       renderInput={(params) => (
