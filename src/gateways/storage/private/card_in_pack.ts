@@ -3,8 +3,6 @@ import { CardInPack } from '@5rdb/api'
 
 export const TABLE = 'cards_in_packs'
 
-const PRIMARY_KEY_CONSTRAINT = 'cards_in_packs_pkey'
-
 export async function getAllCardsInPacks(): Promise<CardInPack[]> {
   return pg(TABLE).select()
 }
@@ -22,11 +20,11 @@ export async function deleteCardInPack(cardId: string, packId: string): Promise<
 }
 
 export async function insertOrUpdateCardInPack(cardInPack: CardInPack): Promise<CardInPack> {
-  const insert = pg(TABLE).insert({ ...cardInPack })
-  const update = pg.queryBuilder().update({ ...cardInPack })
-  const result = await pg.raw(
-    `? ON CONFLICT ON CONSTRAINT ${PRIMARY_KEY_CONSTRAINT} DO ? returning *`,
-    [insert, update]
-  )
-  return result.rows[0]
+  const result = await pg(TABLE)
+    .insert(cardInPack)
+    .onConflict(['card_id', 'pack_id'])
+    .merge(['flavor', 'illustrator', 'image_url', 'position', 'quantity', 'rotated'])
+    .returning('*')
+
+  return result[0]
 }

@@ -3,56 +3,86 @@ name: CI/CD
 on:
   push:
     branches:
-      - master
+      - main
       - release
   pull_request:
     branches:
-      - master
+      - main
+
+# Prevent multiple deployments from running simultaneously
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
 
 jobs:
   lint:
+    name: Lint
     runs-on: ubuntu-latest
-    continue-on-error: true
-    steps:
-    - uses: actions/checkout@v4
-    - name: Use Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '22.x'
-        cache: 'yarn'
-    - run: yarn
-    - run: yarn lint
-  compilation-tests:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
-    - name: Use Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '22.x'
-        cache: 'yarn'
-    - run: yarn
-    - run: yarn build
-
-  deploy-master:
-    runs-on: ubuntu-latest
-    needs: [lint, compilation-tests]
-    if: github.ref == 'refs/heads/master'
     steps:
       - uses: actions/checkout@v4
-      - uses: akhileshns/heroku-deploy@v3.6.8 # This is the action
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+          cache: 'yarn'
+      - name: Install dependencies
+        run: yarn
+      - name: Run linter
+        run: yarn lint
+
+  compilation-tests:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+          cache: 'yarn'
+      - name: Install dependencies
+        run: yarn
+      - name: Build project
+        run: yarn build
+
+  deploy-main:
+    name: Deploy to Beta (beta-emeralddb)
+    runs-on: ubuntu-latest
+    needs: [lint, compilation-tests]
+    if: github.ref == 'refs/heads/main'
+    environment:
+      name: beta
+      url: https://beta-emeralddb.herokuapp.com
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Heroku CLI
+        run: |
+          curl https://cli-assets.heroku.com/install.sh | sh
+      - name: Deploy to Heroku
+        uses: akhileshns/heroku-deploy@v3.14.15
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: beta-emeralddb
           heroku_email: ${{secrets.HEROKU_API_EMAIL}}
 
   deploy-release:
+    name: Deploy to Production (emeralddb)
     runs-on: ubuntu-latest
     needs: [lint, compilation-tests]
     if: github.ref == 'refs/heads/release'
+    environment:
+      name: production
+      url: https://emeralddb.org
     steps:
       - uses: actions/checkout@v4
-      - uses: akhileshns/heroku-deploy@v3.6.8 # This is the action
+      - name: Install Heroku CLI
+        run: |
+          curl https://cli-assets.heroku.com/install.sh | sh
+      - name: Deploy to Heroku
+        uses: akhileshns/heroku-deploy@v3.14.15
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: emeralddb
