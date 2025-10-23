@@ -36,55 +36,45 @@ export const UiStoreQueries = {
   FORMATS: ['formats'] as const,
 }
 
+// Helper function to fetch data with cache-busting
+async function fetchWithCacheBusting<T>(endpoint: string): Promise<T> {
+  const timestamp = Date.now()
+  const response = await fetch(`${endpoint}?_t=${timestamp}`, {
+    cache: 'no-store',
+    headers: {
+      'Cache-Control': 'no-cache'
+    }
+  })
+  return await response.json() as T
+}
+
 export function UiStoreProvider(props: { children: ReactNode }): JSX.Element {
   const queryClient = useQueryClient()
 
   // Use TanStack Query for all data fetching with automatic caching
   const { data: cards = [] } = useQuery<CardWithVersions[]>({
     queryKey: UiStoreQueries.CARDS,
-    queryFn: async () => {
-      // Add cache-busting timestamp to bypass browser cache
-      const timestamp = Date.now()
-      const response = await fetch(`/api/cards?_t=${timestamp}`, {
-        cache: 'no-store',
-        headers: {
-          'Cache-Control': 'no-cache'
-        }
-      })
-      return await response.json() as CardWithVersions[]
-    },
+    queryFn: () => fetchWithCacheBusting<CardWithVersions[]>('/api/cards'),
   })
 
   const { data: packs = [] } = useQuery<Pack[]>({
     queryKey: UiStoreQueries.PACKS,
-    queryFn: async () => {
-      const response = await publicApi.Pack.findAll()
-      return response.data() as Pack[]
-    },
+    queryFn: () => fetchWithCacheBusting<Pack[]>('/api/packs'),
   })
 
   const { data: cycles = [] } = useQuery<Cycle[]>({
     queryKey: UiStoreQueries.CYCLES,
-    queryFn: async () => {
-      const response = await publicApi.Cycle.findAll()
-      return response.data() as Cycle[]
-    },
+    queryFn: () => fetchWithCacheBusting<Cycle[]>('/api/cycles'),
   })
 
   const { data: traits = [] } = useQuery<Trait[]>({
     queryKey: UiStoreQueries.TRAITS,
-    queryFn: async () => {
-      const response = await publicApi.Trait.findAll()
-      return response.data() as Trait[]
-    },
+    queryFn: () => fetchWithCacheBusting<Trait[]>('/api/traits'),
   })
 
   const { data: formats = [], isLoading: formatsLoading } = useQuery<Format[]>({
     queryKey: UiStoreQueries.FORMATS,
-    queryFn: async () => {
-      const response = await publicApi.Format.findAll()
-      return response.data() as Format[]
-    },
+    queryFn: () => fetchWithCacheBusting<Format[]>('/api/formats'),
   })
 
   // Compute relevant formats
