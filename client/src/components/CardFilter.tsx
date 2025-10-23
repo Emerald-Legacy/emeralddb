@@ -500,6 +500,8 @@ export function CardFilter(props: {
     { id: 'action:', name: 'Action', searchText: '<b>Action:</b>' },
     { id: 'reaction:', name: 'Reaction', searchText: '<b>Reaction:</b>' },
     { id: 'interrupt:', name: 'Interrupt', searchText: '<b>Interrupt:</b>' },
+    { id: 'forced-reaction:', name: 'Forced Reaction', searchText: '<b>Forced Reaction:</b>' },
+    { id: 'forced-interrupt:', name: 'Forced Interrupt', searchText: '<b>Forced Interrupt:</b>' },
     { id: 'conflict-action:', name: 'Conflict Action', searchText: '<b>Conflict Action:</b>' },
     {
       id: 'conflict-military-action:',
@@ -513,8 +515,6 @@ export function CardFilter(props: {
       searchText: '<b>[conflict-political] Conflict Action:</b>',
       icon: 'conflict-political',
     },
-    { id: 'forced-interrupt:', name: 'Forced Interrupt', searchText: '<b>Forced Interrupt:</b>' },
-    { id: 'forced-reaction:', name: 'Forced Reaction', searchText: '<b>Forced Reaction:</b>' },
   ]
 
   const keywordOptions: { id: string; name: string }[] = [
