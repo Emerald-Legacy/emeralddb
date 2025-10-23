@@ -19,14 +19,15 @@ permissions:
 
 jobs:
   lint:
+    name: Lint
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - name: Use Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '22.x'
-        cache: 'yarn'
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+          cache: 'yarn'
       - name: Install dependencies
         run: yarn
       - name: Run linter
@@ -36,12 +37,12 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - name: Use Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '22.x'
-        cache: 'yarn'
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+          cache: 'yarn'
       - name: Install dependencies
         run: yarn
       - name: Build project
@@ -57,7 +58,8 @@ jobs:
       url: https://beta-emeralddb.herokuapp.com
     steps:
       - uses: actions/checkout@v4
-      - uses: akhileshns/heroku-deploy@v3.6.8 # This is the action
+      - name: Deploy to Heroku
+        uses: akhileshns/heroku-deploy@v3.14.15
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: beta-emeralddb
@@ -73,7 +75,8 @@ jobs:
       url: https://emeralddb.org
     steps:
       - uses: actions/checkout@v4
-      - uses: akhileshns/heroku-deploy@v3.6.8 # This is the action
+      - name: Deploy to Heroku
+        uses: akhileshns/heroku-deploy@v3.14.15
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: emeralddb
