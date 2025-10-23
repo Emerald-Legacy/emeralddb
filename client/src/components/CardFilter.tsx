@@ -886,9 +886,26 @@ export function CardFilter(props: {
                           {option.name}
                         </li>
                       )}
-                      renderInput={(params) => (
-                        <TextField {...params} size="small" label="Action" variant="outlined" />
-                      )}
+                      renderInput={(params) => {
+                        const selectedOption = actionOptions.find((option) => option.searchText === filterState.action)
+                        return (
+                          <TextField
+                            {...params}
+                            size="small"
+                            label="Action"
+                            variant="outlined"
+                            InputProps={{
+                              ...params.InputProps,
+                              startAdornment: selectedOption?.icon ? (
+                                <>
+                                  <span className={`icon icon-${selectedOption.icon}`} style={{ marginRight: 2 }} />
+                                  {params.InputProps.startAdornment}
+                                </>
+                              ) : params.InputProps.startAdornment,
+                            }}
+                          />
+                        )
+                      }}
                       onChange={(e, value) =>
                         dispatchFilter({
                           type: FilterType.FILTER_ACTION,
