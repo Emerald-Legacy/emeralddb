@@ -212,7 +212,8 @@ export function ManageCyclesView(): JSX.Element {
 
   return (
     <Root>
-      <Grid container spacing={3}>
+      <Box sx={{ pb: 4 }}>
+        <Grid container spacing={3}>
         <Grid size={12}>
           <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
             <Typography variant="h4">Cycles</Typography>
@@ -282,6 +283,7 @@ export function ManageCyclesView(): JSX.Element {
           </Grid>
         ))}
       </Grid>
+      </Box>
       <Dialog open={packModalOpen} onClose={() => setPackModalOpen(false)} maxWidth="sm" fullWidth>
         <DialogTitle>Create New Pack</DialogTitle>
         <DialogContent>

@@ -35,7 +35,7 @@ export function AdminView(): JSX.Element {
   }
 
   return (
-    <Box sx={{ maxWidth: 800, mx: 'auto', mt: 4 }}>
+    <Box sx={{ maxWidth: 800, mx: 'auto', mt: 4, pb: 4 }}>
       <Typography variant="h4" gutterBottom>
         Admin View
       </Typography>

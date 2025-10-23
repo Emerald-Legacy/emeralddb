@@ -104,7 +104,7 @@ export function EditFormatsView(): JSX.Element {
   const sortedFormats = formats.sort(compareFormats)
 
   return (
-    <Box sx={{ maxWidth: 1400, mx: 'auto', mt: 2, px: 2 }}>
+    <Box sx={{ maxWidth: 1400, mx: 'auto', mt: 2, px: 2, pb: 4 }}>
       <Grid container spacing={3}>
         <Grid size={12}>
           <Card>
