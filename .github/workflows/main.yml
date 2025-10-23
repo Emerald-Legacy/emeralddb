@@ -3,11 +3,11 @@ name: CI/CD
 on:
   push:
     branches:
-      - master
+      - main
       - release
   pull_request:
     branches:
-      - master
+      - main
 
 # Prevent multiple deployments from running simultaneously
 concurrency:
@@ -48,11 +48,11 @@ jobs:
       - name: Build project
         run: yarn build
 
-  deploy-master:
+  deploy-main:
     name: Deploy to Beta (beta-emeralddb)
     runs-on: ubuntu-latest
     needs: [lint, compilation-tests]
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/main'
     environment:
       name: beta
       url: https://beta-emeralddb.herokuapp.com
