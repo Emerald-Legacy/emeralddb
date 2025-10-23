@@ -9,6 +9,10 @@ on:
     branches:
       - master
 
+# Prevent multiple deployments from running simultaneously
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
 jobs:
   lint:
     runs-on: ubuntu-latest
