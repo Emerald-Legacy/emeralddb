@@ -516,10 +516,6 @@ export function CardFilter(props: {
 
   const triggeredAbilityOptions: { id: string; name: string; searchText: string; icon?: string }[] = [
     { id: 'action:', name: 'Action', searchText: '<b>Action:</b>' },
-    { id: 'reaction:', name: 'Reaction', searchText: '<b>Reaction:</b>' },
-    { id: 'interrupt:', name: 'Interrupt', searchText: '<b>Interrupt:</b>' },
-    { id: 'forced-reaction:', name: 'Forced Reaction', searchText: '<b>Forced Reaction:</b>' },
-    { id: 'forced-interrupt:', name: 'Forced Interrupt', searchText: '<b>Forced Interrupt:</b>' },
     { id: 'conflict-action:', name: 'Conflict Action', searchText: '<b>Conflict Action:</b>' },
     {
       id: 'conflict-military-action:',
@@ -533,6 +529,13 @@ export function CardFilter(props: {
       searchText: '<b>[conflict-political] Conflict Action:</b>',
       icon: 'conflict-political',
     },
+    { id: 'reaction:', name: 'Reaction', searchText: '<b>Reaction:</b>' },
+    { id: 'forced-reaction:', name: 'Forced Reaction', searchText: '<b>Forced Reaction:</b>' },
+    { id: 'interrupt:', name: 'Interrupt', searchText: '<b>Interrupt:</b>' },
+    { id: 'forced-interrupt:', name: 'Forced Interrupt', searchText: '<b>Forced Interrupt:</b>' },
+    { id: 'duel-challenge:', name: 'Duel Challenge', searchText: '<b>Duel Challenge:</b>' },
+    { id: 'duel-focus:', name: 'Duel Focus', searchText: '<b>Duel Focus:</b>' },
+    { id: 'duel-strike:', name: 'Duel Strike', searchText: '<b>Duel Strike:</b>' },
   ]
 
   const keywordOptions: { id: string; name: string; searchText: string }[] = [
