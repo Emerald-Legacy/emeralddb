@@ -11,6 +11,7 @@ import {
   Box,
   Card,
   CardContent,
+  Divider,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { DataGrid, GridColDef } from '@mui/x-data-grid'
@@ -588,45 +589,48 @@ export function CardsView(): JSX.Element {
             </CardContent>
           </Card>
         </Grid>
-        {currentCards.map((card) => (
-          <Grid key={card.id} size={12}>
-            <Card>
-              <CardContent>
-                <Grid container spacing={3}>
-                  <Grid size={{ xs: 12, sm: 6 }}>
-                    <CardInformation
-                      cardWithVersions={card}
-                      clickable
-                      currentVersion={findCardVersion(card)}
-                    />
-                    <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
-                      <Button
-                        onClick={() => goToCardPage(card.id)}
-                        color="secondary"
-                        variant="contained"
-                      >
-                        Go To Card Page
-                      </Button>
-                    </Box>
-                  </Grid>
-                  <Grid size={{ xs: 12, sm: 6 }}>
-                    <Box maxWidth={'300px'} margin={'0 auto'}>
-                      <CardImageOrText
-                        cardId={card.id}
-                        onClick={(cardId) => {
-                          setModalCard(cards.find((card) => card.id === cardId))
-                          setCardModalOpen(true)
-                        }}
-                        cardVersion={findCardVersion(card)}
-                        showFab={false}
+        <Grid size={12}>
+          <Card>
+            <CardContent>
+              {currentCards.map((card, index) => (
+                <Box key={card.id}>
+                  {index > 0 && <Divider sx={{ my: 3 }} />}
+                  <Grid container spacing={3}>
+                    <Grid size={{ xs: 12, sm: 6 }}>
+                      <CardInformation
+                        cardWithVersions={card}
+                        clickable
+                        currentVersion={findCardVersion(card)}
                       />
-                    </Box>
+                      <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
+                        <Button
+                          onClick={() => goToCardPage(card.id)}
+                          color="secondary"
+                          variant="contained"
+                        >
+                          Go To Card Page
+                        </Button>
+                      </Box>
+                    </Grid>
+                    <Grid size={{ xs: 12, sm: 6 }}>
+                      <Box maxWidth={'300px'} margin={'0 auto'}>
+                        <CardImageOrText
+                          cardId={card.id}
+                          onClick={(cardId) => {
+                            setModalCard(cards.find((card) => card.id === cardId))
+                            setCardModalOpen(true)
+                          }}
+                          cardVersion={findCardVersion(card)}
+                          showFab={false}
+                        />
+                      </Box>
+                    </Grid>
                   </Grid>
-                </Grid>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
+                </Box>
+              ))}
+            </CardContent>
+          </Card>
+        </Grid>
         <Grid size={12}>
           <Card>
             <CardContent>
