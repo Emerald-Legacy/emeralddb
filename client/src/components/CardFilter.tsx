@@ -286,6 +286,29 @@ function replaceSpecialCharacters(text: string): string {
     .replaceAll('ç', 'c')
 }
 
+function buildActionVariants(selectedAction: string): string[] {
+  const actionType = selectedAction.replace(/<b>(?:Forced |Conflict |\[conflict-(?:military|political)\] Conflict )?/, '').replace('</b>', '')
+  const variants = [selectedAction]
+
+  if (selectedAction === `<b>${actionType}</b>`) {
+    variants.push(
+      `<b>Conflict ${actionType}</b>`,
+      `<b>[conflict-military] Conflict ${actionType}</b>`,
+      `<b>[conflict-political] Conflict ${actionType}</b>`
+    )
+    if (actionType === 'Reaction:' || actionType === 'Interrupt:') {
+      variants.push(`<b>Forced ${actionType}</b>`)
+    }
+  } else if (selectedAction === `<b>Conflict ${actionType}</b>`) {
+    variants.push(
+      `<b>[conflict-military] Conflict ${actionType}</b>`,
+      `<b>[conflict-political] Conflict ${actionType}</b>`
+    )
+  }
+
+  return variants
+}
+
 export function applyFilters(cards: CardWithVersions[], formats: Format[], filter: FilterState): CardWithVersions[] {
   let filteredCards = cards
   let chosenFormat = filter.format && formats.find(format => format.id === filter.format)
@@ -324,44 +347,16 @@ export function applyFilters(cards: CardWithVersions[], formats: Format[], filte
     )
   }
   if (filter.action) {
-    filteredCards = filteredCards.filter((c) => {
-      const cardText = c.text || ''
-      const selectedAction = filter.action
-
-      // Extract action type (e.g., "Action:", "Reaction:", "Interrupt:")
-      const actionType = selectedAction.replace(/<b>(?:Forced |Conflict |\[conflict-(?:military|political)\] Conflict )?/, '').replace('</b>', '')
-
-      // Build variants to match based on selection
-      const variants = [selectedAction] // Always include exact match
-
-      // Base actions match all variants
-      if (selectedAction === `<b>${actionType}</b>`) {
-        variants.push(
-          `<b>Conflict ${actionType}</b>`,
-          `<b>[conflict-military] Conflict ${actionType}</b>`,
-          `<b>[conflict-political] Conflict ${actionType}</b>`
-        )
-        // Only Reaction and Interrupt have Forced variants
-        if (actionType === 'Reaction:' || actionType === 'Interrupt:') {
-          variants.push(`<b>Forced ${actionType}</b>`)
-        }
-      }
-      // Generic conflict actions match military/political variants
-      else if (selectedAction === `<b>Conflict ${actionType}</b>`) {
-        variants.push(
-          `<b>[conflict-military] Conflict ${actionType}</b>`,
-          `<b>[conflict-political] Conflict ${actionType}</b>`
-        )
-      }
-
-      return variants.some(variant => cardText.includes(variant))
-    })
+    const variants = buildActionVariants(filter.action)
+    filteredCards = filteredCards.filter((c) =>
+      variants.some(variant => c.text?.includes(variant))
+    )
   }
   if (filter.keyword) {
-    filteredCards = filteredCards.filter((c) => {
-      const cardText = c.text?.toLowerCase() || ''
-      return cardText.includes(filter.keyword.toLowerCase())
-    })
+    const keyword = filter.keyword.toLowerCase()
+    filteredCards = filteredCards.filter((c) =>
+      c.text?.toLowerCase().includes(keyword)
+    )
   }
   if (filter.elements && filter.elements.length > 0) {
     filteredCards = filteredCards.filter((c) =>
@@ -463,6 +458,29 @@ function filterReducer(state: FilterState, action: FilterAction): FilterState {
     case FilterType.FILTER_RESET:
       return initialState
   }
+}
+
+function renderActionInputWithIcon(
+  params: any,
+  selectedOption: { icon?: string } | undefined
+): JSX.Element {
+  return (
+    <TextField
+      {...params}
+      size="small"
+      label="Action"
+      variant="outlined"
+      InputProps={{
+        ...params.InputProps,
+        startAdornment: selectedOption?.icon ? (
+          <>
+            <span className={`icon icon-${selectedOption.icon}`} style={{ marginRight: 2 }} />
+            {params.InputProps.startAdornment}
+          </>
+        ) : params.InputProps.startAdornment,
+      }}
+    />
+  )
 }
 
 export function CardFilter(props: {
@@ -886,26 +904,12 @@ export function CardFilter(props: {
                           {option.name}
                         </li>
                       )}
-                      renderInput={(params) => {
-                        const selectedOption = actionOptions.find((option) => option.searchText === filterState.action)
-                        return (
-                          <TextField
-                            {...params}
-                            size="small"
-                            label="Action"
-                            variant="outlined"
-                            InputProps={{
-                              ...params.InputProps,
-                              startAdornment: selectedOption?.icon ? (
-                                <>
-                                  <span className={`icon icon-${selectedOption.icon}`} style={{ marginRight: 2 }} />
-                                  {params.InputProps.startAdornment}
-                                </>
-                              ) : params.InputProps.startAdornment,
-                            }}
-                          />
+                      renderInput={(params) =>
+                        renderActionInputWithIcon(
+                          params,
+                          actionOptions.find((option) => option.searchText === filterState.action)
                         )
-                      }}
+                      }
                       onChange={(e, value) =>
                         dispatchFilter({
                           type: FilterType.FILTER_ACTION,
