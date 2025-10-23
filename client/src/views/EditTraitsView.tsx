@@ -1,5 +1,8 @@
 import {
+  Box,
   Button,
+  Card,
+  CardContent,
   Dialog,
   DialogActions,
   DialogContent,
@@ -15,7 +18,6 @@ import React, { useState } from 'react'
 import { Trait } from "@5rdb/api";
 import { privateApi } from '../api'
 import { useSnackbar } from 'notistack'
-import { useConfirm } from "material-ui-confirm";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
@@ -26,7 +28,8 @@ export function EditTraitsView(): JSX.Element {
   const [traitId, setTraitId] = useState('')
   const [traitName, setTraitName] = useState('')
   const [modalOpen, setModalOpen] = useState(false)
-  const confirm = useConfirm()
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+  const [traitToDelete, setTraitToDelete] = useState<Trait | null>(null)
   const { enqueueSnackbar } = useSnackbar()
 
   if (!traits) {
@@ -64,36 +67,48 @@ export function EditTraitsView(): JSX.Element {
       })
   }
 
-  function deleteTrait(trait: Trait) {
-    confirm({ description: 'Do you really want to delete this trait?' })
-      .then(() => {
-        privateApi.Trait.delete({
-          body: {
-            trait: trait,
-          },
-        })
-          .then(() => {
-            invalidateData()
-            enqueueSnackbar('Successfully deleted trait!', { variant: 'success' })
-          })
-          .catch((error) => {
-            console.log(error)
-            enqueueSnackbar("The trait couldn't be deleted!", { variant: 'error' })
-          })
+  function openDeleteDialog(trait: Trait) {
+    setTraitToDelete(trait)
+    setDeleteDialogOpen(true)
+  }
+
+  function closeDeleteDialog() {
+    setDeleteDialogOpen(false)
+    setTraitToDelete(null)
+  }
+
+  async function confirmDeleteTrait() {
+    if (!traitToDelete) return
+    try {
+      await privateApi.Trait.delete({
+        body: {
+          trait: traitToDelete,
+        },
       })
+      invalidateData()
+      enqueueSnackbar('Successfully deleted trait!', { variant: 'success' })
+      closeDeleteDialog()
+    } catch (error) {
+      console.log(error)
+      enqueueSnackbar("The trait couldn't be deleted!", { variant: 'error' })
+    }
   }
 
   const sortedTraits = traits.sort((a, b) => a.id.localeCompare(b.id))
 
   return (
-    <Grid container spacing={2} justifyContent="center">
-      <Grid size={12}>
-        <Typography variant="h6">Traits</Typography>
-        <Button variant="contained" color="secondary" onClick={() => openCreateModal()}>
-          Add New Trait
-        </Button>
-      </Grid>
-      <Table size={"small"}>
+    <Box sx={{ maxWidth: 1200, mx: 'auto', mt: 2, px: 2, pb: 4 }}>
+      <Grid container spacing={3}>
+        <Grid size={12}>
+          <Card>
+            <CardContent>
+              <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+                <Typography variant="h5">Traits</Typography>
+                <Button variant="contained" color="secondary" onClick={() => openCreateModal()}>
+                  Add New Trait
+                </Button>
+              </Box>
+              <Table size="small">
         <TableHead>
           <TableCell>
             Trait ID
@@ -117,7 +132,7 @@ export function EditTraitsView(): JSX.Element {
                   size="large">
                   <EditIcon />
                 </IconButton>
-                <IconButton onClick={() => deleteTrait(trait)} size="large">
+                <IconButton onClick={() => openDeleteDialog(trait)} size="large">
                   <DeleteIcon />
                 </IconButton>
               </TableCell>
@@ -125,33 +140,34 @@ export function EditTraitsView(): JSX.Element {
           ))}
         </TableBody>
       </Table>
-      <Dialog open={modalOpen} onClose={() => setModalOpen(false)}>
-        <DialogTitle>Edit Trait</DialogTitle>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
+      <Dialog open={modalOpen} onClose={() => setModalOpen(false)} maxWidth="sm" fullWidth>
+        <DialogTitle>{editIndex === -1 ? 'Create New Trait' : 'Edit Trait'}</DialogTitle>
         <DialogContent>
-          <Grid container spacing={1}>
-            <Grid size={12}>
-              <TextField
-                value={traitId}
-                multiline
-                variant="outlined"
-                fullWidth
-                onChange={(e) => setTraitId(e.target.value)}
-                label="Trait ID"
-                style={{ marginTop: 5 }}
-              />
-              <TextField
-                value={traitName}
-                variant="outlined"
-                fullWidth
-                onChange={(e) => setTraitName(e.target.value)}
-                label="Trait Display Name"
-                style={{ marginTop: 5 }}
-              />
-            </Grid>
-          </Grid>
+          <Box sx={{ pt: 1, display: 'flex', flexDirection: 'column', gap: 2 }}>
+            <TextField
+              value={traitId}
+              variant="outlined"
+              fullWidth
+              onChange={(e) => setTraitId(e.target.value)}
+              label="Trait ID"
+              size="small"
+            />
+            <TextField
+              value={traitName}
+              variant="outlined"
+              fullWidth
+              onChange={(e) => setTraitName(e.target.value)}
+              label="Trait Display Name"
+              size="small"
+            />
+          </Box>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setModalOpen(false)} color="secondary" variant="contained">
+        <DialogActions sx={{ px: 3, pb: 2 }}>
+          <Button onClick={() => setModalOpen(false)} variant="outlined">
             Close
           </Button>
           <Button variant="contained" color="secondary" onClick={() => saveTrait()}>
@@ -159,6 +175,22 @@ export function EditTraitsView(): JSX.Element {
           </Button>
         </DialogActions>
       </Dialog>
-    </Grid>
+      <Dialog open={deleteDialogOpen} onClose={closeDeleteDialog}>
+        <DialogTitle>Confirm Deletion</DialogTitle>
+        <DialogContent>
+          <Typography>
+            Do you really want to delete the trait "{traitToDelete?.name}" ({traitToDelete?.id})?
+          </Typography>
+        </DialogContent>
+        <DialogActions sx={{ px: 3, pb: 2 }}>
+          <Button onClick={closeDeleteDialog} variant="outlined" autoFocus>
+            Cancel
+          </Button>
+          <Button onClick={confirmDeleteTrait} variant="contained" color="error">
+            Delete Trait
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </Box>
   );
 }

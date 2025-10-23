@@ -1,6 +1,6 @@
-import { Card, Trait } from '@5rdb/api'
+import { Card as CardType, Trait } from '@5rdb/api'
 import { styled } from '@mui/material/styles';
-import { Fab, Grid, Switch, TextField, Typography } from '@mui/material';
+import { Box, Button, Card, CardContent, Grid, Switch, TextField, Typography } from '@mui/material';
 import React, { useState } from 'react'
 import {
   sides,
@@ -22,29 +22,9 @@ import { privateApi } from '../../api'
 import { useNavigate } from 'react-router-dom'
 import { toSlugId } from '../../utils/slugIdUtils'
 
-const PREFIX = 'CardEditor';
+const Root = styled('form')(() => ({}));
 
-const classes = {
-  fab: `${PREFIX}-fab`
-};
-
-const Root = styled('form')((
-  {
-    theme
-  }
-) => ({
-  [`& .${classes.fab}`]: {
-    margin: '0px',
-    top: 'auto',
-    right: theme.spacing(2),
-    bottom: theme.spacing(2),
-    left: 'auto',
-    position: 'fixed',
-    zIndex: 100,
-  }
-}));
-
-export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): JSX.Element {
+export function CardEditor(props: { existingCard?: CardType; editMode?: boolean }): JSX.Element {
   const navigate = useNavigate()
   const existingCard = props.existingCard
   const uiStore = useUiStore()
@@ -239,7 +219,7 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
   }
 
   function getChangedFields(
-    originalCard: Card
+    originalCard: CardType
   ): { fieldId: string; changes: { old: string; new: string } }[] {
     const changes: { fieldId: string; changes: { old: string; new: string } }[] = []
     changes.push(...compareValue('id', originalCard.id, id))
@@ -275,8 +255,8 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
     return changes
   }
 
-  function assembleCard(): Card {
-    const card: Card = {
+  function assembleCard(): CardType {
+    const card: CardType = {
       id: id,
       name: name,
       name_extra: name_extra,
@@ -374,59 +354,58 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
 
   return (
     <Root>
-      <Grid container spacing={3}>
-        <Fab
-          variant="extended"
-          color="primary"
-          className={classes.fab}
-          onClick={() => handleSubmit()}
-        >
-          <SaveIcon />
-          Save Changes
-        </Fab>
+      <Box sx={{ maxWidth: 1200, mx: 'auto', mt: 2, px: 2, pb: 5 }}>
+        <Grid container spacing={3}>
         <Grid size={12}>
-          <Typography variant="h6">Name and ID</Typography>
-        </Grid>
-        <Grid size={12}>
-          <Grid container spacing={2}>
-            <Grid size={{ xs: 12, sm: 6 }}>
-              <TextField
-                disabled={props.editMode}
-                required
-                id="name"
-                label="Name"
-                value={name}
-                onChange={(e) => setNameAndGenerateId(e.target.value)}
-              />
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6 }}>
-              <TextField
-                disabled={props.editMode}
-                id="name_extra"
-                label="Name Extra"
-                value={name_extra}
-                onChange={(e) => setNameExtraAndGenerateId(e.target.value)}
-              />
-            </Grid>
-            <Grid size={12}>
-              <TextField
-                disabled
-                InputLabelProps={{ shrink: true }}
-                required
-                id="id"
-                label="Card ID (generated from Name + Name Extra)"
-                value={id}
-                fullWidth
-              />
-            </Grid>
-          </Grid>
+          <Card>
+            <CardContent>
+              <Typography variant="h6" gutterBottom>Name and ID</Typography>
+              <Grid container spacing={2}>
+                <Grid size={{ xs: 12, sm: 6 }}>
+                  <TextField
+                    disabled={props.editMode}
+                    required
+                    id="name"
+                    label="Name"
+                    value={name}
+                    onChange={(e) => setNameAndGenerateId(e.target.value)}
+                    size="small"
+                    fullWidth
+                  />
+                </Grid>
+                <Grid size={{ xs: 12, sm: 6 }}>
+                  <TextField
+                    disabled={props.editMode}
+                    id="name_extra"
+                    label="Name Extra"
+                    value={name_extra}
+                    onChange={(e) => setNameExtraAndGenerateId(e.target.value)}
+                    size="small"
+                    fullWidth
+                  />
+                </Grid>
+                <Grid size={12}>
+                  <TextField
+                    disabled
+                    InputLabelProps={{ shrink: true }}
+                    required
+                    id="id"
+                    label="Card ID (generated from Name + Name Extra)"
+                    value={id}
+                    fullWidth
+                    size="small"
+                  />
+                </Grid>
+              </Grid>
+            </CardContent>
+          </Card>
         </Grid>
 
         <Grid size={12}>
-          <Typography variant="h6">General Card Information</Typography>
-        </Grid>
-        <Grid size={12}>
-          <Grid container spacing={3}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6" gutterBottom>General Card Information</Typography>
+              <Grid container spacing={3}>
             <Grid size={{ xs: 12, md: 6 }}>
               <Grid container spacing={2}>
                 <Grid size={{ xs: 12, sm: 6 }}>
@@ -437,7 +416,7 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
                     getOptionLabel={(option) => option.name}
                     value={factions.find((item) => item.id === faction) || null}
                     renderInput={(params) => (
-                      <TextField required {...params} label="Faction" variant="outlined" />
+                      <TextField required {...params} label="Faction" variant="outlined" size="small" />
                     )}
                     onChange={(e, value) => {
                       const newFaction = value?.id || ''
@@ -457,7 +436,7 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
                     value={cardTypes.find((item) => item.id === type) || null}
                     getOptionDisabled={(option) => !!side && !typesInSide(side).includes(option.id)}
                     renderInput={(params) => (
-                      <TextField required {...params} label="Card Type" variant="outlined" />
+                      <TextField required {...params} label="Card Type" variant="outlined" size="small" />
                     )}
                     onChange={(e, value) => setType(value?.id || '')}
                   />
@@ -473,7 +452,7 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
                       !!type && !sidesForType(type).includes(option.id)
                     }
                     renderInput={(params) => (
-                      <TextField required {...params} label="Deck/Side" variant="outlined" />
+                      <TextField required {...params} label="Deck/Side" variant="outlined" size="small" />
                     )}
                     onChange={(e, value) => {
                       const newSide = value?.id || ''
@@ -498,7 +477,7 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
                     getOptionLabel={(option) => option.name}
                     value={roleRestrictions.filter((item) => role_restrictions.includes(item.id))}
                     renderInput={(params) => (
-                      <TextField {...params} label="Role Restiction" variant="outlined" />
+                      <TextField {...params} label="Role Restiction" variant="outlined" size="small" />
                     )}
                     onChange={(e, value) => setRoleRestictions(value.map((item) => item.id))}
                   />
@@ -519,6 +498,7 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
                     helperText="Must be between 1 and 3"
                     type="number"
                     fullWidth
+                    size="small"
                     onChange={(e) => setDeckLimit(Number.parseInt(e.target.value))}
                   />
                 </Grid>
@@ -531,7 +511,7 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
                     getOptionLabel={(option) => option.name}
                     value={findTraits(traits)}
                     renderInput={(params) => (
-                      <TextField {...params} label="Traits" variant="outlined" />
+                      <TextField {...params} label="Traits" variant="outlined" size="small" />
                     )}
                     onChange={(e, value) => setTraits(value.map((item) => item.id))}
                   />
@@ -570,13 +550,15 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
               />
             </Grid>
           </Grid>
+            </CardContent>
+          </Card>
         </Grid>
         {side === 'conflict' && (
           <Grid size={12}>
-            <Grid container spacing={2}>
-              <Grid size={12}>
-                <Typography variant="h6">Conflict Card Information</Typography>
-              </Grid>
+            <Card>
+              <CardContent>
+                <Typography variant="h6" gutterBottom>Conflict Card Information</Typography>
+                <Grid container spacing={2}>
               <Grid size={{ xs: 12, sm: 4 }}>
                 <MultiCheckbox
                   label="Splash Banned In"
@@ -610,6 +592,7 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
                   helperText="Neutral card = 0, Clan card >= 1"
                   type="number"
                   fullWidth
+                  size="small"
                   onChange={(e) =>
                     setInfluenceCost(
                       !Number.isNaN(Number.parseInt(e.target.value))
@@ -619,15 +602,17 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
                   }
                 />
               </Grid>
-            </Grid>
+                </Grid>
+              </CardContent>
+            </Card>
           </Grid>
         )}
         {type === 'event' && (
           <Grid size={12}>
-            <Grid container spacing={2}>
-              <Grid size={12}>
-                <Typography variant="h6">Event Card Information</Typography>
-              </Grid>
+            <Card>
+              <CardContent>
+                <Typography variant="h6" gutterBottom>Event Card Information</Typography>
+                <Grid container spacing={2}>
               <Grid size={{ xs: 12, sm: 3 }}>
                 <TextField
                   id="cost"
@@ -636,18 +621,21 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
                   error={isCostInvalid(cost)}
                   helperText='Must be "X" or a number >= 0 (leaving this empty is allowed for cards like Daimyos Gunbai)'
                   fullWidth
+                  size="small"
                   onChange={(e) => setCost(e.target.value)}
                 />
               </Grid>
-            </Grid>
+                </Grid>
+              </CardContent>
+            </Card>
           </Grid>
         )}
         {type === 'attachment' && (
           <Grid size={12}>
-            <Grid container spacing={2}>
-              <Grid size={12}>
-                <Typography variant="h6">Attachment Card Information</Typography>
-              </Grid>
+            <Card>
+              <CardContent>
+                <Typography variant="h6" gutterBottom>Attachment Card Information</Typography>
+                <Grid container spacing={2}>
               <Grid size={{ xs: 12, sm: 3 }}>
                 <TextField
                   id="cost"
@@ -656,6 +644,7 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
                   error={isCostInvalid(cost)}
                   helperText='Must be "X" or a number >= 0 (leaving this empty is allowed for cards like Daimyos Gunbai)'
                   fullWidth
+                  size="small"
                   onChange={(e) => setCost(e.target.value)}
                 />
               </Grid>
@@ -667,6 +656,7 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
                   error={isAttachmentBonusInvalid(military_bonus)}
                   helperText='Must be "-" or start with a - or + followed by a number or "X"'
                   fullWidth
+                  size="small"
                   onChange={(e) => setMilitaryBonus(e.target.value)}
                 />
               </Grid>
@@ -678,18 +668,21 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
                   error={isAttachmentBonusInvalid(political_bonus)}
                   helperText='Must be "-" or start with a - or + followed by a number or "X"'
                   fullWidth
+                  size="small"
                   onChange={(e) => setPoliticalBonus(e.target.value)}
                 />
               </Grid>
-            </Grid>
+                </Grid>
+              </CardContent>
+            </Card>
           </Grid>
         )}
         {type === 'character' && (
           <Grid size={12}>
-            <Grid container spacing={2}>
-              <Grid size={12}>
-                <Typography variant="h6">Character Card Information</Typography>
-              </Grid>
+            <Card>
+              <CardContent>
+                <Typography variant="h6" gutterBottom>Character Card Information</Typography>
+                <Grid container spacing={2}>
               <Grid size={{ xs: 12, sm: 3 }}>
                 <TextField
                   id="cost"
@@ -698,6 +691,7 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
                   error={isCostInvalid(cost)}
                   helperText='Must be "X" or a number >= 0 (leaving this empty is allowed for cards like Daimyos Gunbai)'
                   fullWidth
+                  size="small"
                   onChange={(e) => setCost(e.target.value)}
                 />
               </Grid>
@@ -709,6 +703,7 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
                   error={isSkillInvalid(military)}
                   helperText='Must be empty (for dashes), "X", or a number >= 0'
                   fullWidth
+                  size="small"
                   onChange={(e) => setMilitary(e.target.value)}
                 />
               </Grid>
@@ -720,6 +715,7 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
                   error={isSkillInvalid(political)}
                   helperText='Must be empty (for dashes), "X", or a number >= 0'
                   fullWidth
+                  size="small"
                   onChange={(e) => setPolitical(e.target.value)}
                 />
               </Grid>
@@ -733,18 +729,21 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
                   helperText="Must be a number >= 0"
                   type="number"
                   fullWidth
+                  size="small"
                   onChange={(e) => setGlory(Number.parseInt(e.target.value))}
                 />
               </Grid>
-            </Grid>
+                </Grid>
+              </CardContent>
+            </Card>
           </Grid>
         )}
         {type === 'province' && (
           <Grid size={12}>
-            <Grid container spacing={2}>
-              <Grid size={12}>
-                <Typography variant="h6">Province Card Information</Typography>
-              </Grid>
+            <Card>
+              <CardContent>
+                <Typography variant="h6" gutterBottom>Province Card Information</Typography>
+                <Grid container spacing={2}>
               <Grid size={{ xs: 12, sm: 4 }}>
                 <TextField
                   id="strength"
@@ -753,6 +752,7 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
                   error={!isXOrNumberGreater0(strength || '')}
                   helperText='Must be "X" or a number >= 0'
                   fullWidth
+                  size="small"
                   onChange={(e) => setStrength(e.target.value)}
                 />
               </Grid>
@@ -764,15 +764,17 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
                   defaultItems={elements}
                 />
               </Grid>
-            </Grid>
+                </Grid>
+              </CardContent>
+            </Card>
           </Grid>
         )}
         {type === 'holding' && (
           <Grid size={12}>
-            <Grid container spacing={2}>
-              <Grid size={12}>
-                <Typography variant="h6">Holding Card Information</Typography>
-              </Grid>
+            <Card>
+              <CardContent>
+                <Typography variant="h6" gutterBottom>Holding Card Information</Typography>
+                <Grid container spacing={2}>
               <Grid size={{ xs: 12, sm: 3 }}>
                 <TextField
                   required
@@ -782,18 +784,21 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
                   error={!isValidNumberBonus(strength_bonus)}
                   helperText="Must be a - or a +, followed by a number"
                   fullWidth
+                  size="small"
                   onChange={(e) => setStrengthBonus(e.target.value)}
                 />
               </Grid>
-            </Grid>
+                </Grid>
+              </CardContent>
+            </Card>
           </Grid>
         )}
         {type === 'stronghold' && (
           <Grid size={12}>
-            <Grid container spacing={2}>
-              <Grid size={12}>
-                <Typography variant="h6">Stronghold Card Information</Typography>
-              </Grid>
+            <Card>
+              <CardContent>
+                <Typography variant="h6" gutterBottom>Stronghold Card Information</Typography>
+                <Grid container spacing={2}>
               <Grid size={{ xs: 12, sm: 3 }}>
                 <TextField
                   required
@@ -803,6 +808,7 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
                   error={!isValidNumberBonus(strength_bonus)}
                   helperText="Must be a - or a +, followed by a number"
                   fullWidth
+                  size="small"
                   onChange={(e) => setStrengthBonus(e.target.value)}
                 />
               </Grid>
@@ -816,6 +822,7 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
                   helperText="Must be a number >= 0"
                   type="number"
                   fullWidth
+                  size="small"
                   onChange={(e) => setFate(Number.parseInt(e.target.value))}
                 />
               </Grid>
@@ -831,6 +838,7 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
                   helperText="Must be a number >= 0"
                   type="number"
                   fullWidth
+                  size="small"
                   onChange={(e) => setInfluencePool(Number.parseInt(e.target.value))}
                 />
               </Grid>
@@ -844,18 +852,21 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
                   helperText="Must be a number >= 0"
                   type="number"
                   fullWidth
+                  size="small"
                   onChange={(e) => setHonor(Number.parseInt(e.target.value))}
                 />
               </Grid>
-            </Grid>
+                </Grid>
+              </CardContent>
+            </Card>
           </Grid>
         )}
         {type === 'warlord' && (
           <Grid size={12}>
-            <Grid container spacing={2}>
-              <Grid size={12}>
-                <Typography variant="h6">Warlord Card Information</Typography>
-              </Grid>
+            <Card>
+              <CardContent>
+                <Typography variant="h6" gutterBottom>Warlord Card Information</Typography>
+                <Grid container spacing={2}>
               <Grid size={{ xs: 12, sm: 3 }}>
                 <TextField
                   required
@@ -866,6 +877,7 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
                   helperText="Must be a number >= 0"
                   type="number"
                   fullWidth
+                  size="small"
                   onChange={(e) => {
                     setFate(Number.parseInt(e.target.value))
                     setCost(e.target.value)
@@ -880,6 +892,7 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
                   error={isSkillInvalid(military)}
                   helperText='Must be empty (for dashes), "X", or a number >= 0'
                   fullWidth
+                  size="small"
                   onChange={(e) => setMilitary(e.target.value)}
                 />
               </Grid>
@@ -891,6 +904,7 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
                   error={isSkillInvalid(political)}
                   helperText='Must be empty (for dashes), "X", or a number >= 0'
                   fullWidth
+                  size="small"
                   onChange={(e) => setPolitical(e.target.value)}
                 />
               </Grid>
@@ -904,13 +918,30 @@ export function CardEditor(props: { existingCard?: Card; editMode?: boolean }): 
                   helperText="Must be a number >= 0"
                   type="number"
                   fullWidth
+                  size="small"
                   onChange={(e) => setGlory(Number.parseInt(e.target.value))}
                 />
               </Grid>
-            </Grid>
+                </Grid>
+              </CardContent>
+            </Card>
           </Grid>
         )}
+        <Grid size={12}>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2 }}>
+            <Button
+              variant="contained"
+              color="primary"
+              size="large"
+              onClick={() => handleSubmit()}
+              startIcon={<SaveIcon />}
+            >
+              Save Changes
+            </Button>
+          </Box>
+        </Grid>
       </Grid>
+      </Box>
     </Root>
   );
 }
