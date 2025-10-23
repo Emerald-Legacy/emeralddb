@@ -286,23 +286,23 @@ function replaceSpecialCharacters(text: string): string {
     .replaceAll('ç', 'c')
 }
 
-function buildActionVariants(selectedAction: string): string[] {
-  const actionType = selectedAction.replace(/<b>(?:Forced |Conflict |\[conflict-(?:military|political)\] Conflict )?/, '').replace('</b>', '')
-  const variants = [selectedAction]
+function buildTriggeredAbilityVariants(selectedAbility: string): string[] {
+  const abilityType = selectedAbility.replace(/<b>(?:Forced |Conflict |\[conflict-(?:military|political)\] Conflict )?/, '').replace('</b>', '')
+  const variants = [selectedAbility]
 
-  if (selectedAction === `<b>${actionType}</b>`) {
+  if (selectedAbility === `<b>${abilityType}</b>`) {
     variants.push(
-      `<b>Conflict ${actionType}</b>`,
-      `<b>[conflict-military] Conflict ${actionType}</b>`,
-      `<b>[conflict-political] Conflict ${actionType}</b>`
+      `<b>Conflict ${abilityType}</b>`,
+      `<b>[conflict-military] Conflict ${abilityType}</b>`,
+      `<b>[conflict-political] Conflict ${abilityType}</b>`
     )
-    if (actionType === 'Reaction:' || actionType === 'Interrupt:') {
-      variants.push(`<b>Forced ${actionType}</b>`)
+    if (abilityType === 'Reaction:' || abilityType === 'Interrupt:') {
+      variants.push(`<b>Forced ${abilityType}</b>`)
     }
-  } else if (selectedAction === `<b>Conflict ${actionType}</b>`) {
+  } else if (selectedAbility === `<b>Conflict ${abilityType}</b>`) {
     variants.push(
-      `<b>[conflict-military] Conflict ${actionType}</b>`,
-      `<b>[conflict-political] Conflict ${actionType}</b>`
+      `<b>[conflict-military] Conflict ${abilityType}</b>`,
+      `<b>[conflict-political] Conflict ${abilityType}</b>`
     )
   }
 
@@ -347,7 +347,7 @@ export function applyFilters(cards: CardWithVersions[], formats: Format[], filte
     )
   }
   if (filter.action) {
-    const variants = buildActionVariants(filter.action)
+    const variants = buildTriggeredAbilityVariants(filter.action)
     filteredCards = filteredCards.filter((c) =>
       variants.some(variant => c.text?.includes(variant))
     )
@@ -460,7 +460,7 @@ function filterReducer(state: FilterState, action: FilterAction): FilterState {
   }
 }
 
-function renderActionInputWithIcon(
+function renderTriggeredAbilityInputWithIcon(
   params: any,
   selectedOption: { icon?: string } | undefined
 ): JSX.Element {
@@ -468,7 +468,7 @@ function renderActionInputWithIcon(
     <TextField
       {...params}
       size="small"
-      label="Action"
+      label="Triggered Ability"
       variant="outlined"
       InputProps={{
         ...params.InputProps,
@@ -514,12 +514,8 @@ export function CardFilter(props: {
     { id: 'only', name: 'Only' },
   ]
 
-  const actionOptions: { id: string; name: string; searchText: string; icon?: string }[] = [
+  const triggeredAbilityOptions: { id: string; name: string; searchText: string; icon?: string }[] = [
     { id: 'action:', name: 'Action', searchText: '<b>Action:</b>' },
-    { id: 'reaction:', name: 'Reaction', searchText: '<b>Reaction:</b>' },
-    { id: 'interrupt:', name: 'Interrupt', searchText: '<b>Interrupt:</b>' },
-    { id: 'forced-reaction:', name: 'Forced Reaction', searchText: '<b>Forced Reaction:</b>' },
-    { id: 'forced-interrupt:', name: 'Forced Interrupt', searchText: '<b>Forced Interrupt:</b>' },
     { id: 'conflict-action:', name: 'Conflict Action', searchText: '<b>Conflict Action:</b>' },
     {
       id: 'conflict-military-action:',
@@ -533,6 +529,13 @@ export function CardFilter(props: {
       searchText: '<b>[conflict-political] Conflict Action:</b>',
       icon: 'conflict-political',
     },
+    { id: 'reaction:', name: 'Reaction', searchText: '<b>Reaction:</b>' },
+    { id: 'forced-reaction:', name: 'Forced Reaction', searchText: '<b>Forced Reaction:</b>' },
+    { id: 'interrupt:', name: 'Interrupt', searchText: '<b>Interrupt:</b>' },
+    { id: 'forced-interrupt:', name: 'Forced Interrupt', searchText: '<b>Forced Interrupt:</b>' },
+    { id: 'duel-challenge:', name: 'Duel Challenge', searchText: '<b>Duel Challenge:</b>' },
+    { id: 'duel-focus:', name: 'Duel Focus', searchText: '<b>Duel Focus:</b>' },
+    { id: 'duel-strike:', name: 'Duel Strike', searchText: '<b>Duel Strike:</b>' },
   ]
 
   const keywordOptions: { id: string; name: string; searchText: string }[] = [
@@ -894,11 +897,11 @@ export function CardFilter(props: {
                   </Grid>
                   <Grid size={4}>
                     <Autocomplete
-                      id="combo-box-action"
+                      id="combo-box-triggered-ability"
                       autoHighlight
-                      options={actionOptions}
+                      options={triggeredAbilityOptions}
                       getOptionLabel={(option) => option.name}
-                      value={actionOptions.find((option) => option.searchText === filterState.action) || null}
+                      value={triggeredAbilityOptions.find((option) => option.searchText === filterState.action) || null}
                       renderOption={(props, option) => (
                         <li {...props} key={option.id}>
                           {option.icon && <span className={`icon icon-${option.icon}`} style={{ marginRight: 8 }} />}
@@ -906,9 +909,9 @@ export function CardFilter(props: {
                         </li>
                       )}
                       renderInput={(params) =>
-                        renderActionInputWithIcon(
+                        renderTriggeredAbilityInputWithIcon(
                           params,
-                          actionOptions.find((option) => option.searchText === filterState.action)
+                          triggeredAbilityOptions.find((option) => option.searchText === filterState.action)
                         )
                       }
                       onChange={(e, value) =>
