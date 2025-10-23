@@ -11,8 +11,8 @@ export const cardTypes: { id: string; name: string }[] = [
 ]
 
 export const sides: { id: string; name: string }[] = [
-  { id: 'conflict', name: 'Conflict' },
   { id: 'dynasty', name: 'Dynasty' },
+  { id: 'conflict', name: 'Conflict' },
   { id: 'province', name: 'Province' },
   { id: 'role', name: 'Role' },
   { id: 'treaty', name: 'Treaty' },
