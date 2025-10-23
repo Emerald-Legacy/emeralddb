@@ -9,6 +9,8 @@ import {
   Select,
   MenuItem,
   Box,
+  Card,
+  CardContent,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { DataGrid, GridColDef } from '@mui/x-data-grid'
@@ -274,7 +276,7 @@ export function CardsView(): JSX.Element {
     const pageCount = Math.ceil(filteredCards.length / PAGE_SIZE)
 
     return (
-      <Box paddingBottom={'5px'}>
+      <Box paddingBottom={2}>
         <Grid container spacing={1}>
           <Grid size={{ xs: 6, sm: 3 }}>
             <Select
@@ -290,6 +292,7 @@ export function CardsView(): JSX.Element {
                 })
               }}
               variant={'outlined'}
+              size="small"
               fullWidth
             >
               {displayOptions.map((option) => (
@@ -313,6 +316,7 @@ export function CardsView(): JSX.Element {
                 })
               }}
               variant={'outlined'}
+              size="small"
               fullWidth
             >
               {sortOptions.map((option) => (
@@ -389,7 +393,6 @@ export function CardsView(): JSX.Element {
           const nameProps = params.value as NameProps
           return (
             <div
-              style={{ marginLeft: -10 }}
               onMouseEnter={() => setHoveredCardId(nameProps.id)}
               onMouseLeave={() => setHoveredCardId(null)}
             >
@@ -452,135 +455,187 @@ export function CardsView(): JSX.Element {
     ]
 
     return (
-      <Box sx={{ pb: 4 }}>
-        <Root>
-          <CardFilter
-            onFilterChanged={onFilterChanged}
-            fullWidth
-            filterState={filter || initialState}
-          />
-          <Paper className={classes.table}>
-            <Selectors />
-            <div onMouseLeave={() => setHoveredCardId(null)}>
-              <DataGrid
-                disableRowSelectionOnClick
-                columns={columns}
-                rows={tableCards}
-                pageSizeOptions={[50]}
-                initialState={{
-                  pagination: { paginationModel: { pageSize: 50 } },
-                }}
-                autoHeight
-                density="compact"
-                columnVisibilityModel={{
-                  type: isMdOrBigger,
-                  faction: isMdOrBigger,
-                  deck: isMdOrBigger,
-                  cost: isMdOrBigger,
-                  military: isMdOrBigger,
-                  political: isMdOrBigger,
-                  glory: isMdOrBigger,
-                  strength: isMdOrBigger,
-                }}
-                onRowClick={(param, event) => {
-                  // Don't open modal if user clicked on a link
-                  const target = event.target as HTMLElement
-                  if (target.tagName === 'A' || target.closest('a')) {
-                    event.stopPropagation()
-                    return
-                  }
-                  setModalCard(cards.find((card) => card.id === param.row.id))
-                  setCardModalOpen(true)
-                }}
-              />
-            </div>
-          </Paper>
-          <CardModal />
-        </Root>
+      <Box sx={{ pb: 4, maxWidth: 1400, mx: 'auto', px: 2 }}>
+        <Grid container spacing={2}>
+          <Grid size={12}>
+            <CardFilter
+              onFilterChanged={onFilterChanged}
+              fullWidth
+              filterState={filter || initialState}
+            />
+          </Grid>
+          <Grid size={12}>
+            <Card>
+              <CardContent>
+                <Selectors />
+                <div onMouseLeave={() => setHoveredCardId(null)}>
+                  <DataGrid
+                    disableRowSelectionOnClick
+                    columns={columns}
+                    rows={tableCards}
+                    pageSizeOptions={[50]}
+                    initialState={{
+                      pagination: { paginationModel: { pageSize: 50 } },
+                    }}
+                    autoHeight
+                    density="compact"
+                    columnVisibilityModel={{
+                      type: isMdOrBigger,
+                      faction: isMdOrBigger,
+                      deck: isMdOrBigger,
+                      cost: isMdOrBigger,
+                      military: isMdOrBigger,
+                      political: isMdOrBigger,
+                      glory: isMdOrBigger,
+                      strength: isMdOrBigger,
+                    }}
+                    onRowClick={(param, event) => {
+                      // Don't open modal if user clicked on a link
+                      const target = event.target as HTMLElement
+                      if (target.tagName === 'A' || target.closest('a')) {
+                        event.stopPropagation()
+                        return
+                      }
+                      setModalCard(cards.find((card) => card.id === param.row.id))
+                      setCardModalOpen(true)
+                    }}
+                    sx={{
+                      '& .MuiTablePagination-displayedRows': {
+                        margin: 0,
+                        display: 'flex',
+                        alignItems: 'center',
+                      },
+                      '& .MuiTablePagination-toolbar': {
+                        alignItems: 'center',
+                      },
+                      '& .MuiTablePagination-spacer': {
+                        flex: '1 1 100%',
+                      },
+                      '& .MuiDataGrid-footerContainer': {
+                        justifyContent: 'flex-end',
+                      },
+                    }}
+                  />
+                </div>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
+        <CardModal />
       </Box>
     );
   }
 
   if (displayMode === DisplayMode.IMAGES) {
     return (
-      <Box sx={{ pb: 4 }}>
-        <CardFilter
-          onFilterChanged={onFilterChanged}
-          fullWidth
-          filterState={filter || initialState}
-        />
-        <Paper className={classes.table}>
-          <Selectors />
-          <Grid container spacing={1}>
-            {currentCards.map((card) => (
-              <Grid key={card.id} size={{ xs: 6, sm: 4, md: 3, lg: 2 }}>
-                <Box maxWidth={'240px'} margin={'0 auto'}>
-                  <CardImageOrText
-                    cardId={card.id}
-                    onClick={(cardId) => {
-                      setModalCard(cards.find((card) => card.id === cardId))
-                      setCardModalOpen(true)
-                    }}
-                    cardVersion={findCardVersion(card)}
-                  />
-                </Box>
-              </Grid>
-            ))}
+      <Box sx={{ pb: 4, maxWidth: 1400, mx: 'auto', px: 2 }}>
+        <Grid container spacing={2}>
+          <Grid size={12}>
+            <CardFilter
+              onFilterChanged={onFilterChanged}
+              fullWidth
+              filterState={filter || initialState}
+            />
           </Grid>
-          <Selectors />
-          <CardModal />
-        </Paper>
+          <Grid size={12}>
+            <Card>
+              <CardContent>
+                <Selectors />
+                <Box sx={{ pt: 2 }}>
+                  <Grid container spacing={1}>
+                    {currentCards.map((card) => (
+                      <Grid key={card.id} size={{ xs: 6, sm: 4, md: 3, lg: 2 }}>
+                        <Box maxWidth={'240px'} margin={'0 auto'}>
+                          <CardImageOrText
+                            cardId={card.id}
+                            onClick={(cardId) => {
+                              setModalCard(cards.find((card) => card.id === cardId))
+                              setCardModalOpen(true)
+                            }}
+                            cardVersion={findCardVersion(card)}
+                          />
+                        </Box>
+                      </Grid>
+                    ))}
+                  </Grid>
+                </Box>
+                <Box sx={{ pt: 2 }}>
+                  <Selectors />
+                </Box>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
+        <CardModal />
       </Box>
     )
   }
 
   return (
-    <Box sx={{ pb: 4 }}>
-      <CardFilter
-        onFilterChanged={onFilterChanged}
-        fullWidth
-        filterState={filter || initialState}
-      />
-      <Paper className={classes.table}>
-        <Selectors />
-        <Grid container spacing={1}>
-          {currentCards.map((card) => (
-            <Grid key={card.id} container spacing={4} size={12}>
-              <Grid size={{ xs: 12, sm: 6 }}>
-                <CardInformation
-                  cardWithVersions={card}
-                  clickable
-                  currentVersion={findCardVersion(card)}
-                />
-                <Box padding={'5px'} justifyContent={'flex-end'}>
-                  <Button
-                    onClick={() => goToCardPage(card.id)}
-                    color="secondary"
-                    variant="contained"
-                  >
-                    Go To Card Page
-                  </Button>
-                </Box>
-              </Grid>
-              <Grid size={{ xs: 12, sm: 6 }}>
-                <Box maxWidth={'300px'}>
-                  <CardImageOrText
-                    cardId={card.id}
-                    onClick={(cardId) => {
-                      setModalCard(cards.find((card) => card.id === cardId))
-                      setCardModalOpen(true)
-                    }}
-                    cardVersion={findCardVersion(card)}
-                    showFab={false}
-                  />
-                </Box>
-              </Grid>
-            </Grid>
-          ))}
+    <Box sx={{ pb: 4, maxWidth: 1400, mx: 'auto', px: 2 }}>
+      <Grid container spacing={2}>
+        <Grid size={12}>
+          <CardFilter
+            onFilterChanged={onFilterChanged}
+            fullWidth
+            filterState={filter || initialState}
+          />
         </Grid>
-        <Selectors />
-        <CardModal />
-      </Paper>
+        <Grid size={12}>
+          <Card>
+            <CardContent>
+              <Selectors />
+            </CardContent>
+          </Card>
+        </Grid>
+        {currentCards.map((card) => (
+          <Grid key={card.id} size={12}>
+            <Card>
+              <CardContent>
+                <Grid container spacing={3}>
+                  <Grid size={{ xs: 12, sm: 6 }}>
+                    <CardInformation
+                      cardWithVersions={card}
+                      clickable
+                      currentVersion={findCardVersion(card)}
+                    />
+                    <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
+                      <Button
+                        onClick={() => goToCardPage(card.id)}
+                        color="secondary"
+                        variant="contained"
+                      >
+                        Go To Card Page
+                      </Button>
+                    </Box>
+                  </Grid>
+                  <Grid size={{ xs: 12, sm: 6 }}>
+                    <Box maxWidth={'300px'} margin={'0 auto'}>
+                      <CardImageOrText
+                        cardId={card.id}
+                        onClick={(cardId) => {
+                          setModalCard(cards.find((card) => card.id === cardId))
+                          setCardModalOpen(true)
+                        }}
+                        cardVersion={findCardVersion(card)}
+                        showFab={false}
+                      />
+                    </Box>
+                  </Grid>
+                </Grid>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
+        <Grid size={12}>
+          <Card>
+            <CardContent>
+              <Selectors />
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
+      <CardModal />
     </Box>
   )
 }
