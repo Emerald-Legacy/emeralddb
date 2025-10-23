@@ -1,5 +1,9 @@
 import {
-  Button, Checkbox,
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Checkbox,
   Dialog,
   DialogActions,
   DialogContent,
@@ -100,14 +104,18 @@ export function EditFormatsView(): JSX.Element {
   const sortedFormats = formats.sort(compareFormats)
 
   return (
-    <Grid container spacing={2} justifyContent="center">
-      <Grid size={12}>
-        <Typography variant="h6">Formats</Typography>
-        <Button variant="contained" color="secondary" onClick={() => openCreateModal()}>
-          Add New Format
-        </Button>
-      </Grid>
-      <Table size={"small"}>
+    <Box sx={{ maxWidth: 1400, mx: 'auto', mt: 2, px: 2 }}>
+      <Grid container spacing={3}>
+        <Grid size={12}>
+          <Card>
+            <CardContent>
+              <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+                <Typography variant="h5">Formats</Typography>
+                <Button variant="contained" color="secondary" onClick={() => openCreateModal()}>
+                  Add New Format
+                </Button>
+              </Box>
+              <Table size="small">
         <TableHead>
           <TableCell>
             Position
@@ -162,89 +170,90 @@ export function EditFormatsView(): JSX.Element {
           ))}
         </TableBody>
       </Table>
-      <Dialog open={modalOpen} onClose={() => setModalOpen(false)}>
-        <DialogTitle>Edit Format</DialogTitle>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
+      <Dialog open={modalOpen} onClose={() => setModalOpen(false)} maxWidth="md" fullWidth>
+        <DialogTitle>{formatId === '' ? 'Create New Format' : 'Edit Format'}</DialogTitle>
         <DialogContent>
-          <Grid container spacing={1}>
-            <Grid size={12}>
-              <TextField
-                value={position}
-                multiline
-                variant="outlined"
-                fullWidth
-                onChange={(e) => setPosition(Number.parseInt(e.target.value))}
-                label="Position"
-                type="number"
-                style={{ marginTop: 5 }}
-              />
-              <TextField
-                value={formatId}
-                multiline
-                variant="outlined"
-                fullWidth
-                onChange={(e) => setFormatId(e.target.value)}
-                label="Format ID"
-                style={{ marginTop: 5 }}
-              />
-              <TextField
-                value={formatName}
-                variant="outlined"
-                fullWidth
-                onChange={(e) => setFormatName(e.target.value)}
-                label="Format Display Name"
-                style={{ marginTop: 5 }}
-              />
-              <TextField
-                value={maintainer}
-                multiline
-                variant="outlined"
-                fullWidth
-                onChange={(e) => setMaintainer(e.target.value)}
-                label="Maintainer"
-                style={{ marginTop: 5 }}
-              />
-              <TextField
-                value={description}
-                multiline
-                variant="outlined"
-                fullWidth
-                onChange={(e) => setDescription(e.target.value)}
-                label="Description"
-                style={{ marginTop: 5 }}
-              />
-              <TextField
-                value={infoLink}
-                multiline
-                variant="outlined"
-                fullWidth
-                onChange={(e) => setInfoLink(e.target.value)}
-                label="Link for further information"
-                style={{ marginTop: 5 }}
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={isSupported}
-                    onChange={(value) => setIsSupported(value.target.checked)}
-                  />
-                }
-                label={'Supported in Deckbuilding'}
-                labelPlacement="start"
-              />
-              <Button
-                fullWidth
-                variant="contained"
-                color="secondary"
-                onClick={() => setPackModalOpen(true)}
-              >
-                Legal Packs
-                {legalPacks.length > 0 && ` (Selected: ${legalPacks.length})`}
-              </Button>
-            </Grid>
-          </Grid>
+          <Box sx={{ pt: 1, display: 'flex', flexDirection: 'column', gap: 2 }}>
+            <TextField
+              value={position}
+              variant="outlined"
+              fullWidth
+              onChange={(e) => setPosition(Number.parseInt(e.target.value))}
+              label="Position"
+              type="number"
+              size="small"
+            />
+            <TextField
+              value={formatId}
+              variant="outlined"
+              fullWidth
+              onChange={(e) => setFormatId(e.target.value)}
+              label="Format ID"
+              size="small"
+            />
+            <TextField
+              value={formatName}
+              variant="outlined"
+              fullWidth
+              onChange={(e) => setFormatName(e.target.value)}
+              label="Format Display Name"
+              size="small"
+            />
+            <TextField
+              value={maintainer}
+              multiline
+              rows={2}
+              variant="outlined"
+              fullWidth
+              onChange={(e) => setMaintainer(e.target.value)}
+              label="Maintainer"
+              size="small"
+            />
+            <TextField
+              value={description}
+              multiline
+              rows={3}
+              variant="outlined"
+              fullWidth
+              onChange={(e) => setDescription(e.target.value)}
+              label="Description"
+              size="small"
+            />
+            <TextField
+              value={infoLink}
+              variant="outlined"
+              fullWidth
+              onChange={(e) => setInfoLink(e.target.value)}
+              label="Link for further information"
+              size="small"
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={isSupported}
+                  onChange={(value) => setIsSupported(value.target.checked)}
+                />
+              }
+              label="Supported in Deckbuilding"
+              labelPlacement="start"
+            />
+            <Button
+              fullWidth
+              variant="contained"
+              color="secondary"
+              onClick={() => setPackModalOpen(true)}
+            >
+              Legal Packs
+              {legalPacks.length > 0 && ` (Selected: ${legalPacks.length})`}
+            </Button>
+          </Box>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setModalOpen(false)} color="secondary" variant="contained">
+        <DialogActions sx={{ px: 3, pb: 2 }}>
+          <Button onClick={() => setModalOpen(false)} variant="outlined">
             Close
           </Button>
           <Button variant="contained" color="secondary" onClick={() => saveFormat()}>
@@ -255,10 +264,12 @@ export function EditFormatsView(): JSX.Element {
       <Dialog
         open={packModalOpen}
         onClose={() => setPackModalOpen(false)}
+        maxWidth="md"
+        fullWidth
       >
-        <DialogTitle id="form-dialog-title">Filter Packs</DialogTitle>
+        <DialogTitle>Select Legal Packs</DialogTitle>
         <DialogContent>
-          <div style={{ minWidth: '60%' }}>
+          <Box sx={{ pt: 1 }}>
             <CycleList
               withCheckbox
               rootLabel="All Packs"
@@ -268,14 +279,14 @@ export function EditFormatsView(): JSX.Element {
               selectedPacks={legalPacks}
               selectedCycles={[]}
             />
-          </div>
+          </Box>
         </DialogContent>
-        <DialogActions>
+        <DialogActions sx={{ px: 3, pb: 2 }}>
           <Button onClick={() => setPackModalOpen(false)} variant="contained" fullWidth>
             Close
           </Button>
         </DialogActions>
       </Dialog>
-    </Grid>
+    </Box>
   );
 }
