@@ -1,7 +1,9 @@
 import {
   getAllCardsInPack,
+  getAllFormats,
   getPack,
   insertOrUpdateCardInPack,
+  insertOrUpdateFormat,
   insertOrUpdatePack,
 } from '../gateways/storage/index'
 import { Pack, Pack$rotate } from '@5rdb/api'
@@ -25,5 +27,14 @@ export async function handler(
   )
   const rotatedPack = { ...pack, rotated: true }
   await insertOrUpdatePack(rotatedPack)
+
+  // Remove the rotated pack from the Emerald Legacy format's legal_packs array
+  const formats = await getAllFormats()
+  const emeraldFormat = formats.find((format) => format.id === 'emerald')
+  if (emeraldFormat && emeraldFormat.legal_packs?.includes(pack.id)) {
+    const updatedLegalPacks = emeraldFormat.legal_packs.filter((packId) => packId !== pack.id)
+    await insertOrUpdateFormat({ ...emeraldFormat, legal_packs: updatedLegalPacks })
+  }
+
   return rotatedPack
 }
