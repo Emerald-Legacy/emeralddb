@@ -328,35 +328,33 @@ export function applyFilters(cards: CardWithVersions[], formats: Format[], filte
       const cardText = c.text || ''
       const selectedAction = filter.action
 
-      // Base actions that should also match their conflict variants and forced variants
-      const hierarchicalActions = ['<b>Action:</b>', '<b>Reaction:</b>', '<b>Interrupt:</b>']
-      if (hierarchicalActions.includes(selectedAction)) {
-        const actionType = selectedAction.replace('<b>', '').replace('</b>', '') // e.g., "Action:", "Reaction:", "Interrupt:"
-        const baseAction = selectedAction
-        const conflictAction = `<b>Conflict ${actionType}</b>`
-        const militaryConflictAction = `<b>[conflict-military] Conflict ${actionType}</b>`
-        const politicalConflictAction = `<b>[conflict-political] Conflict ${actionType}</b>`
-        const forcedAction = `<b>Forced ${actionType}</b>`
+      // Extract action type (e.g., "Action:", "Reaction:", "Interrupt:")
+      const actionType = selectedAction.replace(/<b>(?:Forced |Conflict |\[conflict-(?:military|political)\] Conflict )?/, '').replace('</b>', '')
 
-        return cardText.includes(baseAction) ||
-               cardText.includes(conflictAction) ||
-               cardText.includes(militaryConflictAction) ||
-               cardText.includes(politicalConflictAction) ||
-               cardText.includes(forcedAction)
-      } else if (selectedAction === '<b>Conflict Action:</b>' ||
-                 selectedAction === '<b>Conflict Reaction:</b>' ||
-                 selectedAction === '<b>Conflict Interrupt:</b>') {
-        // Conflict actions should also match their military and political variants
-        const militaryVariant = selectedAction.replace('<b>Conflict ', '<b>[conflict-military] Conflict ')
-        const politicalVariant = selectedAction.replace('<b>Conflict ', '<b>[conflict-political] Conflict ')
+      // Build variants to match based on selection
+      const variants = [selectedAction] // Always include exact match
 
-        return cardText.includes(selectedAction) ||
-               cardText.includes(militaryVariant) ||
-               cardText.includes(politicalVariant)
-      } else {
-        // For other actions (Forced, specific conflict types), just match exactly
-        return cardText.includes(selectedAction)
+      // Base actions match all variants
+      if (selectedAction === `<b>${actionType}</b>`) {
+        variants.push(
+          `<b>Conflict ${actionType}</b>`,
+          `<b>[conflict-military] Conflict ${actionType}</b>`,
+          `<b>[conflict-political] Conflict ${actionType}</b>`
+        )
+        // Only Reaction and Interrupt have Forced variants
+        if (actionType === 'Reaction:' || actionType === 'Interrupt:') {
+          variants.push(`<b>Forced ${actionType}</b>`)
+        }
       }
+      // Generic conflict actions match military/political variants
+      else if (selectedAction === `<b>Conflict ${actionType}</b>`) {
+        variants.push(
+          `<b>[conflict-military] Conflict ${actionType}</b>`,
+          `<b>[conflict-political] Conflict ${actionType}</b>`
+        )
+      }
+
+      return variants.some(variant => cardText.includes(variant))
     })
   }
   if (filter.keyword) {
