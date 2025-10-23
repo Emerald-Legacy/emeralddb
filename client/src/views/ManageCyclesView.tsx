@@ -272,43 +272,40 @@ export function ManageCyclesView(): JSX.Element {
           </Grid>
         ))}
       </Grid>
-      <Dialog open={packModalOpen} onClose={() => setPackModalOpen(false)}>
+      <Dialog open={packModalOpen} onClose={() => setPackModalOpen(false)} maxWidth="sm" fullWidth>
         <DialogTitle>Create New Pack</DialogTitle>
         <DialogContent>
-          <TextField
-            value={packName}
-            variant="outlined"
-            fullWidth
-            onChange={(e) => setPackIdAndName(e.target.value)}
-            label="Pack Name"
-            className={classes.input}
-          />
-          <Box padding={2} border="1px solid lightgray" className={classes.input}>
-            <Typography>ID: {packId}</Typography>
+          <Box sx={{ pt: 1, display: 'flex', flexDirection: 'column', gap: 2 }}>
+            <TextField
+              value={packName}
+              variant="outlined"
+              onChange={(e) => setPackIdAndName(e.target.value)}
+              label="Pack Name"
+              size="small"
+            />
+            <Box padding={1.5} border="1px solid lightgray" borderRadius={1}>
+              <Typography variant="body2">ID: {packId}</Typography>
+            </Box>
+            <TextField
+              value={packSize}
+              variant="outlined"
+              onChange={(e) => setPackSize(Number.parseInt(e.target.value) || 0)}
+              type="number"
+              label="Pack Size"
+              size="small"
+            />
+            <TextField
+              value={packPosition}
+              variant="outlined"
+              onChange={(e) => setPackPosition(Number.parseInt(e.target.value) || 0)}
+              type="number"
+              label="Pack Position"
+              size="small"
+            />
           </Box>
-          <TextField
-            value={packSize}
-            multiline
-            variant="outlined"
-            fullWidth
-            onChange={(e) => setPackSize(Number.parseInt(e.target.value) || 0)}
-            type="number"
-            label="Pack Size"
-            className={classes.input}
-          />
-          <TextField
-            value={packPosition}
-            multiline
-            variant="outlined"
-            fullWidth
-            onChange={(e) => setPackPosition(Number.parseInt(e.target.value) || 0)}
-            type="number"
-            label="Pack Position"
-            className={classes.input}
-          />
         </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setPackModalOpen(false)} color="secondary" variant="contained">
+        <DialogActions sx={{ px: 3, pb: 2 }}>
+          <Button onClick={() => setPackModalOpen(false)} variant="outlined">
             Close
           </Button>
           <Button variant="contained" color="secondary" onClick={() => createPack()}>
@@ -316,43 +313,40 @@ export function ManageCyclesView(): JSX.Element {
           </Button>
         </DialogActions>
       </Dialog>
-      <Dialog open={cycleModalOpen} onClose={() => setCycleModalOpen(false)}>
+      <Dialog open={cycleModalOpen} onClose={() => setCycleModalOpen(false)} maxWidth="sm" fullWidth>
         <DialogTitle>Create New Cycle</DialogTitle>
         <DialogContent>
-          <TextField
-            value={cycleName}
-            variant="outlined"
-            fullWidth
-            onChange={(e) => setCycleIdAndName(e.target.value)}
-            label="Cycle Name"
-            className={classes.input}
-          />
-          <Box padding={2} border="1px solid lightgray" className={classes.input}>
-            <Typography>ID: {newCycleId}</Typography>
+          <Box sx={{ pt: 1, display: 'flex', flexDirection: 'column', gap: 2 }}>
+            <TextField
+              value={cycleName}
+              variant="outlined"
+              onChange={(e) => setCycleIdAndName(e.target.value)}
+              label="Cycle Name"
+              size="small"
+            />
+            <Box padding={1.5} border="1px solid lightgray" borderRadius={1}>
+              <Typography variant="body2">ID: {newCycleId}</Typography>
+            </Box>
+            <TextField
+              value={cycleSize}
+              variant="outlined"
+              onChange={(e) => setCycleSize(Number.parseInt(e.target.value) || 0)}
+              type="number"
+              label="Cycle Size"
+              size="small"
+            />
+            <TextField
+              value={cyclePosition}
+              variant="outlined"
+              onChange={(e) => setCyclePosition(Number.parseInt(e.target.value) || 0)}
+              type="number"
+              label="Cycle Position"
+              size="small"
+            />
           </Box>
-          <TextField
-            value={cycleSize}
-            multiline
-            variant="outlined"
-            fullWidth
-            onChange={(e) => setCycleSize(Number.parseInt(e.target.value) || 0)}
-            type="number"
-            label="Cycle Size"
-            className={classes.input}
-          />
-          <TextField
-            value={cyclePosition}
-            multiline
-            variant="outlined"
-            fullWidth
-            onChange={(e) => setCyclePosition(Number.parseInt(e.target.value) || 0)}
-            type="number"
-            label="Cycle Position"
-            className={classes.input}
-          />
         </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setCycleModalOpen(false)} color="secondary" variant="contained">
+        <DialogActions sx={{ px: 3, pb: 2 }}>
+          <Button onClick={() => setCycleModalOpen(false)} variant="outlined">
             Close
           </Button>
           <Button variant="contained" color="secondary" onClick={() => createCycle()}>
