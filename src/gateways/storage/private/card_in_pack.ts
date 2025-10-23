@@ -3,8 +3,6 @@ import { CardInPack } from '@5rdb/api'
 
 export const TABLE = 'cards_in_packs'
 
-const PRIMARY_KEY_CONSTRAINT = 'cards_in_packs_pkey'
-
 export async function getAllCardsInPacks(): Promise<CardInPack[]> {
   return pg(TABLE).select()
 }
