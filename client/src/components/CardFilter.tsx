@@ -452,6 +452,36 @@ export function CardFilter(props: {
     { id: 'only', name: 'Only' },
   ]
 
+  const actionOptions: { id: string; name: string; searchText: string; icon?: string }[] = [
+    { id: 'action:', name: 'Action', searchText: 'action:' },
+    { id: 'reaction:', name: 'Reaction', searchText: 'reaction:' },
+    { id: 'interrupt:', name: 'Interrupt', searchText: 'interrupt:' },
+    { id: 'conflict-action:', name: 'Conflict Action', searchText: 'conflict action:' },
+    {
+      id: 'conflict-military-action:',
+      name: 'Conflict Action',
+      searchText: '[conflict-military] conflict action:',
+      icon: 'conflict-military',
+    },
+    {
+      id: 'conflict-political-action:',
+      name: 'Conflict Action',
+      searchText: '[conflict-political] conflict action:',
+      icon: 'conflict-political',
+    },
+    { id: 'forced-interrupt:', name: 'Forced Interrupt', searchText: 'forced interrupt:' },
+    { id: 'forced-reaction:', name: 'Forced Reaction', searchText: 'forced reaction:' },
+  ]
+
+  const keywordOptions: { id: string; name: string }[] = [
+    { id: 'sincerity', name: 'Sincerity' },
+    { id: 'courtesy', name: 'Courtesy' },
+    { id: 'disguised', name: 'Disguised' },
+    { id: 'ancestral', name: 'Ancestral' },
+    { id: 'peaceful', name: 'Peaceful' },
+    { id: 'ephemeral', name: 'Ephemeral' },
+  ]
+
   const debouncedSearchTerm = useDebounce(searchTerm, 500)
   useEffect(() => {
     dispatchFilter({ type: FilterType.FILTER_TEXT, text: debouncedSearchTerm })
