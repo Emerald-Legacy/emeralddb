@@ -256,7 +256,7 @@ export function CardInformation(props: {
       </Grid>
       <Grid container>
         <Grid size={12}>
-          <Box borderColor={color} borderLeft={5} paddingLeft="10px">
+          <Box borderLeft={`5px solid ${color}`} paddingLeft="10px">
             {textLines.map((line, idx) => (
               <p key={idx}>
                 <CardText text={line} />
