@@ -1,4 +1,4 @@
-import { Button, TextField, Typography } from '@mui/material'
+import { Box, Button, Card, CardContent, Grid, TextField, Typography } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { privateApi } from '../api'
 import React, { useState } from 'react'
@@ -35,56 +35,117 @@ export function AdminView(): JSX.Element {
   }
 
   return (
-    <>
-      <Typography variant="h4" align="center">
+    <Box sx={{ maxWidth: 800, mx: 'auto', mt: 4 }}>
+      <Typography variant="h4" gutterBottom>
         Admin View
       </Typography>
-      <Button
-        variant="contained"
-        color="secondary"
-        onClick={() => navigate('/card/create/new')}
-      >
-        Create a new card
-      </Button>
-      <br />
-      <br />
-      <Button variant="contained" color="secondary" onClick={() => navigate('/admin/cycles')}>
-        Manage Cycles And Packs
-      </Button>
-      <br />
-      <br />
-      <Button variant="contained" color="secondary" onClick={() => navigate('/admin/traits')}>
-        Manage Traits
-      </Button>
-      <br />
-      <br />
-      <Button variant="contained" color="secondary" onClick={() => navigate('/admin/formats')}>
-        Manage Formats
-      </Button>
-      <br />
-      <br />
-      <TextField
-        value={packId}
-        onChange={(event) => setPackId(event.target.value)}
-        label={'Pack ID'}
-        variant={'outlined'}
-      />
-      <br />
-      <br />
-      <Button disabled={packId === ''} variant="contained" color="secondary" onClick={importPack}>
-        Import A Pack From BETA
-      </Button>
-      <br />
-      <br />
-      {/** Enable if you need local data */}
-      <Button
-        disabled
-        variant="contained"
-        color="secondary"
-        onClick={() => privateApi.Data.import()}
-      >
-        Import Data
-      </Button>
-    </>
+
+      <Grid container spacing={3}>
+        {/* Content Management Section */}
+        <Grid size={12}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6" gutterBottom>
+                Content Management
+              </Typography>
+              <Grid container spacing={2}>
+                <Grid size={6}>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={() => navigate('/card/create/new')}
+                    fullWidth
+                  >
+                    Create a New Card
+                  </Button>
+                </Grid>
+                <Grid size={6}>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={() => navigate('/admin/cycles')}
+                    fullWidth
+                  >
+                    Manage Cycles And Packs
+                  </Button>
+                </Grid>
+                <Grid size={6}>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={() => navigate('/admin/traits')}
+                    fullWidth
+                  >
+                    Manage Traits
+                  </Button>
+                </Grid>
+                <Grid size={6}>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={() => navigate('/admin/formats')}
+                    fullWidth
+                  >
+                    Manage Formats
+                  </Button>
+                </Grid>
+              </Grid>
+            </CardContent>
+          </Card>
+        </Grid>
+
+        {/* Import Section */}
+        <Grid size={12}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6" gutterBottom>
+                Import Tools
+              </Typography>
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                <Box
+                  sx={{
+                    border: '1px solid',
+                    borderColor: 'divider',
+                    borderRadius: 1,
+                    p: 2,
+                    bgcolor: 'action.hover',
+                  }}
+                >
+                  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                    <TextField
+                      value={packId}
+                      onChange={(event) => setPackId(event.target.value)}
+                      label="Pack ID"
+                      variant="outlined"
+                      size="small"
+                      fullWidth
+                    />
+                    <Button
+                      disabled={packId === ''}
+                      variant="contained"
+                      color="secondary"
+                      onClick={importPack}
+                      fullWidth
+                    >
+                      Import A Pack From BETA
+                    </Button>
+                  </Box>
+                </Box>
+                {/** Enable if you need local data */}
+                <Button
+                  disabled
+                  variant="outlined"
+                  color="secondary"
+                  onClick={() => privateApi.Data.import()}
+                  fullWidth
+                >
+                  Import Data (Disabled)
+                </Button>
+              </Box>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
+    </Box>
   )
 }
