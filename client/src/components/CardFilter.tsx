@@ -353,9 +353,9 @@ export function applyFilters(cards: CardWithVersions[], formats: Format[], filte
     )
   }
   if (filter.keyword) {
-    const keyword = filter.keyword.toLowerCase()
+    const keywordRegex = new RegExp(`\\b${filter.keyword}\\b`)
     filteredCards = filteredCards.filter((c) =>
-      c.text?.toLowerCase().includes(keyword)
+      c.text && keywordRegex.test(c.text)
     )
   }
   if (filter.elements && filter.elements.length > 0) {
@@ -535,22 +535,22 @@ export function CardFilter(props: {
     },
   ]
 
-  const keywordOptions: { id: string; name: string }[] = [
-    { id: 'ancestral', name: 'Ancestral' },
-    { id: 'composure', name: 'Composure' },
-    { id: 'courtesy', name: 'Courtesy' },
-    { id: 'covert', name: 'Covert' },
-    { id: 'disguised', name: 'Disguised' },
-    { id: 'eminent', name: 'Eminent' },
-    { id: 'legendary', name: 'Legendary' },
-    { id: 'limited', name: 'Limited' },
-    { id: 'no attachments', name: 'No Attachments' },
-    { id: 'no duels', name: 'No Duels' },
-    { id: 'pride', name: 'Pride' },
-    { id: 'rally', name: 'Rally' },
-    { id: 'restricted', name: 'Restricted' },
-    { id: 'sincerity', name: 'Sincerity' },
-    { id: 'support', name: 'Support' },
+  const keywordOptions: { id: string; name: string; searchText: string }[] = [
+    { id: 'ancestral', name: 'Ancestral', searchText: 'Ancestral' },
+    { id: 'composure', name: 'Composure', searchText: 'Composure' },
+    { id: 'courtesy', name: 'Courtesy', searchText: 'Courtesy' },
+    { id: 'covert', name: 'Covert', searchText: 'Covert' },
+    { id: 'disguised', name: 'Disguised', searchText: 'Disguised' },
+    { id: 'eminent', name: 'Eminent', searchText: 'Eminent' },
+    { id: 'legendary', name: 'Legendary', searchText: 'Legendary' },
+    { id: 'limited', name: 'Limited', searchText: 'Limited' },
+    { id: 'no-attachments', name: 'No attachments', searchText: 'No attachments' },
+    { id: 'no-duels', name: 'No duels', searchText: 'No duels' },
+    { id: 'pride', name: 'Pride', searchText: 'Pride' },
+    { id: 'rally', name: 'Rally', searchText: 'Rally' },
+    { id: 'restricted', name: 'Restricted', searchText: 'Restricted' },
+    { id: 'sincerity', name: 'Sincerity', searchText: 'Sincerity' },
+    { id: 'support', name: 'Support', searchText: 'Support' },
   ]
 
   const debouncedSearchTerm = useDebounce(searchTerm, 500)
@@ -924,14 +924,14 @@ export function CardFilter(props: {
                       autoHighlight
                       options={keywordOptions}
                       getOptionLabel={(option) => option.name}
-                      value={keywordOptions.find((option) => option.id === filterState.keyword) || null}
+                      value={keywordOptions.find((option) => option.searchText === filterState.keyword) || null}
                       renderInput={(params) => (
                         <TextField {...params} size="small" label="Keyword" variant="outlined" />
                       )}
                       onChange={(e, value) =>
                         dispatchFilter({
                           type: FilterType.FILTER_KEYWORD,
-                          keyword: value?.id || '',
+                          keyword: value?.searchText || '',
                         })
                       }
                     />
