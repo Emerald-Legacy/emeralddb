@@ -37,6 +37,8 @@ function initialFilter(primaryClan: string | undefined, format: string): FilterS
     sides: sides,
     text: '',
     traits: [],
+    action: '',
+    keyword: '',
     elements: [],
     roleRestrictions: [],
     cycles: [],

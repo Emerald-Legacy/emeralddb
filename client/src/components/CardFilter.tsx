@@ -127,6 +127,8 @@ export interface FilterState {
   cardTypes: string[]
   sides: string[]
   traits: string[]
+  action: string
+  keyword: string
   elements: string[]
   roleRestrictions: string[]
   packs: string[]
@@ -146,6 +148,8 @@ enum FilterType {
   FILTER_CARD_TYPES,
   FILTER_SIDES,
   FILTER_TRAITS,
+  FILTER_ACTION,
+  FILTER_KEYWORD,
   FILTER_ELEMENTS,
   FILTER_ROLE_RESTRICTIONS,
   FILTER_PACKS,
@@ -167,6 +171,8 @@ type FilterAction =
   | { type: FilterType.FILTER_CARD_TYPES; cardTypes: string[] }
   | { type: FilterType.FILTER_SIDES; sides: string[] }
   | { type: FilterType.FILTER_TRAITS; traits: string[] }
+  | { type: FilterType.FILTER_ACTION; action: string }
+  | { type: FilterType.FILTER_KEYWORD; keyword: string }
   | { type: FilterType.FILTER_ELEMENTS; elements: string[] }
   | { type: FilterType.FILTER_ROLE_RESTRICTIONS; restrictions: string[] }
   | { type: FilterType.FILTER_PACKS; packs: string[] }
@@ -359,6 +365,8 @@ export const initialState: FilterState = {
   sides: [],
   text: '',
   traits: [],
+  action: '',
+  keyword: '',
   elements: [],
   roleRestrictions: [],
   cycles: [],
