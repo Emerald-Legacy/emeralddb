@@ -569,6 +569,7 @@ export function CardsView(): JSX.Element {
                       setCardModalOpen(true)
                     }}
                     cardVersion={findCardVersion(card)}
+                    showFab={false}
                   />
                 </Box>
               </Grid>
