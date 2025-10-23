@@ -510,12 +510,21 @@ export function CardFilter(props: {
   ]
 
   const keywordOptions: { id: string; name: string }[] = [
-    { id: 'sincerity', name: 'Sincerity' },
-    { id: 'courtesy', name: 'Courtesy' },
-    { id: 'disguised', name: 'Disguised' },
     { id: 'ancestral', name: 'Ancestral' },
-    { id: 'peaceful', name: 'Peaceful' },
-    { id: 'ephemeral', name: 'Ephemeral' },
+    { id: 'composure', name: 'Composure' },
+    { id: 'courtesy', name: 'Courtesy' },
+    { id: 'covert', name: 'Covert' },
+    { id: 'disguised', name: 'Disguised' },
+    { id: 'eminent', name: 'Eminent' },
+    { id: 'legendary', name: 'Legendary' },
+    { id: 'limited', name: 'Limited' },
+    { id: 'no attachments', name: 'No Attachments' },
+    { id: 'no duels', name: 'No Duels' },
+    { id: 'pride', name: 'Pride' },
+    { id: 'rally', name: 'Rally' },
+    { id: 'restricted', name: 'Restricted' },
+    { id: 'sincerity', name: 'Sincerity' },
+    { id: 'support', name: 'Support' },
   ]
 
   const debouncedSearchTerm = useDebounce(searchTerm, 500)
