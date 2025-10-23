@@ -235,7 +235,7 @@ export function ManageCyclesView(): JSX.Element {
                   {cycle.rotated && <CachedIcon style={{ color: 'red', fontSize: 16, marginRight: 8 }} />}
                   {cycle.name}
                 </Typography>
-                <Button variant="contained" color="error" size="small" onClick={() => rotateCycle(cycle.id)}>
+                <Button variant="contained" color="error" size="small" onClick={() => rotateCycle(cycle.id)} disabled={cycle.rotated}>
                   Rotate Cycle
                 </Button>
               </Box>
@@ -260,7 +260,7 @@ export function ManageCyclesView(): JSX.Element {
                     >
                       Edit Pack Cards
                     </Button>
-                    <Button variant="outlined" color="error" size="small" onClick={() => rotatePack(pack.id)}>
+                    <Button variant="outlined" color="error" size="small" onClick={() => rotatePack(pack.id)} disabled={pack.rotated}>
                       Rotate Pack
                     </Button>
                   </Box>
