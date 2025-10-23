@@ -164,7 +164,11 @@ export function ManageCyclesView(): JSX.Element {
   }
 
   function rotateCycle(cycleId: string) {
-    confirm({ description: 'Do you really want to rotate out this cycle?' })
+    confirm({
+      description: 'Do you really want to rotate out this cycle?',
+      confirmationText: 'Rotate',
+      cancellationText: 'Cancel',
+    })
       .then(() => {
         privateApi.Cycle.rotate({
           cycleId,
@@ -182,7 +186,11 @@ export function ManageCyclesView(): JSX.Element {
       })
   }
   function rotatePack(packId: string) {
-    confirm({ description: 'Do you really want to rotate out this pack?' })
+    confirm({
+      description: 'Do you really want to rotate out this pack?',
+      confirmationText: 'Rotate',
+      cancellationText: 'Cancel',
+    })
       .then(() => {
         privateApi.Pack.rotate({
           packId,
