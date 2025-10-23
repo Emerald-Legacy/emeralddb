@@ -75,6 +75,11 @@ export function ManageCyclesView(): JSX.Element {
   const [cycleSize, setCycleSize] = useState(0)
   const [cyclePosition, setCyclePosition] = useState(0)
 
+  const [rotatePackDialogOpen, setRotatePackDialogOpen] = useState(false)
+  const [rotateCycleDialogOpen, setRotateCycleDialogOpen] = useState(false)
+  const [packToRotate, setPackToRotate] = useState<string | null>(null)
+  const [cycleToRotate, setCycleToRotate] = useState<string | null>(null)
+
   const { enqueueSnackbar } = useSnackbar()
   const confirm = useConfirm()
 
@@ -163,49 +168,46 @@ export function ManageCyclesView(): JSX.Element {
       })
   }
 
-  function rotateCycle(cycleId: string) {
-    confirm({
-      description: 'Do you really want to rotate out this cycle?',
-      confirmationText: 'Rotate',
-      cancellationText: 'Cancel',
-    })
-      .then(() => {
-        privateApi.Cycle.rotate({
-          cycleId,
-        })
-          .then(() => {
-            window.location.reload()
-          })
-          .catch((error) => {
-            console.log(error)
-            enqueueSnackbar("The cycle couldn't be rotated!", { variant: 'error' })
-          })
-      })
-      .catch(() => {
-        // Cancel confirmation dialog => do nothing
-      })
+  function openRotateCycleDialog(cycleId: string) {
+    setCycleToRotate(cycleId)
+    setRotateCycleDialogOpen(true)
   }
-  function rotatePack(packId: string) {
-    confirm({
-      description: 'Do you really want to rotate out this pack?',
-      confirmationText: 'Rotate',
-      cancellationText: 'Cancel',
-    })
-      .then(() => {
-        privateApi.Pack.rotate({
-          packId,
-        })
-          .then(() => {
-            window.location.reload()
-          })
-          .catch((error) => {
-            console.log(error)
-            enqueueSnackbar("The pack couldn't be rotated!", { variant: 'error' })
-          })
-      })
-      .catch(() => {
-        // Cancel confirmation dialog => do nothing
-      })
+
+  function closeRotateCycleDialog() {
+    setRotateCycleDialogOpen(false)
+    setCycleToRotate(null)
+  }
+
+  async function confirmRotateCycle() {
+    if (!cycleToRotate) return
+    try {
+      await privateApi.Cycle.rotate({ cycleId: cycleToRotate })
+      window.location.reload()
+    } catch (error) {
+      console.log(error)
+      enqueueSnackbar("The cycle couldn't be rotated!", { variant: 'error' })
+    }
+  }
+
+  function openRotatePackDialog(packId: string) {
+    setPackToRotate(packId)
+    setRotatePackDialogOpen(true)
+  }
+
+  function closeRotatePackDialog() {
+    setRotatePackDialogOpen(false)
+    setPackToRotate(null)
+  }
+
+  async function confirmRotatePack() {
+    if (!packToRotate) return
+    try {
+      await privateApi.Pack.rotate({ packId: packToRotate })
+      window.location.reload()
+    } catch (error) {
+      console.log(error)
+      enqueueSnackbar("The pack couldn't be rotated!", { variant: 'error' })
+    }
   }
 
   return (
@@ -235,7 +237,7 @@ export function ManageCyclesView(): JSX.Element {
                   {cycle.rotated && <CachedIcon style={{ color: 'red', fontSize: 16, marginRight: 8 }} />}
                   {cycle.name}
                 </Typography>
-                <Button variant="contained" color="error" size="small" onClick={() => rotateCycle(cycle.id)} disabled={cycle.rotated}>
+                <Button variant="contained" color="error" size="small" onClick={() => openRotateCycleDialog(cycle.id)} disabled={cycle.rotated}>
                   Rotate Cycle
                 </Button>
               </Box>
@@ -260,7 +262,7 @@ export function ManageCyclesView(): JSX.Element {
                     >
                       Edit Pack Cards
                     </Button>
-                    <Button variant="outlined" color="error" size="small" onClick={() => rotatePack(pack.id)} disabled={pack.rotated}>
+                    <Button variant="outlined" color="error" size="small" onClick={() => openRotatePackDialog(pack.id)} disabled={pack.rotated}>
                       Rotate Pack
                     </Button>
                   </Box>
@@ -359,6 +361,34 @@ export function ManageCyclesView(): JSX.Element {
           </Button>
           <Button variant="contained" color="secondary" onClick={() => createCycle()}>
             Create Cycle
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={rotateCycleDialogOpen} onClose={closeRotateCycleDialog}>
+        <DialogTitle>Confirm Rotation</DialogTitle>
+        <DialogContent>
+          <Typography>Do you really want to rotate out this cycle?</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={closeRotateCycleDialog} variant="outlined" autoFocus>
+            Cancel
+          </Button>
+          <Button onClick={confirmRotateCycle} variant="contained" color="error">
+            Rotate Cycle
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={rotatePackDialogOpen} onClose={closeRotatePackDialog}>
+        <DialogTitle>Confirm Rotation</DialogTitle>
+        <DialogContent>
+          <Typography>Do you really want to rotate out this pack?</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={closeRotatePackDialog} variant="outlined" autoFocus>
+            Cancel
+          </Button>
+          <Button onClick={confirmRotatePack} variant="contained" color="error">
+            Rotate Pack
           </Button>
         </DialogActions>
       </Dialog>
