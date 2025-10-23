@@ -452,56 +452,58 @@ export function CardsView(): JSX.Element {
     ]
 
     return (
-      <Root>
-        <CardFilter
-          onFilterChanged={onFilterChanged}
-          fullWidth
-          filterState={filter || initialState}
-        />
-        <Paper className={classes.table}>
-          <Selectors />
-          <div onMouseLeave={() => setHoveredCardId(null)}>
-            <DataGrid
-              disableRowSelectionOnClick
-              columns={columns}
-              rows={tableCards}
-              pageSizeOptions={[50]}
-              initialState={{
-                pagination: { paginationModel: { pageSize: 50 } },
-              }}
-              autoHeight
-              density="compact"
-              columnVisibilityModel={{
-                type: isMdOrBigger,
-                faction: isMdOrBigger,
-                deck: isMdOrBigger,
-                cost: isMdOrBigger,
-                military: isMdOrBigger,
-                political: isMdOrBigger,
-                glory: isMdOrBigger,
-                strength: isMdOrBigger,
-              }}
-              onRowClick={(param, event) => {
-                // Don't open modal if user clicked on a link
-                const target = event.target as HTMLElement
-                if (target.tagName === 'A' || target.closest('a')) {
-                  event.stopPropagation()
-                  return
-                }
-                setModalCard(cards.find((card) => card.id === param.row.id))
-                setCardModalOpen(true)
-              }}
-            />
-          </div>
-        </Paper>
-        <CardModal />
-      </Root>
+      <Box sx={{ pb: 4 }}>
+        <Root>
+          <CardFilter
+            onFilterChanged={onFilterChanged}
+            fullWidth
+            filterState={filter || initialState}
+          />
+          <Paper className={classes.table}>
+            <Selectors />
+            <div onMouseLeave={() => setHoveredCardId(null)}>
+              <DataGrid
+                disableRowSelectionOnClick
+                columns={columns}
+                rows={tableCards}
+                pageSizeOptions={[50]}
+                initialState={{
+                  pagination: { paginationModel: { pageSize: 50 } },
+                }}
+                autoHeight
+                density="compact"
+                columnVisibilityModel={{
+                  type: isMdOrBigger,
+                  faction: isMdOrBigger,
+                  deck: isMdOrBigger,
+                  cost: isMdOrBigger,
+                  military: isMdOrBigger,
+                  political: isMdOrBigger,
+                  glory: isMdOrBigger,
+                  strength: isMdOrBigger,
+                }}
+                onRowClick={(param, event) => {
+                  // Don't open modal if user clicked on a link
+                  const target = event.target as HTMLElement
+                  if (target.tagName === 'A' || target.closest('a')) {
+                    event.stopPropagation()
+                    return
+                  }
+                  setModalCard(cards.find((card) => card.id === param.row.id))
+                  setCardModalOpen(true)
+                }}
+              />
+            </div>
+          </Paper>
+          <CardModal />
+        </Root>
+      </Box>
     );
   }
 
   if (displayMode === DisplayMode.IMAGES) {
     return (
-      <>
+      <Box sx={{ pb: 4 }}>
         <CardFilter
           onFilterChanged={onFilterChanged}
           fullWidth
@@ -528,12 +530,12 @@ export function CardsView(): JSX.Element {
           <Selectors />
           <CardModal />
         </Paper>
-      </>
+      </Box>
     )
   }
 
   return (
-    <>
+    <Box sx={{ pb: 4 }}>
       <CardFilter
         onFilterChanged={onFilterChanged}
         fullWidth
@@ -579,6 +581,6 @@ export function CardsView(): JSX.Element {
         <Selectors />
         <CardModal />
       </Paper>
-    </>
+    </Box>
   )
 }

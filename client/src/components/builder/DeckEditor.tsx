@@ -234,7 +234,8 @@ export function DeckEditor(props: { existingDecklist?: DecklistType | undefined 
   }
 
   return (
-    <StyledGrid container spacing={2}>
+    <Box sx={{ pb: 4 }}>
+      <StyledGrid container spacing={2}>
       <Grid size={{ xs: 12, md: 6 }}>
         <Grid container spacing={1}>
           <Grid size={12}>
@@ -404,6 +405,7 @@ export function DeckEditor(props: { existingDecklist?: DecklistType | undefined 
           </Button>
         </DialogActions>
       </Dialog>
-    </StyledGrid>
+      </StyledGrid>
+    </Box>
   );
 }
