@@ -426,6 +426,10 @@ function filterReducer(state: FilterState, action: FilterAction): FilterState {
       return { ...state, sides: action.sides }
     case FilterType.FILTER_TRAITS:
       return { ...state, traits: action.traits }
+    case FilterType.FILTER_ACTION:
+      return { ...state, action: action.action }
+    case FilterType.FILTER_KEYWORD:
+      return { ...state, keyword: action.keyword }
     case FilterType.FILTER_ELEMENTS:
       return { ...state, elements: action.elements }
     case FilterType.FILTER_ROLE_RESTRICTIONS:
@@ -833,7 +837,7 @@ export function CardFilter(props: {
             <Grid size={{ xs: 12, md: props.fullWidth ? 6 : 12 }}>
               <Collapse in={showFilters}>
                 <Grid container spacing={1}>
-                  <Grid size={12}>
+                  <Grid size={4}>
                     <Autocomplete
                       id="combo-box-traits"
                       autoHighlight
@@ -848,6 +852,48 @@ export function CardFilter(props: {
                         dispatchFilter({
                           type: FilterType.FILTER_TRAITS,
                           traits: value.map((item) => item.id),
+                        })
+                      }
+                    />
+                  </Grid>
+                  <Grid size={4}>
+                    <Autocomplete
+                      id="combo-box-action"
+                      autoHighlight
+                      options={actionOptions}
+                      getOptionLabel={(option) => option.name}
+                      value={actionOptions.find((option) => option.searchText === filterState.action) || null}
+                      renderOption={(props, option) => (
+                        <li {...props} key={option.id}>
+                          {option.icon && <span className={`icon icon-${option.icon}`} style={{ marginRight: 8 }} />}
+                          {option.name}
+                        </li>
+                      )}
+                      renderInput={(params) => (
+                        <TextField {...params} size="small" label="Action" variant="outlined" />
+                      )}
+                      onChange={(e, value) =>
+                        dispatchFilter({
+                          type: FilterType.FILTER_ACTION,
+                          action: value?.searchText || '',
+                        })
+                      }
+                    />
+                  </Grid>
+                  <Grid size={4}>
+                    <Autocomplete
+                      id="combo-box-keyword"
+                      autoHighlight
+                      options={keywordOptions}
+                      getOptionLabel={(option) => option.name}
+                      value={keywordOptions.find((option) => option.id === filterState.keyword) || null}
+                      renderInput={(params) => (
+                        <TextField {...params} size="small" label="Keyword" variant="outlined" />
+                      )}
+                      onChange={(e, value) =>
+                        dispatchFilter({
+                          type: FilterType.FILTER_KEYWORD,
+                          keyword: value?.id || '',
                         })
                       }
                     />
