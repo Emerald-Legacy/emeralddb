@@ -551,6 +551,7 @@ export function CardFilter(props: {
     { id: 'restricted', name: 'Restricted', searchText: 'Restricted' },
     { id: 'sincerity', name: 'Sincerity', searchText: 'Sincerity' },
     { id: 'support', name: 'Support', searchText: 'Support' },
+    { id: 'thriving', name: 'Thriving', searchText: 'Thriving' },
   ]
 
   const debouncedSearchTerm = useDebounce(searchTerm, 500)
