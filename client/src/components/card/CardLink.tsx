@@ -24,7 +24,7 @@ const Root = styled('span')(({
   theme
 }) => ({
   [`& .${classes.popoverText}`]: {
-    padding: theme.spacing(2),
+    padding: theme.spacing(1),
   }
 }));
 

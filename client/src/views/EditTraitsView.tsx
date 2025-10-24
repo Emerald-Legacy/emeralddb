@@ -97,7 +97,7 @@ export function EditTraitsView(): JSX.Element {
   const sortedTraits = traits.sort((a, b) => a.id.localeCompare(b.id))
 
   return (
-    <Box sx={{ maxWidth: 1200, mx: 'auto', mt: 2, px: 2, pb: 4 }}>
+    <Box sx={{ maxWidth: 1200, mx: 'auto', mt: 2, px: 1, pb: 4 }}>
       <Grid container spacing={3}>
         <Grid size={12}>
           <Card>

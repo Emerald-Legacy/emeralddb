@@ -21,6 +21,24 @@ let theme = createTheme({
       main: '#1b5e20',
     },
   },
+  components: {
+    MuiContainer: {
+      styleOverrides: {
+        root: {
+          paddingLeft: '0px',
+          paddingRight: '0px',
+        },
+      },
+    },
+    MuiCardContent: {
+      styleOverrides: {
+        root: {
+          paddingLeft: '8px',
+          paddingRight: '8px',
+        },
+      },
+    },
+  },
 })
 
 theme = responsiveFontSizes(theme)
