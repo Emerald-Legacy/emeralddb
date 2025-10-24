@@ -354,7 +354,7 @@ export function CardEditor(props: { existingCard?: CardType; editMode?: boolean 
 
   return (
     <Root>
-      <Box sx={{ maxWidth: 1200, mx: 'auto', mt: 2, px: 2, pb: 5 }}>
+      <Box sx={{ maxWidth: 1200, mx: 'auto', mt: 2, px: 1, pb: 5 }}>
         <Grid container spacing={3}>
         <Grid size={12}>
           <Card>

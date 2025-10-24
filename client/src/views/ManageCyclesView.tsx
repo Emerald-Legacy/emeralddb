@@ -229,7 +229,7 @@ export function ManageCyclesView(): JSX.Element {
                 border: '1px solid',
                 borderColor: 'divider',
                 borderRadius: 1,
-                p: 2,
+                p: 1,
                 mb: 1,
               }}
             >

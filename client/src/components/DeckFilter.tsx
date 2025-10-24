@@ -55,7 +55,7 @@ const StyledPaper = styled(Paper)((
   },
 
   [`& .${classes.packDialog}`]: {
-    padding: theme.spacing(2),
+    padding: theme.spacing(1),
   },
 
   [`& .${classes.packFilter}`]: {

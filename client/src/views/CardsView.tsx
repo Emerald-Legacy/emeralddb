@@ -456,7 +456,7 @@ export function CardsView(): JSX.Element {
     ]
 
     return (
-      <Box sx={{ pb: 4, maxWidth: 1400, mx: 'auto', px: 2 }}>
+      <Box sx={{ pb: 4, maxWidth: 1400, mx: 'auto', px: 1 }}>
         <Grid container spacing={2}>
           <Grid size={12}>
             <CardFilter
@@ -529,7 +529,7 @@ export function CardsView(): JSX.Element {
 
   if (displayMode === DisplayMode.IMAGES) {
     return (
-      <Box sx={{ pb: 4, maxWidth: 1400, mx: 'auto', px: 2 }}>
+      <Box sx={{ pb: 4, maxWidth: 1400, mx: 'auto', px: 1 }}>
         <Grid container spacing={2}>
           <Grid size={12}>
             <CardFilter
@@ -542,11 +542,11 @@ export function CardsView(): JSX.Element {
             <Card>
               <CardContent>
                 <Selectors />
-                <Box sx={{ pt: 2 }}>
+                <Box>
                   <Grid container spacing={1}>
                     {currentCards.map((card) => (
                       <Grid key={card.id} size={{ xs: 6, sm: 4, md: 3, lg: 2 }}>
-                        <Box maxWidth={'240px'} margin={'0 auto'}>
+                        <Box margin={'0 auto'}>
                           <CardImageOrText
                             cardId={card.id}
                             onClick={(cardId) => {
@@ -573,7 +573,7 @@ export function CardsView(): JSX.Element {
   }
 
   return (
-    <Box sx={{ pb: 4, maxWidth: 1400, mx: 'auto', px: 2 }}>
+    <Box sx={{ pb: 4, maxWidth: 1400, mx: 'auto', px: 1 }}>
       <Grid container spacing={2}>
         <Grid size={12}>
           <CardFilter
