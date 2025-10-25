@@ -143,15 +143,15 @@ export function DeckStatistics({ cards, allCards }: DeckStatisticsProps): JSX.El
             )}
           </Paper>
         </Grid>
-        <Grid size={{ xs: 12 }}>
+        <Grid size={{ xs: 6 }}>
           <Paper elevation={2} sx={{ p: 1 }}>
             <Typography variant="h6" gutterBottom align="center">
-              Trait Counts
+              Top 5 Traits
             </Typography>
-            <List>
-              {traitCounts.map(({ trait, count }) => (
-                <ListItem key={trait}>
-                  {trait}: {count}
+            <List dense>
+              {traitCounts.slice(0, 5).map(({ trait, count }) => (
+                <ListItem key={trait} sx={{ py: 0 }}>
+                  <strong>{trait}</strong>: {count}
                 </ListItem>
               ))}
             </List>
