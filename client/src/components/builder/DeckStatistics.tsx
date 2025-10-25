@@ -1,5 +1,5 @@
 import { CardWithVersions } from '@5rdb/api'
-import { Box, Grid, Paper, Typography } from '@mui/material'
+import { Box, Grid, Paper, Typography, List, ListItem } from '@mui/material'
 import { BarChart } from '@mui/x-charts/BarChart'
 import { PieChart } from '@mui/x-charts/PieChart'
 
@@ -11,15 +11,21 @@ interface DeckStatisticsProps {
 export function DeckStatistics({ cards, allCards }: DeckStatisticsProps): JSX.Element {
   // Calculate fate cost distribution
   const fateCostDistribution = calculateFateCostDistribution(cards, allCards)
+  const averageFateCost = calculateAverageFateCost(cards, allCards)
 
   // Calculate card type distribution
   const cardTypeDistribution = calculateCardTypeDistribution(cards, allCards)
 
   // Calculate military power distribution
   const militaryPowerDistribution = calculateMilitaryPowerDistribution(cards, allCards)
+  const averageMilitaryPower = calculateAverageMilitaryPower(cards, allCards)
 
   // Calculate political power distribution
   const politicalPowerDistribution = calculatePoliticalPowerDistribution(cards, allCards)
+  const averagePoliticalPower = calculateAveragePoliticalPower(cards, allCards)
+
+  // Calculate trait counts
+  const traitCounts = calculateTraitCounts(cards, allCards)
 
   return (
     <Box p={1}>
@@ -27,7 +33,7 @@ export function DeckStatistics({ cards, allCards }: DeckStatisticsProps): JSX.El
         <Grid size={{ xs: 6 }}>
           <Paper elevation={2} sx={{ p: 1 }}>
             <Typography variant="h6" gutterBottom align="center">
-              Fate Cost Distribution
+              Fate Cost (Avg: {averageFateCost.toFixed(2)})
             </Typography>
             {fateCostDistribution.length > 0 ? (
               <BarChart
@@ -80,7 +86,7 @@ export function DeckStatistics({ cards, allCards }: DeckStatisticsProps): JSX.El
         <Grid size={{ xs: 6 }}>
           <Paper elevation={2} sx={{ p: 1 }}>
             <Typography variant="h6" gutterBottom align="center">
-              Military Power Distribution
+              Military Power (Avg: {averageMilitaryPower.toFixed(2)})
             </Typography>
             {militaryPowerDistribution.length > 0 ? (
               <BarChart
@@ -110,7 +116,7 @@ export function DeckStatistics({ cards, allCards }: DeckStatisticsProps): JSX.El
         <Grid size={{ xs: 6 }}>
           <Paper elevation={2} sx={{ p: 1 }}>
             <Typography variant="h6" gutterBottom align="center">
-              Political Power Distribution
+              Political Power (Avg: {averagePoliticalPower.toFixed(2)})
             </Typography>
             {politicalPowerDistribution.length > 0 ? (
               <BarChart
@@ -137,9 +143,113 @@ export function DeckStatistics({ cards, allCards }: DeckStatisticsProps): JSX.El
             )}
           </Paper>
         </Grid>
+        <Grid size={{ xs: 12 }}>
+          <Paper elevation={2} sx={{ p: 1 }}>
+            <Typography variant="h6" gutterBottom align="center">
+              Trait Counts
+            </Typography>
+            <List>
+              {traitCounts.map(({ trait, count }) => (
+                <ListItem key={trait}>
+                  {trait}: {count}
+                </ListItem>
+              ))}
+            </List>
+          </Paper>
+        </Grid>
       </Grid>
     </Box>
   )
+}
+
+function calculateTraitCounts(
+  cards: Record<string, number>,
+  allCards: CardWithVersions[]
+): { trait: string; count: number }[] {
+  const traitMap = new Map<string, number>()
+
+  Object.entries(cards).forEach(([cardId, quantity]) => {
+    const card = allCards.find((c) => c.id === cardId)
+    if (card && card.type === 'character' && card.traits) {
+      card.traits.forEach((trait) => {
+        const currentCount = traitMap.get(trait) || 0
+        traitMap.set(trait, currentCount + quantity)
+      })
+    }
+  })
+
+  // Convert map to array and sort by count
+  const distribution = Array.from(traitMap.entries())
+    .map(([trait, count]) => ({ trait, count }))
+    .sort((a, b) => b.count - a.count)
+
+  return distribution
+}
+
+function calculateAverageFateCost(
+  cards: Record<string, number>,
+  allCards: CardWithVersions[]
+): number {
+  let totalCost = 0
+  let totalCards = 0
+
+  Object.entries(cards).forEach(([cardId, quantity]) => {
+    const card = allCards.find((c) => c.id === cardId)
+    if (card && card.cost !== undefined && card.cost !== null && card.cost !== 'X') {
+      totalCost += parseInt(card.cost) * quantity
+      totalCards += quantity
+    }
+  })
+
+  return totalCards > 0 ? totalCost / totalCards : 0
+}
+
+function calculateAverageMilitaryPower(
+  cards: Record<string, number>,
+  allCards: CardWithVersions[]
+): number {
+  let totalPower = 0
+  let totalCards = 0
+
+  Object.entries(cards).forEach(([cardId, quantity]) => {
+    const card = allCards.find((c) => c.id === cardId)
+    if (
+      card &&
+      card.type === 'character' &&
+      card.military !== undefined &&
+      card.military !== null &&
+      card.military !== '-'
+    ) {
+      totalPower += parseInt(card.military) * quantity
+      totalCards += quantity
+    }
+  })
+
+  return totalCards > 0 ? totalPower / totalCards : 0
+}
+
+function calculateAveragePoliticalPower(
+  cards: Record<string, number>,
+  allCards: CardWithVersions[]
+): number {
+  let totalPower = 0
+  let totalCards = 0
+
+  Object.entries(cards).forEach(([cardId, quantity]) => {
+    const card = allCards.find((c) => c.id === cardId)
+    if (
+      card &&
+      card.type === 'character' &&
+      card.political !== undefined &&
+      card.political !== null &&
+      card.political !== '-'
+    ) {
+      totalPower += parseInt(card.political) * quantity
+      totalCards += quantity
+    }
+  })
+
+  return totalCards > 0 ? totalPower / totalCards : 0
 }
 
 function calculateFateCostDistribution(
