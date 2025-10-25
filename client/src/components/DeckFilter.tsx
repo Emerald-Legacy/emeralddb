@@ -137,6 +137,7 @@ export function DeckFilter(props: {
       <Grid container spacing={1} justifyContent="flex-end">
         <Grid size={{ xs: 12, sm: 6 }}>
           <Autocomplete
+            key={filterState.primaryClan}
             id="combo-box-primary"
             autoHighlight
             options={clans}
@@ -155,6 +156,7 @@ export function DeckFilter(props: {
         </Grid>
         <Grid size={{ xs: 12, sm: 6 }}>
           <Autocomplete
+            key={filterState.secondaryClan}
             id="combo-box-secondary"
             autoHighlight
             options={clans}
@@ -173,6 +175,7 @@ export function DeckFilter(props: {
         </Grid>
         <Grid size={{ xs: 12, sm: 6 }}>
           <Autocomplete
+            key={filterState.format}
             id="combo-box-format"
             autoHighlight
             options={relevantFormats}
