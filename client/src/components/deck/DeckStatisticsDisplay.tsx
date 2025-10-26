@@ -162,6 +162,47 @@ function calculateAveragePower(
   return totalCards > 0 ? totalPower / totalCards : 0
 }
 
+interface StatisticChartCardProps {
+  title: string
+  averageValue: number
+  data: { value: string | number; count: number }[]
+  dataKey: string
+  color: string
+  noDataMessage: string
+}
+
+function StatisticChartCard({
+  title,
+  averageValue,
+  data,
+  dataKey,
+  color,
+  noDataMessage,
+}: StatisticChartCardProps): JSX.Element {
+  return (
+    <Grid size={{ xs: 6 }} component="div">
+      <Paper elevation={2} sx={{ p: 1 }}>
+        <Typography variant="h6" gutterBottom align="center">
+          {title} <br /> <span style={{ fontSize: '70%' }}>(Avg: {averageValue.toFixed(2)})</span>
+        </Typography>
+        {data.length > 0 ? (
+          <BarChart
+            xAxis={[{ scaleType: 'band', data: data.map((d) => d[dataKey]) }]}
+            series={[{ data: data.map((d) => d.count), valueFormatter: (value) => `${value}`, color: color }]}
+            height={160}
+            slots={{ legend: () => null }}
+            margin={{ left: 0 }}
+          />
+        ) : (
+          <Typography align="center" color="text.secondary">
+            {noDataMessage}
+          </Typography>
+        )}
+      </Paper>
+    </Grid>
+  )
+}
+
 export function DeckStatisticsDisplay({ cards, allCards, allPacks }: DeckStatisticsDisplayProps): JSX.Element {
   // Calculate military power distribution
   const militaryPowerDistribution = calculatePowerDistribution(cards, allCards, 'military')
@@ -185,98 +226,38 @@ export function DeckStatisticsDisplay({ cards, allCards, allPacks }: DeckStatist
   return (
     <Box p={1}>
       <Grid container spacing={2}>
-        <Grid size={{ xs: 6 }} component="div">
-          <Paper elevation={2} sx={{ p: 1 }}>
-            <Typography variant="h6" gutterBottom align="center">
-              Dynasty Fate Cost <br /> <span style={{ fontSize: '70%' }}>(Avg: {averageDynastyFateCost.toFixed(2)})</span>
-            </Typography>
-            <BarChart
-              xAxis={[{ scaleType: 'band', data: dynastyFateCost.map((d) => d.cost) }]}
-              series={[{ data: dynastyFateCost.map((d) => d.count), valueFormatter: (value) => `${value}`, color: '#1b5e20' }]}
-              height={160}
-              slots={{ legend: () => null }}
-              margin={{ left: 0 }}
-            />
-          </Paper>
-        </Grid>
-        <Grid size={{ xs: 6 }} component="div">
-          <Paper elevation={2} sx={{ p: 1 }}>
-            <Typography variant="h6" gutterBottom align="center">
-              Conflict Fate Cost <br /> <span style={{ fontSize: '70%' }}>(Avg: {averageConflictFateCost.toFixed(2)})</span>
-            </Typography>
-            <BarChart
-              xAxis={[{ scaleType: 'band', data: conflictFateCost.map((d) => d.cost) }]}
-              series={[{ data: conflictFateCost.map((d) => d.count), valueFormatter: (value) => `${value}`, color: '#4CAF50' }]} // Changed color
-              height={160}
-              slots={{ legend: () => null }}
-              margin={{ left: 0 }}
-            />
-          </Paper>
-        </Grid>
-
-
-        <Grid size={{ xs: 6 }} component="div">
-          <Paper elevation={2} sx={{ p: 1 }}>
-            <Typography variant="h6" gutterBottom align="center">
-              Military Power <br /> <span style={{ fontSize: '70%' }}>(Avg: {averageMilitaryPower.toFixed(2)})</span>
-            </Typography>
-            {militaryPowerDistribution.length > 0 ? (
-              <BarChart
-                xAxis={[
-                  {
-                    scaleType: 'band',
-                    data: militaryPowerDistribution.map((d) => d.power),
-                    hideTooltip: true,
-                  },
-                ]}
-                series={[
-                  {
-                    data: militaryPowerDistribution.map((d) => d.count),
-                    color: '#7D2900',
-                  },
-                ]}
-                height={160}
-                slots={{ legend: () => null }}
-                margin={{ left: 0 }}
-              />
-            ) : (
-              <Typography align="center" color="text.secondary">
-                No characters with military power in deck
-              </Typography>
-            )}
-          </Paper>
-        </Grid>
-        <Grid size={{ xs: 6 }} component="div">
-          <Paper elevation={2} sx={{ p: 1 }}>
-            <Typography variant="h6" gutterBottom align="center">
-              Political Power <br /> <span style={{ fontSize: '70%' }}>(Avg: {averagePoliticalPower.toFixed(2)})</span>
-            </Typography>
-            {politicalPowerDistribution.length > 0 ? (
-              <BarChart
-                xAxis={[
-                  {
-                    scaleType: 'band',
-                    data: politicalPowerDistribution.map((d) => d.power),
-                    hideTooltip: true,
-                  },
-                ]}
-                series={[
-                  {
-                    data: politicalPowerDistribution.map((d) => d.count),
-                    color: '#282877',
-                  },
-                ]}
-                height={160}
-                slots={{ legend: () => null }}
-                margin={{ left: 0 }}
-              />
-            ) : (
-              <Typography align="center" color="text.secondary">
-                No characters with political power in deck
-              </Typography>
-            )}
-          </Paper>
-        </Grid>
+        <StatisticChartCard
+          title="Dynasty Fate Cost"
+          averageValue={averageDynastyFateCost}
+          data={dynastyFateCost}
+          dataKey="cost"
+          color="#1b5e20"
+          noDataMessage="No dynasty cards with fate cost in deck"
+        />
+        <StatisticChartCard
+          title="Conflict Fate Cost"
+          averageValue={averageConflictFateCost}
+          data={conflictFateCost}
+          dataKey="cost"
+          color="#4CAF50"
+          noDataMessage="No conflict cards with fate cost in deck"
+        />
+        <StatisticChartCard
+          title="Military Power"
+          averageValue={averageMilitaryPower}
+          data={militaryPowerDistribution}
+          dataKey="power"
+          color="#7D2900"
+          noDataMessage="No characters with military power in deck"
+        />
+        <StatisticChartCard
+          title="Political Power"
+          averageValue={averagePoliticalPower}
+          data={politicalPowerDistribution}
+          dataKey="power"
+          color="#282877"
+          noDataMessage="No characters with political power in deck"
+        />
         <Grid size={{ xs: 6 }} component="div">
           <Paper elevation={2} sx={{ p: 1 }}>
             <Typography variant="h6" gutterBottom align="center">
