@@ -27,6 +27,7 @@ import { createDeckStatistics } from '../deck/DeckValidator'
 import { Loading } from '../Loading'
 import { VersionPicker } from './VersionPicker'
 import { EmeraldDBLink } from '../EmeraldDBLink'
+import { DeckStatistics } from './DeckStatistics'
 
 const PREFIX = 'DeckEditor';
 
@@ -372,10 +373,8 @@ export function DeckEditor(props: { existingDecklist?: DecklistType | undefined 
                   label="Deck Description"
                 />
               </Box>
-              <Box hidden={currentView !== ViewTypes.STATISTICS} p={1}>
-                <Typography align="center" variant="h6">
-                  Coming Soon
-                </Typography>
+              <Box hidden={currentView !== ViewTypes.STATISTICS}>
+                <DeckStatistics cards={decklist.cards} allCards={cards} />
               </Box>
             </Grid>
           </Grid>

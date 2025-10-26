@@ -24,6 +24,7 @@ const HelpView = lazy(() => import('./views/HelpView').then(m => ({ default: m.H
 const EditTraitsView = lazy(() => import('./views/EditTraitsView').then(m => ({ default: m.EditTraitsView })))
 const EditFormatsView = lazy(() => import('./views/EditFormatsView').then(m => ({ default: m.EditFormatsView })))
 const ELRulesReferenceGuideNew = lazy(() => import('./views/ELRulesReferenceGuideNew').then(m => ({ default: m.ELRulesReferenceGuideNew })))
+const StartPage = lazy(() => import('./views/StartPage'))
 
 const AuthenticatedRoute = (props: { children: JSX.Element }) => {
   const { isLoggedIn } = useCurrentUser()
@@ -46,6 +47,7 @@ export function Routes(): JSX.Element {
   return (
     <Suspense fallback={<Loading />}>
       <RouterRoutes>
+        <Route path="/" element={<StartPage />} />
         <Route path="/cards" element={<CardsView />} />
         <Route path="/rules/imperial" element={<FFGRulesReferenceGuide />} />
         <Route path="/rules/emerald" element={<ELRulesReferenceGuideNew />} />
