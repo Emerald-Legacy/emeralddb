@@ -29,6 +29,8 @@ export type DeckStatistics = {
   provinces: CardWithQuantity[]
   dynastyCards: DynastyCards
   conflictCards: ConflictCards
+  dynastyFateCost: { [cost: string]: number }
+  conflictFateCost: { [cost: string]: number }
   bannedCards: CardWithQuantity[]
   restrictedCards: CardWithQuantity[]
   rotatedCards: CardWithQuantity[]
@@ -331,6 +333,25 @@ export function createDeckStatistics(
     .map((c) => c.id)
   const dynastyCardsWrapper = splitDynastyCards(dynastyCards)
   const conflictCardsWrapper = splitConflictCards(conflictCards)
+  const dynastyFateCost: { [cost: string]: number } = {};
+  dynastyCards.forEach((card) => {
+    const cost = card.cost || 'X';
+    if (dynastyFateCost[cost]) {
+      dynastyFateCost[cost] += card.quantity;
+    } else {
+      dynastyFateCost[cost] = card.quantity;
+    }
+  });
+
+  const conflictFateCost: { [cost: string]: number } = {};
+  conflictCards.forEach((card) => {
+    const cost = card.cost || 'X';
+    if (conflictFateCost[cost]) {
+      conflictFateCost[cost] += card.quantity;
+    } else {
+      conflictFateCost[cost] = card.quantity;
+    }
+  });
   const stronghold = strongholds.length > 0 ? strongholds[0] : null
   const role = roles.length > 0 ? roles[0] : null
   const baseInfluence = formatId === 'skirmish' ? 6 : stronghold?.influence_pool ?? 0
@@ -386,6 +407,8 @@ export function createDeckStatistics(
     provinces: provinces,
     dynastyCards: dynastyCardsWrapper,
     conflictCards: conflictCardsWrapper,
+    dynastyFateCost: dynastyFateCost,
+    conflictFateCost: conflictFateCost,
     isSeeker: isSeeker,
     roleElements: roleElements,
     deckMaximum: deckMaximum,
