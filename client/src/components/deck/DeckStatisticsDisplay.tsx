@@ -73,8 +73,9 @@ function calculateAverageFateCostForDeck(
 
   Object.entries(cards).forEach(([cardId, quantity]) => {
     const card = allCards.find((c) => c.id === cardId)
-    if (card && card.side === deckSide && card.cost !== undefined && card.cost !== null && card.cost !== 'X') {
-      totalCost += parseInt(card.cost) * quantity
+    if (card && card.side === deckSide && card.cost !== undefined && card.cost !== null) {
+      const cost = card.cost === 'X' ? 0 : parseInt(card.cost)
+      totalCost += cost * quantity
       totalCards += quantity
     }
   })
@@ -119,7 +120,7 @@ function calculateFateCostDistributionForDeck(
   Object.entries(cards).forEach(([cardId, quantity]) => {
     const card = allCards.find((c) => c.id === cardId)
     if (card && card.side === deckSide && card.cost !== undefined && card.cost !== null) {
-      const cost = card.cost.toString()
+      const cost = card.cost === 'X' ? '0' : card.cost.toString()
       const currentCount = costMap.get(cost) || 0
       costMap.set(cost, currentCount + quantity)
     }
