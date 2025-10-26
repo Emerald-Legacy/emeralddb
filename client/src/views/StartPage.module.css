@@ -1,7 +1,6 @@
-
 .startPage {
   text-align: center;
-  padding: 2rem;
+  padding: 8px 8px 16px 8px;
 }
 
 .header {
@@ -20,6 +19,12 @@
   gap: 1rem;
 }
 
+@media (max-width: 768px) {
+  .features {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 .feature {
   background-color: #f9f9f9;
   padding: 1rem;
@@ -32,6 +37,12 @@
   grid-template-columns: repeat(2, 1fr);
   gap: 1.5rem;
   grid-auto-rows: 1fr;
+}
+
+@media (max-width: 768px) {
+  .releaseNotesContainer {
+    grid-template-columns: 1fr;
+  }
 }
 
 .releaseNotes {
