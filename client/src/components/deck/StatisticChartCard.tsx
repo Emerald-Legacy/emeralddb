@@ -27,7 +27,7 @@ export function StatisticChartCard({
         </Typography>
         {data.length > 0 ? (
           <BarChart
-            xAxis={[{ scaleType: 'band', data: data.map((d) => d[dataKey]) }]}
+            xAxis={[{ scaleType: 'band', data: data.map((d) => d[dataKey]), hideTooltip: true }]}
             series={[{ data: data.map((d) => d.count), valueFormatter: (value) => `${value}`, color: color }]}
             height={160}
             slots={{ legend: () => null }}
