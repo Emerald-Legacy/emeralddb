@@ -82,30 +82,6 @@ function calculateAverageFateCostForDeck(
   return totalCards > 0 ? totalCost / totalCards : 0
 }
 
-function calculateAverageMilitaryPower(
-  cards: Record<string, number>,
-  allCards: CardWithVersions[]
-): number {
-  let totalPower = 0
-  let totalCards = 0
-
-  Object.entries(cards).forEach(([cardId, quantity]) => {
-    const card = allCards.find((c) => c.id === cardId)
-    if (
-      card &&
-      card.type === 'character' &&
-      card.military !== undefined &&
-      card.military !== null &&
-      card.military !== '-'
-    ) {
-      totalPower += parseInt(card.military) * quantity
-      totalCards += quantity
-    }
-  })
-
-  return totalCards > 0 ? totalPower / totalCards : 0
-}
-
 function calculatePowerDistribution(
   cards: Record<string, number>,
   allCards: CardWithVersions[],
@@ -161,9 +137,10 @@ function calculateFateCostDistributionForDeck(
   return distribution
 }
 
-function calculateAveragePoliticalPower(
+function calculateAveragePower(
   cards: Record<string, number>,
-  allCards: CardWithVersions[]
+  allCards: CardWithVersions[],
+  powerType: 'military' | 'political'
 ): number {
   let totalPower = 0
   let totalCards = 0
@@ -173,11 +150,11 @@ function calculateAveragePoliticalPower(
     if (
       card &&
       card.type === 'character' &&
-      card.political !== undefined &&
-      card.political !== null &&
-      card.political !== '-'
+      card[powerType] !== undefined &&
+      card[powerType] !== null &&
+      card[powerType] !== '-'
     ) {
-      totalPower += parseInt(card.political) * quantity
+      totalPower += parseInt(card[powerType] as string) * quantity
       totalCards += quantity
     }
   })
@@ -188,11 +165,11 @@ function calculateAveragePoliticalPower(
 export function DeckStatisticsDisplay({ cards, allCards, allPacks }: DeckStatisticsDisplayProps): JSX.Element {
   // Calculate military power distribution
   const militaryPowerDistribution = calculatePowerDistribution(cards, allCards, 'military')
-  const averageMilitaryPower = calculateAverageMilitaryPower(cards, allCards)
+  const averageMilitaryPower = calculateAveragePower(cards, allCards, 'military')
 
   // Calculate political power distribution
   const politicalPowerDistribution = calculatePowerDistribution(cards, allCards, 'political')
-  const averagePoliticalPower = calculateAveragePoliticalPower(cards, allCards)
+  const averagePoliticalPower = calculateAveragePower(cards, allCards, 'political')
 
   // Calculate trait counts
   const traitCounts = calculateTraitCounts(cards, allCards)
