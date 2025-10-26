@@ -6,7 +6,7 @@ interface StatisticChartCardProps {
   title: string
   averageValue: number
   data: { value: string | number; count: number }[]
-  dataKey: string
+  dataKey: 'value'
   color: string
   noDataMessage: string
 }

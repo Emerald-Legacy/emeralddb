@@ -88,7 +88,7 @@ function calculatePowerDistribution(
   cards: Record<string, number>,
   allCards: CardWithVersions[],
   powerType: 'military' | 'political'
-): { power: string; count: number }[] {
+): { value: string; count: number }[] {
   const powerMap = new Map<string, number>()
 
   Object.entries(cards).forEach(([cardId, quantity]) => {
@@ -101,10 +101,10 @@ function calculatePowerDistribution(
   })
 
   const distribution = Array.from(powerMap.entries())
-    .map(([power, count]) => ({ power, count }))
+    .map(([power, count]) => ({ value: power, count }))
     .sort((a, b) => {
-      const powerA = a.power === '-' ? 0 : parseInt(a.power) || 0
-      const powerB = b.power === '-' ? 0 : parseInt(b.power) || 0
+      const powerA = a.value === '-' ? 0 : parseInt(a.value) || 0
+      const powerB = b.value === '-' ? 0 : parseInt(b.value) || 0
       return powerA - powerB
     })
 
@@ -115,7 +115,7 @@ function calculateFateCostDistributionForDeck(
   cards: Record<string, number>,
   allCards: CardWithVersions[],
   deckSide: 'dynasty' | 'conflict'
-): { cost: string; count: number }[] {
+): { value: string; count: number }[] {
   const costMap = new Map<string, number>()
 
   Object.entries(cards).forEach(([cardId, quantity]) => {
@@ -129,10 +129,10 @@ function calculateFateCostDistributionForDeck(
 
   // Convert map to array and sort by cost
   const distribution = Array.from(costMap.entries())
-    .map(([cost, count]) => ({ cost, count }))
+    .map(([cost, count]) => ({ value: cost, count }))
     .sort((a, b) => {
-      const costA = a.cost === 'X' ? -1 : parseInt(a.cost) || 0
-      const costB = b.cost === 'X' ? -1 : parseInt(b.cost) || 0
+      const costA = a.value === 'X' ? -1 : parseInt(a.value) || 0
+      const costB = b.value === 'X' ? -1 : parseInt(b.value) || 0
       return costA - costB
     })
 
@@ -191,7 +191,7 @@ export function DeckStatisticsDisplay({ cards, allCards, allPacks }: DeckStatist
           title="Dynasty Fate Cost"
           averageValue={averageDynastyFateCost}
           data={dynastyFateCost}
-          dataKey="cost"
+          dataKey="value"
           color="#1b5e20"
           noDataMessage="No dynasty cards with fate cost in deck"
         />
@@ -199,7 +199,7 @@ export function DeckStatisticsDisplay({ cards, allCards, allPacks }: DeckStatist
           title="Conflict Fate Cost"
           averageValue={averageConflictFateCost}
           data={conflictFateCost}
-          dataKey="cost"
+          dataKey="value"
           color="#4CAF50"
           noDataMessage="No conflict cards with fate cost in deck"
         />
@@ -207,7 +207,7 @@ export function DeckStatisticsDisplay({ cards, allCards, allPacks }: DeckStatist
           title="Military Power"
           averageValue={averageMilitaryPower}
           data={militaryPowerDistribution}
-          dataKey="power"
+          dataKey="value"
           color="#7D2900"
           noDataMessage="No characters with military power in deck"
         />
@@ -215,7 +215,7 @@ export function DeckStatisticsDisplay({ cards, allCards, allPacks }: DeckStatist
           title="Political Power"
           averageValue={averagePoliticalPower}
           data={politicalPowerDistribution}
-          dataKey="power"
+          dataKey="value"
           color="#282877"
           noDataMessage="No characters with political power in deck"
         />
