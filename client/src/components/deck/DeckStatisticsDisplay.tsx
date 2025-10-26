@@ -208,9 +208,10 @@ export function DeckStatisticsDisplay({ cards, allCards }: DeckStatisticsDisplay
             </Typography>
             <BarChart
               xAxis={[{ scaleType: 'band', data: dynastyFateCost.map((d) => d.cost) }]}
-              series={[{ data: dynastyFateCost.map((d) => d.count), valueFormatter: (value) => `${value}`, color: '#1b5e20' }]} // Changed color
-              height={200}
+              series={[{ data: dynastyFateCost.map((d) => d.count), valueFormatter: (value) => `${value}`, color: '#1b5e20' }]}
+              height={160}
               slots={{ legend: () => null }}
+              margin={{ left: 0 }}
             />
           </Paper>
         </Grid>
@@ -222,8 +223,9 @@ export function DeckStatisticsDisplay({ cards, allCards }: DeckStatisticsDisplay
             <BarChart
               xAxis={[{ scaleType: 'band', data: conflictFateCost.map((d) => d.cost) }]}
               series={[{ data: conflictFateCost.map((d) => d.count), valueFormatter: (value) => `${value}`, color: '#4CAF50' }]} // Changed color
-              height={200}
+              height={160}
               slots={{ legend: () => null }}
+              margin={{ left: 0 }}
             />
           </Paper>
         </Grid>
@@ -249,8 +251,9 @@ export function DeckStatisticsDisplay({ cards, allCards }: DeckStatisticsDisplay
                     color: '#7D2900',
                   },
                 ]}
-                height={200}
+                height={160}
                 slots={{ legend: () => null }}
+                margin={{ left: 0 }}
               />
             ) : (
               <Typography align="center" color="text.secondary">
@@ -279,8 +282,9 @@ export function DeckStatisticsDisplay({ cards, allCards }: DeckStatisticsDisplay
                     color: '#282877',
                   },
                 ]}
-                height={200}
+                height={160}
                 slots={{ legend: () => null }}
+                margin={{ left: 0 }}
               />
             ) : (
               <Typography align="center" color="text.secondary">
