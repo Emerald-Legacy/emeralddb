@@ -139,6 +139,7 @@ export function CardLink(props: {
   format?: string
   notClickable?: boolean
   hoveredCardId?: string | null
+  onHover?: (cardId: string | null) => void
 }): JSX.Element {
   const { cards, relevantFormats, validCardVersionForFormat } = useUiStore()
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
@@ -187,10 +188,16 @@ export function CardLink(props: {
 
   const handleMouseEnter = (event: MouseEvent<HTMLAnchorElement>) => {
     setAnchorEl(event.currentTarget)
+    if (props.onHover) {
+      props.onHover(props.cardId)
+    }
   }
 
   const handleMouseLeave = () => {
     setAnchorEl(null)
+    if (props.onHover) {
+      props.onHover(null)
+    }
   }
 
   const handleClick = () => {

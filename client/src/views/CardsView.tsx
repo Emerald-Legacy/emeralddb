@@ -350,6 +350,21 @@ export function CardsView(): JSX.Element {
     setPage(0)
   }
 
+  const handleCardClick = useCallback((param: any, event: any) => {
+    const target = event.target as HTMLElement;
+    if (target.tagName === 'A' || target.closest('a')) {
+      event.stopPropagation();
+      return;
+    }
+    setModalCard(cards.find((card) => card.id === param.row.id));
+    setCardModalOpen(true);
+  }, [cards]);
+
+  const handleImageClick = useCallback((cardId: string) => {
+    setModalCard(cards.find((card) => card.id === cardId));
+    setCardModalOpen(true);
+  }, [cards]);
+
   if (displayMode === DisplayMode.LIST) {
     const tableCards: TableCard[] = filteredCards.map((card) => {
       const mil =
@@ -393,15 +408,13 @@ export function CardsView(): JSX.Element {
         renderCell: (params) => {
           const nameProps = params.value as NameProps
           return (
-            <div
-              onMouseEnter={() => setHoveredCardId(nameProps.id)}
-              onMouseLeave={() => setHoveredCardId(null)}
-            >
+            <div>
               <CardLink
                 cardId={nameProps.id}
                 sameTab
                 format={filter?.format}
                 hoveredCardId={hoveredCardId}
+                onHover={setHoveredCardId}
               />
             </div>
           )
@@ -490,16 +503,7 @@ export function CardsView(): JSX.Element {
                       glory: isMdOrBigger,
                       strength: isMdOrBigger,
                     }}
-                    onRowClick={(param, event) => {
-                      // Don't open modal if user clicked on a link
-                      const target = event.target as HTMLElement
-                      if (target.tagName === 'A' || target.closest('a')) {
-                        event.stopPropagation()
-                        return
-                      }
-                      setModalCard(cards.find((card) => card.id === param.row.id))
-                      setCardModalOpen(true)
-                    }}
+                    onRowClick={handleCardClick}
                     sx={{
                       '& .MuiTablePagination-displayedRows': {
                         margin: 0,
@@ -549,10 +553,7 @@ export function CardsView(): JSX.Element {
                         <Box margin={'0 auto'}>
                           <CardImageOrText
                             cardId={card.id}
-                            onClick={(cardId) => {
-                              setModalCard(cards.find((card) => card.id === cardId))
-                              setCardModalOpen(true)
-                            }}
+                            onClick={handleImageClick}
                             cardVersion={findCardVersion(card)}
                           />
                         </Box>
@@ -616,10 +617,7 @@ export function CardsView(): JSX.Element {
                       <Box maxWidth={'300px'} margin={'0 auto'}>
                         <CardImageOrText
                           cardId={card.id}
-                          onClick={(cardId) => {
-                            setModalCard(cards.find((card) => card.id === cardId))
-                            setCardModalOpen(true)
-                          }}
+                          onClick={handleImageClick}
                           cardVersion={findCardVersion(card)}
                           showFab={false}
                         />
