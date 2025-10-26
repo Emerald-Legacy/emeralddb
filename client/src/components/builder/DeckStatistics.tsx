@@ -1,5 +1,6 @@
-import { CardWithVersions } from '@5rdb/api'
+import { CardWithVersions, Pack } from '@5rdb/api'
 import { DeckStatisticsDisplay } from '../deck/DeckStatisticsDisplay'
+import { useUiStore } from '../../providers/UiStoreProvider'
 
 interface DeckStatisticsProps {
   cards: Record<string, number>
@@ -7,7 +8,8 @@ interface DeckStatisticsProps {
 }
 
 export function DeckStatistics({ cards, allCards }: DeckStatisticsProps): JSX.Element {
-  return <DeckStatisticsDisplay cards={cards} allCards={allCards} />
+  const { packs } = useUiStore()
+  return <DeckStatisticsDisplay cards={cards} allCards={allCards} allPacks={packs} />
 }
 
 

@@ -9,11 +9,12 @@ import { getColorForFactionId } from '../utils/factionUtils'
 import { DecklistComments } from '../components/deck/DecklistComments'
 import { DeckStatisticsDisplay } from '../components/deck/DeckStatisticsDisplay'
 import { useUiStore } from '../providers/UiStoreProvider'
+import { Pack } from '@5rdb/api'
 
 export function DeckDetailView(): JSX.Element {
   const params = useParams<{ id: string }>()
   const [data] = useDecklist(params.id!)
-  const { cards } = useUiStore()
+  const { cards, packs } = useUiStore()
 
   if (data.loading) {
     return <Loading />
@@ -62,7 +63,7 @@ export function DeckDetailView(): JSX.Element {
             <DecklistComments decklistId={decklist.id} />
           </Grid>
           <Grid size={12}>
-            <DeckStatisticsDisplay cards={decklist.cards} allCards={cards} />
+            <DeckStatisticsDisplay cards={decklist.cards} allCards={cards} allPacks={packs} />
           </Grid>
         </Grid>
       </Grid>
