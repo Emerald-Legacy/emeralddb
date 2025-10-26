@@ -106,49 +106,22 @@ function calculateAverageMilitaryPower(
   return totalCards > 0 ? totalPower / totalCards : 0
 }
 
-function calculatePoliticalPowerDistribution(
+function calculatePowerDistribution(
   cards: Record<string, number>,
-  allCards: CardWithVersions[]
+  allCards: CardWithVersions[],
+  powerType: 'military' | 'political'
 ): { power: string; count: number }[] {
   const powerMap = new Map<string, number>()
 
   Object.entries(cards).forEach(([cardId, quantity]) => {
     const card = allCards.find((c) => c.id === cardId)
     if (card && card.type === 'character') {
-      const power = card.political === null || card.political === undefined || card.political === '-' ? '0' : card.political.toString()
+      const power = card[powerType] === null || card[powerType] === undefined || card[powerType] === '-' ? '0' : card[powerType]!.toString()
       const currentCount = powerMap.get(power) || 0
       powerMap.set(power, currentCount + quantity)
     }
   })
 
-  // Convert map to array and sort by power
-  const distribution = Array.from(powerMap.entries())
-    .map(([power, count]) => ({ power, count }))
-    .sort((a, b) => {
-      const powerA = a.power === '-' ? 0 : parseInt(a.power) || 0
-      const powerB = b.power === '-' ? 0 : parseInt(b.power) || 0
-      return powerA - powerB
-    })
-
-  return distribution
-}
-
-function calculateMilitaryPowerDistribution(
-  cards: Record<string, number>,
-  allCards: CardWithVersions[]
-): { power: string; count: number }[] {
-  const powerMap = new Map<string, number>()
-
-  Object.entries(cards).forEach(([cardId, quantity]) => {
-    const card = allCards.find((c) => c.id === cardId)
-    if (card && card.type === 'character') {
-      const power = card.military === null || card.military === undefined || card.military === '-' ? '0' : card.military.toString()
-      const currentCount = powerMap.get(power) || 0
-      powerMap.set(power, currentCount + quantity)
-    }
-  })
-
-  // Convert map to array and sort by power
   const distribution = Array.from(powerMap.entries())
     .map(([power, count]) => ({ power, count }))
     .sort((a, b) => {
@@ -214,11 +187,11 @@ function calculateAveragePoliticalPower(
 
 export function DeckStatisticsDisplay({ cards, allCards, allPacks }: DeckStatisticsDisplayProps): JSX.Element {
   // Calculate military power distribution
-  const militaryPowerDistribution = calculateMilitaryPowerDistribution(cards, allCards)
+  const militaryPowerDistribution = calculatePowerDistribution(cards, allCards, 'military')
   const averageMilitaryPower = calculateAverageMilitaryPower(cards, allCards)
 
   // Calculate political power distribution
-  const politicalPowerDistribution = calculatePoliticalPowerDistribution(cards, allCards)
+  const politicalPowerDistribution = calculatePowerDistribution(cards, allCards, 'political')
   const averagePoliticalPower = calculateAveragePoliticalPower(cards, allCards)
 
   // Calculate trait counts
