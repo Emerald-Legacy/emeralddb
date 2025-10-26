@@ -2,6 +2,7 @@ import { CardWithVersions, Pack } from '@5rdb/api'
 import { Box, Grid, Paper, Typography, List, ListItem } from '@mui/material'
 import { BarChart } from '@mui/x-charts/BarChart'
 import { StatisticChartCard } from './StatisticChartCard'
+import { useUiStore } from '../../providers/UiStoreProvider'
 
 interface DeckStatisticsDisplayProps {
   cards: Record<string, number>
@@ -42,7 +43,8 @@ function calculateRequiredPacks(
 
 function calculateTraitCounts(
   cards: Record<string, number>,
-  allCards: CardWithVersions[]
+  allCards: CardWithVersions[],
+  allTraits: Trait[]
 ): { trait: string; count: number }[] {
   const traitMap = new Map<string, number>()
 
@@ -58,7 +60,10 @@ function calculateTraitCounts(
 
   // Convert map to array and sort by count
   const distribution = Array.from(traitMap.entries())
-    .map(([trait, count]) => ({ trait, count }))
+    .map(([traitId, count]) => ({
+      trait: allTraits.find((t) => t.id === traitId)?.name || traitId,
+      count,
+    }))
     .sort((a, b) => b.count - a.count)
 
   return distribution
@@ -165,6 +170,7 @@ function calculateAveragePower(
 }
 
 export function DeckStatisticsDisplay({ cards, allCards, allPacks }: DeckStatisticsDisplayProps): JSX.Element {
+  const { traits } = useUiStore()
   // Calculate military power distribution
   const militaryPowerDistribution = calculatePowerDistribution(cards, allCards, 'military')
   const averageMilitaryPower = calculateAveragePower(cards, allCards, 'military')
@@ -174,7 +180,7 @@ export function DeckStatisticsDisplay({ cards, allCards, allPacks }: DeckStatist
   const averagePoliticalPower = calculateAveragePower(cards, allCards, 'political')
 
   // Calculate trait counts
-  const traitCounts = calculateTraitCounts(cards, allCards)
+  const traitCounts = calculateTraitCounts(cards, allCards, traits)
 
   const dynastyFateCost = calculateFateCostDistributionForDeck(cards, allCards, 'dynasty');
   const conflictFateCost = calculateFateCostDistributionForDeck(cards, allCards, 'conflict');
