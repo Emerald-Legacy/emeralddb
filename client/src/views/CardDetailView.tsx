@@ -163,7 +163,7 @@ export function CardDetailView(): JSX.Element {
 
   return (
     <StyledContainer style={{paddingTop: '5px', paddingBottom: '20px'}}>
-      <Card>
+      <Card sx={{ marginX: 1 }}>
         <CardContent>
           <Grid container spacing={5}>
         <Grid size={{ xs: 12, md: 7 }}>
@@ -203,12 +203,12 @@ export function CardDetailView(): JSX.Element {
         </Grid>
         <Grid container spacing={0} size={{ xs: 12, md: 5 }} display="flex" justifyContent="center">
           {chosenVersion && (
-            <Grid size={12}>
+            <Grid size={12} sx={{ display: 'flex', justifyContent: 'center' }}>
               <img src={chosenVersion.image_url || ''} style={{ maxWidth: imageWidth }} />
             </Grid>
           )}
           {isDataAdmin() && (
-            <Grid size={12}>
+            <Grid size={12} sx={{ display: 'flex', justifyContent: 'center' }}>
               <Button
                 variant="contained"
                 color="secondary"
@@ -221,7 +221,7 @@ export function CardDetailView(): JSX.Element {
             </Grid>
           )}
           {isDataAdmin() && (
-            <Grid size={12}>
+            <Grid size={12} sx={{ display: 'flex', justifyContent: 'center' }}>
               <Button
                 variant="contained"
                 color="secondary"
@@ -234,7 +234,7 @@ export function CardDetailView(): JSX.Element {
             </Grid>
           )}
           {isDataAdmin() && (
-            <Grid size={12}>
+            <Grid size={12} sx={{ display: 'flex', justifyContent: 'center' }}>
               <Button
                 variant="contained"
                 color="secondary"
