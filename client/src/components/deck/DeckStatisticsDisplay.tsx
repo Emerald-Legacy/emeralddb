@@ -1,4 +1,4 @@
-import { CardWithVersions, Pack } from '@5rdb/api'
+import { CardWithVersions, Pack, Trait } from '@5rdb/api'
 import { Box, Grid, Paper, Typography, List, ListItem } from '@mui/material'
 import { BarChart } from '@mui/x-charts/BarChart'
 import { StatisticChartCard } from './StatisticChartCard'
@@ -192,7 +192,7 @@ export function DeckStatisticsDisplay({ cards, allCards, allPacks }: DeckStatist
 
   return (
     <Box p={1}>
-      <Grid container spacing={2}>
+      <Grid container spacing={2} alignItems="stretch">
         <StatisticChartCard
           title="Dynasty Fate Cost"
           averageValue={averageDynastyFateCost}
@@ -226,7 +226,7 @@ export function DeckStatisticsDisplay({ cards, allCards, allPacks }: DeckStatist
           noDataMessage="No characters with political power in deck"
         />
         <Grid size={{ xs: 6 }} component="div">
-          <Paper elevation={2} sx={{ p: 1 }}>
+          <Paper elevation={2} sx={{ p: 1, minHeight: '183px' }}>
             <Typography variant="h6" gutterBottom align="center">
               Top 5 Traits
             </Typography>
@@ -240,17 +240,17 @@ export function DeckStatisticsDisplay({ cards, allCards, allPacks }: DeckStatist
           </Paper>
         </Grid>
         <Grid size={{ xs: 6 }} component="div">
-          <Paper elevation={2} sx={{ p: 1 }}>
+          <Paper elevation={2} sx={{ p: 1, minHeight: '183px' }}>
             <Typography variant="h6" gutterBottom align="center">
               Required Packs
             </Typography>
-            <List dense>
-              {requiredPacks.map(({ packName, count }) => (
-                <ListItem key={packName} sx={{ py: 0 }}>
-                  <strong>{packName}</strong>: {count}
-                </ListItem>
+            <ul style={{ listStyleType: 'disc', paddingLeft: '20px' }}>
+              {requiredPacks.map(({ packName }) => (
+                <li key={packName}>
+                  <strong>{packName}</strong>
+                </li>
               ))}
-            </List>
+            </ul>
           </Paper>
         </Grid>
       </Grid>
