@@ -5,11 +5,11 @@ import { useUiStore } from '../../providers/UiStoreProvider'
 interface DeckStatisticsProps {
   cards: Record<string, number>
   allCards: CardWithVersions[]
+  format: string
 }
 
-export function DeckStatistics({ cards, allCards }: DeckStatisticsProps): JSX.Element {
-  const { packs, formats } = useUiStore()
-  const format = formats.length > 0 ? formats[0].id : ''
+export function DeckStatistics({ cards, allCards, format }: DeckStatisticsProps): JSX.Element {
+  const { packs } = useUiStore()
   return <DeckStatisticsDisplay cards={cards} allCards={allCards} allPacks={packs} format={format} />
 }
 

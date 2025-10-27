@@ -374,7 +374,7 @@ export function DeckEditor(props: { existingDecklist?: DecklistType | undefined 
                 />
               </Box>
               <Box hidden={currentView !== ViewTypes.STATISTICS}>
-                <DeckStatistics cards={decklist.cards} allCards={cards} />
+                <DeckStatistics cards={decklist.cards} allCards={cards} format={decklist.format} />
               </Box>
             </Grid>
           </Grid>
