@@ -100,23 +100,23 @@ function calculatePowerDistribution(
   powerType: 'military' | 'political'
 ): { value: string; count: number }[] {
   const powerMap = new Map<string, number>()
+  let maxPower = 0
 
   Object.entries(cards).forEach(([cardId, quantity]) => {
     const card = allCards.find((c) => c.id === cardId)
     if (card && card.type === 'character') {
-      const power = card[powerType] === null || card[powerType] === undefined || card[powerType] === '-' ? '0' : card[powerType]!.toString()
-      const currentCount = powerMap.get(power) || 0
-      powerMap.set(power, currentCount + quantity)
+      const power = card[powerType] === null || card[powerType] === undefined || card[powerType] === '-' ? 0 : parseInt(card[powerType]!.toString())
+      powerMap.set(power.toString(), (powerMap.get(power.toString()) || 0) + quantity)
+      if (power > maxPower) {
+        maxPower = power
+      }
     }
   })
 
-  const distribution = Array.from(powerMap.entries())
-    .map(([power, count]) => ({ value: power, count }))
-    .sort((a, b) => {
-      const powerA = a.value === '-' ? 0 : parseInt(a.value) || 0
-      const powerB = b.value === '-' ? 0 : parseInt(b.value) || 0
-      return powerA - powerB
-    })
+  const distribution: { value: string; count: number }[] = []
+  for (let i = 0; i <= maxPower; i++) {
+    distribution.push({ value: i.toString(), count: powerMap.get(i.toString()) || 0 })
+  }
 
   return distribution
 }
@@ -127,24 +127,23 @@ function calculateFateCostDistributionForDeck(
   deckSide: 'dynasty' | 'conflict'
 ): { value: string; count: number }[] {
   const costMap = new Map<string, number>()
+  let maxCost = 0
 
   Object.entries(cards).forEach(([cardId, quantity]) => {
     const card = allCards.find((c) => c.id === cardId)
     if (card && card.side === deckSide && card.cost !== undefined && card.cost !== null) {
-      const cost = card.cost === 'X' ? '0' : card.cost.toString()
-      const currentCount = costMap.get(cost) || 0
-      costMap.set(cost, currentCount + quantity)
+      const cost = card.cost === 'X' ? 0 : parseInt(card.cost)
+      costMap.set(cost.toString(), (costMap.get(cost.toString()) || 0) + quantity)
+      if (cost > maxCost) {
+        maxCost = cost
+      }
     }
   })
 
-  // Convert map to array and sort by cost
-  const distribution = Array.from(costMap.entries())
-    .map(([cost, count]) => ({ value: cost, count }))
-    .sort((a, b) => {
-      const costA = a.value === 'X' ? -1 : parseInt(a.value) || 0
-      const costB = b.value === 'X' ? -1 : parseInt(b.value) || 0
-      return costA - costB
-    })
+  const distribution: { value: string; count: number }[] = []
+  for (let i = 0; i <= maxCost; i++) {
+    distribution.push({ value: i.toString(), count: costMap.get(i.toString()) || 0 })
+  }
 
   return distribution
 }
