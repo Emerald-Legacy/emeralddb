@@ -12,6 +12,8 @@ import {
   Tabs,
   TextField,
   Typography,
+  Card,
+  CardContent,
 } from "@mui/material";
 import { useNavigate, useParams } from 'react-router-dom'
 import { EmptyState } from '../components/EmptyState'
@@ -160,8 +162,10 @@ export function CardDetailView(): JSX.Element {
   }
 
   return (
-    <StyledContainer style={{paddingTop: '5px'}}>
-      <Grid container spacing={5}>
+    <StyledContainer style={{paddingTop: '5px', paddingBottom: '20px'}}>
+      <Card sx={{ marginX: 1 }}>
+        <CardContent>
+          <Grid container spacing={5}>
         <Grid size={{ xs: 12, md: 7 }}>
           <CardInformation
             cardWithVersions={card}
@@ -197,14 +201,14 @@ export function CardDetailView(): JSX.Element {
           )}
           <RulingList cardId={card.id} rulings={card.rulings} />
         </Grid>
-        <Grid container spacing={0} size={{ xs: 12, md: 5 }}>
+        <Grid container spacing={0} size={{ xs: 12, md: 5 }} display="flex" justifyContent="center">
           {chosenVersion && (
-            <Grid size={12}>
+            <Grid size={12} sx={{ display: 'flex', justifyContent: 'center' }}>
               <img src={chosenVersion.image_url || ''} style={{ maxWidth: imageWidth }} />
             </Grid>
           )}
           {isDataAdmin() && (
-            <Grid size={12}>
+            <Grid size={12} sx={{ display: 'flex', justifyContent: 'center' }}>
               <Button
                 variant="contained"
                 color="secondary"
@@ -217,7 +221,7 @@ export function CardDetailView(): JSX.Element {
             </Grid>
           )}
           {isDataAdmin() && (
-            <Grid size={12}>
+            <Grid size={12} sx={{ display: 'flex', justifyContent: 'center' }}>
               <Button
                 variant="contained"
                 color="secondary"
@@ -230,7 +234,7 @@ export function CardDetailView(): JSX.Element {
             </Grid>
           )}
           {isDataAdmin() && (
-            <Grid size={12}>
+            <Grid size={12} sx={{ display: 'flex', justifyContent: 'center' }}>
               <Button
                 variant="contained"
                 color="secondary"
@@ -244,6 +248,8 @@ export function CardDetailView(): JSX.Element {
           )}
         </Grid>
       </Grid>
+        </CardContent>
+      </Card>
       <Dialog open={deletionModalOpen} onClose={() => setDeletionModalOpen(false)} disableScrollLock>
         <DialogTitle>Delete Card {card.name}</DialogTitle>
         <DialogContent>
@@ -285,6 +291,8 @@ export function CardDetailView(): JSX.Element {
                 label="Name"
                 value={newName}
                 onChange={(e) => setNameAndGenerateId(e.target.value)}
+                variant="outlined"
+                size="small"
               />
             </Grid>
             <Grid size={{ xs: 12, sm: 6 }}>
@@ -293,6 +301,8 @@ export function CardDetailView(): JSX.Element {
                 label="Name Extra"
                 value={newNameExtra}
                 onChange={(e) => setNameExtraAndGenerateId(e.target.value)}
+                variant="outlined"
+                size="small"
               />
             </Grid>
             <Grid size={12}>
@@ -304,6 +314,8 @@ export function CardDetailView(): JSX.Element {
                 label="Card ID (generated from Name + Name Extra)"
                 value={newCardId}
                 fullWidth
+                variant="outlined"
+                size="small"
               />
             </Grid>
           </Grid>

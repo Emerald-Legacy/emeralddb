@@ -39,8 +39,6 @@ const StyledGrid = styled(Grid)((
   },
 
   [`& .${classes.createButton}`]: {
-    marginRight: theme.spacing(1),
-    marginLeft: 'auto',
     marginTop: theme.spacing(2),
   },
 
@@ -49,7 +47,7 @@ const StyledGrid = styled(Grid)((
   },
 
   [`& .${classes.input}`]: {
-    marginBottom: theme.spacing(1),
+    marginBottom: theme.spacing(2),
   }
 }));
 
@@ -173,7 +171,9 @@ export function RulingList(props: { cardId: string; rulings: Ruling[] }): JSX.El
             borderRadius="3px"
           >
             <ReactMarkdown>
-              {`${replaceLinkTo5rdb(ruling.text)} \n\n ~ [${ruling.source}](${replaceLinkTo5rdb(
+              {`${replaceLinkTo5rdb(ruling.text)} 
+
+ ~ [${ruling.source}](${replaceLinkTo5rdb(
                 ruling.link
               )})`}
             </ReactMarkdown>
@@ -201,6 +201,7 @@ export function RulingList(props: { cardId: string; rulings: Ruling[] }): JSX.El
       {isRulesAdmin() && (
         <Button
           variant="contained"
+          fullWidth
           className={classes.createButton}
           color="secondary"
           onClick={() => createRuling()}
@@ -209,47 +210,63 @@ export function RulingList(props: { cardId: string; rulings: Ruling[] }): JSX.El
         </Button>
       )}
       <Dialog open={rulingModalOpen} onClose={() => setRulingModalOpen(false)}>
-        <DialogTitle>{rulingId === -1 ? 'Create New Ruling' : 'Edit Ruling'}</DialogTitle>
+        <DialogTitle sx={{ paddingBottom: 2 }}>{rulingId === -1 ? 'Create New Ruling' : 'Edit Ruling'}</DialogTitle>
         <DialogContent>
-          <TextField
-            value={rulingText}
-            multiline
-            variant="outlined"
-            fullWidth
-            onChange={(e) => setRulingText(e.target.value)}
-            label="Text"
-            className={classes.input}
-          />
-          <Box padding={2} border="1px solid lightgray" className={classes.input}>
-            <Typography>Preview:</Typography>
-            <ReactMarkdown>{rulingText}</ReactMarkdown>
-          </Box>
-          <TextField
-            value={rulingSource}
-            multiline
-            variant="outlined"
-            fullWidth
-            onChange={(e) => setRulingSource(e.target.value)}
-            label="Source"
-            className={classes.input}
-          />
-          <TextField
-            value={rulingLink}
-            multiline
-            variant="outlined"
-            fullWidth
-            onChange={(e) => setRulingLink(e.target.value)}
-            label="Link"
-            className={classes.input}
-          />
+          <Grid container spacing={1}>
+            <Grid size={12}>
+              <TextField
+                value={rulingText}
+                multiline
+                variant="outlined"
+                fullWidth
+                size="small"
+                onChange={(e) => setRulingText(e.target.value)}
+                label="Text"
+              />
+            </Grid>
+            <Grid size={12}>
+              <Box padding={2} border="1px solid lightgray">
+                <Typography>Preview:</Typography>
+                <ReactMarkdown>{rulingText}</ReactMarkdown>
+              </Box>
+            </Grid>
+            <Grid size={12}>
+              <TextField
+                value={rulingSource}
+                multiline
+                variant="outlined"
+                fullWidth
+                size="small"
+                onChange={(e) => setRulingSource(e.target.value)}
+                label="Source"
+              />
+            </Grid>
+            <Grid size={12}>
+              <TextField
+                value={rulingLink}
+                multiline
+                variant="outlined"
+                fullWidth
+                size="small"
+                onChange={(e) => setRulingLink(e.target.value)}
+                label="Link"
+              />
+            </Grid>
+          </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setRulingModalOpen(false)} color="secondary" variant="contained">
-            Close
-          </Button>
-          <Button variant="contained" color="secondary" onClick={() => createOrUpdateRuling()}>
-            {rulingId === -1 ? 'Create New Ruling' : 'Edit Ruling'}
-          </Button>
+          <Grid container spacing={1} justifyContent="flex-end">
+            <Grid>
+              <Button onClick={() => setRulingModalOpen(false)} color="secondary" variant="contained">
+                Close
+              </Button>
+            </Grid>
+            <Grid>
+              <Button variant="contained" color="secondary" onClick={() => createOrUpdateRuling()}>
+                {rulingId === -1 ? 'Create New Ruling' : 'Edit Ruling'}
+              </Button>
+            </Grid>
+          </Grid>
         </DialogActions>
       </Dialog>
     </StyledGrid>
