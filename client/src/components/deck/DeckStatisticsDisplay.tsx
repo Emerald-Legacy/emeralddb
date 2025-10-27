@@ -1,4 +1,4 @@
-import { CardWithVersions, Pack, Trait } from '@5rdb/api'
+import { CardWithVersions, Pack, Trait, CardInPack } from '@5rdb/api'
 import { Box, Grid, Paper, Typography, List, ListItem } from '@mui/material'
 import { BarChart } from '@mui/x-charts/BarChart'
 import { StatisticChartCard } from './StatisticChartCard'
@@ -8,20 +8,24 @@ interface DeckStatisticsDisplayProps {
   cards: Record<string, number>
   allCards: CardWithVersions[]
   allPacks: Pack[]
+  format: string
 }
 
 function calculateRequiredPacks(
   cards: Record<string, number>,
   allCards: CardWithVersions[],
-  allPacks: Pack[]
+  allPacks: Pack[],
+  format: string,
+  validCardVersionForFormat: (cardId: string, format: string) => Omit<CardInPack, "card_id"> | undefined
 ): { packName: string; count: number }[] {
   const packCountMap = new Map<string, number>(); // Map<packId, count>
 
   Object.entries(cards).forEach(([cardId, quantity]) => {
     const card = allCards.find((c) => c.id === cardId);
     if (card) {
-      if (card.versions && card.versions.length > 0) {
-        const packId = card.versions[0].pack_id; // Get packId from the first version
+      const validVersion = validCardVersionForFormat(card.id, format);
+      if (validVersion) {
+        const packId = validVersion.pack_id;
         const currentCount = packCountMap.get(packId) || 0;
         packCountMap.set(packId, currentCount + quantity);
       }
@@ -169,8 +173,8 @@ function calculateAveragePower(
   return totalCards > 0 ? totalPower / totalCards : 0
 }
 
-export function DeckStatisticsDisplay({ cards, allCards, allPacks }: DeckStatisticsDisplayProps): JSX.Element {
-  const { traits } = useUiStore()
+export function DeckStatisticsDisplay({ cards, allCards, allPacks, format }: DeckStatisticsDisplayProps): JSX.Element {
+  const { traits, validCardVersionForFormat } = useUiStore()
   // Calculate military power distribution
   const militaryPowerDistribution = calculatePowerDistribution(cards, allCards, 'military')
   const averageMilitaryPower = calculateAveragePower(cards, allCards, 'military')
@@ -188,7 +192,7 @@ export function DeckStatisticsDisplay({ cards, allCards, allPacks }: DeckStatist
   const averageDynastyFateCost = calculateAverageFateCostForDeck(cards, allCards, 'dynasty');
   const averageConflictFateCost = calculateAverageFateCostForDeck(cards, allCards, 'conflict');
 
-  const requiredPacks = calculateRequiredPacks(cards, allCards, allPacks);
+  const requiredPacks = calculateRequiredPacks(cards, allCards, allPacks, format, validCardVersionForFormat);
 
   return (
     <Box p={1}>

@@ -63,7 +63,7 @@ export function DeckDetailView(): JSX.Element {
             <DecklistComments decklistId={decklist.id} />
           </Grid>
           <Grid size={12}>
-            <DeckStatisticsDisplay cards={decklist.cards} allCards={cards} allPacks={packs} />
+            <DeckStatisticsDisplay cards={decklist.cards} allCards={cards} allPacks={packs} format={decklist.format} />
           </Grid>
         </Grid>
       </Grid>
