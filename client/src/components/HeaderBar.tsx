@@ -123,7 +123,7 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
             <Grid size={{ xs: 12, lg: is1440PxOrBigger ? 10 : 12, xl: 10 }}>
               <Grid container>
                 <Grid size={{ xs: 11, sm: 11, md: 2, lg: 3, xl: 2 }}>
-                  <EmeraldDBLink href={'/cards'} onClick={() => closeModalsAndPopUps()}>
+                  <EmeraldDBLink href={'/'} onClick={() => closeModalsAndPopUps()}>
                     <img src="/static/logo.webp" className={classes.logo} alt="Emerald Legacy Logo" />
                   </EmeraldDBLink>
                 </Grid>
