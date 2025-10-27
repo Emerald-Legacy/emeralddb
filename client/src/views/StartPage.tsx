@@ -1,7 +1,10 @@
 import React from 'react';
 import styles from './StartPage.module.css';
+import { useNavigate } from 'react-router-dom';
 
 const StartPage = () => {
+  const navigate = useNavigate()
+
   return (
     <div className={styles.startPage}>
       <header className={styles.header}>
@@ -10,19 +13,19 @@ const StartPage = () => {
       </header>
       <main className={styles.mainContent}>
         <section className={styles.features}>
-          <div className={styles.feature}>
+          <div className={styles.feature} onClick={() => navigate('/cards')} style={{ cursor: 'pointer' }}>
             <h2>Cards</h2>
             <p>Explore the full card database, including all cycles and packs.</p>
           </div>
-          <div className={styles.feature}>
+          <div className={styles.feature} onClick={() => navigate('/decks')} style={{ cursor: 'pointer' }}>
             <h2>Decks</h2>
             <p>View and share public decklists.</p>
           </div>
-          <div className={styles.feature}>
+          <div className={styles.feature} onClick={() => navigate('/builder')} style={{ cursor: 'pointer' }}>
             <h2>Builder</h2>
             <p>Build your own decks with our powerful deckbuilder tool.</p>
           </div>
-          <div className={styles.feature}>
+          <div className={styles.feature} onClick={() => navigate('/rules')} style={{ cursor: 'pointer' }}>
             <h2>Rules</h2>
             <p>Access the complete rules reference and search for specific rulings.</p>
           </div>
