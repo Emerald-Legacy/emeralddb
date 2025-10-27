@@ -31,6 +31,31 @@ export function StatisticChartCard({
             series={[{ data: data.map((d) => d.count), valueFormatter: (value) => `${value}`, color: color }]}
             height={160}
             slots={{ legend: () => null }}
+            slotProps={{
+              tooltip: {
+                sx: {
+                  '& .MuiChartsTooltip-paper': {
+                    margin: 0,
+                    padding: 0,
+                    '& > *': {
+                      margin: 0,
+                      padding: 0,
+                      lineHeight: 1,
+                    },
+                  },
+                  '& .MuiChartsTooltip-valueCell': {
+                    margin: 0,
+                    padding: 0,
+                    lineHeight: 1,
+                  },
+                  '& .MuiChartsTooltip-labelCell': {
+                    margin: 0,
+                    padding: 0,
+                    lineHeight: 1,
+                  },
+                },
+              },
+            }}
             margin={{ left: 0, bottom: 0 }}
           />
         ) : (
