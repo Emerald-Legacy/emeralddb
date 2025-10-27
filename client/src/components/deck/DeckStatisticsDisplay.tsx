@@ -1,5 +1,6 @@
 import { CardWithVersions, Pack, Trait, CardInPack } from '@5rdb/api'
 import { Box, Grid, Paper, Typography, List, ListItem } from '@mui/material'
+import { useState } from 'react'
 import { BarChart } from '@mui/x-charts/BarChart'
 import { StatisticChartCard } from './StatisticChartCard'
 import { useUiStore } from '../../providers/UiStoreProvider'
@@ -175,6 +176,8 @@ function calculateAveragePower(
 
 export function DeckStatisticsDisplay({ cards, allCards, allPacks, format }: DeckStatisticsDisplayProps): JSX.Element {
   const { traits, validCardVersionForFormat } = useUiStore()
+  const [isExpanded, setIsExpanded] = useState(false)
+
   // Calculate military power distribution
   const militaryPowerDistribution = calculatePowerDistribution(cards, allCards, 'military')
   const averageMilitaryPower = calculateAveragePower(cards, allCards, 'military')
@@ -230,21 +233,43 @@ export function DeckStatisticsDisplay({ cards, allCards, allPacks, format }: Dec
           noDataMessage="No characters with political power in deck"
         />
         <Grid size={{ xs: 6 }} component="div">
-          <Paper elevation={2} sx={{ p: 1, minHeight: '183px' }}>
+          <Paper elevation={2} sx={{ p: 1, minHeight: '192px' }}>
             <Typography variant="h6" gutterBottom align="center">
-              Top 5 Traits
+              {isExpanded ? 'All Traits' : 'Top 5 Traits'}
             </Typography>
             <List dense>
-              {traitCounts.slice(0, 5).map(({ trait, count }) => (
+              {(isExpanded ? traitCounts : traitCounts.slice(0, 5)).map(({ trait, count }) => (
                 <ListItem key={trait} sx={{ py: 0 }}>
                   <strong>{trait}</strong>: {count}
                 </ListItem>
               ))}
             </List>
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+              {traitCounts.length > 5 && !isExpanded && (
+                <Typography
+                  variant="body2"
+                  color="primary"
+                  onClick={() => setIsExpanded(true)}
+                  sx={{ cursor: 'pointer', fontSize: '0.75rem' }}
+                >
+                  Expand Traits
+                </Typography>
+              )}
+              {isExpanded && (
+                <Typography
+                  variant="body2"
+                  color="primary"
+                  onClick={() => setIsExpanded(false)}
+                  sx={{ cursor: 'pointer', fontSize: '0.75rem' }}
+                >
+                  Collapse Traits
+                </Typography>
+              )}
+            </Box>
           </Paper>
         </Grid>
         <Grid size={{ xs: 6 }} component="div">
-          <Paper elevation={2} sx={{ p: 1, minHeight: '183px' }}>
+          <Paper elevation={2} sx={{ p: 1, minHeight: '192px' }}>
             <Typography variant="h6" gutterBottom align="center">
               Required Packs
             </Typography>
