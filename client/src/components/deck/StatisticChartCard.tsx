@@ -22,7 +22,7 @@ export function StatisticChartCard({
   return (
     <Grid size={{ xs: 6 }} component="div">
       <Paper elevation={2} sx={{ p: 1 }}>
-        <Typography variant="h6" gutterBottom align="center">
+        <Typography variant="h6" align="center">
           {title} <br /> <span style={{ fontSize: '70%' }}>(Avg: {averageValue.toFixed(2)})</span>
         </Typography>
         {data.length > 0 ? (
@@ -31,7 +31,32 @@ export function StatisticChartCard({
             series={[{ data: data.map((d) => d.count), valueFormatter: (value) => `${value}`, color: color }]}
             height={160}
             slots={{ legend: () => null }}
-            margin={{ left: 0 }}
+            slotProps={{
+              tooltip: {
+                sx: {
+                  '& .MuiChartsTooltip-paper': {
+                    margin: 0,
+                    padding: 0,
+                    '& > *': {
+                      margin: 0,
+                      padding: 0,
+                      lineHeight: 1,
+                    },
+                  },
+                  '& .MuiChartsTooltip-valueCell': {
+                    margin: 0,
+                    padding: 0,
+                    lineHeight: 1,
+                  },
+                  '& .MuiChartsTooltip-labelCell': {
+                    margin: 0,
+                    padding: 0,
+                    lineHeight: 1,
+                  },
+                },
+              },
+            }}
+            margin={{ left: 0, bottom: 0 }}
           />
         ) : (
           <Typography align="center" color="text.secondary">

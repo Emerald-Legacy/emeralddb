@@ -8,8 +8,9 @@ interface DeckStatisticsProps {
 }
 
 export function DeckStatistics({ cards, allCards }: DeckStatisticsProps): JSX.Element {
-  const { packs } = useUiStore()
-  return <DeckStatisticsDisplay cards={cards} allCards={allCards} allPacks={packs} />
+  const { packs, formats } = useUiStore()
+  const format = formats.length > 0 ? formats[0].id : ''
+  return <DeckStatisticsDisplay cards={cards} allCards={allCards} allPacks={packs} format={format} />
 }
 
 

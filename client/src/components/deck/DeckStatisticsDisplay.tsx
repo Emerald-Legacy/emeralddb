@@ -1,26 +1,32 @@
-import { CardWithVersions, Pack } from '@5rdb/api'
+import { CardWithVersions, Pack, Trait, CardInPack } from '@5rdb/api'
 import { Box, Grid, Paper, Typography, List, ListItem } from '@mui/material'
+import { useState } from 'react'
 import { BarChart } from '@mui/x-charts/BarChart'
 import { StatisticChartCard } from './StatisticChartCard'
+import { useUiStore } from '../../providers/UiStoreProvider'
 
 interface DeckStatisticsDisplayProps {
   cards: Record<string, number>
   allCards: CardWithVersions[]
   allPacks: Pack[]
+  format: string
 }
 
 function calculateRequiredPacks(
   cards: Record<string, number>,
   allCards: CardWithVersions[],
-  allPacks: Pack[]
+  allPacks: Pack[],
+  format: string,
+  validCardVersionForFormat: (cardId: string, format: string) => Omit<CardInPack, "card_id"> | undefined
 ): { packName: string; count: number }[] {
   const packCountMap = new Map<string, number>(); // Map<packId, count>
 
   Object.entries(cards).forEach(([cardId, quantity]) => {
     const card = allCards.find((c) => c.id === cardId);
     if (card) {
-      if (card.versions && card.versions.length > 0) {
-        const packId = card.versions[0].pack_id; // Get packId from the first version
+      const validVersion = validCardVersionForFormat(card.id, format);
+      if (validVersion) {
+        const packId = validVersion.pack_id;
         const currentCount = packCountMap.get(packId) || 0;
         packCountMap.set(packId, currentCount + quantity);
       }
@@ -42,7 +48,8 @@ function calculateRequiredPacks(
 
 function calculateTraitCounts(
   cards: Record<string, number>,
-  allCards: CardWithVersions[]
+  allCards: CardWithVersions[],
+  allTraits: Trait[]
 ): { trait: string; count: number }[] {
   const traitMap = new Map<string, number>()
 
@@ -58,7 +65,10 @@ function calculateTraitCounts(
 
   // Convert map to array and sort by count
   const distribution = Array.from(traitMap.entries())
-    .map(([trait, count]) => ({ trait, count }))
+    .map(([traitId, count]) => ({
+      trait: allTraits.find((t) => t.id === traitId)?.name || traitId,
+      count,
+    }))
     .sort((a, b) => b.count - a.count)
 
   return distribution
@@ -164,7 +174,10 @@ function calculateAveragePower(
   return totalCards > 0 ? totalPower / totalCards : 0
 }
 
-export function DeckStatisticsDisplay({ cards, allCards, allPacks }: DeckStatisticsDisplayProps): JSX.Element {
+export function DeckStatisticsDisplay({ cards, allCards, allPacks, format }: DeckStatisticsDisplayProps): JSX.Element {
+  const { traits, validCardVersionForFormat } = useUiStore()
+  const [isExpanded, setIsExpanded] = useState(false)
+
   // Calculate military power distribution
   const militaryPowerDistribution = calculatePowerDistribution(cards, allCards, 'military')
   const averageMilitaryPower = calculateAveragePower(cards, allCards, 'military')
@@ -174,7 +187,7 @@ export function DeckStatisticsDisplay({ cards, allCards, allPacks }: DeckStatist
   const averagePoliticalPower = calculateAveragePower(cards, allCards, 'political')
 
   // Calculate trait counts
-  const traitCounts = calculateTraitCounts(cards, allCards)
+  const traitCounts = calculateTraitCounts(cards, allCards, traits)
 
   const dynastyFateCost = calculateFateCostDistributionForDeck(cards, allCards, 'dynasty');
   const conflictFateCost = calculateFateCostDistributionForDeck(cards, allCards, 'conflict');
@@ -182,11 +195,11 @@ export function DeckStatisticsDisplay({ cards, allCards, allPacks }: DeckStatist
   const averageDynastyFateCost = calculateAverageFateCostForDeck(cards, allCards, 'dynasty');
   const averageConflictFateCost = calculateAverageFateCostForDeck(cards, allCards, 'conflict');
 
-  const requiredPacks = calculateRequiredPacks(cards, allCards, allPacks);
+  const requiredPacks = calculateRequiredPacks(cards, allCards, allPacks, format, validCardVersionForFormat);
 
   return (
     <Box p={1}>
-      <Grid container spacing={2}>
+      <Grid container spacing={2} alignItems="stretch">
         <StatisticChartCard
           title="Dynasty Fate Cost"
           averageValue={averageDynastyFateCost}
@@ -220,31 +233,53 @@ export function DeckStatisticsDisplay({ cards, allCards, allPacks }: DeckStatist
           noDataMessage="No characters with political power in deck"
         />
         <Grid size={{ xs: 6 }} component="div">
-          <Paper elevation={2} sx={{ p: 1 }}>
+          <Paper elevation={2} sx={{ p: 1, minHeight: '192px' }}>
             <Typography variant="h6" gutterBottom align="center">
-              Top 5 Traits
+              {isExpanded ? 'All Traits' : 'Top 5 Traits'}
             </Typography>
             <List dense>
-              {traitCounts.slice(0, 5).map(({ trait, count }) => (
+              {(isExpanded ? traitCounts : traitCounts.slice(0, 5)).map(({ trait, count }) => (
                 <ListItem key={trait} sx={{ py: 0 }}>
                   <strong>{trait}</strong>: {count}
                 </ListItem>
               ))}
             </List>
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+              {traitCounts.length > 5 && !isExpanded && (
+                <Typography
+                  variant="body2"
+                  color="primary"
+                  onClick={() => setIsExpanded(true)}
+                  sx={{ cursor: 'pointer', fontSize: '0.75rem' }}
+                >
+                  Expand Traits
+                </Typography>
+              )}
+              {isExpanded && (
+                <Typography
+                  variant="body2"
+                  color="primary"
+                  onClick={() => setIsExpanded(false)}
+                  sx={{ cursor: 'pointer', fontSize: '0.75rem' }}
+                >
+                  Collapse Traits
+                </Typography>
+              )}
+            </Box>
           </Paper>
         </Grid>
         <Grid size={{ xs: 6 }} component="div">
-          <Paper elevation={2} sx={{ p: 1 }}>
+          <Paper elevation={2} sx={{ p: 1, minHeight: '192px' }}>
             <Typography variant="h6" gutterBottom align="center">
               Required Packs
             </Typography>
-            <List dense>
-              {requiredPacks.map(({ packName, count }) => (
-                <ListItem key={packName} sx={{ py: 0 }}>
-                  <strong>{packName}</strong>: {count}
-                </ListItem>
+            <ul style={{ listStyleType: 'disc', paddingLeft: '20px' }}>
+              {requiredPacks.map(({ packName }) => (
+                <li key={packName}>
+                  <strong>{packName}</strong>
+                </li>
               ))}
-            </List>
+            </ul>
           </Paper>
         </Grid>
       </Grid>
