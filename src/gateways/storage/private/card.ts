@@ -11,6 +11,10 @@ export async function getCard(cardId: string): Promise<Card> {
   return pg(TABLE).where('id', cardId).first()
 }
 
+export async function getCards(cardIds: string[]): Promise<Card[]> {
+  return pg(TABLE).whereIn('id', cardIds)
+}
+
 export async function deleteCard(cardId: string): Promise<void> {
   return pg(TABLE).where('id', cardId).delete()
 }
