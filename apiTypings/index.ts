@@ -20,6 +20,7 @@ export {
   DecklistViewModel,
   PublishedDecklist,
   DecklistCommentWithUser,
+  DecklistWithExtraInfo,
 } from './private/compositeTypes'
 export {
   Cards$findAll,

@@ -9,7 +9,7 @@ export type CardWithDetails = CardWithVersions & {
 }
 
 export type DeckWithVersions = Deck & {
-  versions: Decklist[]
+  versions: DecklistWithExtraInfo[]
   forkedFrom?: Decklist
 }
 
@@ -36,4 +36,9 @@ export type PublishedDecklist = Pick<
 
 export type DecklistCommentWithUser = DecklistComment & {
   username: string
+}
+
+export type DecklistWithExtraInfo = Decklist & {
+  stronghold?: Card
+  role?: Card
 }
