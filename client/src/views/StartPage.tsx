@@ -37,6 +37,8 @@ const StartPage = () => {
               <li>You can now search for artists. You don't need to know all the special characters (Jeremie Moran will find Jérémie Morán)</li>
               <li>You can now filter for Triggered Abilities</li>
               <li>You can now filter for Keywords</li>
+              <li>Deck list overview shows stronghold and role of each deck</li>
+              <li>Completely new deck statistics available! Check them out!</li>
             </ul>
             <p>If you want to know more or want to report a bug or an idea, visit <a href="https://github.com/emerald-legacy/emeralddb">https://github.com/emerald-legacy/emeralddb</a></p>
           </section>
