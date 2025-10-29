@@ -1,14 +1,15 @@
-import { PublishedDecklist } from '@5rdb/api'
+import { PublishedDecklistWithExtraInfo } from '@5rdb/api'
 import { styled } from '@mui/material/styles';
-import { Paper, useMediaQuery } from '@mui/material';
+import { Paper, useMediaQuery, Tooltip } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid'
 import { useEffect, useState } from 'react'
 import { publicApi } from '../api'
 import { applyDeckFilters, DeckFilter, DeckFilterState } from '../components/DeckFilter'
-import { getColorForFactionId } from '../utils/factionUtils'
 import { capitalize } from '../utils/stringUtils'
 import { EmeraldDBLink } from '../components/EmeraldDBLink'
 import { useUiStore } from "../providers/UiStoreProvider";
+import { getFactionName } from '../utils/factionUtils';
+import { CardFactionIcon } from '../components/card/CardFactionIcon';
 
 const PREFIX = 'DecksView';
 
@@ -30,12 +31,12 @@ const Root = styled('div')((
 export function DecksView(): JSX.Element {
 
   const { formats } = useUiStore()
-  const [decks, setDecks] = useState<PublishedDecklist[]>([])
+  const [decks, setDecks] = useState<PublishedDecklistWithExtraInfo[]>([])
   const [filter, setFilter] = useState<DeckFilterState | undefined>(undefined)
   const isMdOrBigger = useMediaQuery('(min-width:600px)')
 
   useEffect(() => {
-    publicApi.Decklist.findPublished().then((response) => setDecks(response.data()))
+    publicApi.Decklist.findPublished().then((response) => setDecks(response.data() as PublishedDecklistWithExtraInfo[]))
   }, [])
 
   let sortedDecks = decks.sort(
@@ -61,33 +62,45 @@ export function DecksView(): JSX.Element {
       ),
     },
     {
-      field: 'primary_clan',
-      headerName: 'Clan',
+      field: 'clans',
+      headerName: 'Clans',
       disableColumnMenu: true,
       flex: 1,
       renderCell: (params) => (
-        <span>
-          <span
-            className={`icon icon-clan-${params.row.primary_clan}`}
-            style={{ color: getColorForFactionId(params.row.primary_clan) }}
-          />{' '}
-          {isMdOrBigger ? capitalize(params.row.primary_clan) : ''}
-        </span>
+        <Tooltip
+          title={`Main: ${getFactionName(params.row.primary_clan) || 'N/A'} / Splash: ${
+            getFactionName(params.row.secondary_clan) || 'N/A'
+          }`}>
+          <span>
+            {params.row.primary_clan && (
+              <CardFactionIcon faction={params.row.primary_clan} colored />
+            )}
+            {params.row.secondary_clan && (
+              <span>
+                {' / '}
+                <CardFactionIcon faction={params.row.secondary_clan} colored />
+              </span>
+            )}
+          </span>
+        </Tooltip>
       ),
     },
     {
-      field: 'secondary_clan',
-      headerName: 'Splash',
+      field: 'stronghold',
+      headerName: 'Stronghold',
+      flex: 2,
       disableColumnMenu: true,
-      flex: 1,
       renderCell: (params) => (
-        <span>
-          <span
-            className={`icon icon-clan-${params.row.secondary_clan}`}
-            style={{ color: getColorForFactionId(params.row.secondary_clan) }}
-          />{' '}
-          {isMdOrBigger ? capitalize(params.row.secondary_clan) : ''}
-        </span>
+        <span>{params.row.stronghold?.name || 'N/A'}</span>
+      ),
+    },
+    {
+      field: 'role',
+      headerName: 'Role',
+      flex: 2,
+      disableColumnMenu: true,
+      renderCell: (params) => (
+        <span>{params.row.role?.name || 'N/A'}</span>
       ),
     },
     {

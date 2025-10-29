@@ -1,4 +1,11 @@
-export { getCard, getAllCards, insertOrUpdateCard, updateCard, deleteCard } from './private/card'
+export {
+  getCard,
+  getAllCards,
+  getCards,
+  insertOrUpdateCard,
+  updateCard,
+  deleteCard,
+} from './private/card'
 export { getTrait, getAllTraits, insertOrUpdateTrait } from './private/trait'
 export {
   getRuling,

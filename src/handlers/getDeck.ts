@@ -1,6 +1,7 @@
 import { getDeck, getAllDecklistsForDeck, getDecklist } from '../gateways/storage/index'
 import { Request, Response } from 'express'
 import { Deck, Decks$find, DeckWithVersions } from '@5rdb/api'
+import { addExtraInfoToDecklist } from './getDecklist'
 
 export async function handler(
   req: Request<Decks$find['request']['params']>,
@@ -17,9 +18,10 @@ export async function handler(
 export async function addDecklistsToDeck(deck: Deck): Promise<DeckWithVersions> {
   const decklists = await getAllDecklistsForDeck(deck.id)
   const forkedFrom = await getDecklist(deck.forked_from || '')
+  const decklistsWithExtraInfo = await Promise.all(decklists.map(addExtraInfoToDecklist))
   return {
     ...deck,
-    versions: decklists,
+    versions: decklistsWithExtraInfo,
     forkedFrom: forkedFrom,
   }
 }

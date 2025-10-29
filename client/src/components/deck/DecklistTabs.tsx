@@ -1,4 +1,4 @@
-import { DeckWithVersions, Decklist as DecklistType } from '@5rdb/api'
+import { DeckWithVersions, DecklistWithExtraInfo, Decklist as DecklistType } from '@5rdb/api'
 import { styled } from '@mui/material/styles';
 import { Box, Button, Grid, Tab, Tabs, Typography } from '@mui/material';
 import { useConfirm } from 'material-ui-confirm'
@@ -72,13 +72,13 @@ function TabPanel(props: TabPanelProps): JSX.Element {
   )
 }
 
-export function sortedVersionsForDeck(deck: DeckWithVersions): DecklistType[] {
+export function sortedVersionsForDeck(deck: DeckWithVersions): DecklistWithExtraInfo[] {
   return deck.versions.sort(
     (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
   )
 }
 
-export function latestDecklistForDeck(deck: DeckWithVersions): DecklistType | undefined {
+export function latestDecklistForDeck(deck: DeckWithVersions): DecklistWithExtraInfo | undefined {
   return sortedVersionsForDeck(deck)[0]
 }
 

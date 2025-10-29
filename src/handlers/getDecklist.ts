@@ -1,6 +1,12 @@
-import { getDeck, getAllDecklistsForDeck, getDecklist, getUser } from '../gateways/storage/index'
+import {
+  getDeck,
+  getAllDecklistsForDeck,
+  getDecklist,
+  getUser,
+  getCards,
+} from '../gateways/storage/index'
 import { Request, Response } from 'express'
-import { Decklist, Decklists$find, DecklistWithUser } from '@5rdb/api'
+import { Decklist, Decklists$find, DecklistWithUser, DecklistWithExtraInfo } from '@5rdb/api'
 
 export async function handler(
   req: Request<Decklists$find['request']['params']>,
@@ -28,4 +34,17 @@ export async function handler(
 export async function addUsernameToDecklist(decklist: Decklist): Promise<DecklistWithUser> {
   const user = await getUser(decklist.user_id)
   return { ...decklist, username: user.name }
+}
+
+export async function addExtraInfoToDecklist(decklist: Decklist): Promise<DecklistWithExtraInfo> {
+  const cardIds = Object.keys(decklist.cards)
+  const cards = await getCards(cardIds)
+  const stronghold = cards.find((card) => card.type === 'stronghold')
+  const role = cards.find((card) => card.type === 'role')
+
+  return {
+    ...decklist,
+    stronghold,
+    role,
+  }
 }
