@@ -139,6 +139,12 @@ export function DeckTabs(props: {
                     )}
                   </Typography>
                   <Typography className={classes.format}>
+                    Stronghold: {latestList?.stronghold?.name || 'N/A'}
+                  </Typography>
+                  <Typography className={classes.format}>
+                    Role: {latestList?.role?.name || 'N/A'}
+                  </Typography>
+                  <Typography className={classes.format}>
                     Format:{' '}
                     {formats.find((format) => latestList?.format === format.id)?.name || 'N/A'}
                   </Typography>
