@@ -192,7 +192,7 @@ export function Decklist(props: {
           fontSize={12}
         >
           {stats.validationErrors.map((error) => (
-            <Typography variant="caption">
+            <Typography variant="caption" key={error}>
               {error}
               <br />
             </Typography>
