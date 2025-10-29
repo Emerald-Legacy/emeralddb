@@ -6,12 +6,7 @@ import {
   getCards,
 } from '../gateways/storage/index'
 import { Request, Response } from 'express'
-import {
-  Decklist,
-  Decklists$find,
-  DecklistWithUser,
-  DecklistWithExtraInfo,
-} from '@5rdb/api'
+import { Decklist, Decklists$find, DecklistWithUser, DecklistWithExtraInfo } from '@5rdb/api'
 
 export async function handler(
   req: Request<Decklists$find['request']['params']>,
