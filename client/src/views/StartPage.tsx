@@ -35,8 +35,7 @@ const StartPage = () => {
             <h2>What's new?</h2>
             <ul>
               <li>You can now search for artists. You don't need to know all the special characters (Jeremie Moran will find Jérémie Morán)</li>
-              <li>You can now filter for Triggered Abilities</li>
-              <li>You can now filter for Keywords</li>
+              <li>You can now filter cards for <b>Triggered Abilities</b> and <i>Keywords</i></li>
               <li>Deck list overview shows stronghold and role of each deck</li>
               <li>Completely new deck statistics available! Check them out!</li>
             </ul>
