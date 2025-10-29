@@ -20,7 +20,7 @@ export const validate =
     if (schemas.query) {
       const result = schemas.query.validate(req.query)
       if (result.error) {
-        res.sendStatus(400)
+        res.status(400).send({ message: result.error.details.map(d => d.message) })
         return
       }
       req.query = result.value
@@ -29,7 +29,7 @@ export const validate =
     if (schemas.body) {
       const result = schemas.body.validate(req.body)
       if (result.error) {
-        res.sendStatus(400)
+        res.status(400).send({ message: result.error.details.map(d => d.message) })
         return
       }
       req.body = result.value
