@@ -42,3 +42,8 @@ export type DecklistWithExtraInfo = Decklist & {
   stronghold?: Card
   role?: Card
 }
+
+export type PublishedDecklistWithExtraInfo = PublishedDecklist & {
+  stronghold?: Card
+  role?: Card
+}

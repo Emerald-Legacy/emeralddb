@@ -14,3 +14,7 @@ export const factions: { id: string; name: string; color: string }[] = [
 export function getColorForFactionId(id: string): string | undefined {
   return factions.find((faction) => faction.id === id)?.color
 }
+
+export function getFactionName(id: string | undefined): string | undefined {
+  return factions.find((faction) => faction.id === id)?.name
+}

@@ -21,6 +21,7 @@ export {
   PublishedDecklist,
   DecklistCommentWithUser,
   DecklistWithExtraInfo,
+  PublishedDecklistWithExtraInfo,
 } from './private/compositeTypes'
 export {
   Cards$findAll,

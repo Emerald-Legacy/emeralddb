@@ -1,6 +1,6 @@
 import { DeckWithVersions } from '@5rdb/api'
 import { styled } from '@mui/material/styles';
-import { Box, Typography, Button, Grid, useMediaQuery } from '@mui/material';
+import { Box, Typography, Button, Grid, useMediaQuery, Tooltip } from '@mui/material';
 import { useConfirm } from 'material-ui-confirm'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
@@ -11,6 +11,7 @@ import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import LinkIcon from '@mui/icons-material/Link'
 import { EmeraldDBLink } from '../EmeraldDBLink'
+import { getFactionName } from '../../utils/factionUtils';
 import { useUiStore } from "../../providers/UiStoreProvider";
 
 const PREFIX = 'DeckTabs';
@@ -129,31 +130,41 @@ export function DeckTabs(props: {
                   style={{ cursor: 'pointer' }}
                   onClick={() => chooseDeck(deck.id)}
                 >
-                  <Typography>
-                    {latestList?.name || 'Empty Deck'}{' '}
-                    {latestList?.primary_clan && (
-                      <CardFactionIcon faction={latestList.primary_clan} />
-                    )}
-                    {latestList?.secondary_clan && (
-                      <CardFactionIcon faction={latestList.secondary_clan} />
-                    )}
-                  </Typography>
-                  <Typography className={classes.format}>
-                    Stronghold: {latestList?.stronghold?.name || 'N/A'}
-                  </Typography>
-                  <Typography className={classes.format}>
-                    Role: {latestList?.role?.name || 'N/A'}
-                  </Typography>
-                  <Typography className={classes.format}>
-                    Format:{' '}
-                    {formats.find((format) => latestList?.format === format.id)?.name || 'N/A'}
-                  </Typography>
-                  <Typography className={classes.format}>
-                    Last Updated:{' '}
-                    {latestList?.created_at
-                      ? new Date(latestList?.created_at).toLocaleDateString()
-                      : 'N/A'}
-                  </Typography>
+                  <Grid container spacing={1} alignItems="center">
+                    <Grid size={4}>
+                      <Typography>
+                        {latestList?.name || 'Empty Deck'}
+                      </Typography>
+                    </Grid>
+                    <Grid size={2}>
+                      <Tooltip
+                        title={`Main: ${getFactionName(latestList?.primary_clan) || 'N/A'} / Splash: ${
+                          getFactionName(latestList?.secondary_clan) || 'N/A'
+                        }`}>
+                        <span>
+                          {latestList?.primary_clan && (
+                            <CardFactionIcon faction={latestList.primary_clan} colored />
+                          )}
+                          {latestList?.secondary_clan && (
+                            <>
+                              {' / '}
+                              <CardFactionIcon faction={latestList.secondary_clan} colored />
+                            </>
+                          )}
+                        </span>
+                      </Tooltip>
+                    </Grid>
+                    <Grid size={3}>
+                      <Typography className={classes.format}>
+                        {latestList?.stronghold?.name || 'N/A'}
+                      </Typography>
+                    </Grid>
+                    <Grid size={3}>
+                      <Typography className={classes.format}>
+                        {latestList?.role?.name || 'N/A'}
+                      </Typography>
+                    </Grid>
+                  </Grid>
                 </Box>
               </Grid>
             );
