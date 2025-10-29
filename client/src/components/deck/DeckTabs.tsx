@@ -146,10 +146,10 @@ export function DeckTabs(props: {
                             <CardFactionIcon faction={latestList.primary_clan} colored />
                           )}
                           {latestList?.secondary_clan && (
-                            <>
+                            <span>
                               {' / '}
                               <CardFactionIcon faction={latestList.secondary_clan} colored />
-                            </>
+                            </span>
                           )}
                         </span>
                       </Tooltip>

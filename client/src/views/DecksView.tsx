@@ -76,10 +76,10 @@ export function DecksView(): JSX.Element {
               <CardFactionIcon faction={params.row.primary_clan} colored />
             )}
             {params.row.secondary_clan && (
-              <>
+              <span>
                 {' / '}
                 <CardFactionIcon faction={params.row.secondary_clan} colored />
-              </>
+              </span>
             )}
           </span>
         </Tooltip>
