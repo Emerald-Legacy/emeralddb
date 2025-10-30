@@ -46,7 +46,7 @@ function calculateRequiredPacks(
   return requiredPacks;
 }
 
-function calculateTraitCounts(
+function calculateDynastyTraitCounts(
   cards: Record<string, number>,
   allCards: CardWithVersions[],
   allTraits: Trait[]
@@ -55,7 +55,7 @@ function calculateTraitCounts(
 
   Object.entries(cards).forEach(([cardId, quantity]) => {
     const card = allCards.find((c) => c.id === cardId)
-    if (card && card.type === 'character' && card.traits) {
+    if (card && card.side === 'dynasty' && card.traits) {
       card.traits.forEach((trait) => {
         const currentCount = traitMap.get(trait) || 0
         traitMap.set(trait, currentCount + quantity)
@@ -173,9 +173,37 @@ function calculateAveragePower(
   return totalCards > 0 ? totalPower / totalCards : 0
 }
 
+function calculateConflictTraitCounts(
+  cards: Record<string, number>,
+  allCards: CardWithVersions[],
+  allTraits: Trait[]
+): { trait: string; count: number }[] {
+  const traitMap = new Map<string, number>()
+
+  Object.entries(cards).forEach(([cardId, quantity]) => {
+    const card = allCards.find((c) => c.id === cardId)
+    if (card && card.side === 'conflict' && card.traits) {
+      card.traits.forEach((trait) => {
+        const currentCount = traitMap.get(trait) || 0
+        traitMap.set(trait, currentCount + quantity)
+      })
+    }
+  })
+
+  const distribution = Array.from(traitMap.entries())
+    .map(([traitId, count]) => ({
+      trait: allTraits.find((t) => t.id === traitId)?.name || traitId,
+      count,
+    }))
+    .sort((a, b) => b.count - a.count)
+
+  return distribution
+}
+
 export function DeckStatisticsDisplay({ cards, allCards, allPacks, format }: DeckStatisticsDisplayProps): JSX.Element {
   const { traits, validCardVersionForFormat } = useUiStore()
   const [isExpanded, setIsExpanded] = useState(false)
+  const [isConflictTraitsExpanded, setIsConflictTraitsExpanded] = useState(false)
 
   // Calculate military power distribution
   const militaryPowerDistribution = calculatePowerDistribution(cards, allCards, 'military')
@@ -186,7 +214,8 @@ export function DeckStatisticsDisplay({ cards, allCards, allPacks, format }: Dec
   const averagePoliticalPower = calculateAveragePower(cards, allCards, 'political')
 
   // Calculate trait counts
-  const traitCounts = calculateTraitCounts(cards, allCards, traits)
+  const dynastyTraitCounts = calculateDynastyTraitCounts(cards, allCards, traits)
+  const conflictTraitCounts = calculateConflictTraitCounts(cards, allCards, traits)
 
   const dynastyFateCost = calculateFateCostDistributionForDeck(cards, allCards, 'dynasty');
   const conflictFateCost = calculateFateCostDistributionForDeck(cards, allCards, 'conflict');
@@ -234,17 +263,17 @@ export function DeckStatisticsDisplay({ cards, allCards, allPacks, format }: Dec
         <Grid size={{ xs: 6 }} component="div">
           <Paper elevation={2} sx={{ p: 1, minHeight: '192px' }}>
             <Typography variant="h6" gutterBottom align="center">
-              {isExpanded ? 'All Traits' : 'Top 5 Traits'}
+              {isExpanded ? 'All Dynasty Traits' : 'Top 5 Dynasty Traits'}
             </Typography>
             <List dense>
-              {(isExpanded ? traitCounts : traitCounts.slice(0, 5)).map(({ trait, count }) => (
+              {(isExpanded ? dynastyTraitCounts : dynastyTraitCounts.slice(0, 5)).map(({ trait, count }) => (
                 <ListItem key={trait} sx={{ py: 0 }}>
                   <strong>{trait}</strong>: {count}
                 </ListItem>
               ))}
             </List>
             <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-              {traitCounts.length > 5 && !isExpanded && (
+              {dynastyTraitCounts.length > 5 && !isExpanded && (
                 <Typography
                   variant="body2"
                   color="primary"
@@ -268,6 +297,42 @@ export function DeckStatisticsDisplay({ cards, allCards, allPacks, format }: Dec
           </Paper>
         </Grid>
         <Grid size={{ xs: 6 }} component="div">
+          <Paper elevation={2} sx={{ p: 1, minHeight: '192px' }}>
+            <Typography variant="h6" gutterBottom align="center">
+              {isConflictTraitsExpanded ? 'All Conflict Traits' : 'Top 5 Conflict Traits'}
+            </Typography>
+            <List dense>
+              {(isConflictTraitsExpanded ? conflictTraitCounts : conflictTraitCounts.slice(0, 5)).map(({ trait, count }) => (
+                <ListItem key={trait} sx={{ py: 0 }}>
+                  <strong>{trait}</strong>: {count}
+                </ListItem>
+              ))}
+            </List>
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+              {conflictTraitCounts.length > 5 && !isConflictTraitsExpanded && (
+                <Typography
+                  variant="body2"
+                  color="primary"
+                  onClick={() => setIsConflictTraitsExpanded(true)}
+                  sx={{ cursor: 'pointer', fontSize: '0.75rem' }}
+                >
+                  Expand Conflict Traits
+                </Typography>
+              )}
+              {isConflictTraitsExpanded && (
+                <Typography
+                  variant="body2"
+                  color="primary"
+                  onClick={() => setIsConflictTraitsExpanded(false)}
+                  sx={{ cursor: 'pointer', fontSize: '0.75rem' }}
+                >
+                  Collapse Conflict Traits
+                </Typography>
+              )}
+            </Box>
+          </Paper>
+        </Grid>
+        <Grid size={12} component="div">
           <Paper elevation={2} sx={{ p: 1, minHeight: '192px' }}>
             <Typography variant="h6" gutterBottom align="center">
               Required Packs
