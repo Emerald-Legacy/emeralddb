@@ -47,7 +47,6 @@ export function Routes(): JSX.Element {
   return (
     <Suspense fallback={<Loading />}>
       <RouterRoutes>
-        <Route path="/" element={<StartPage />} />
         <Route path="/cards" element={<CardsView />} />
         <Route path="/rules/imperial" element={<FFGRulesReferenceGuide />} />
         <Route path="/rules/emerald" element={<ELRulesReferenceGuideNew />} />
@@ -68,6 +67,11 @@ export function Routes(): JSX.Element {
         <Route path="/admin/formats" element={<DataAdminRoute><EditFormatsView /></DataAdminRoute>} />
         <Route path="/admin" element={<DataAdminRoute><AdminView /></DataAdminRoute>} />
         <Route path="/card/:id" element={<CardDetailView />} />
+        <Route path="/" element={<StartPage />} />
+        <Route
+          path="*"
+          element={<Navigate to="/" replace />}
+        />
       </RouterRoutes>
     </Suspense>
   )

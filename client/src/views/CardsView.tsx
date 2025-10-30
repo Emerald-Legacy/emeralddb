@@ -217,6 +217,21 @@ export function CardsView(): JSX.Element {
     [sortedCards, startIndexInclusive, endIndexExclusive]
   )
 
+  const handleCardClick = useCallback((param: any, event: any) => {
+    const target = event.target as HTMLElement;
+    if (target.tagName === 'A' || target.closest('a')) {
+      event.stopPropagation();
+      return;
+    }
+    setModalCard(cards.find((card) => card.id === param.row.id));
+    setCardModalOpen(true);
+  }, [cards]);
+
+  const handleImageClick = useCallback((cardId: string) => {
+    setModalCard(cards.find((card) => card.id === cardId));
+    setCardModalOpen(true);
+  }, [cards]);
+
   // NOW we can do conditional returns after all hooks are called
   if (cards.length === 0) {
     return <Loading />
@@ -349,21 +364,6 @@ export function CardsView(): JSX.Element {
     setFilter(newFilter)
     setPage(0)
   }
-
-  const handleCardClick = useCallback((param: any, event: any) => {
-    const target = event.target as HTMLElement;
-    if (target.tagName === 'A' || target.closest('a')) {
-      event.stopPropagation();
-      return;
-    }
-    setModalCard(cards.find((card) => card.id === param.row.id));
-    setCardModalOpen(true);
-  }, [cards]);
-
-  const handleImageClick = useCallback((cardId: string) => {
-    setModalCard(cards.find((card) => card.id === cardId));
-    setCardModalOpen(true);
-  }, [cards]);
 
   if (displayMode === DisplayMode.LIST) {
     const tableCards: TableCard[] = filteredCards.map((card) => {
