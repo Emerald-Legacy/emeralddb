@@ -46,7 +46,7 @@ export function DecksView(): JSX.Element {
     sortedDecks = applyDeckFilters(sortedDecks, filter)
   }
 
-  const columns: GridColDef<PublishedDecklistWithExtraInfo>[] = [
+  const columns: GridColDef[] = [
     {
       field: 'name',
       headerName: 'Name',
@@ -65,20 +65,15 @@ export function DecksView(): JSX.Element {
       headerName: 'Clans',
       disableColumnMenu: true,
       flex: 1,
-      sortComparator: (v1, v2, row1, row2) => {
-        const deck1 = row1 as unknown as PublishedDecklistWithExtraInfo;
-        const deck2 = row2 as unknown as PublishedDecklistWithExtraInfo;
-
+      valueGetter: (_, row) => row,
+      sortComparator: (v1, v2) => {
+        const deck1 = (v1 as unknown) as PublishedDecklistWithExtraInfo;
+        const deck2 = (v2 as unknown) as PublishedDecklistWithExtraInfo;
         const mainClan1 = deck1.primary_clan || '';
         const mainClan2 = deck2.primary_clan || '';
         const splashClan1 = deck1.secondary_clan || '';
         const splashClan2 = deck2.secondary_clan || '';
-
-        const mainClanCompare = mainClan1.localeCompare(mainClan2);
-        if (mainClanCompare !== 0) {
-          return mainClanCompare;
-        }
-        return splashClan1.localeCompare(splashClan2);
+        return mainClan1.localeCompare(mainClan2) || splashClan1.localeCompare(splashClan2);
       },
       renderCell: (params) => (
         <Tooltip
@@ -104,9 +99,10 @@ export function DecksView(): JSX.Element {
       headerName: 'Stronghold',
       flex: 2,
       disableColumnMenu: true,
-      sortComparator: (v1, v2, row1, row2) => {
-        const deck1 = row1 as unknown as PublishedDecklistWithExtraInfo;
-        const deck2 = row2 as unknown as PublishedDecklistWithExtraInfo;
+      valueGetter: (_, row) => row,
+      sortComparator: (v1, v2) => {
+        const deck1 = v1 as unknown as PublishedDecklistWithExtraInfo;
+        const deck2 = v2 as unknown as PublishedDecklistWithExtraInfo;
         const strongholdName1 = deck1.stronghold?.name || '';
         const strongholdName2 = deck2.stronghold?.name || '';
         return strongholdName1.localeCompare(strongholdName2);
@@ -120,9 +116,10 @@ export function DecksView(): JSX.Element {
       headerName: 'Role',
       flex: 2,
       disableColumnMenu: true,
-      sortComparator: (v1, v2, row1, row2) => {
-        const deck1 = row1 as unknown as PublishedDecklistWithExtraInfo;
-        const deck2 = row2 as unknown as PublishedDecklistWithExtraInfo;
+      valueGetter: (_, row) => row,
+      sortComparator: (v1, v2) => {
+        const deck1 = v1 as unknown as PublishedDecklistWithExtraInfo;
+        const deck2 = v2 as unknown as PublishedDecklistWithExtraInfo;
         const roleName1 = deck1.role?.name || '';
         const roleName2 = deck2.role?.name || '';
         return roleName1.localeCompare(roleName2);
@@ -159,7 +156,7 @@ export function DecksView(): JSX.Element {
     <Root>
       <DeckFilter onFilterChanged={setFilter} filterState={filter} />
       <Paper className={classes.table}>
-        <DataGrid<PublishedDecklistWithExtraInfo>
+        <DataGrid
           disableRowSelectionOnClick
           columns={columns}
           rows={sortedDecks}
