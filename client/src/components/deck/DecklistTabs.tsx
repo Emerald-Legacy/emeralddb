@@ -11,6 +11,8 @@ import LinkIcon from '@mui/icons-material/Link'
 import ShareIcon from '@mui/icons-material/Share'
 import BlockIcon from '@mui/icons-material/Block'
 import { EmeraldDBLink } from '../EmeraldDBLink'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { UiStoreQueries } from '../../providers/UiStoreProvider'
 
 const PREFIX = 'DecklistTabs';
 
@@ -96,6 +98,24 @@ export function DecklistTabs(props: {
 
   const confirm = useConfirm()
   const { enqueueSnackbar } = useSnackbar()
+  const queryClient = useQueryClient()
+
+  const publishMutation = useMutation({ 
+    mutationFn: (decklistId: string) => privateApi.Decklist.publish({ decklistId }),
+    onSuccess: () => {
+      props.onDecklistUpdated()
+      enqueueSnackbar('The decklist was published successfully!', { variant: 'success' })
+      queryClient.invalidateQueries({ queryKey: UiStoreQueries.PUBLISHED_DECKLISTS })
+    },
+    onError: (error: any) => {
+      const message = error.data()
+      enqueueSnackbar(`The decklist couldn't be published: ${message}!`, { variant: 'error' })
+    },
+    onSettled: () => {
+      setPublishModalOpen(false)
+      setDecklistToPublish(undefined)
+    }
+  })
 
   const versions = sortedVersionsForDeck(deck)
 
@@ -133,19 +153,7 @@ export function DecklistTabs(props: {
 
   function handlePublishConfirm() {
     if (decklistToPublish) {
-      privateApi.Decklist.publish({ decklistId: decklistToPublish })
-        .then(() => {
-          props.onDecklistUpdated()
-          enqueueSnackbar('The decklist was published successfully!', { variant: 'success' })
-        })
-        .catch((error) => {
-          const message = error.data()
-          enqueueSnackbar(`The decklist couldn't be published: ${message}!`, { variant: 'error' })
-        })
-        .finally(() => {
-          setPublishModalOpen(false)
-          setDecklistToPublish(undefined)
-        })
+      publishMutation.mutate(decklistToPublish)
     }
   }
 

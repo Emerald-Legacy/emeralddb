@@ -34,6 +34,7 @@ export const UiStoreQueries = {
   CYCLES: ['cycles'] as const,
   TRAITS: ['traits'] as const,
   FORMATS: ['formats'] as const,
+  PUBLISHED_DECKLISTS: ['published-decklists'] as const,
 }
 
 // Helper function to fetch data with cache-busting

@@ -2,14 +2,15 @@ import { PublishedDecklistWithExtraInfo } from '@5rdb/api'
 import { styled } from '@mui/material/styles';
 import { Paper, useMediaQuery, Tooltip } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { publicApi } from '../api'
 import { applyDeckFilters, DeckFilter, DeckFilterState } from '../components/DeckFilter'
 import { capitalize } from '../utils/stringUtils'
 import { EmeraldDBLink } from '../components/EmeraldDBLink'
-import { useUiStore } from "../providers/UiStoreProvider";
+import { UiStoreQueries, useUiStore } from '../providers/UiStoreProvider'
 import { getFactionName } from '../utils/factionUtils';
 import { CardFactionIcon } from '../components/card/CardFactionIcon';
+import { useQuery } from '@tanstack/react-query';
 
 const PREFIX = 'DecksView';
 
@@ -30,15 +31,15 @@ const Root = styled('div')((
 export function DecksView(): JSX.Element {
 
   const { formats } = useUiStore()
-  const [decks, setDecks] = useState<PublishedDecklistWithExtraInfo[]>([])
+  const { data: decks = [] } = useQuery<PublishedDecklistWithExtraInfo[]>({
+    queryKey: UiStoreQueries.PUBLISHED_DECKLISTS,
+    queryFn: () => publicApi.Decklist.findPublished().then((response) => response.data() as PublishedDecklistWithExtraInfo[]),
+  });
   const [filter, setFilter] = useState<DeckFilterState | undefined>(undefined)
   const isMdOrBigger = useMediaQuery('(min-width:600px)')
 
-  useEffect(() => {
-    publicApi.Decklist.findPublished().then((response) => setDecks(response.data() as PublishedDecklistWithExtraInfo[]))
-  }, [])
 
-  let sortedDecks = decks.sort(
+  let sortedDecks = [...decks].sort(
     (a, b) => new Date(b.published_date!).getTime() - new Date(a.published_date!).getTime()
   )
 
