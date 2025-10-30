@@ -37,7 +37,7 @@ function createResponse<T>(axiosResponse: AxiosResponse<T>): ApiResponse<T> {
 
 function createErrorResponse(error: AxiosError): ApiResponse<any> {
   return {
-    data: <D = any>() => null as unknown as D,
+    data: <D = any>() => error.response?.data as unknown as D,
     status: () => error.response?.status || 500,
     error: () => error.message || 'An error occurred',
   }

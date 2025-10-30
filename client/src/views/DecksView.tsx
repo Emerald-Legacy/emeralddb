@@ -17,7 +17,6 @@ const classes = {
   table: `${PREFIX}-table`
 };
 
-// TODO jss-to-styled codemod: The Fragment root was replaced by div. Change the tag if needed.
 const Root = styled('div')((
   {
     theme
@@ -47,7 +46,7 @@ export function DecksView(): JSX.Element {
     sortedDecks = applyDeckFilters(sortedDecks, filter)
   }
 
-  const columns: GridColDef[] = [
+  const columns: GridColDef<PublishedDecklistWithExtraInfo>[] = [
     {
       field: 'name',
       headerName: 'Name',
@@ -66,6 +65,21 @@ export function DecksView(): JSX.Element {
       headerName: 'Clans',
       disableColumnMenu: true,
       flex: 1,
+      sortComparator: (v1, v2, row1, row2) => {
+        const deck1 = row1 as unknown as PublishedDecklistWithExtraInfo;
+        const deck2 = row2 as unknown as PublishedDecklistWithExtraInfo;
+
+        const mainClan1 = deck1.primary_clan || '';
+        const mainClan2 = deck2.primary_clan || '';
+        const splashClan1 = deck1.secondary_clan || '';
+        const splashClan2 = deck2.secondary_clan || '';
+
+        const mainClanCompare = mainClan1.localeCompare(mainClan2);
+        if (mainClanCompare !== 0) {
+          return mainClanCompare;
+        }
+        return splashClan1.localeCompare(splashClan2);
+      },
       renderCell: (params) => (
         <Tooltip
           title={`Main: ${getFactionName(params.row.primary_clan) || 'N/A'} / Splash: ${
@@ -90,6 +104,13 @@ export function DecksView(): JSX.Element {
       headerName: 'Stronghold',
       flex: 2,
       disableColumnMenu: true,
+      sortComparator: (v1, v2, row1, row2) => {
+        const deck1 = row1 as unknown as PublishedDecklistWithExtraInfo;
+        const deck2 = row2 as unknown as PublishedDecklistWithExtraInfo;
+        const strongholdName1 = deck1.stronghold?.name || '';
+        const strongholdName2 = deck2.stronghold?.name || '';
+        return strongholdName1.localeCompare(strongholdName2);
+      },
       renderCell: (params) => (
         <span>{params.row.stronghold?.name || 'N/A'}</span>
       ),
@@ -99,6 +120,13 @@ export function DecksView(): JSX.Element {
       headerName: 'Role',
       flex: 2,
       disableColumnMenu: true,
+      sortComparator: (v1, v2, row1, row2) => {
+        const deck1 = row1 as unknown as PublishedDecklistWithExtraInfo;
+        const deck2 = row2 as unknown as PublishedDecklistWithExtraInfo;
+        const roleName1 = deck1.role?.name || '';
+        const roleName2 = deck2.role?.name || '';
+        return roleName1.localeCompare(roleName2);
+      },
       renderCell: (params) => (
         <span>{params.row.role?.name || 'N/A'}</span>
       ),
@@ -123,7 +151,7 @@ export function DecksView(): JSX.Element {
       headerName: 'Published',
       disableColumnMenu: true,
       flex: 2,
-      renderCell: (params) => <span>{new Date(params.row.published_date).toLocaleString()}</span>,
+      renderCell: (params) => <span>{params.row.published_date ? new Date(params.row.published_date).toLocaleString() : 'N/A'}</span>,
     },
   ]
 
@@ -131,7 +159,7 @@ export function DecksView(): JSX.Element {
     <Root>
       <DeckFilter onFilterChanged={setFilter} filterState={filter} />
       <Paper className={classes.table}>
-        <DataGrid
+        <DataGrid<PublishedDecklistWithExtraInfo>
           disableRowSelectionOnClick
           columns={columns}
           rows={sortedDecks}

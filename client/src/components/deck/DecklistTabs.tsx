@@ -1,6 +1,6 @@
 import { DeckWithVersions, DecklistWithExtraInfo, Decklist as DecklistType } from '@5rdb/api'
 import { styled } from '@mui/material/styles';
-import { Box, Button, Grid, Tab, Tabs, Typography } from '@mui/material';
+import { Box, Button, Grid, Tab, Tabs, Typography, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import { useConfirm } from 'material-ui-confirm'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
@@ -91,6 +91,8 @@ export function DecklistTabs(props: {
   const [currentDecklistId, setCurrentDecklistId] = useState(
     latestDecklistForDeck(deck)?.id || undefined
   )
+  const [publishModalOpen, setPublishModalOpen] = useState(false)
+  const [decklistToPublish, setDecklistToPublish] = useState<string | undefined>(undefined)
 
   const confirm = useConfirm()
   const { enqueueSnackbar } = useSnackbar()
@@ -124,22 +126,32 @@ export function DecklistTabs(props: {
       })
   }
 
-  function publishDecklist(decklistId: string) {
-    confirm({ description: 'Do you really want to publish this version of the deck?' })
-      .then(() => {
-        privateApi.Decklist.publish({ decklistId: decklistId })
-          .then(() => {
-            props.onDecklistUpdated()
-            enqueueSnackbar('The decklist was published successfully!', { variant: 'success' })
-          })
-          .catch((error) => {
-            const message = error.data()
-            enqueueSnackbar(`The decklist couldn't be published: ${message}!`, { variant: 'error' })
-          })
-      })
-      .catch(() => {
-        // Cancel confirmation dialog => do nothing
-      })
+  function handlePublishClick(decklistId: string) {
+    setDecklistToPublish(decklistId)
+    setPublishModalOpen(true)
+  }
+
+  function handlePublishConfirm() {
+    if (decklistToPublish) {
+      privateApi.Decklist.publish({ decklistId: decklistToPublish })
+        .then(() => {
+          props.onDecklistUpdated()
+          enqueueSnackbar('The decklist was published successfully!', { variant: 'success' })
+        })
+        .catch((error) => {
+          const message = error.data()
+          enqueueSnackbar(`The decklist couldn't be published: ${message}!`, { variant: 'error' })
+        })
+        .finally(() => {
+          setPublishModalOpen(false)
+          setDecklistToPublish(undefined)
+        })
+    }
+  }
+
+  function handlePublishCancel() {
+    setPublishModalOpen(false)
+    setDecklistToPublish(undefined)
   }
 
   function unpublishDecklist(decklistId: string) {
@@ -217,7 +229,7 @@ export function DecklistTabs(props: {
                           <Button
                             variant="outlined"
                             color="primary"
-                            onClick={() => publishDecklist(v.id)}
+                            onClick={() => handlePublishClick(v.id)}
                             fullWidth
                             size="small"
                             startIcon={<ShareIcon />}
@@ -260,6 +272,20 @@ export function DecklistTabs(props: {
           </Grid>
         </Grid>
       </Grid>
+      <Dialog open={publishModalOpen} onClose={handlePublishCancel}>
+        <DialogTitle>Publish Decklist</DialogTitle>
+        <DialogContent>
+          <Typography>Do you really want to publish this version of the deck?</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handlePublishCancel} color="secondary">
+            Cancel
+          </Button>
+          <Button onClick={handlePublishConfirm} color="secondary" variant="contained">
+            Publish
+          </Button>
+        </DialogActions>
+      </Dialog>
     </StyledTabPanel>
   );
 }

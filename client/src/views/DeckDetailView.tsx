@@ -51,7 +51,7 @@ export function DeckDetailView(): JSX.Element {
               {decklist.description ? (
                 <Typography>
                   {decklist.description.split('\n').map((line, key) => (
-                    <p key={key}>{line}</p>
+                    <span key={key}>{line}<br /></span>
                   ))}
                 </Typography>
               ) : (

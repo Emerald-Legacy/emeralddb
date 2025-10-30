@@ -194,9 +194,10 @@ export function DeckEditor(props: { existingDecklist?: DecklistType | undefined 
   const filteredCards = showAllCards ? cards : prefilterCards(cards, decklist, formats, true)
 
   function updateDeck(decklist: DecklistViewModel, deckId: string) {
+    const { stronghold, role, ...decklistToSave } = decklist as any;
     privateApi.Decklist.create({
       body: {
-        ...decklist,
+        ...decklistToSave,
         deck_id: deckId,
         published_date: undefined,
       },
