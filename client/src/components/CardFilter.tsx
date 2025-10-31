@@ -324,7 +324,7 @@ export function applyFilters(cards: CardWithVersions[], formats: Format[], filte
       if (filter.illegal === 'false') {
         filteredCards = filteredCards.filter((c) =>
           c.versions.some((version) =>
-            legalPacksOfFormat.some((pack) => version.pack_id === pack) && !version.rotated
+            legalPacksOfFormat.some((pack) => version.pack_id === pack) && (chosenFormat.id != 'emerald' || !version.rotated)
           )
         )
       }
