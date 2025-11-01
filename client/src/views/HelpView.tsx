@@ -171,8 +171,9 @@ export function HelpView(): JSX.Element {
         </AccordionSummary>
         <AccordionDetails>
           <Typography component={'div'}>
-            We're glad to hear back from you. If you have any feedback or criticism, please send an
-            e-mail to emeralddb[at]emeraldlegacy[dot]org or send a Discord DM to WorkerBee#3527.
+            We're glad to hear back from you. If you have any feedback or criticism,
+            please create an issue on <a href={'https://github.com/Emerald-Legacy/emeralddb/issues/new'}>GitHub</a>
+            or send a Discord DM to workerbee or hidaamoro
           </Typography>
         </AccordionDetails>
       </Accordion>
@@ -186,8 +187,7 @@ export function HelpView(): JSX.Element {
           <Typography component={'div'}>
             We're always happy to find people willing to help out in some form or capacity. If you
             are a web developer and have at least some basic experience with TypeScript, React and
-            Node, send an e-mail to emeralddb[at]emeraldlegacy[dot]org or send a Discord DM to
-            WorkerBee#3527. We'll find a way to get you involved.
+            Node, send a Discord DM to workerbee or hidaamoro. We'll find a way to get you involved.
           </Typography>
         </AccordionDetails>
       </Accordion>
