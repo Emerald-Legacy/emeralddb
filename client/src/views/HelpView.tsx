@@ -101,7 +101,7 @@ export function HelpView(): JSX.Element {
       <Accordion>
         <AccordionSummary expandIcon={<ExpandMoreIcon />} id="jigoku-import">
           <Typography className={classes.heading}>
-            <b>How do I import my deck from BushiBuilder?</b>
+            <b>How do I import my deck from Jigoku?</b>
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
@@ -111,7 +111,8 @@ export function HelpView(): JSX.Element {
                 To import an existing deck from Jigoku, click on the "Create Deck" button in
                 the Builder section. Click on the "Import from Jigoku" Button. In the pop up
                 that opens, select the format of the deck you want to import and paste the contents
-                of the "Jigoku Export" from Jigoku in the text field.
+                of the "Jigoku Export" from Jigoku in the text field. You can also import a deck from
+                the Kensei Legend of the Five Rings Toolkit, it provides the same format as Jigoku.
               </Typography>
             </Grid>
             <Grid size={12}>
