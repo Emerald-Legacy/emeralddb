@@ -1,4 +1,4 @@
-import { Accordion, AccordionDetails, AccordionSummary, Grid, Typography } from '@mui/material';
+import { Accordion, AccordionDetails, AccordionSummary, Box, Card, CardContent, Grid, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { Theme } from '@mui/material/styles';
@@ -28,10 +28,13 @@ export function HelpView(): JSX.Element {
 
   return (
     <Root>
-      <Typography variant="h4" align="center">
-        Frequently Asked Questions
-      </Typography>
-      <Accordion>
+      <Box sx={{ maxWidth: 800, mx: 'auto', mt: 4, pb: 4 }}>
+        <Typography variant="h4" align="center" gutterBottom sx={{ mb: 3 }}>
+          Frequently Asked Questions
+        </Typography>
+        <Card>
+          <CardContent sx={{ '&:last-child': { paddingBottom: 1 } }}>
+            <Accordion>
         <AccordionSummary expandIcon={<ExpandMoreIcon />} id="login-problems">
           <Typography className={classes.heading}>
             <b>Why does nothing happen when I click on the Log In button?</b>
@@ -191,6 +194,9 @@ export function HelpView(): JSX.Element {
           </Typography>
         </AccordionDetails>
       </Accordion>
+          </CardContent>
+        </Card>
+      </Box>
     </Root>
   );
 }
