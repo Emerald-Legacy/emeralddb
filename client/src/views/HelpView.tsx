@@ -88,7 +88,7 @@ export function HelpView(): JSX.Element {
               <Typography component={'div'}>
                 Once you are on Jigoku, create a new deck and use the "Import Deck". Paste your
                 permalink in the text field and click on "Import". This should fill the name,
-                format, the card list as well as primary and splash clans. Don't forget to save your
+                format, the card list, as well as primary and splash clans. Don't forget to save your
                 deck!
               </Typography>
             </Grid>
@@ -99,7 +99,7 @@ export function HelpView(): JSX.Element {
         </AccordionDetails>
       </Accordion>
       <Accordion>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />} id="jigoku-export">
+        <AccordionSummary expandIcon={<ExpandMoreIcon />} id="jigoku-import">
           <Typography className={classes.heading}>
             <b>How do I import my deck from BushiBuilder?</b>
           </Typography>
