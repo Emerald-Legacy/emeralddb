@@ -101,28 +101,6 @@ export function HelpView(): JSX.Element {
       <Accordion>
         <AccordionSummary expandIcon={<ExpandMoreIcon />} id="jigoku-export">
           <Typography className={classes.heading}>
-            <b>How do I import my deck from FiveRingsDB?</b>
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Grid container spacing={1}>
-            <Grid size={12}>
-              <Typography component={'div'}>
-                To import an existing deck from FiveRingsDB, click on the "Create Deck" button in
-                the Builder section. Click on the "Import from FiveRingsDB" Button and paste the
-                permalink to your deck in the text field. Import the deck and don't forget to save
-                your deck in the deckbuilder view afterwards.
-              </Typography>
-            </Grid>
-            <Grid size={12}>
-              <img style={{ width: '30%' }} src="./static/images/Import5RDBAndBB.png" />
-            </Grid>
-          </Grid>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />} id="jigoku-export">
-          <Typography className={classes.heading}>
             <b>How do I import my deck from BushiBuilder?</b>
           </Typography>
         </AccordionSummary>
