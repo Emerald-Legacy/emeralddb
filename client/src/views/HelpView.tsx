@@ -140,7 +140,8 @@ export function HelpView(): JSX.Element {
                 EmeraldDB supports deckbuilding for the following formats:
                 <ul>
                   <li>Emerald Legacy format</li>
-                  <li>Jade Edict format</li>
+                  <li>Sanctuary format</li>
+                  <li>Obsidian format</li>
                   <li>Fantasy Flight Games' Stronghold format</li>
                   <li>Fantasy Flight Games' Skirmish format</li>
                   <li>Fantasy Flight Games' Enlightenment format</li>
@@ -152,7 +153,8 @@ export function HelpView(): JSX.Element {
                 Of these formats, Jigoku supports:
                 <ul>
                   <li>Emerald Legacy format</li>
-                  <li>Jade Edict format</li>
+                  <li>Sanctuary format</li>
+                  <li>Obsidian format</li>
                   <li>Fantasy Flight Games' Stronghold format</li>
                   <li>Fantasy Flight Games' Skirmish format</li>
                 </ul>
