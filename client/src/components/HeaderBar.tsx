@@ -167,6 +167,7 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
                           keepMounted
                           open={Boolean(cardAnchorEl)}
                           onClose={() => setCardAnchorEl(null)}
+                          disableScrollLock
                         >
                           <div>
                             <CycleList
@@ -221,6 +222,7 @@ export function HeaderBar(props: { audience: string; scope: string }): JSX.Eleme
                           keepMounted
                           open={Boolean(rulesAnchorEl)}
                           onClose={() => setRulesAnchorEl(null)}
+                          disableScrollLock
                         >
                           <div>
                             <List dense>
