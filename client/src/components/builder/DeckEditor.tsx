@@ -105,7 +105,6 @@ function prefilterCards(cards: CardWithVersions[], decklist: DecklistViewModel, 
   }
   filteredCards = filteredCards.filter((c) => !c.banned_in?.includes(decklist.format))
 
-  // Filter out illegal cards (cards not in legal packs) unless showIllegal is true
   if (!showIllegal) {
     const chosenFormat = formats.find((f) => f.id === decklist.format)
     if (chosenFormat && chosenFormat.legal_packs) {

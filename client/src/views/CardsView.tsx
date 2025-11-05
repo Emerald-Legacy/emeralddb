@@ -125,7 +125,6 @@ export function CardsView(): JSX.Element {
         const urlParamFilter = createFilterFromUrlSearchParams(urlSearchParams, packs, filter || initialState)
         setFilter(urlParamFilter)
 
-        // Only 1 result => Go to card page
         const urlFilteredCards = applyFilters(cards, formats, urlParamFilter)
         if (urlFilteredCards.length === 1) {
           navigate(`/card/${urlFilteredCards[0].id}`)
@@ -145,8 +144,6 @@ export function CardsView(): JSX.Element {
 
       setUrlParams(location.search)
     }
-    // Only depend on location.search and urlParams to avoid infinite loops
-    // Don't include filter, displayMode, sortMode as they are SET by this effect
   }, [location.search, urlParams, packs, cards, formats, navigate])
 
   // Create urlSearchParams for use in render
