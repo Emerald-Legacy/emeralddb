@@ -47,7 +47,7 @@ export function CardImageOrText(props: {
   return (
     <Root style={{ position: 'relative', height: '95%' }}>
       {cardImage ? (
-        <img src={cardImage} height={'90%'} width={'100%'} />
+        <img src={cardImage} style={{ maxWidth: '100%', height: 'auto' }} />
       ) : (
         <CardInformation cardWithVersions={card} currentVersion={cardVersion} />
       )}
