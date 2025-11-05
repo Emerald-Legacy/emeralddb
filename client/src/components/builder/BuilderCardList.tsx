@@ -3,6 +3,9 @@ import {
   Box,
   Button,
   Checkbox,
+  Dialog,
+  DialogActions,
+  DialogContent,
   FormControlLabel,
   Grid,
   ImageList,
@@ -21,6 +24,7 @@ import { ColumnData, TableCardData, VirtualizedCardTable } from './VirtualizedCa
 import Autocomplete from '@mui/material/Autocomplete'
 import { CardQuantitySelector } from './CardQuantitySelector'
 import { CardImageOrText } from '../card/CardImageOrText'
+import { CardInformation } from '../card/CardInformation'
 
 function initialFilter(primaryClan: string | undefined, format: string): FilterState {
   const sides = ['dynasty', 'conflict']
@@ -88,7 +92,7 @@ export function BuilderCardList(props: {
   format: string
   primaryClan: string | undefined
 }): JSX.Element {
-  const { traits, relevantFormats, validCardVersionForFormat } = useUiStore()
+  const { traits, relevantFormats, validCardVersionForFormat, cards } = useUiStore()
   const [filter, setFilter] = useState<FilterState | undefined>(
     initialFilter(props.primaryClan, props.format)
   )
@@ -99,6 +103,8 @@ export function BuilderCardList(props: {
   const [sortMode, setSortMode] = useState<SortMode>(SortMode.COST)
   const [displayMode, setDisplayMode] = useState<DisplayMode>(DisplayMode.LIST)
   const [order, setOrder] = useState<'Ascending' | 'Descending'>('Ascending')
+  const [modalCard, setModalCard] = useState<CardWithVersions | undefined>(undefined)
+  const [cardModalOpen, setCardModalOpen] = useState(false)
 
   const defaultDeckLimit = props.format === 'skirmish' || props.format === 'obsidian' ? 2 : 3
 
@@ -163,6 +169,30 @@ export function BuilderCardList(props: {
         return criteriumB.localeCompare(criteriumA)
       }
     })
+  }
+
+  const handleImageClick = (cardId: string) => {
+    setModalCard(cards.find((card) => card.id === cardId))
+    setCardModalOpen(true)
+  }
+
+  function CardModal(): JSX.Element {
+    if (!modalCard) {
+      return <div />
+    }
+    const cardVersion = validCardVersionForFormat(modalCard.id, props.format)
+    return (
+      <Dialog open={cardModalOpen} onClose={() => setCardModalOpen(false)} disableScrollLock>
+        <DialogContent>
+          <CardInformation cardWithVersions={modalCard} clickable currentVersion={cardVersion} />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setCardModalOpen(false)} variant="contained">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+    )
   }
 
   const tableData: TableCardData[] = filteredAndSortedCards.map((card) => {
@@ -400,10 +430,11 @@ export function BuilderCardList(props: {
                 columns={columns}
               />
             )}
-            {displayMode === DisplayMode.IMAGES && <VirtualizedCardImages tableData={tableData} isSmOrSmaller={isSmOrSmaller} format={props.format} validCardVersionForFormat={validCardVersionForFormat} />}
+            {displayMode === DisplayMode.IMAGES && <VirtualizedCardImages tableData={tableData} isSmOrSmaller={isSmOrSmaller} format={props.format} validCardVersionForFormat={validCardVersionForFormat} onCardClick={handleImageClick} />}
           </Grid>
         </Grid>
       </Paper>
+      <CardModal />
     </>
   )
 }
@@ -414,6 +445,7 @@ function VirtualizedCardImages(props: {
   isSmOrSmaller: boolean
   format: string
   validCardVersionForFormat: (cardId: string, formatId: string) => any
+  onCardClick: (cardId: string) => void
 }): JSX.Element {
   const parentRef = useRef<HTMLDivElement>(null)
   const cols = props.isSmOrSmaller ? 2 : 4
@@ -482,6 +514,7 @@ function VirtualizedCardImages(props: {
                       card.nameFactionType.cardId,
                       props.format
                     )}
+                    onClick={props.onCardClick}
                   />
                   <Box
                     marginTop={'-20px'}
