@@ -140,7 +140,8 @@ function calculateFateCostDistributionForDeck(
   })
 
   const distribution: { value: string; count: number }[] = []
-  for (let i = 0; i <= maxCost; i++) {
+  const startCost = costMap.has('0') ? 0 : 1
+  for (let i = startCost; i <= maxCost; i++) {
     distribution.push({ value: i.toString(), count: costMap.get(i.toString()) || 0 })
   }
 
