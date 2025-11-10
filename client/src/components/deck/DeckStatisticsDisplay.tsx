@@ -63,7 +63,6 @@ function calculateDynastyTraitCounts(
     }
   })
 
-  // Convert map to array and sort by count
   const distribution = Array.from(traitMap.entries())
     .map(([traitId, count]) => ({
       trait: allTraits.find((t) => t.id === traitId)?.name || traitId,
@@ -141,7 +140,8 @@ function calculateFateCostDistributionForDeck(
   })
 
   const distribution: { value: string; count: number }[] = []
-  for (let i = 0; i <= maxCost; i++) {
+  const startCost = costMap.has('0') ? 0 : 1
+  for (let i = startCost; i <= maxCost; i++) {
     distribution.push({ value: i.toString(), count: costMap.get(i.toString()) || 0 })
   }
 
@@ -205,15 +205,12 @@ export function DeckStatisticsDisplay({ cards, allCards, allPacks, format }: Dec
   const [isExpanded, setIsExpanded] = useState(false)
   const [isConflictTraitsExpanded, setIsConflictTraitsExpanded] = useState(false)
 
-  // Calculate military power distribution
   const militaryPowerDistribution = calculatePowerDistribution(cards, allCards, 'military')
   const averageMilitaryPower = calculateAveragePower(cards, allCards, 'military')
 
-  // Calculate political power distribution
   const politicalPowerDistribution = calculatePowerDistribution(cards, allCards, 'political')
   const averagePoliticalPower = calculateAveragePower(cards, allCards, 'political')
 
-  // Calculate trait counts
   const dynastyTraitCounts = calculateDynastyTraitCounts(cards, allCards, traits)
   const conflictTraitCounts = calculateConflictTraitCounts(cards, allCards, traits)
 
