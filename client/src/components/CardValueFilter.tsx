@@ -72,7 +72,7 @@ export function CardValueFilter(props: {
           </Button>
         </ButtonGroup>
       </Grid>
-      <Grid sx={{ flex: 1, maxWidth: 60, marginLeft: '10px', marginRight: '20px' }}>
+      <Grid sx={{ flex: 1, maxWidth: 60, marginLeft: '8px', marginRight: '8px' }}>
         <TextField
           value={filterString}
           onChange={(e) => setFilterString(e.target.value)}
