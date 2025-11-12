@@ -257,7 +257,7 @@ export function DeckStatisticsDisplay({ cards, allCards, allPacks, format }: Dec
           color="#282877"
           noDataMessage="No characters with political power in deck"
         />
-        <Grid size={{ xs: 6 }} component="div">
+        <Grid size={{ xs: 12, sm: 6 }} component="div">
           <Paper elevation={2} sx={{ p: 1, minHeight: '192px' }}>
             <Typography variant="h6" gutterBottom align="center">
               {isExpanded ? 'All Dynasty Traits' : 'Top 5 Dynasty Traits'}
@@ -293,7 +293,7 @@ export function DeckStatisticsDisplay({ cards, allCards, allPacks, format }: Dec
             </Box>
           </Paper>
         </Grid>
-        <Grid size={{ xs: 6 }} component="div">
+        <Grid size={{ xs: 12, sm: 6 }} component="div">
           <Paper elevation={2} sx={{ p: 1, minHeight: '192px' }}>
             <Typography variant="h6" gutterBottom align="center">
               {isConflictTraitsExpanded ? 'All Conflict Traits' : 'Top 5 Conflict Traits'}
