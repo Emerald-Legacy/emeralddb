@@ -46,16 +46,17 @@ function calculateRequiredPacks(
   return requiredPacks;
 }
 
-function calculateDynastyTraitCounts(
+function calculateTraitCounts(
   cards: Record<string, number>,
   allCards: CardWithVersions[],
-  allTraits: Trait[]
+  allTraits: Trait[],
+  side: 'dynasty' | 'conflict'
 ): { trait: string; count: number }[] {
   const traitMap = new Map<string, number>()
 
   Object.entries(cards).forEach(([cardId, quantity]) => {
     const card = allCards.find((c) => c.id === cardId)
-    if (card && card.side === 'dynasty' && card.traits) {
+    if (card && card.side === side && card.traits) {
       card.traits.forEach((trait) => {
         const currentCount = traitMap.get(trait) || 0
         traitMap.set(trait, currentCount + quantity)
@@ -175,33 +176,6 @@ function calculateAverageStat(
   return totalCards > 0 ? totalStat / totalCards : 0
 }
 
-function calculateConflictTraitCounts(
-  cards: Record<string, number>,
-  allCards: CardWithVersions[],
-  allTraits: Trait[]
-): { trait: string; count: number }[] {
-  const traitMap = new Map<string, number>()
-
-  Object.entries(cards).forEach(([cardId, quantity]) => {
-    const card = allCards.find((c) => c.id === cardId)
-    if (card && card.side === 'conflict' && card.traits) {
-      card.traits.forEach((trait) => {
-        const currentCount = traitMap.get(trait) || 0
-        traitMap.set(trait, currentCount + quantity)
-      })
-    }
-  })
-
-  const distribution = Array.from(traitMap.entries())
-    .map(([traitId, count]) => ({
-      trait: allTraits.find((t) => t.id === traitId)?.name || traitId,
-      count,
-    }))
-    .sort((a, b) => b.count - a.count)
-
-  return distribution
-}
-
 export function DeckStatisticsDisplay({ cards, allCards, allPacks, format }: DeckStatisticsDisplayProps): JSX.Element {
   const { traits, validCardVersionForFormat } = useUiStore()
   const [isExpanded, setIsExpanded] = useState(false)
@@ -216,8 +190,8 @@ export function DeckStatisticsDisplay({ cards, allCards, allPacks, format }: Dec
   const gloryDistribution = calculateStatDistribution(cards, allCards, 'glory')
   const averageGlory = calculateAverageStat(cards, allCards, 'glory')
 
-  const dynastyTraitCounts = calculateDynastyTraitCounts(cards, allCards, traits)
-  const conflictTraitCounts = calculateConflictTraitCounts(cards, allCards, traits)
+  const dynastyTraitCounts = calculateTraitCounts(cards, allCards, traits, 'dynasty')
+  const conflictTraitCounts = calculateTraitCounts(cards, allCards, traits, 'conflict')
 
   const dynastyFateCost = calculateFateCostDistributionForDeck(cards, allCards, 'dynasty');
   const conflictFateCost = calculateFateCostDistributionForDeck(cards, allCards, 'conflict');
