@@ -101,6 +101,7 @@ function calculateStatDistribution(
 ): { value: string; count: number }[] {
   const statMap = new Map<string, number>()
   let maxStat = 0
+  let minStat = Infinity
 
   Object.entries(cards).forEach(([cardId, quantity]) => {
     const card = allCards.find((c) => c.id === cardId)
@@ -114,11 +115,15 @@ function calculateStatDistribution(
       if (stat > maxStat) {
         maxStat = stat
       }
+      if (stat < minStat) {
+        minStat = stat
+      }
     }
   })
 
   const distribution: { value: string; count: number }[] = []
-  for (let i = 0; i <= maxStat; i++) {
+  const startStat = minStat === Infinity ? 0 : minStat
+  for (let i = startStat; i <= maxStat; i++) {
     distribution.push({ value: i.toString(), count: statMap.get(i.toString()) || 0 })
   }
 
