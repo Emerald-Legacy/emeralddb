@@ -14,10 +14,6 @@ const StyledGrid = styled(Grid)((
     theme
   }
 ) => ({
-  [`& .${classes.buttonGroup}`]: {
-    marginLeft: theme.spacing(1),
-  },
-
   [`& .${classes.button}`]: {
     height: 24,
     width: 24,
@@ -44,7 +40,7 @@ export function CardValueFilter(props: {
 
   return (
     <StyledGrid container alignItems="center" spacing={1}>
-      <Grid sx={{ minWidth: 40, flexShrink: 0 }}>
+      <Grid sx={{ width: 44, flexShrink: 0 }}>
         {props.valueLabel}
       </Grid>
       <Grid sx={{ flexShrink: 0 }}>
