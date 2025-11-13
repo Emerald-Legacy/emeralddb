@@ -826,7 +826,7 @@ export function CardFilter(props: {
                     </ButtonGroup>
                   </Grid>
                   {/* 6 numeric filters underneath the button filters */}
-                  <Grid size={4}>
+                  <Grid size={{ xs: 6, sm: 4 }}>
                     <CardValueFilter
                       valueLabel={<span className={`icon icon-conflict-military`} />}
                       onFilterChange={(type, value) =>
@@ -834,7 +834,7 @@ export function CardFilter(props: {
                       }
                     />
                   </Grid>
-                  <Grid size={4}>
+                  <Grid size={{ xs: 6, sm: 4 }}>
                     <CardValueFilter
                       valueLabel={<span className={`icon icon-conflict-political`} />}
                       onFilterChange={(type, value) =>
@@ -842,7 +842,7 @@ export function CardFilter(props: {
                       }
                     />
                   </Grid>
-                  <Grid size={4}>
+                  <Grid size={{ xs: 6, sm: 4 }}>
                     <CardValueFilter
                       valueLabel={<span>Cost:</span>}
                       onFilterChange={(type, value) =>
@@ -850,7 +850,7 @@ export function CardFilter(props: {
                       }
                     />
                   </Grid>
-                  <Grid size={4}>
+                  <Grid size={{ xs: 6, sm: 4 }}>
                     <CardValueFilter
                       valueLabel={<span>Inf:</span>}
                       onFilterChange={(type, value) =>
@@ -858,7 +858,7 @@ export function CardFilter(props: {
                       }
                     />
                   </Grid>
-                  <Grid size={4}>
+                  <Grid size={{ xs: 6, sm: 4 }}>
                     <CardValueFilter
                       valueLabel={<span>Glory:</span>}
                       onFilterChange={(type, value) =>
@@ -866,7 +866,7 @@ export function CardFilter(props: {
                       }
                     />
                   </Grid>
-                  <Grid size={4}>
+                  <Grid size={{ xs: 6, sm: 4 }}>
                     <CardValueFilter
                       valueLabel={<span>Str:</span>}
                       onFilterChange={(type, value) =>
