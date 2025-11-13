@@ -46,16 +46,17 @@ function calculateRequiredPacks(
   return requiredPacks;
 }
 
-function calculateDynastyTraitCounts(
+function calculateTraitCounts(
   cards: Record<string, number>,
   allCards: CardWithVersions[],
-  allTraits: Trait[]
+  allTraits: Trait[],
+  side: 'dynasty' | 'conflict'
 ): { trait: string; count: number }[] {
   const traitMap = new Map<string, number>()
 
   Object.entries(cards).forEach(([cardId, quantity]) => {
     const card = allCards.find((c) => c.id === cardId)
-    if (card && card.side === 'dynasty' && card.traits) {
+    if (card && card.side === side && card.traits) {
       card.traits.forEach((trait) => {
         const currentCount = traitMap.get(trait) || 0
         traitMap.set(trait, currentCount + quantity)
@@ -93,28 +94,37 @@ function calculateAverageFateCostForDeck(
   return totalCards > 0 ? totalCost / totalCards : 0
 }
 
-function calculatePowerDistribution(
+function calculateStatDistribution(
   cards: Record<string, number>,
   allCards: CardWithVersions[],
-  powerType: 'military' | 'political'
+  statType: 'military' | 'political' | 'glory'
 ): { value: string; count: number }[] {
-  const powerMap = new Map<string, number>()
-  let maxPower = 0
+  const statMap = new Map<string, number>()
+  let maxStat = 0
+  let minStat = Infinity
 
   Object.entries(cards).forEach(([cardId, quantity]) => {
     const card = allCards.find((c) => c.id === cardId)
     if (card && card.type === 'character') {
-      const power = card[powerType] === null || card[powerType] === undefined || card[powerType] === '-' ? 0 : parseInt(card[powerType]!.toString())
-      powerMap.set(power.toString(), (powerMap.get(power.toString()) || 0) + quantity)
-      if (power > maxPower) {
-        maxPower = power
+      const rawValue = card[statType]
+      if (rawValue === null || rawValue === undefined || rawValue === '-') {
+        return
+      }
+      const stat = typeof rawValue === 'number' ? rawValue : parseInt(rawValue.toString())
+      statMap.set(stat.toString(), (statMap.get(stat.toString()) || 0) + quantity)
+      if (stat > maxStat) {
+        maxStat = stat
+      }
+      if (stat < minStat) {
+        minStat = stat
       }
     }
   })
 
   const distribution: { value: string; count: number }[] = []
-  for (let i = 0; i <= maxPower; i++) {
-    distribution.push({ value: i.toString(), count: powerMap.get(i.toString()) || 0 })
+  const startStat = minStat === Infinity ? 0 : minStat
+  for (let i = startStat; i <= maxStat; i++) {
+    distribution.push({ value: i.toString(), count: statMap.get(i.toString()) || 0 })
   }
 
   return distribution
@@ -148,56 +158,27 @@ function calculateFateCostDistributionForDeck(
   return distribution
 }
 
-function calculateAveragePower(
+function calculateAverageStat(
   cards: Record<string, number>,
   allCards: CardWithVersions[],
-  powerType: 'military' | 'political'
+  statType: 'military' | 'political' | 'glory'
 ): number {
-  let totalPower = 0
+  let totalStat = 0
   let totalCards = 0
 
   Object.entries(cards).forEach(([cardId, quantity]) => {
     const card = allCards.find((c) => c.id === cardId)
-    if (
-      card &&
-      card.type === 'character' &&
-      card[powerType] !== undefined &&
-      card[powerType] !== null &&
-      card[powerType] !== '-'
-    ) {
-      totalPower += parseInt(card[powerType] as string) * quantity
-      totalCards += quantity
+    if (card && card.type === 'character') {
+      const rawValue = card[statType]
+      if (rawValue !== null && rawValue !== undefined && rawValue !== '-') {
+        const stat = typeof rawValue === 'number' ? rawValue : parseInt(rawValue.toString())
+        totalStat += stat * quantity
+        totalCards += quantity
+      }
     }
   })
 
-  return totalCards > 0 ? totalPower / totalCards : 0
-}
-
-function calculateConflictTraitCounts(
-  cards: Record<string, number>,
-  allCards: CardWithVersions[],
-  allTraits: Trait[]
-): { trait: string; count: number }[] {
-  const traitMap = new Map<string, number>()
-
-  Object.entries(cards).forEach(([cardId, quantity]) => {
-    const card = allCards.find((c) => c.id === cardId)
-    if (card && card.side === 'conflict' && card.traits) {
-      card.traits.forEach((trait) => {
-        const currentCount = traitMap.get(trait) || 0
-        traitMap.set(trait, currentCount + quantity)
-      })
-    }
-  })
-
-  const distribution = Array.from(traitMap.entries())
-    .map(([traitId, count]) => ({
-      trait: allTraits.find((t) => t.id === traitId)?.name || traitId,
-      count,
-    }))
-    .sort((a, b) => b.count - a.count)
-
-  return distribution
+  return totalCards > 0 ? totalStat / totalCards : 0
 }
 
 export function DeckStatisticsDisplay({ cards, allCards, allPacks, format }: DeckStatisticsDisplayProps): JSX.Element {
@@ -205,14 +186,17 @@ export function DeckStatisticsDisplay({ cards, allCards, allPacks, format }: Dec
   const [isExpanded, setIsExpanded] = useState(false)
   const [isConflictTraitsExpanded, setIsConflictTraitsExpanded] = useState(false)
 
-  const militaryPowerDistribution = calculatePowerDistribution(cards, allCards, 'military')
-  const averageMilitaryPower = calculateAveragePower(cards, allCards, 'military')
+  const militaryPowerDistribution = calculateStatDistribution(cards, allCards, 'military')
+  const averageMilitaryPower = calculateAverageStat(cards, allCards, 'military')
 
-  const politicalPowerDistribution = calculatePowerDistribution(cards, allCards, 'political')
-  const averagePoliticalPower = calculateAveragePower(cards, allCards, 'political')
+  const politicalPowerDistribution = calculateStatDistribution(cards, allCards, 'political')
+  const averagePoliticalPower = calculateAverageStat(cards, allCards, 'political')
 
-  const dynastyTraitCounts = calculateDynastyTraitCounts(cards, allCards, traits)
-  const conflictTraitCounts = calculateConflictTraitCounts(cards, allCards, traits)
+  const gloryDistribution = calculateStatDistribution(cards, allCards, 'glory')
+  const averageGlory = calculateAverageStat(cards, allCards, 'glory')
+
+  const dynastyTraitCounts = calculateTraitCounts(cards, allCards, traits, 'dynasty')
+  const conflictTraitCounts = calculateTraitCounts(cards, allCards, traits, 'conflict')
 
   const dynastyFateCost = calculateFateCostDistributionForDeck(cards, allCards, 'dynasty');
   const conflictFateCost = calculateFateCostDistributionForDeck(cards, allCards, 'conflict');
@@ -257,6 +241,15 @@ export function DeckStatisticsDisplay({ cards, allCards, allPacks, format }: Dec
           color="#282877"
           noDataMessage="No characters with political power in deck"
         />
+        <StatisticChartCard
+          title="Glory"
+          averageValue={averageGlory}
+          data={gloryDistribution}
+          dataKey="value"
+          color="#F9A825"
+          noDataMessage="No characters with glory in deck"
+        />
+        <Grid size={12} sx={{ display: { xs: 'none', sm: 'block' } }} />
         <Grid size={{ xs: 12, sm: 6 }} component="div">
           <Paper elevation={2} sx={{ p: 1, minHeight: '192px' }}>
             <Typography variant="h6" gutterBottom align="center">
