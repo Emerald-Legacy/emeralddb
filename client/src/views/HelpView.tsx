@@ -47,7 +47,7 @@ export function HelpView(): JSX.Element {
                       This usually happens when there already is an account for the e-mail address you try
                       to sign up with. Please try the "Forgot password?" link in the log in mask to reset
                       your password. If the problem persists, please send an e-mail to
-                      emeralddb[at]emeraldlegacy[dot]org or send a Discord DM to WorkerBee#3527.
+                      emeralddb[at]emeraldlegacy[dot]org or send a Discord DM to workerbee.
                     </Typography>
                   </Grid>
                 </Grid>
