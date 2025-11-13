@@ -204,7 +204,7 @@ export function CardDetailView(): JSX.Element {
         <Grid container spacing={0} size={{ xs: 12, md: 5 }} display="flex" justifyContent="center">
           {chosenVersion && (
             <Grid size={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-              <img src={chosenVersion.image_url || ''} style={{ maxWidth: imageWidth }} />
+              <img src={chosenVersion.image_url || ''} style={{ maxWidth: imageWidth, width: '100%', height: 'auto' }} />
             </Grid>
           )}
           {isDataAdmin() && (

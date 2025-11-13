@@ -125,7 +125,6 @@ export function CardsView(): JSX.Element {
         const urlParamFilter = createFilterFromUrlSearchParams(urlSearchParams, packs, filter || initialState)
         setFilter(urlParamFilter)
 
-        // Only 1 result => Go to card page
         const urlFilteredCards = applyFilters(cards, formats, urlParamFilter)
         if (urlFilteredCards.length === 1) {
           navigate(`/card/${urlFilteredCards[0].id}`)
@@ -145,8 +144,6 @@ export function CardsView(): JSX.Element {
 
       setUrlParams(location.search)
     }
-    // Only depend on location.search and urlParams to avoid infinite loops
-    // Don't include filter, displayMode, sortMode as they are SET by this effect
   }, [location.search, urlParams, packs, cards, formats, navigate])
 
   // Create urlSearchParams for use in render
@@ -161,9 +158,27 @@ export function CardsView(): JSX.Element {
   }, [cards, formats, filter])
 
   const findCardVersion = useCallback((card: CardWithVersions) => {
-    let versionsWithFilteredPacks = filter?.packs ? card.versions.filter(v => filter.packs.includes(v.pack_id)) : card.versions
-    let validFormatVersion = filter?.format && validCardVersionForFormat(card.id, filter.format)
-    return validFormatVersion || versionsWithFilteredPacks.length > 0 ? versionsWithFilteredPacks[0] : card.versions[0];
+    const versionsWithFilteredPacks = filter?.packs
+      ? card.versions.filter(v => filter.packs.includes(v.pack_id))
+      : card.versions
+
+    const validFormatVersion = filter?.format && validCardVersionForFormat(card.id, filter.format)
+
+    const candidateVersions = validFormatVersion
+      ? [validFormatVersion]
+      : versionsWithFilteredPacks.length > 0
+        ? versionsWithFilteredPacks
+        : card.versions
+
+    if (filter?.text) {
+      const query = filter.text.toLocaleLowerCase().trim()
+      const artistMatch = candidateVersions.find(v => v.illustrator?.toLocaleLowerCase().includes(query))
+      if (artistMatch) {
+        return artistMatch
+      }
+    }
+
+    return candidateVersions[0]
   }, [filter, validCardVersionForFormat])
 
   const calculatePackIndex = useCallback((card: CardWithVersions): { packIndex: string; cardIndex: string } => {

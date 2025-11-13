@@ -20,7 +20,7 @@ export function StatisticChartCard({
   noDataMessage,
 }: StatisticChartCardProps): JSX.Element {
   return (
-    <Grid size={{ xs: 6 }} component="div">
+    <Grid size={{ xs: 12, sm: 6 }} component="div">
       <Paper elevation={2} sx={{ p: 1 }}>
         <Typography variant="h6" align="center">
           {title} <br /> <span style={{ fontSize: '70%' }}>(Avg: {averageValue.toFixed(2)})</span>

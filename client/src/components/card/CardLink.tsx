@@ -238,11 +238,11 @@ export function CardLink(props: {
         open={open}
         anchorEl={anchorEl}
         anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
+          vertical: 'top',
+          horizontal: 'right',
         }}
         transformOrigin={{
-          vertical: 'top',
+          vertical: 'bottom',
           horizontal: 'left',
         }}
         disableRestoreFocus
@@ -250,7 +250,10 @@ export function CardLink(props: {
         sx={{ pointerEvents: 'none' }}
         slotProps={{
           paper: {
-            sx: { pointerEvents: 'none' }
+            sx: {
+              pointerEvents: 'none',
+              marginLeft: 1
+            }
           }
         }}
       >
