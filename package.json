@@ -20,7 +20,7 @@
     "test:unit:watch": "ava --watch"
   },
   "engines": {
-    "node": "22.11.0"
+    "node": ">=22.11.0 <25.2.0"
   },
   "volta": {
     "node": "22.11.0"
