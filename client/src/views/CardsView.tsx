@@ -158,9 +158,27 @@ export function CardsView(): JSX.Element {
   }, [cards, formats, filter])
 
   const findCardVersion = useCallback((card: CardWithVersions) => {
-    let versionsWithFilteredPacks = filter?.packs ? card.versions.filter(v => filter.packs.includes(v.pack_id)) : card.versions
-    let validFormatVersion = filter?.format && validCardVersionForFormat(card.id, filter.format)
-    return validFormatVersion || versionsWithFilteredPacks.length > 0 ? versionsWithFilteredPacks[0] : card.versions[0];
+    const versionsWithFilteredPacks = filter?.packs
+      ? card.versions.filter(v => filter.packs.includes(v.pack_id))
+      : card.versions
+
+    const validFormatVersion = filter?.format && validCardVersionForFormat(card.id, filter.format)
+
+    const candidateVersions = validFormatVersion
+      ? [validFormatVersion]
+      : versionsWithFilteredPacks.length > 0
+        ? versionsWithFilteredPacks
+        : card.versions
+
+    if (filter?.text) {
+      const query = filter.text.toLocaleLowerCase().trim()
+      const artistMatch = candidateVersions.find(v => v.illustrator?.toLocaleLowerCase().includes(query))
+      if (artistMatch) {
+        return artistMatch
+      }
+    }
+
+    return candidateVersions[0]
   }, [filter, validCardVersionForFormat])
 
   const calculatePackIndex = useCallback((card: CardWithVersions): { packIndex: string; cardIndex: string } => {
