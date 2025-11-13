@@ -98,7 +98,8 @@ export function HelpView(): JSX.Element {
                       the Builder section. Click on the "Import from Jigoku" Button. In the pop up
                       that opens, select the format of the deck you want to import and paste the contents
                       of the "Jigoku Export" from Jigoku in the text field. You can also import a deck from
-                      the Kensei Legend of the Five Rings Toolkit, it provides the same format as Jigoku.
+                      the <a href={"https://www.kensei-l5r-toolkit.com/"}>Kensei Legend of the Five Rings Toolkit</a>,
+                      it provides the same format as Jigoku.
                     </Typography>
                   </Grid>
                   <Grid size={12}>
