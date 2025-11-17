@@ -1,4 +1,4 @@
-export {
+export type {
   Card,
   CardInPack,
   Pack,
@@ -12,7 +12,7 @@ export {
   Decklist,
   DecklistComment,
 } from './private/baseTypes'
-export {
+export type {
   CardWithVersions,
   CardWithDetails,
   DeckWithVersions,
@@ -23,7 +23,7 @@ export {
   DecklistWithExtraInfo,
   PublishedDecklistWithExtraInfo,
 } from './private/compositeTypes'
-export {
+export type {
   Cards$findAll,
   Cards$find,
   Cards$update,
