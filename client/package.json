@@ -42,7 +42,8 @@
     "start": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "lint": "eslint src"
+    "lint": "eslint src",
+    "heroku-prebuild": "yarn install --production=false"
   },
   "resolutions": {
     "@types/react": "^18.3.3",
