@@ -17,7 +17,8 @@
     "start": "NODE_ENV=production yarn migrate:latest && node dist/index.js",
     "test": "yarn lint && yarn test:unit && yarn build && ava",
     "test:unit": "yarn build:clean && ava",
-    "test:unit:watch": "ava --watch"
+    "test:unit:watch": "ava --watch",
+    "heroku-prebuild": "cd client && yarn heroku-prebuild && cd .."
   },
   "engines": {
     "node": ">=22.11.0 <25.x"
