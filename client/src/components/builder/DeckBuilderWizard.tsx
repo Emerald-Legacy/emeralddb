@@ -10,7 +10,7 @@ import {
   Stepper,
   Typography,
 } from '@mui/material'
-import { useState } from 'react'
+import { useState, type JSX } from 'react';
 import { useUiStore } from '../../providers/UiStoreProvider'
 import { clans } from '../../utils/enums'
 import { CardLink } from '../card/CardLink'

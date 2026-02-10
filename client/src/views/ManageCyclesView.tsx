@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import { useConfirm } from 'material-ui-confirm'
 import { useSnackbar } from 'notistack'
-import React, { useState } from 'react'
+import React, { useState, type JSX } from 'react';
 import { useNavigate } from 'react-router-dom'
 import { privateApi } from '../api'
 import { Loading } from '../components/Loading'

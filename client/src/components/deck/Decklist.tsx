@@ -11,7 +11,7 @@ import { CardWithQuantity, createDeckStatistics } from './DeckValidator'
 import { CardQuantitySelector } from '../builder/CardQuantitySelector'
 import min from 'lodash/min'
 import { Loading } from '../Loading'
-import { useState } from 'react'
+import { useState, type JSX } from 'react';
 import { CardFactionIcon } from '../card/CardFactionIcon'
 import { getImageUrl } from '../../utils/imageUrl'
 

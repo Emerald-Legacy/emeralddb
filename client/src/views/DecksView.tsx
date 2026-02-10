@@ -2,7 +2,7 @@ import { PublishedDecklistWithExtraInfo } from '@5rdb/api'
 import { styled } from '@mui/material/styles';
 import { Paper, useMediaQuery, Tooltip } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid'
-import { useState } from 'react'
+import { useState, type JSX } from 'react';
 import { publicApi } from '../api'
 import { applyDeckFilters, DeckFilter, DeckFilterState } from '../components/DeckFilter'
 import { capitalize } from '../utils/stringUtils'

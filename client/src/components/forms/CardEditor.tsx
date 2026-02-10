@@ -1,7 +1,7 @@
 import { Card as CardType, Trait } from '@5rdb/api'
 import { styled } from '@mui/material/styles';
 import { Box, Button, Card, CardContent, Grid, Switch, TextField, Typography } from '@mui/material';
-import React, { useState } from 'react'
+import React, { useState, type JSX } from 'react';
 import {
   sides,
   cardTypes,

@@ -1,4 +1,4 @@
-import React, { createContext, ReactNode } from 'react'
+import React, { createContext, ReactNode, type JSX } from 'react';
 import { useNavigate } from 'react-router-dom'
 import { Auth0Provider } from '@auth0/auth0-react'
 import { useAuth0Config } from '../hooks/useAuth0Config'

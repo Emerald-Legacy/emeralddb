@@ -11,6 +11,8 @@ import { DeckStatisticsDisplay } from '../components/deck/DeckStatisticsDisplay'
 import { useUiStore } from '../providers/UiStoreProvider'
 import { Pack } from '@5rdb/api'
 
+import type { JSX } from "react";
+
 export function DeckDetailView(): JSX.Element {
   const params = useParams<{ id: string }>()
   const [data] = useDecklist(params.id!)

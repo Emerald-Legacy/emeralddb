@@ -11,6 +11,8 @@ import { ConfirmProvider } from 'material-ui-confirm'
 import { Routes } from './Routes'
 import { SnackbarProvider } from 'notistack'
 
+import type { JSX } from "react";
+
 // create our material ui theme using up to date typography variables
 let theme = createTheme({
   palette: {

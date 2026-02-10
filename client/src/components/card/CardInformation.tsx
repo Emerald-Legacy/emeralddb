@@ -9,6 +9,8 @@ import { CardText } from './CardText'
 import { ElementSymbol } from './ElementSymbol'
 import { useNavigate } from 'react-router-dom'
 
+import type { JSX } from "react";
+
 const PREFIX = 'CardInformation';
 
 const classes = {

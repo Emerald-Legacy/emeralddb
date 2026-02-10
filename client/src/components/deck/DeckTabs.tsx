@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles';
 import { Box, Typography, Button, Grid, useMediaQuery, Tooltip } from '@mui/material';
 import { useConfirm } from 'material-ui-confirm'
 import { useSnackbar } from 'notistack'
-import { useState } from 'react'
+import { useState, type JSX } from 'react';
 import { privateApi } from '../../api'
 import { CardFactionIcon } from '../card/CardFactionIcon'
 import { DecklistTabs, latestDecklistForDeck } from './DecklistTabs'

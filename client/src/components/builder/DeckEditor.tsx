@@ -14,7 +14,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { useState } from 'react'
+import { useState, type JSX } from 'react';
 import { useUiStore } from '../../providers/UiStoreProvider'
 import { BuilderCardList } from './BuilderCardList'
 import { Decklist } from '../deck/Decklist'

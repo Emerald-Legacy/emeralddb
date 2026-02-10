@@ -18,7 +18,7 @@ import { styled } from '@mui/material/styles';
 import { UserMenu } from './usermenu/UserMenu'
 import { useNavigate } from 'react-router-dom'
 import { useCurrentUser } from '../providers/UserProvider'
-import { useState } from 'react'
+import { useState, type JSX } from 'react';
 import { CycleList } from './CycleList'
 import SearchIcon from '@mui/icons-material/Search'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'

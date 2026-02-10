@@ -2,6 +2,8 @@ import { CardWithVersions, Pack } from '@5rdb/api'
 import { DeckStatisticsDisplay } from '../deck/DeckStatisticsDisplay'
 import { useUiStore } from '../../providers/UiStoreProvider'
 
+import type { JSX } from "react";
+
 interface DeckStatisticsProps {
   cards: Record<string, number>
   allCards: CardWithVersions[]

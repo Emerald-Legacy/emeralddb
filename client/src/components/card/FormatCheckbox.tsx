@@ -1,5 +1,7 @@
 import { FormControl, FormLabel, FormGroup, FormControlLabel, Checkbox } from '@mui/material'
 
+import type { JSX } from "react";
+
 export function MultiCheckbox(props: {
   label: string
   items: { id: string; name: string }[]

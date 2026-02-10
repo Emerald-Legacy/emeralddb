@@ -1,4 +1,4 @@
-import type { ReactNode, MouseEvent } from 'react'
+import type { ReactNode, MouseEvent, JSX } from 'react';
 import { useNavigate } from 'react-router-dom'
 import { styled } from '@mui/material/styles'
 

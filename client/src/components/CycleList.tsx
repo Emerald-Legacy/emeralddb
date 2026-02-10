@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles';
 import { useUiStore } from '../providers/UiStoreProvider'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import ExpandLessIcon from '@mui/icons-material/ExpandLess'
-import { useState } from 'react'
+import { useState, type JSX } from 'react';
 import { Cycle, Pack } from '@5rdb/api'
 import { EmeraldDBLink } from './EmeraldDBLink'
 import CachedIcon from '@mui/icons-material/Cached'

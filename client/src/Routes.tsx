@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes as RouterRoutes, useLocation } from 'react-router-dom'
 import { useCurrentUser } from './providers/UserProvider'
-import { lazy, Suspense, useEffect } from 'react'
+import { lazy, Suspense, useEffect, type JSX } from 'react';
 import { Loading } from './components/Loading'
 
 // Lazy load all route components for code splitting

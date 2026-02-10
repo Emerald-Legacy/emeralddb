@@ -19,7 +19,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { useUiStore } from '../providers/UiStoreProvider'
 import { convertTraitList } from '../utils/cardTextUtils'
 import { capitalize } from '../utils/stringUtils'
-import { useState, useEffect, useMemo, useCallback } from 'react'
+import { useState, useEffect, useMemo, useCallback, type JSX } from 'react';
 import { applyFilters, CardFilter, FilterState, initialState } from "../components/CardFilter";
 import { CardWithVersions, Pack } from '@5rdb/api'
 import { CardInformation } from '../components/card/CardInformation'

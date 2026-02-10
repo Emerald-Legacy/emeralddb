@@ -1,5 +1,5 @@
 import { Grid, TextField, Typography, Box } from '@mui/material'
-import { useRef, useState } from 'react'
+import { useRef, useState, type JSX } from 'react';
 import { CardText } from './CardText'
 import { CardTextEditorButtons } from './CardTextEditorButtons'
 import { getColorForFactionId } from '../../utils/factionUtils'

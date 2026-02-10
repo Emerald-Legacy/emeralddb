@@ -1,5 +1,5 @@
 import { useUiStore } from '../providers/UiStoreProvider'
-import { useState } from 'react'
+import { useState, type JSX } from 'react';
 import { Box, Grid, List, ListItem, TextField, Typography } from '@mui/material'
 import { Loading } from '../components/Loading'
 import Autocomplete from '@mui/material/Autocomplete'

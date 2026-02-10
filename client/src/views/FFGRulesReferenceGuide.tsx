@@ -10,7 +10,7 @@ import {
   Button,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type JSX } from 'react';
 import { HashLink as Link } from 'react-router-hash-link'
 import TocIcon from '@mui/icons-material/Toc'
 
