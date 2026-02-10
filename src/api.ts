@@ -42,6 +42,7 @@ import * as createDecklistComment from './handlers/createDecklistComment'
 import * as updateDecklistComment from './handlers/updateDecklistComment'
 import * as deleteDecklistComment from './handlers/deleteDecklistComment'
 import * as getAllCommentsForDecklist from './handlers/getAllCommentsForDecklist'
+import * as imageProxy from './handlers/imageProxy'
 import { authorizedOnly, dataAdminOnly, rulesAdminOnly } from './middlewares/authorization'
 import env from './env'
 
@@ -49,6 +50,7 @@ export default (): Router => {
   const api = Router()
   const w = asyncHandler // shorthand for wrapping handlers
 
+  api.get('/image-proxy', imageProxy.handler)
   api.get('/cards', w(getAllCards.handler))
   api.get('/cards/:cardId', w(getCardDetails.handler))
   api.post('/cards/:cardId', authorizedOnly, w(dataAdminOnly), w(updateCard.handler))

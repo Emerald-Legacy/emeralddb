@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { type JSX } from 'react';
 import { Box, Grid, Paper, Typography } from '@mui/material'
 import { BarChart } from '@mui/x-charts/BarChart'
 

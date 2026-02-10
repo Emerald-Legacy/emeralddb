@@ -1,12 +1,12 @@
 import { useUiStore } from '../providers/UiStoreProvider'
-import { useState } from 'react'
+import { useState, type JSX } from 'react';
 import { Box, Grid, List, ListItem, TextField, Typography } from '@mui/material'
 import { Loading } from '../components/Loading'
 import Autocomplete from '@mui/material/Autocomplete'
 import { clans } from '../utils/enums'
 import { OrganizedPlayList } from '../components/OrganizedPlayList'
 import { CardWithVersions } from '@5rdb/api'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router'
 import { CardLink } from '../components/card/CardLink'
 
 const formats = [

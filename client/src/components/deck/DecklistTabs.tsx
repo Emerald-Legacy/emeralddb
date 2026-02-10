@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles';
 import { Box, Button, Grid, Tab, Tabs, Typography, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import { useConfirm } from 'material-ui-confirm'
 import { useSnackbar } from 'notistack'
-import { useState } from 'react'
+import { useState, type JSX } from 'react';
 import { privateApi } from '../../api'
 import { Decklist } from './Decklist'
 import DeleteIcon from '@mui/icons-material/Delete'
@@ -100,7 +100,7 @@ export function DecklistTabs(props: {
   const { enqueueSnackbar } = useSnackbar()
   const queryClient = useQueryClient()
 
-  const publishMutation = useMutation({ 
+  const publishMutation = useMutation({
     mutationFn: (decklistId: string) => privateApi.Decklist.publish({ decklistId }),
     onSuccess: () => {
       props.onDecklistUpdated()
@@ -135,6 +135,7 @@ export function DecklistTabs(props: {
             props.onDecklistUpdated()
             setCurrentDecklistId(latestDecklistForDeck(deck)?.id || undefined)
             enqueueSnackbar('The decklist was deleted successfully!', { variant: 'success' })
+            queryClient.invalidateQueries({ queryKey: UiStoreQueries.PUBLISHED_DECKLISTS })
           })
           .catch((error) => {
             const message = error.data()
@@ -169,6 +170,7 @@ export function DecklistTabs(props: {
           .then(() => {
             props.onDecklistUpdated()
             enqueueSnackbar('The decklist was unpublished successfully!', { variant: 'success' })
+            queryClient.invalidateQueries({ queryKey: UiStoreQueries.PUBLISHED_DECKLISTS })
           })
           .catch((error) => {
             const message = error.data()

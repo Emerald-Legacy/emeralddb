@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useState } from 'react'
+import { useEffect, useReducer, useState, type JSX } from 'react';
 import { styled } from '@mui/material/styles';
 import { CardWithVersions, Trait, RoleRestriction, Format } from '@5rdb/api'
 import {

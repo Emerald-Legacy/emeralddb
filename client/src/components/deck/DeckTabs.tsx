@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles';
 import { Box, Typography, Button, Grid, useMediaQuery, Tooltip } from '@mui/material';
 import { useConfirm } from 'material-ui-confirm'
 import { useSnackbar } from 'notistack'
-import { useState } from 'react'
+import { useState, type JSX } from 'react';
 import { privateApi } from '../../api'
 import { CardFactionIcon } from '../card/CardFactionIcon'
 import { DecklistTabs, latestDecklistForDeck } from './DecklistTabs'
@@ -173,49 +173,54 @@ export function DeckTabs(props: {
       </Grid>
       <Grid size={{ xs: 12, lg: 9, xl: 8 }}>
         <Grid container>
-          {currentDeckId && (
-            <Grid size={12}>
-              <Grid container spacing={1} justifyContent="flex-end">
-                <Grid size={4}>
-                  <EmeraldDBLink href={`/builder/${currentDeckId}/edit`}>
+          {currentDeckId && (() => {
+            const currentDeck = sortedDecks.find(d => d.id === currentDeckId)
+            const latestDecklistId = latestDecklistForDeck(currentDeck!)?.id
+            return (
+              <Grid size={12}>
+                <Grid container spacing={1} justifyContent="flex-end">
+                  <Grid size={4}>
+                    <EmeraldDBLink href={`/builder/${currentDeckId}/edit`}>
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        fullWidth
+                        className={classes.newDeckButton}
+                        startIcon={<EditIcon />}
+                      >
+                        Edit Deck
+                      </Button>
+                    </EmeraldDBLink>
+                  </Grid>
+                  <Grid size={4}>
+                    <EmeraldDBLink href={`/decks/${latestDecklistId}`}>
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        fullWidth
+                        className={classes.newDeckButton}
+                        startIcon={<LinkIcon />}
+                        disabled={!latestDecklistId}
+                      >
+                        Link (Latest Version)
+                      </Button>
+                    </EmeraldDBLink>
+                  </Grid>
+                  <Grid size={4}>
                     <Button
                       variant="contained"
-                      color="secondary"
+                      className={classes.deleteButton}
                       fullWidth
-                      className={classes.newDeckButton}
-                      startIcon={<EditIcon />}
+                      onClick={() => confirmDeletion(currentDeckId)}
+                      startIcon={<DeleteIcon />}
                     >
-                      Edit Deck
+                      Delete This Deck
                     </Button>
-                  </EmeraldDBLink>
-                </Grid>
-                <Grid size={4}>
-                  <EmeraldDBLink href={`/decks/${currentDeckId}/`}>
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      fullWidth
-                      className={classes.newDeckButton}
-                      startIcon={<LinkIcon />}
-                    >
-                      Link (Latest Version)
-                    </Button>
-                  </EmeraldDBLink>
-                </Grid>
-                <Grid size={4}>
-                  <Button
-                    variant="contained"
-                    className={classes.deleteButton}
-                    fullWidth
-                    onClick={() => confirmDeletion(currentDeckId)}
-                    startIcon={<DeleteIcon />}
-                  >
-                    Delete This Deck
-                  </Button>
+                  </Grid>
                 </Grid>
               </Grid>
-            </Grid>
-          )}
+            )
+          })()}
           <Grid size={12}>
             {sortedDecks.map((deck) => (
               <DecklistTabs

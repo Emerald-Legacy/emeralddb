@@ -1,5 +1,5 @@
 import { Box, Grid, Typography, Card, CardContent } from '@mui/material'
-import { useParams } from 'react-router-dom'
+import { useParams } from 'react-router'
 import { EmptyState } from '../components/EmptyState'
 import { Loading } from '../components/Loading'
 import { RequestError } from '../components/RequestError'
@@ -10,6 +10,8 @@ import { DecklistComments } from '../components/deck/DecklistComments'
 import { DeckStatisticsDisplay } from '../components/deck/DeckStatisticsDisplay'
 import { useUiStore } from '../providers/UiStoreProvider'
 import { Pack } from '@5rdb/api'
+
+import type { JSX } from "react";
 
 export function DeckDetailView(): JSX.Element {
   const params = useParams<{ id: string }>()

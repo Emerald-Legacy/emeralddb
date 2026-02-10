@@ -1,7 +1,7 @@
 import { Card as CardType, Trait } from '@5rdb/api'
 import { styled } from '@mui/material/styles';
 import { Box, Button, Card, CardContent, Grid, Switch, TextField, Typography } from '@mui/material';
-import React, { useState } from 'react'
+import React, { useState, type JSX } from 'react';
 import {
   sides,
   cardTypes,
@@ -19,7 +19,7 @@ import { useUiStore } from '../../providers/UiStoreProvider'
 import SaveIcon from '@mui/icons-material/Save'
 import { useConfirm } from 'material-ui-confirm'
 import { privateApi } from '../../api'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import { toSlugId } from '../../utils/slugIdUtils'
 
 const Root = styled('form')(() => ({}));

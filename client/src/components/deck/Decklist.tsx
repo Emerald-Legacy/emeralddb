@@ -1,6 +1,6 @@
 import { Deck, DecklistViewModel } from '@5rdb/api'
 import { Box, Button, Grid, Switch, Typography } from '@mui/material'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import { privateApi } from '../../api'
 import { useUiStore } from '../../providers/UiStoreProvider'
 import { useCurrentUser } from '../../providers/UserProvider'
@@ -11,8 +11,9 @@ import { CardWithQuantity, createDeckStatistics } from './DeckValidator'
 import { CardQuantitySelector } from '../builder/CardQuantitySelector'
 import min from 'lodash/min'
 import { Loading } from '../Loading'
-import { useState } from 'react'
+import { useState, type JSX } from 'react';
 import { CardFactionIcon } from '../card/CardFactionIcon'
+import { getImageUrl } from '../../utils/imageUrl'
 
 export function DeckCardSubList(props: {
   cards: CardWithQuantity[]
@@ -202,7 +203,7 @@ export function Decklist(props: {
       <Grid size={{ xs: 12, sm: 6, lg: 6 }}>
         {stats.stronghold && (
           <img
-            src={stats.stronghold.versions[0]?.image_url || ''}
+            src={getImageUrl(stats.stronghold.versions[0]?.image_url)}
             style={{ width: '80%', maxWidth: '250px', height: 'auto' }}
             alt={stats.stronghold.name}
           />

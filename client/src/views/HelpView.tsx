@@ -3,6 +3,8 @@ import {styled} from '@mui/material/styles';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import {Theme} from '@mui/material/styles';
 
+import type { JSX } from "react";
+
 const PREFIX = 'HelpView';
 
 const classes = {
