@@ -4,6 +4,8 @@ import FormatBoldIcon from '@mui/icons-material/FormatBold'
 import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn'
 import { Button, ButtonGroup, Grid } from '@mui/material';
 
+import type { JSX } from "react";
+
 const PREFIX = 'CardTextEditorButtons';
 
 const classes = {

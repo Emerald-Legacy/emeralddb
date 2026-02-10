@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, type JSX } from 'react';
 import { styled } from '@mui/material/styles';
 import clsx from 'clsx'
 import TableCell from '@mui/material/TableCell'

@@ -11,7 +11,7 @@ import {
   MenuItem,
   TextField,
 } from '@mui/material'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, type JSX } from 'react';
 import { useQueryClient } from '@tanstack/react-query'
 import { privateApi } from '../../api'
 import { getToken, hasAuth0Token, setToken } from '../../utils/auth'

@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import { Loading } from '../components/Loading'
 import { useUiStore } from '../providers/UiStoreProvider'
-import React, { useState } from 'react'
+import React, { useState, type JSX } from 'react';
 import { Format } from "@5rdb/api";
 import { privateApi } from '../api'
 import { useSnackbar } from 'notistack'

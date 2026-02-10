@@ -1,6 +1,6 @@
 import { Popover, Theme } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { useState, useEffect, type MouseEvent } from 'react'
+import { useState, useEffect, type MouseEvent, type JSX } from 'react';
 import { useUiStore } from '../../providers/UiStoreProvider'
 import { CardInformation } from './CardInformation'
 import { CardTypeIcon } from './CardTypeIcon'
@@ -12,6 +12,7 @@ import CachedIcon from '@mui/icons-material/Cached'
 import { ElementSymbol } from './ElementSymbol'
 import { EmeraldDBLink } from '../EmeraldDBLink'
 import { CardInPack } from "@5rdb/api";
+import { getImageUrl } from '../../utils/imageUrl'
 
 const PREFIX = 'CardLink';
 
@@ -258,7 +259,7 @@ export function CardLink(props: {
         }}
       >
         {cardImage ? (
-          <img src={cardImage} style={{ width: 300, height: 420 }} alt={card.name} />
+          <img src={getImageUrl(cardImage)} style={{ width: 300, height: 420 }} alt={card.name} />
         ) : (
           <CardInformation cardWithVersions={card} currentVersion={legalVersion}/>
         )}

@@ -1,5 +1,7 @@
 import { Typography } from '@mui/material'
 
+import type { JSX } from "react";
+
 export function NotLoggedIn(): JSX.Element {
   return (
     <>

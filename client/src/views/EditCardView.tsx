@@ -1,9 +1,11 @@
-import { useParams } from 'react-router-dom'
+import { useParams } from 'react-router'
 import { EmptyState } from '../components/EmptyState'
 import { Loading } from '../components/Loading'
 import { RequestError } from '../components/RequestError'
 import { useCard } from '../hooks/useCard'
 import { CardEditor } from '../components/forms/CardEditor'
+
+import type { JSX } from "react";
 
 export function EditCardView(): JSX.Element {
   const params = useParams<{ id: string }>()

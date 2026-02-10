@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router'
 import { DeckEditor } from '../components/builder/DeckEditor'
 import { latestDecklistForDeck } from '../components/deck/DecklistTabs'
 import { EmptyState } from '../components/EmptyState'
@@ -6,6 +6,8 @@ import { Loading } from '../components/Loading'
 import { RequestError } from '../components/RequestError'
 import { useDeck } from '../hooks/useDeck'
 import { useCurrentUser } from '../providers/UserProvider'
+
+import type { JSX } from "react";
 
 export function EditDeckView(): JSX.Element {
   const params = useParams<{ id: string }>()

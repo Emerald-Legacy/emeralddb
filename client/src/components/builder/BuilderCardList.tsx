@@ -13,7 +13,7 @@ import {
   useMediaQuery,
 } from '@mui/material'
 import min from 'lodash/min'
-import { useState, useMemo } from 'react'
+import { useState, useMemo, type JSX } from 'react';
 import { useUiStore } from '../../providers/UiStoreProvider'
 import { convertTraitList } from '../../utils/cardTextUtils'
 import { applyFilters, CardFilter, FilterState } from '../CardFilter'

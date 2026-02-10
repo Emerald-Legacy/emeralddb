@@ -1,6 +1,6 @@
 import { Box, Button, Grid, IconButton, TextField, Typography } from '@mui/material'
 import { DecklistCommentWithChildren } from './DecklistComments'
-import { useState } from 'react'
+import { useState, type JSX } from 'react';
 import { privateApi } from '../../api'
 import { useSnackbar } from 'notistack'
 import ReplyIcon from '@mui/icons-material/Reply'
