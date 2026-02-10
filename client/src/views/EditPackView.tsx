@@ -21,6 +21,7 @@ import Autocomplete from '@mui/material/Autocomplete'
 import { privateApi } from '../api'
 import { useSnackbar } from 'notistack'
 import { useConfirm } from "material-ui-confirm";
+import { getImageUrl } from '../utils/imageUrl'
 
 export function EditPackView(): JSX.Element {
   const { cards, packs, invalidateData } = useUiStore()
@@ -195,7 +196,7 @@ export function EditPackView(): JSX.Element {
               </Box>
             </Grid>
             <Grid size={4}>
-              <img src={card.image_url || ''} style={{ maxWidth: 150 }} />
+              <img src={getImageUrl(card.image_url)} style={{ maxWidth: 150 }} />
             </Grid>
           </Grid>
         </Grid>
@@ -274,7 +275,7 @@ export function EditPackView(): JSX.Element {
               />
             </Grid>
             <Grid size={4}>
-              <img src={imageUrl} style={{ maxWidth: 150 }} />
+              <img src={getImageUrl(imageUrl)} style={{ maxWidth: 150 }} />
             </Grid>
           </Grid>
         </DialogContent>

@@ -30,6 +30,7 @@ import { privateApi } from '../api'
 import { useConfirm } from 'material-ui-confirm'
 import { useSnackbar } from 'notistack'
 import { toSlugId } from '../utils/slugIdUtils'
+import { getImageUrl } from '../utils/imageUrl'
 
 const PREFIX = 'CardDetailView';
 
@@ -204,7 +205,7 @@ export function CardDetailView(): JSX.Element {
         <Grid container spacing={0} size={{ xs: 12, md: 5 }} display="flex" justifyContent="center">
           {chosenVersion && (
             <Grid size={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-              <img src={chosenVersion.image_url || ''} style={{ maxWidth: imageWidth, width: '100%', height: 'auto' }} />
+              <img src={getImageUrl(chosenVersion.image_url)} style={{ maxWidth: imageWidth, width: '100%', height: 'auto' }} />
             </Grid>
           )}
           {isDataAdmin() && (

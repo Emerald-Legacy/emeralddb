@@ -13,6 +13,7 @@ import min from 'lodash/min'
 import { Loading } from '../Loading'
 import { useState } from 'react'
 import { CardFactionIcon } from '../card/CardFactionIcon'
+import { getImageUrl } from '../../utils/imageUrl'
 
 export function DeckCardSubList(props: {
   cards: CardWithQuantity[]
@@ -202,7 +203,7 @@ export function Decklist(props: {
       <Grid size={{ xs: 12, sm: 6, lg: 6 }}>
         {stats.stronghold && (
           <img
-            src={stats.stronghold.versions[0]?.image_url || ''}
+            src={getImageUrl(stats.stronghold.versions[0]?.image_url)}
             style={{ width: '80%', maxWidth: '250px', height: 'auto' }}
             alt={stats.stronghold.name}
           />

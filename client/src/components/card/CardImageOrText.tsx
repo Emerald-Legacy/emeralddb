@@ -4,6 +4,7 @@ import { useUiStore } from '../../providers/UiStoreProvider'
 import { CardInformation } from './CardInformation'
 import ZoomInIcon from '@mui/icons-material/ZoomIn'
 import { CardInPack } from "@5rdb/api";
+import { getImageUrl } from '../../utils/imageUrl'
 
 const PREFIX = 'CardImageOrText';
 
@@ -47,7 +48,7 @@ export function CardImageOrText(props: {
   return (
     <Root style={{ position: 'relative', height: '95%' }}>
       {cardImage ? (
-        <img src={cardImage} style={{ maxWidth: '100%', height: 'auto' }} />
+        <img src={getImageUrl(cardImage)} style={{ maxWidth: '100%', height: 'auto' }} />
       ) : (
         <CardInformation cardWithVersions={card} currentVersion={cardVersion} />
       )}
