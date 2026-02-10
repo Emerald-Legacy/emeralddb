@@ -6,7 +6,7 @@ import Autocomplete from '@mui/material/Autocomplete'
 import { clans } from '../utils/enums'
 import { OrganizedPlayList } from '../components/OrganizedPlayList'
 import { CardWithVersions } from '@5rdb/api'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router'
 import { CardLink } from '../components/card/CardLink'
 
 const formats = [

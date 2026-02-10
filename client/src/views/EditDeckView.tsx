@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router'
 import { DeckEditor } from '../components/builder/DeckEditor'
 import { latestDecklistForDeck } from '../components/deck/DecklistTabs'
 import { EmptyState } from '../components/EmptyState'

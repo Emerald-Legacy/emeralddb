@@ -1,5 +1,5 @@
 import { Box, Grid, Typography, Card, CardContent } from '@mui/material'
-import { useParams } from 'react-router-dom'
+import { useParams } from 'react-router'
 import { EmptyState } from '../components/EmptyState'
 import { Loading } from '../components/Loading'
 import { RequestError } from '../components/RequestError'

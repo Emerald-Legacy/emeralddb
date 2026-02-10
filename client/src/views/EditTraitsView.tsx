@@ -11,7 +11,7 @@ import {
   TextField,
   Typography
 } from "@mui/material";
-import { useNavigate} from 'react-router-dom'
+import { useNavigate} from 'react-router'
 import { Loading } from '../components/Loading'
 import { useUiStore } from '../providers/UiStoreProvider'
 import React, { useState, type JSX } from 'react';

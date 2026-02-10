@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { DataGrid, GridColDef } from '@mui/x-data-grid'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router'
 import { useUiStore } from '../providers/UiStoreProvider'
 import { convertTraitList } from '../utils/cardTextUtils'
 import { capitalize } from '../utils/stringUtils'

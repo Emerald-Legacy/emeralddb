@@ -1,6 +1,6 @@
 import { Deck, DecklistViewModel } from '@5rdb/api'
 import { Box, Button, Grid, Switch, Typography } from '@mui/material'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import { privateApi } from '../../api'
 import { useUiStore } from '../../providers/UiStoreProvider'
 import { useCurrentUser } from '../../providers/UserProvider'

@@ -14,7 +14,7 @@ import {
 import { useConfirm } from 'material-ui-confirm'
 import { useSnackbar } from 'notistack'
 import React, { useState, type JSX } from 'react';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import { privateApi } from '../api'
 import { Loading } from '../components/Loading'
 import { useUiStore } from '../providers/UiStoreProvider'

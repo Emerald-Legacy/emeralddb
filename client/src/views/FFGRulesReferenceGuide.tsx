@@ -11,7 +11,6 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useEffect, useState, type JSX } from 'react';
-import { HashLink as Link } from 'react-router-hash-link'
 import TocIcon from '@mui/icons-material/Toc'
 
 const PREFIX = 'FFGRulesReferenceGuide';
@@ -122,9 +121,17 @@ export function FFGRulesReferenceGuide(): JSX.Element {
                 : classes.level3
             }`}
           >
-            <Link smooth to={heading.href} onClick={() => setShowTable(false)}>
+            <a
+              href={heading.href}
+              style={{ scrollBehavior: 'smooth' }}
+              onClick={(e) => {
+                e.preventDefault()
+                setShowTable(false)
+                document.querySelector(heading.href)?.scrollIntoView({ behavior: 'smooth' })
+              }}
+            >
               {heading.text}
-            </Link>
+            </a>
           </li>
         ))}
       </ul>

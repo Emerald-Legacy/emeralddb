@@ -1,6 +1,6 @@
 import { Theme } from '@mui/material/styles';
 import { ThemeProvider, createTheme, responsiveFontSizes, StyledEngineProvider } from '@mui/material/styles';
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter } from 'react-router'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { HeaderBar } from './components/HeaderBar'
 import { Auth0ProviderWithHistory } from './providers/Auth0ProviderWithHistory'

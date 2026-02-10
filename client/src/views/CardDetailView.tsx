@@ -15,7 +15,7 @@ import {
   Card,
   CardContent,
 } from "@mui/material";
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router'
 import { EmptyState } from '../components/EmptyState'
 import { Loading } from '../components/Loading'
 import { RequestError } from '../components/RequestError'
