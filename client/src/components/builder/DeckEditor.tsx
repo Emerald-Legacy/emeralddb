@@ -14,7 +14,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { useState } from 'react'
+import { useState, type JSX } from 'react';
 import { useUiStore } from '../../providers/UiStoreProvider'
 import { BuilderCardList } from './BuilderCardList'
 import { Decklist } from '../deck/Decklist'
@@ -22,7 +22,7 @@ import { privateApi } from '../../api'
 import { DeckBuilderWizard } from './DeckBuilderWizard'
 import Autocomplete from '@mui/material/Autocomplete'
 import { useSnackbar } from 'notistack'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import { createDeckStatistics } from '../deck/DeckValidator'
 import { Loading } from '../Loading'
 import { VersionPicker } from './VersionPicker'

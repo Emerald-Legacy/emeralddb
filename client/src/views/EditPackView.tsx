@@ -11,11 +11,11 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
-import { useParams } from 'react-router-dom'
+import { useParams } from 'react-router'
 import { Loading } from '../components/Loading'
 import { useUiStore } from '../providers/UiStoreProvider'
 import { RequestError } from '../components/RequestError'
-import { useEffect, useState } from "react";
+import { useEffect, useState, type JSX } from "react";
 import { CardInPack } from '@5rdb/api'
 import Autocomplete from '@mui/material/Autocomplete'
 import { privateApi } from '../api'

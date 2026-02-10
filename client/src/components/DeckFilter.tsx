@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useState } from 'react'
+import { useEffect, useReducer, useState, type JSX } from 'react';
 import { styled } from '@mui/material/styles';
 import { PublishedDecklist } from '@5rdb/api'
 import { Button, lighten, Grid, Paper, TextField } from '@mui/material';

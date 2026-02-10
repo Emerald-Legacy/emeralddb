@@ -1,6 +1,6 @@
 import { Button, ButtonGroup, Grid, TextField } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type JSX } from 'react';
 
 const PREFIX = 'CardValueFilter';
 

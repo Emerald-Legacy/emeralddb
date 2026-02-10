@@ -24,7 +24,7 @@ export default defineConfig({
       output: {
         manualChunks: {
           'mui': ['@mui/material', '@mui/icons-material', '@mui/system'],
-          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          'react-vendor': ['react', 'react-dom', 'react-router'],
           'query': ['@tanstack/react-query'],
         },
       },

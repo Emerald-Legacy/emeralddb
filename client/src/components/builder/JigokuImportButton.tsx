@@ -9,7 +9,7 @@ import {
   useMediaQuery,
 } from '@mui/material'
 import Autocomplete from '@mui/material/Autocomplete'
-import { useState } from 'react'
+import { useState, type JSX } from 'react';
 import { useUiStore } from '../../providers/UiStoreProvider'
 
 function mapDeckStringToCards(

@@ -7,7 +7,9 @@ import { getColorForFactionId } from '../../utils/factionUtils'
 import { capitalize } from '../../utils/stringUtils'
 import { CardText } from './CardText'
 import { ElementSymbol } from './ElementSymbol'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
+
+import type { JSX } from "react";
 
 const PREFIX = 'CardInformation';
 

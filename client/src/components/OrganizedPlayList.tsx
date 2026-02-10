@@ -4,6 +4,8 @@ import { Box, Typography } from '@mui/material'
 import { CardLink } from './card/CardLink'
 import { getColorForFactionId } from '../utils/factionUtils'
 
+import type { JSX } from "react";
+
 export function OrganizedPlayList(props: {
   cards: CardWithVersions[]
   title: string

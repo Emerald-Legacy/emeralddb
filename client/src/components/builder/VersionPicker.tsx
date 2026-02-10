@@ -1,5 +1,5 @@
 import { Grid, TextField, Typography } from '@mui/material'
-import { useState } from 'react'
+import { useState, type JSX } from 'react';
 
 function splitVersion(version: string): { major: string; minor: string; extra: string } {
   const versionParts = version.split('.')

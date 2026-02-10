@@ -1,6 +1,6 @@
 import { Theme } from '@mui/material/styles';
 import { ThemeProvider, createTheme, responsiveFontSizes, StyledEngineProvider } from '@mui/material/styles';
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter } from 'react-router'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { HeaderBar } from './components/HeaderBar'
 import { Auth0ProviderWithHistory } from './providers/Auth0ProviderWithHistory'
@@ -10,6 +10,8 @@ import { UserProvider } from './providers/UserProvider'
 import { ConfirmProvider } from 'material-ui-confirm'
 import { Routes } from './Routes'
 import { SnackbarProvider } from 'notistack'
+
+import type { JSX } from "react";
 
 // create our material ui theme using up to date typography variables
 let theme = createTheme({

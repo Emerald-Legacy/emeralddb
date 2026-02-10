@@ -6,6 +6,8 @@ import ZoomInIcon from '@mui/icons-material/ZoomIn'
 import { CardInPack } from "@5rdb/api";
 import { getImageUrl } from '../../utils/imageUrl'
 
+import type { JSX } from "react";
+
 const PREFIX = 'CardImageOrText';
 
 const classes = {

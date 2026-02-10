@@ -1,6 +1,7 @@
 import { ButtonGroup, Button } from '@mui/material';
 
 import { styled } from '@mui/material/styles';
+import type { JSX } from "react";
 const PREFIX = 'CardQuantitySelector';
 
 const classes = {
