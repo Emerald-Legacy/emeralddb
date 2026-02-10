@@ -202,7 +202,7 @@ export function CardDetailView(): JSX.Element {
           )}
           <RulingList cardId={card.id} rulings={card.rulings} />
         </Grid>
-        <Grid container spacing={0} size={{ xs: 12, md: 5 }} display="flex" justifyContent="center">
+        <Grid container spacing={0} size={{ xs: 12, md: 5 }} display="flex" justifyContent="center" alignContent="flex-start">
           {chosenVersion && (
             <Grid size={12} sx={{ display: 'flex', justifyContent: 'center' }}>
               <img src={getImageUrl(chosenVersion.image_url)} style={{ maxWidth: imageWidth, width: '100%', height: 'auto' }} />
