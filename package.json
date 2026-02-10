@@ -24,7 +24,7 @@
     "node": ">=22.11.0 <25.x"
   },
   "volta": {
-    "node": ">=22.11.0 <25.x"
+    "node": "22.11.0"
   },
   "license": "MIT",
   "dependencies": {
