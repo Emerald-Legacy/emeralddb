@@ -127,7 +127,7 @@ enum ViewTypes {
 }
 
 export function DeckEditor(props: { existingDecklist?: DecklistType | undefined }): JSX.Element {
-  const { cards, formats, relevantFormats } = useUiStore()
+  const { cards, formats, relevantFormats, validCardVersionForFormat } = useUiStore()
 
   const [decklist, setDecklist] = useState(props.existingDecklist || getEmptyDeckList())
   const { enqueueSnackbar } = useSnackbar()
@@ -194,10 +194,18 @@ export function DeckEditor(props: { existingDecklist?: DecklistType | undefined 
 
   function updateDeck(decklist: DecklistViewModel, deckId: string) {
     const { stronghold, role, ...decklistToSave } = decklist as any;
+    const cardPackIds: Record<string, string> = {}
+    for (const cardId of Object.keys(decklist.cards)) {
+      const version = validCardVersionForFormat(cardId, decklist.format)
+      if (version) {
+        cardPackIds[cardId] = version.pack_id
+      }
+    }
     privateApi.Decklist.create({
       body: {
         ...decklistToSave,
         deck_id: deckId,
+        card_pack_ids: cardPackIds,
         published_date: undefined,
       },
     }).then(() => {
