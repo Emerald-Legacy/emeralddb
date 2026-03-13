@@ -138,6 +138,7 @@ export function CardLink(props: {
   cardId: string
   sameTab?: boolean
   format?: string
+  packId?: string
   notClickable?: boolean
   hoveredCardId?: string | null
   onHover?: (cardId: string | null) => void
@@ -152,9 +153,11 @@ export function CardLink(props: {
 
   const open = Boolean(anchorEl)
 
-  let legalVersion: Omit<CardInPack, 'card_id'> | undefined = card.versions[0]
   const format = relevantFormats.find(f => f.id === props.format)
-  if (format) {
+  let legalVersion: Omit<CardInPack, 'card_id'> | undefined = card.versions[0]
+  if (props.packId) {
+    legalVersion = card.versions.find(v => v.pack_id === props.packId) || legalVersion
+  } else if (format) {
     legalVersion = validCardVersionForFormat(card.id, format.id)
     if (legalVersion && format.id === 'emerald' && legalVersion.rotated) {
       legalVersion = undefined

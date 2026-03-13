@@ -22,9 +22,14 @@ export async function getAllDecklists(): Promise<Decklist[]> {
 
 export async function updateCardsInDecklist(
   decklistId: string,
-  cards: Record<string, number>
+  cards: Record<string, number>,
+  cardPackIds?: Record<string, string>
 ): Promise<Decklist> {
-  const result = await pg(TABLE).where('id', decklistId).update({ cards: cards }, '*')
+  const updateData: Record<string, unknown> = { cards }
+  if (cardPackIds !== undefined) {
+    updateData.card_pack_ids = cardPackIds
+  }
+  const result = await pg(TABLE).where('id', decklistId).update(updateData, '*')
   return result[0]
 }
 

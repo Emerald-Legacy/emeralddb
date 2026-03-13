@@ -10,6 +10,7 @@ interface DeckStatisticsDisplayProps {
   allCards: CardWithVersions[]
   allPacks: Pack[]
   format: string
+  cardPackIds?: Record<string, string>
 }
 
 function calculateRequiredPacks(
@@ -17,16 +18,16 @@ function calculateRequiredPacks(
   allCards: CardWithVersions[],
   allPacks: Pack[],
   format: string,
-  validCardVersionForFormat: (cardId: string, format: string) => Omit<CardInPack, "card_id"> | undefined
+  validCardVersionForFormat: (cardId: string, format: string) => Omit<CardInPack, "card_id"> | undefined,
+  cardPackIds?: Record<string, string>
 ): { packName: string; count: number }[] {
   const packCountMap = new Map<string, number>(); // Map<packId, count>
 
   Object.entries(cards).forEach(([cardId, quantity]) => {
     const card = allCards.find((c) => c.id === cardId);
     if (card) {
-      const validVersion = validCardVersionForFormat(card.id, format);
-      if (validVersion) {
-        const packId = validVersion.pack_id;
+      const packId = cardPackIds?.[cardId] || validCardVersionForFormat(card.id, format)?.pack_id;
+      if (packId) {
         const currentCount = packCountMap.get(packId) || 0;
         packCountMap.set(packId, currentCount + quantity);
       }
@@ -181,7 +182,7 @@ function calculateAverageStat(
   return totalCards > 0 ? totalStat / totalCards : 0
 }
 
-export function DeckStatisticsDisplay({ cards, allCards, allPacks, format }: DeckStatisticsDisplayProps): JSX.Element {
+export function DeckStatisticsDisplay({ cards, allCards, allPacks, format, cardPackIds }: DeckStatisticsDisplayProps): JSX.Element {
   const { traits, validCardVersionForFormat } = useUiStore()
   const [isExpanded, setIsExpanded] = useState(false)
   const [isConflictTraitsExpanded, setIsConflictTraitsExpanded] = useState(false)
@@ -204,7 +205,7 @@ export function DeckStatisticsDisplay({ cards, allCards, allPacks, format }: Dec
   const averageDynastyFateCost = calculateAverageFateCostForDeck(cards, allCards, 'dynasty');
   const averageConflictFateCost = calculateAverageFateCostForDeck(cards, allCards, 'conflict');
 
-  const requiredPacks = calculateRequiredPacks(cards, allCards, allPacks, format, validCardVersionForFormat);
+  const requiredPacks = calculateRequiredPacks(cards, allCards, allPacks, format, validCardVersionForFormat, cardPackIds);
 
   return (
     <Box p={1}>

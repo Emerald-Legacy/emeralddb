@@ -19,6 +19,7 @@ export function DeckCardSubList(props: {
   cards: CardWithQuantity[]
   faction?: string | undefined
   format: string
+  cardPackIds?: Record<string, string>
   onQuantityChange?: ((cardId: string, quantity: number) => void) | undefined
   sortByName: boolean
 }): JSX.Element {
@@ -47,7 +48,7 @@ export function DeckCardSubList(props: {
           ) : (
             `${card.quantity}x`
           )}{' '}
-          <CardLink cardId={card.id} format={props.format} />
+          <CardLink cardId={card.id} format={props.format} packId={props.cardPackIds?.[card.id]} />
           {props.faction && card.faction !== props.faction && (
             <>
               {' '}
@@ -66,6 +67,7 @@ export function DeckCardSubList(props: {
 export function ProvinceCardSubList(props: {
   cards: CardWithQuantity[]
   format: string
+  cardPackIds?: Record<string, string>
   onQuantityChange?: ((cardId: string, quantity: number) => void) | undefined
 }): JSX.Element {
   const list = props.cards.sort((a, b) => a.name.localeCompare(b.name))
@@ -80,7 +82,7 @@ export function ProvinceCardSubList(props: {
               quantity={card.quantity}
             />
           )}
-          <CardLink cardId={card.id} format={props.format} />{' '}
+          <CardLink cardId={card.id} format={props.format} packId={props.cardPackIds?.[card.id]} />{' '}
         </Typography>
       ))}
     </>
@@ -92,6 +94,7 @@ export function DeckCardSubListWithTitle(props: {
   title: string
   faction?: string
   format: string
+  cardPackIds?: Record<string, string>
   sortByName?: boolean
   onQuantityChange?: ((cardId: string, quantity: number) => void) | undefined
 }): JSX.Element {
@@ -107,6 +110,7 @@ export function DeckCardSubListWithTitle(props: {
         cards={props.cards}
         faction={props.faction}
         format={props.format}
+        cardPackIds={props.cardPackIds}
         onQuantityChange={props.onQuantityChange}
         sortByName={props.sortByName || false}
       />
@@ -118,6 +122,7 @@ function ProvinceCardSubListWithTitle(props: {
   cards: CardWithQuantity[]
   title: string
   format: string
+  cardPackIds?: Record<string, string>
   onQuantityChange?: ((cardId: string, quantity: number) => void) | undefined
 }): JSX.Element {
   const quantity = props.cards.map((card) => card.quantity).reduce((a, b) => a + b, 0)
@@ -131,6 +136,7 @@ function ProvinceCardSubListWithTitle(props: {
       <ProvinceCardSubList
         cards={props.cards}
         format={props.format}
+        cardPackIds={props.cardPackIds}
         onQuantityChange={props.onQuantityChange}
       />
     </>
@@ -203,7 +209,12 @@ export function Decklist(props: {
       <Grid size={{ xs: 12, sm: 6, lg: 6 }}>
         {stats.stronghold && (
           <img
-            src={getImageUrl(stats.stronghold.versions[0]?.image_url)}
+            src={getImageUrl(
+              (decklist.card_pack_ids?.[stats.stronghold.id]
+                ? stats.stronghold.versions.find(v => v.pack_id === decklist.card_pack_ids![stats.stronghold!.id])
+                : undefined
+              )?.image_url || stats.stronghold.versions[0]?.image_url
+            )}
             style={{ width: '80%', maxWidth: '250px', height: 'auto' }}
             alt={stats.stronghold.name}
           />
@@ -245,15 +256,16 @@ export function Decklist(props: {
                 <div>
                   {stats.stronghold && (
                     <b>
-                      <CardLink cardId={stats.stronghold.id} format={stats.format} />
+                      <CardLink cardId={stats.stronghold.id} format={stats.format} packId={decklist.card_pack_ids?.[stats.stronghold.id]} />
                     </b>
                   )}
                 </div>
-                <div>{stats.role && <CardLink cardId={stats.role.id} format={stats.format} />}</div>
+                <div>{stats.role && <CardLink cardId={stats.role.id} format={stats.format} packId={decklist.card_pack_ids?.[stats.role.id]} />}</div>
                 <ProvinceCardSubListWithTitle
                   cards={stats.provinces}
                   title="Provinces"
                   format={stats.format}
+                  cardPackIds={decklist.card_pack_ids}
                   onQuantityChange={props.onQuantityChange}
                 />
               </div>
@@ -290,6 +302,7 @@ export function Decklist(props: {
           cards={dynastyCharacters}
           title="Characters"
           format={stats.format}
+          cardPackIds={decklist.card_pack_ids}
           onQuantityChange={props.onQuantityChange}
           sortByName={sortDynByName}
         />
@@ -297,6 +310,7 @@ export function Decklist(props: {
           cards={dynastyEvents}
           title="Events"
           format={stats.format}
+          cardPackIds={decklist.card_pack_ids}
           onQuantityChange={props.onQuantityChange}
           sortByName={sortDynByName}
         />
@@ -304,6 +318,7 @@ export function Decklist(props: {
           cards={holdings}
           title="Holdings"
           format={stats.format}
+          cardPackIds={decklist.card_pack_ids}
           onQuantityChange={props.onQuantityChange}
         />
       </Grid>
@@ -334,6 +349,7 @@ export function Decklist(props: {
           title="Events"
           faction={stats.primaryClan}
           format={stats.format}
+          cardPackIds={decklist.card_pack_ids}
           onQuantityChange={props.onQuantityChange}
           sortByName={sortConfByName}
         />
@@ -342,6 +358,7 @@ export function Decklist(props: {
           title="Attachments"
           faction={stats.primaryClan}
           format={stats.format}
+          cardPackIds={decklist.card_pack_ids}
           onQuantityChange={props.onQuantityChange}
           sortByName={sortConfByName}
         />
@@ -350,6 +367,7 @@ export function Decklist(props: {
           title="Characters"
           faction={stats.primaryClan}
           format={stats.format}
+          cardPackIds={decklist.card_pack_ids}
           onQuantityChange={props.onQuantityChange}
           sortByName={sortConfByName}
         />
