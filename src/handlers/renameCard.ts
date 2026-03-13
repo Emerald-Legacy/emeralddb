@@ -44,7 +44,12 @@ export async function replaceCardReferences(existingCard: Card, newCard: Card): 
       const newCards = decklist.cards
       newCards[newCard.id] = newCards[existingCard.id]
       delete newCards[existingCard.id]
-      await updateCardsInDecklist(decklist.id, newCards)
+      const newPackIds = decklist.card_pack_ids ? { ...decklist.card_pack_ids } : undefined
+      if (newPackIds && newPackIds[existingCard.id]) {
+        newPackIds[newCard.id] = newPackIds[existingCard.id]
+        delete newPackIds[existingCard.id]
+      }
+      await updateCardsInDecklist(decklist.id, newCards, newPackIds)
     })
   )
 }

@@ -38,7 +38,11 @@ export async function deleteCardReferences(existingCard: Card): Promise<void> {
     decklists.map(async (decklist) => {
       const newCards = decklist.cards
       delete newCards[existingCard.id]
-      await updateCardsInDecklist(decklist.id, newCards)
+      const newPackIds = decklist.card_pack_ids ? { ...decklist.card_pack_ids } : undefined
+      if (newPackIds) {
+        delete newPackIds[existingCard.id]
+      }
+      await updateCardsInDecklist(decklist.id, newCards, newPackIds)
     })
   )
 }
@@ -70,7 +74,12 @@ export async function handler(
         const newCards = decklist.cards
         newCards[replacementCard.id] = newCards[existingCard.id]
         delete newCards[existingCard.id]
-        await updateCardsInDecklist(decklist.id, newCards)
+        const newPackIds = decklist.card_pack_ids ? { ...decklist.card_pack_ids } : undefined
+        if (newPackIds) {
+          newPackIds[replacementCard.id] = newPackIds[existingCard.id] || ''
+          delete newPackIds[existingCard.id]
+        }
+        await updateCardsInDecklist(decklist.id, newCards, newPackIds)
       })
     )
   }

@@ -116,6 +116,7 @@ export interface Decklist {
   description?: string | undefined
   version_number: string
   cards: Record<string, number>
+  card_pack_ids?: Record<string, string> | undefined
   published_date?: Date | undefined
   created_at: Date
   user_id: string
