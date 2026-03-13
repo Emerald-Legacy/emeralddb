@@ -80,7 +80,7 @@ export function DeckDetailView(): JSX.Element {
             <Grid size={12}>
               <Card>
                 <CardContent>
-                  <DeckStatisticsDisplay cards={decklist.cards} allCards={cards} allPacks={packs} format={decklist.format} />
+                  <DeckStatisticsDisplay cards={decklist.cards} allCards={cards} allPacks={packs} format={decklist.format} cardPackIds={decklist.card_pack_ids} />
                 </CardContent>
               </Card>
             </Grid>
